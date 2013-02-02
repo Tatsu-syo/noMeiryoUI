@@ -117,6 +117,13 @@ int NoMeiryoUI::OnWindowShow()
 	// メニューと選択項目
 	menuFontName = metrics.lfMenuFont.lfFaceName;
 
+	metricsAll.lfStatusFont = metricsAll.lfMenuFont;
+	metricsAll.lfMessageFont = metricsAll.lfMenuFont;
+	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
+	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
+	iconFontAll = metricsAll.lfMenuFont;
+
+
 	UpdateData(false);
 
 	return 0;
@@ -179,6 +186,8 @@ void NoMeiryoUI::UpdateData(bool toObj)
 
 INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 {
+	INT_PTR result;
+
 	switch (LOWORD(wParam)) {
 		case ID_SEL_ALL:
 			selectFont(all);
@@ -205,7 +214,10 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			OnBnClickedAll();
 			return (INT_PTR)TRUE;
 		case IDOK:
-			OnBnClickedOk();
+			result = OnBnClickedOk();
+			if (!result) {
+				return (INT_PTR)FALSE;
+			}
 			break;
 	}
 	return BaseDialog::OnCommand(wParam);
@@ -279,8 +291,39 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	UpdateData(false);
 }
 
-void NoMeiryoUI::OnBnClickedOk()
+INT_PTR NoMeiryoUI::OnBnClickedOk()
 {
+	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
+	bool hasVerticalFont = false;
+	if (metricsAll.lfCaptionFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+	if (metricsAll.lfSmCaptionFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+	if (metricsAll.lfStatusFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+	if (metricsAll.lfMessageFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+	if (metricsAll.lfMenuFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+	if (iconFont.lfFaceName[0] == _T('@')) {
+		hasVerticalFont = true;
+	}
+
+	if (hasVerticalFont) {
+		int answer = MessageBox(hWnd,
+			_T("縦書き用フォント(名前が@で始まるフォント)が\n指定されていますがよろしいですか？"),
+			_T("確認"),
+			MB_ICONQUESTION | MB_YESNO);
+		if (answer != IDYES) {
+			return (INT_PTR)FALSE;
+		}
+	}
+
 	// アイコン以外のフォント設定
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
@@ -302,10 +345,22 @@ void NoMeiryoUI::OnBnClickedOk()
 	COLORREF colors[1];
 	colors[0] = btnColor;
 	SetSysColors(1,colorItems,colors);
+
+	return (INT_PTR)TRUE;
 }
 
 void NoMeiryoUI::OnBnClickedAll()
 {
+	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
+	if (metricsAll.lfMenuFont.lfFaceName[0] == _T('@')) {
+		int answer = MessageBox(hWnd,
+			_T("縦書き用フォント(名前が@で始まるフォント)が\n指定されていますがよろしいですか？"),
+			_T("確認"),
+			MB_ICONQUESTION | MB_YESNO);
+		if (answer != IDYES) {
+			return;
+		}
+	}
 
 	// アイコン以外のフォント設定
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,

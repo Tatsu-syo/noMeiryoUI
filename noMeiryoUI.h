@@ -32,7 +32,7 @@ private:
 	LOGFONT iconFontAll;
 
 	void selectFont(enum fontType type);
-	void OnBnClickedOk();
+	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
 
 protected:
