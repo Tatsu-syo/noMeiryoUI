@@ -30,6 +30,7 @@ DialogAppliBase *createAppli()
 /**
  * ダイアログプローシジャ
  *
+ * @return TRUE:処理した FALSE:処理しない
  */
 INT_PTR CALLBACK MainDialogProc(
   HWND hwndDlg,  // ダイアログボックスのハンドル
@@ -89,13 +90,14 @@ int NoMeiryoUI::OnAppliEnd()
 /**
  * ダイアログ初期化処理
  *
- * @return TRUE: FALSE:フォーカスを設定した
+ * @return TRUE:フォーカスを設定した FALSE:フォーカスを設定しない
  */
 INT_PTR NoMeiryoUI::OnInitDialog()
 {
 	// 親クラスのダイアログ初期化処理を呼ぶ。
 	DialogAppliBase::OnInitDialog();
 
+	// アプリケーションアイコンの設定
 	HICON hIcon;
 
     hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
@@ -195,7 +197,7 @@ void NoMeiryoUI::UpdateData(bool toObj)
 }
 
 /**
- *
+ * 各操作に対する処理の分岐
  *
  * @param wParam WPARAM
  * @return 0:メッセージを処理した。 0以外:メッセージを処理しなかった。
@@ -247,6 +249,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
  */
 void NoMeiryoUI::selectFont(enum fontType type)
 {
+
 	CHOOSEFONT font;
 	int result;
 	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
@@ -260,7 +263,22 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	font.hDC = NULL;
 	font.lpLogFont = &logfont;
 	font.Flags = CF_SCREENFONTS;
-	result = ChooseFont(&font);
+	font.hInstance = hInst;
+	font.lpTemplateName = _T("");
+	font.lpszStyle = _T("");
+	font.nFontType = SCREEN_FONTTYPE;
+	font.nSizeMax = 72;
+	// font.rgbColors = rgbCurrent;
+
+	try {
+		result = ChooseFont(&font);
+	} catch (...) {
+		MessageBox(this->hWnd,
+			_T("フォント選択ダイアログ内で内部エラーが発生しました。"),
+			_T("内部エラー"),
+			MB_OK | MB_ICONEXCLAMATION);
+		return;
+	}
 
 	if (!result){
 		return;
