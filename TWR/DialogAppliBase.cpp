@@ -45,7 +45,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	// initModelessCallback();
 
-	// TODO: ここにアプリケーションクラスのインスタンスを設定してください。
+	// ここでアプリケーションクラスのインスタンスを設定します。
 	appObj = createAppli();
 	baseDialog = appObj->createBaseDialog();
 
@@ -117,11 +117,13 @@ int DialogAppliBase::OnAppliEnd()
 	return 0;
 }
 
+/**
+ * ダイアログの初期化処理を行います。
+ *
+ * @return TRUE:フォーカスを設定した FALSE:フォーカスを設定しない
+ */
 INT_PTR DialogAppliBase::OnInitDialog()
 {
-	// 親クラスのダイアログ初期化処理を呼び出す。
-	BaseDialog::OnInitDialog();
-
 	// ダイアログ表示時の初期化処理を行う。
 	OnWindowShow();
 
