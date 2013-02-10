@@ -218,7 +218,7 @@ INT_PTR BaseDialog::OnInitDialog()
 /**
  * ダイアログ操作が行われた時に呼び出されます。
  *
- * @return 処理結果
+ * @return 処理結果 0:処理を行った 非0:処理を行わない
  */
 INT_PTR BaseDialog::OnCommand(WPARAM wParam)
 {
@@ -229,7 +229,7 @@ INT_PTR BaseDialog::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		}
 	}
-	return (INT_PTR)FALSE;
+	return (INT_PTR)TRUE;
 }
 
 /**
