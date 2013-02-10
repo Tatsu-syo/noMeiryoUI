@@ -218,7 +218,7 @@ INT_PTR BaseDialog::OnCommand(WPARAM wParam)
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hWnd, LOWORD(wParam));
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		}
 	}
 	return (INT_PTR)FALSE;

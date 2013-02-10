@@ -70,66 +70,6 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 }
 
 /**
- * ウインドウが表示されたときの処理を実行します。<br>
- * ウインドウベースアプリとインタフェースを合わせるために用意しています。
- *
- * @return 予備
- */
-int NoMeiryoUI::OnWindowShow()
-{
-
-	// この関数をオーバーライドして、初回の表示時の処理を行います。
-	// このタイミングでダイアログが存在するので、ここに処理を入れることで
-	// ダイアログがある状態で起動時の初期化処理を行うことができます。
-
-	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
-	FillMemory(&metricsAll,sizeof(NONCLIENTMETRICS),0x00);
-
-	// アイコン以外のフォント情報を取得する。
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		&metrics,
-		0);
-
-	SystemParametersInfo(SPI_GETICONTITLELOGFONT,
-		sizeof(LOGFONT),
-		&iconFont,
-		0);
-
-	metricsAll.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		&metricsAll,
-		0);
-
-	SystemParametersInfo(SPI_GETICONTITLELOGFONT,
-		sizeof(LOGFONT),
-		&iconFontAll,
-		0);
-
-	allFontName = metricsAll.lfMenuFont.lfFaceName;
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	iconFontName = iconFont.lfFaceName;
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-
-	metricsAll.lfStatusFont = metricsAll.lfMenuFont;
-	metricsAll.lfMessageFont = metricsAll.lfMenuFont;
-	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
-	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
-	iconFontAll = metricsAll.lfMenuFont;
-
-
-	UpdateData(false);
-
-	return 0;
-}
-
-/**
  * アプリケーションの終了処理を実行します。
  *
  * @return 予備
@@ -161,10 +101,80 @@ INT_PTR NoMeiryoUI::OnInitDialog()
     hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
     SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
+	return (INT_PTR)FALSE;
+}
+
+/**
+ * ウインドウが表示されたときの処理を実行します。<br>
+ * ウインドウベースアプリとインタフェースを合わせるために用意しています。
+ *
+ * @return 予備
+ */
+int NoMeiryoUI::OnWindowShow()
+{
+
+	// この関数をオーバーライドして、初回の表示時の処理を行います。
+	// このタイミングでダイアログが存在するので、ここに処理を入れることで
+	// ダイアログがある状態で起動時の初期化処理を行うことができます。
+
+	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
+	FillMemory(&metricsAll,sizeof(NONCLIENTMETRICS),0x00);
+	FillMemory(&iconFont,sizeof(LOGFONT),0x00);
+	FillMemory(&iconFontAll,sizeof(LOGFONT),0x00);
+
+	//
+	// 個別のフォント用の情報取得
+	//
+
+	// アイコン以外のフォント情報を取得する。
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
+
+	// アイコンのフォント情報を取得する。
+	SystemParametersInfo(SPI_GETICONTITLELOGFONT,
+		sizeof(LOGFONT),
+		&iconFont,
+		0);
+
+	//
+	// すべてのフォント用の情報取得
+	//
+
+	// アイコン以外のフォント情報を取得する。
+	metricsAll.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metricsAll,
+		0);
+
+	// アイコンのフォント情報を取得する。
+	SystemParametersInfo(SPI_GETICONTITLELOGFONT,
+		sizeof(LOGFONT),
+		&iconFontAll,
+		0);
+
+	allFontName = metricsAll.lfMenuFont.lfFaceName;
+	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	iconFontName = iconFont.lfFaceName;
+	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	hintFontName = metrics.lfStatusFont.lfFaceName;
+	messageFontName = metrics.lfMessageFont.lfFaceName;
+	// メニューと選択項目
+	menuFontName = metrics.lfMenuFont.lfFaceName;
+
+	metricsAll.lfStatusFont = metricsAll.lfMenuFont;
+	metricsAll.lfMessageFont = metricsAll.lfMenuFont;
+	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
+	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
+	iconFontAll = metricsAll.lfMenuFont;
+
 
 	UpdateData(false);
 
-	return (INT_PTR)FALSE;
+	return 0;
 }
 
 /**
@@ -184,6 +194,12 @@ void NoMeiryoUI::UpdateData(bool toObj)
 	DDX_Text(toObj,IDC_EDIT_MENU, menuFontName);
 }
 
+/**
+ *
+ *
+ * @param wParam WPARAM
+ * @return 0:メッセージを処理した。 0以外:メッセージを処理しなかった。
+ */
 INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 {
 	INT_PTR result;
@@ -191,32 +207,32 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 	switch (LOWORD(wParam)) {
 		case ID_SEL_ALL:
 			selectFont(all);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_TITLE:
 			selectFont(title);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_ICON:
 			selectFont(icon);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_PALETTE:
 			selectFont(palette);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_HINT:
 			selectFont(hint);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_MESSAGE:
 			selectFont(message);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SEL_MENU:
 			selectFont(menu);
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case ID_SET_ALL:
 			OnBnClickedAll();
-			return (INT_PTR)TRUE;
+			return (INT_PTR)0;
 		case IDOK:
 			result = OnBnClickedOk();
 			if (!result) {
-				return (INT_PTR)FALSE;
+				return (INT_PTR)0;
 			}
 			break;
 	}
@@ -224,6 +240,11 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 
 }
 
+/**
+ * フォントを選択する。
+ *
+ * @param type 設定するフォントの種類
+ */
 void NoMeiryoUI::selectFont(enum fontType type)
 {
 	CHOOSEFONT font;
@@ -232,9 +253,11 @@ void NoMeiryoUI::selectFont(enum fontType type)
 
 	// 設定したいフォントを選択する。
 	FillMemory(&font,sizeof(CHOOSEFONT),0x00);
+	FillMemory(&logfont,sizeof(LOGFONT),0x00);
 	
 	font.lStructSize = sizeof(CHOOSEFONT);
-	font.hwndOwner = NULL;
+	font.hwndOwner = this->hWnd;
+	font.hDC = NULL;
 	font.lpLogFont = &logfont;
 	font.Flags = CF_SCREENFONTS;
 	result = ChooseFont(&font);
@@ -291,23 +314,28 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	UpdateData(false);
 }
 
+/**
+ * OKボタン押下時の動作(選択したフォントを設定する。)
+ *
+ * @return TRUE:フォントを設定したとき FALSE:フォント設定をキャンセルしたとき
+ */
 INT_PTR NoMeiryoUI::OnBnClickedOk()
 {
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
 	bool hasVerticalFont = false;
-	if (metricsAll.lfCaptionFont.lfFaceName[0] == _T('@')) {
+	if (metrics.lfCaptionFont.lfFaceName[0] == _T('@')) {
 		hasVerticalFont = true;
 	}
-	if (metricsAll.lfSmCaptionFont.lfFaceName[0] == _T('@')) {
+	if (metrics.lfSmCaptionFont.lfFaceName[0] == _T('@')) {
 		hasVerticalFont = true;
 	}
-	if (metricsAll.lfStatusFont.lfFaceName[0] == _T('@')) {
+	if (metrics.lfStatusFont.lfFaceName[0] == _T('@')) {
 		hasVerticalFont = true;
 	}
-	if (metricsAll.lfMessageFont.lfFaceName[0] == _T('@')) {
+	if (metrics.lfMessageFont.lfFaceName[0] == _T('@')) {
 		hasVerticalFont = true;
 	}
-	if (metricsAll.lfMenuFont.lfFaceName[0] == _T('@')) {
+	if (metrics.lfMenuFont.lfFaceName[0] == _T('@')) {
 		hasVerticalFont = true;
 	}
 	if (iconFont.lfFaceName[0] == _T('@')) {
@@ -349,6 +377,10 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	return (INT_PTR)TRUE;
 }
 
+/**
+ * 一括設定ボタン押下時の動作(すべてのフォントで選択したフォントを設定する。)
+ *
+ */
 void NoMeiryoUI::OnBnClickedAll()
 {
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
