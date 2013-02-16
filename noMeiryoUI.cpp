@@ -66,8 +66,13 @@ BaseDialog *NoMeiryoUI::createBaseDialog()
  */
 int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 {
-	// この関数をオーバーライドしてアプリ固有の初期化を行います。
-	// 本アプリケーションでは特に処理なし。
+	// アプリ固有の初期化を行います。
+	noMeiryoUI = false;
+
+	if (_tcsstr(lpCmdLine, _T("noMeiryoUI")) != NULL) {
+		noMeiryoUI = true;
+	}
+
 	return 0;
 }
 
@@ -274,6 +279,9 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	try {
 		// result = ChooseFont(&font);
 		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL);
+		if (noMeiryoUI) {
+			selector->setNoMeiryoUI();
+		}
 
 		result = selector->showModal();
 		if (result != IDOK){

@@ -31,6 +31,8 @@ private:
 	NONCLIENTMETRICS metricsAll;
 	LOGFONT iconFontAll;
 
+	bool noMeiryoUI;
+
 	void selectFont(enum fontType type);
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
