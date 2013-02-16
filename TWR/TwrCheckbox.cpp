@@ -10,6 +10,16 @@ TwrCheckbox::TwrCheckbox() : TwrWnd()
 }
 
 /**
+ * コンストラクタ
+ *
+ * @param オブジェクトに結び付けるウインドウのハンドル
+ */
+TwrCheckbox::TwrCheckbox(HWND newHwnd) : TwrWnd()
+{
+	hWnd = newHwnd;
+}
+
+/**
  * チェックボックスを作成します。
  */
 HWND TwrCheckbox::create(void)

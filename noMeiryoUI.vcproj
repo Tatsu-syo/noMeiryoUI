@@ -180,6 +180,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\FontSel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\noMeiryoUI.cpp"
 				>
 			</File>
@@ -219,6 +223,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TWR\TwrCheckbox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrCombobox.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\TWR\TwrCore.cpp"
 					>
 				</File>
@@ -239,6 +251,10 @@
 			</File>
 			<File
 				RelativePath=".\TWR\DialogAppliBase.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FontSel.h"
 				>
 			</File>
 			<File

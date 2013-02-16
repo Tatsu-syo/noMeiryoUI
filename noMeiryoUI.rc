@@ -58,7 +58,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_S
 CAPTION "Meiryo UIも大っきらい!!"
 FONT 10, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 2.02",IDC_STATIC,7,7,125,8,SS_NOPREFIX
+    LTEXT           "Meiryo UIも大っきらい!! Version 2.10",IDC_STATIC,7,7,125,8,SS_NOPREFIX
     LTEXT           "Copyright (C) Tatsu 2005,2012,2013",IDC_STATIC,139,7,132,8
     LTEXT           "すべてのフォント",IDC_STATIC,7,21,89,12
     EDITTEXT        IDC_EDIT_ALL,102,21,91,12,ES_AUTOHSCROLL | ES_READONLY
@@ -86,6 +86,25 @@ BEGIN
     PUSHBUTTON      "キャンセル",IDCANCEL,250,153,50,14,WS_GROUP
 END
 
+IDD_DIALOG_FONTSEL DIALOGEX 0, 0, 295, 164
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "フォント選択"
+FONT 10, "MS UI Gothic", 400, 0, 0x80
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,184,143,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,238,143,50,14
+    LTEXT           "フォント名",IDC_STATIC,7,11,96,10
+    COMBOBOX        IDC_COMBO_NAME,7,22,134,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_STYLE,150,22,95,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "スタイル",IDC_STATIC,150,11,96,10
+    COMBOBOX        IDC_COMBO_SIZE,254,22,31,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "サイズ",IDC_STATIC,254,11,31,10
+    COMBOBOX        IDC_COMBO_CHARSET,150,122,136,14,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "文字セット",IDC_STATIC,150,111,127,11
+    CONTROL         "下線",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,123,32,10
+    CONTROL         "取り消し線",IDC_CHECK_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,122,49,12
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -101,6 +120,14 @@ BEGIN
         RIGHTMARGIN, 300
         TOPMARGIN, 7
         BOTTOMMARGIN, 167
+    END
+
+    IDD_DIALOG_FONTSEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 288
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -143,8 +170,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,2,0
- PRODUCTVERSION 2,0,2,0
+ FILEVERSION 2,1,0,0
+ PRODUCTVERSION 2,1,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -161,12 +188,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "T.Syoji's Personal Development"
             VALUE "FileDescription", "Meiryo UIも大っきらい!! プログラムファイル"
-            VALUE "FileVersion", "2, 0, 2, 0"
+            VALUE "FileVersion", "2, 1, 0, 0"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012,2013"
             VALUE "OriginalFilename", "noMeiryo.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!!"
-            VALUE "ProductVersion", "2, 0, 2, 0"
+            VALUE "ProductVersion", "2, 1, 0, 0"
         END
     END
     BLOCK "VarFileInfo"

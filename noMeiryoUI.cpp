@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <commdlg.h>
 #include "noMeiryoUI.h"
+#include "FontSel.h"
 
 #define MAX_LOADSTRING 100
 
@@ -251,7 +252,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 {
 
 	CHOOSEFONT font;
-	int result;
+	INT_PTR result;
 	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
 
 	// 設定したいフォントを選択する。
@@ -271,7 +272,21 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	// font.rgbColors = rgbCurrent;
 
 	try {
-		result = ChooseFont(&font);
+		// result = ChooseFont(&font);
+		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL);
+
+		result = selector->showModal();
+		if (result != IDOK){
+			delete []selector;
+			return;
+		}
+		logfont = selector->getSelectedFont();
+		if (logfont.lfFaceName[0] == _T('\0')) {
+			delete []selector;
+			return;
+		}
+
+		delete []selector;
 	} catch (...) {
 		MessageBox(this->hWnd,
 			_T("フォント選択ダイアログ内で内部エラーが発生しました。"),
@@ -280,12 +295,6 @@ void NoMeiryoUI::selectFont(enum fontType type)
 		return;
 	}
 
-	if (!result){
-		return;
-	}
-	if (logfont.lfFaceName[0] == _T('\0')) {
-		return;
-	}
 	switch (type) {
 		case all:
 			metricsAll.lfMenuFont = logfont;

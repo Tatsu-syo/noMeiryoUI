@@ -71,7 +71,7 @@ HWND TwrCombobox::create(HWND parent)
  *
  * @param item 追加する文字列
  */
-void TwrCombobox::addItem(TCHAR *item)
+void TwrCombobox::addItem(const TCHAR *item)
 {
 	SendMessage(hWnd, CB_ADDSTRING, 0, (LPARAM)item);
 }
@@ -89,5 +89,52 @@ int TwrCombobox::getSelectedIndex(void)
 	} else {
 		return (int)result;
 	}
+}
+
+/**
+ * コンボボックスをクリアします。
+ */
+void TwrCombobox::clear(void)
+{
+	SendMessage(hWnd, CB_RESETCONTENT, 0, 0);
+}
+
+/**
+ * 指定した位置の要素を選択します。
+ *
+ * @param index 選択する位置
+ */
+void TwrCombobox::setSelectedIndex(int index)
+{
+	SendMessage(hWnd, CB_SETCURSEL, index, 0);
+}
+
+/**
+ * 選択した位置の文字列を返します。
+ *
+ * @return 選択した位置の文字列(選択されてない場合は空)
+ */
+tstring TwrCombobox::getSelectedText(void)
+{
+	TCHAR *buf;
+	tstring ret = _T("");
+	LRESULT len;
+
+	int item = getSelectedIndex();
+	if (item < 0) {
+		return ret;
+	}
+
+	len = SendMessage(hWnd, CB_GETLBTEXTLEN, item, 0);
+	try {
+		buf = new TCHAR[len + 1];
+		SendMessage(hWnd, CB_GETLBTEXT, item, (LPARAM)buf);
+
+		ret = buf;
+		delete []buf;
+	} catch (...) {
+	}
+
+	return ret;	
 }
 

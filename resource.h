@@ -22,13 +22,21 @@
 #define IDR_MAINFRAME                   128
 #define IDR_RT_MANIFEST1                129
 #define IDR_RT_MANIFEST                 131
+#define IDD_DIALOG_FONTSEL              132
 #define IDC_EDIT_ALL                    1000
 #define IDC_EDIT_TITLE                  1001
+#define IDC_COMBO_NAME                  1001
 #define IDC_EDIT_ICON                   1002
 #define IDC_EDIT_PALETTE                1003
+#define IDC_COMBO_STYLE                 1003
 #define IDC_EDIT_HINT                   1004
+#define IDC_COMBO_SIZE                  1004
 #define IDC_EDIT_MESSAGE                1005
+#define IDC_COMBO_CHARSET               1005
 #define IDC_EDIT_MENU                   1006
+#define IDC_CHECK_UNDERLINE             1006
+#define IDC_CHECK3                      1008
+#define IDC_CHECK_STRIKE                1008
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -36,9 +44,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        132
+#define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_CONTROL_VALUE         1009
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

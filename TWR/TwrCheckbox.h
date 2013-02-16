@@ -6,6 +6,7 @@
 class TwrCheckbox : public TwrWnd {
 public:
 	TwrCheckbox();
+	TwrCheckbox(HWND newHwnd);
 	HWND create(void);
 	HWND create(HWND parent);
 	bool isChecked(void);

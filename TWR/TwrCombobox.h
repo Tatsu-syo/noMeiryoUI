@@ -12,11 +12,15 @@ public:
 
 	HWND create(void);
 	HWND create(HWND parent);
-	void addItem(TCHAR *item);
+	void addItem(const TCHAR *item);
 	int getSelectedIndex(void);
 	void setStyle(int newStyle) {
 		style = newStyle;
 	}
+	void clear(void);
+	void setSelectedIndex(int index);
+	tstring getSelectedText(void);
+
 };
 
 #endif
