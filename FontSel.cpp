@@ -273,10 +273,10 @@ void FontSel::setCharset(void)
 void FontSel::setStyle(void)
 {
 	int selected = m_fontNameList->getSelectedIndex();
+/*
 	int weight = fontList[selected].logFont.lfWeight;
 	TCHAR *p = _T("Šù’è‚Ì‘¾‚³");
 
-	m_styleList->clear();
 	if (weight < 200) {
 		p = _T("‹É×");
 	} else if (weight < 300) {
@@ -296,12 +296,14 @@ void FontSel::setStyle(void)
 	} else {
 		p = _T("‹É‘¾");	// Heavy
 	}
+*/
+	m_styleList->clear();
 
-	tstring styleName = p;
+	tstring styleName = _T("•W€");
 	m_styleList->addItem(styleName.c_str());
 
-	styleName = p;
-	styleName += _T(" ŽÎ‘Ì");
+	// styleName = p;
+	styleName = _T("ŽÎ‘Ì");
 	m_styleList->addItem(styleName.c_str());
 
 	styleName = _T("‘¾Žš");
@@ -358,6 +360,8 @@ INT_PTR FontSel::onOK(void)
 		if (selectedFont.lfWeight < 600) {
 			selectedFont.lfWeight = FW_BOLD;
 		}
+	} else {
+		selectedFont.lfWeight = FW_NORMAL;
 	}
 	if ((selectedStyle == 1) || (selectedStyle == 3)) {
 		selectedFont.lfItalic = TRUE;
