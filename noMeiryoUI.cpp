@@ -5,6 +5,9 @@
 
 #include <windows.h>
 #include <commdlg.h>
+#ifdef DEBUG
+#include <vld.h>
+#endif
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 

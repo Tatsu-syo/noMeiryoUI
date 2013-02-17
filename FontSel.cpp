@@ -3,6 +3,10 @@
 #include <algorithm>
 #include <functional>
 
+#ifdef DEBUG
+#include <vld.h>
+#endif
+
 std::vector<struct FontInfo> fontList;
 static bool noMeiryoUI = false;
 
