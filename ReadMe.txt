@@ -3,7 +3,6 @@ By Tatsuhiko Syoji(Tatsu) 2005,2012,2013
 
 [必要となるプログラム]
 ・Visual Studio 2008(VC++)
-・Visual Leak Detector(デバッグ版のビルドにのみ必要。)
 
 [ファイル]
 ReadMe.txt:本ファイルです。
@@ -15,12 +14,8 @@ TWRフォルダ配下のファイル : GUI構築に使用したファイルで�
 
 [使い方]
 1.まず、本アーカイブをディレクトリ付きで展開します。
-2.デバッグ版をビルドする場合はVisual Leak Detector(http://vld.codeplex.com/)を
-　セットアップします。
-　Visual Leak Detectorを使わない場合はvld.hをインクルードしている個所を
-　削除してください。
-3.noMeiryoUI.slnを開きます。
-4.ビルドを行うと実行ファイルがデバッグ版はDebugフォルダに、リリース版は
+2.noMeiryoUI.slnを開きます。
+3.ビルドを行うと実行ファイルがデバッグ版はDebugフォルダに、リリース版は
 　Releaseフォルダに生成されます。
 
 [ライセンス]
