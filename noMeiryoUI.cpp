@@ -383,6 +383,9 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
 
 	// 色を再設定することで画面をリフレッシュする。
+	// のだが、IObit StartMenu 8が起動しているときはSetSysColorsを
+	// 呼び出すと応答がなくなるので呼び出しを行わないことにした。
+#if 0
 	DWORD btnColor;
 	btnColor = GetSysColor(COLOR_BTNTEXT);
 
@@ -391,6 +394,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	COLORREF colors[1];
 	colors[0] = btnColor;
 	SetSysColors(1,colorItems,colors);
+#endif
 
 	return (INT_PTR)TRUE;
 }
@@ -425,6 +429,9 @@ void NoMeiryoUI::OnBnClickedAll()
 		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
 
 	// 色を再設定することで画面をリフレッシュする。
+	// のだが、IObit StartMenu 8が起動しているときはSetSysColorsを
+	// 呼び出すと応答がなくなるので呼び出しを行わないことにした。
+#if 0
 	DWORD btnColor;
 	btnColor = GetSysColor(COLOR_BTNTEXT);
 
@@ -433,6 +440,7 @@ void NoMeiryoUI::OnBnClickedAll()
 	COLORREF colors[1];
 	colors[0] = btnColor;
 	SetSysColors(1,colorItems,colors);
+#endif
 
 	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
 	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
@@ -444,6 +452,7 @@ void NoMeiryoUI::OnBnClickedAll()
 	menuFontName = metricsAll.lfCaptionFont.lfFaceName;
 
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
+	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
 
 	UpdateData(false);
 }
