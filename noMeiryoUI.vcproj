@@ -219,6 +219,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TWR\TwrCombobox.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\TWR\TwrCore.cpp"
 					>
 				</File>
@@ -233,18 +237,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\TWR\BaseDialog.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TWR\DialogAppliBase.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TWR\ModelessDialog.h"
-				>
-			</File>
 			<File
 				RelativePath=".\noMeiryoUI.h"
 				>
@@ -261,14 +253,38 @@
 				RelativePath=".\targetver.h"
 				>
 			</File>
-			<File
-				RelativePath=".\TWR\TwrCore.h"
+			<Filter
+				Name="TWR"
 				>
-			</File>
-			<File
-				RelativePath=".\TWR\TwrWnd.h"
-				>
-			</File>
+				<File
+					RelativePath=".\TWR\AppliBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\BaseDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\DialogAppliBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\ModelessDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\stdafx.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrCore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrWnd.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="リソース ファイル"
