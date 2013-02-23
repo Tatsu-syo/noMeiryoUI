@@ -246,19 +246,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\TWR\BaseDialog.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TWR\DialogAppliBase.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FontSel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TWR\ModelessDialog.h"
 				>
 			</File>
 			<File
@@ -277,14 +265,50 @@
 				RelativePath=".\targetver.h"
 				>
 			</File>
-			<File
-				RelativePath=".\TWR\TwrCore.h"
+			<Filter
+				Name="TWR"
 				>
-			</File>
-			<File
-				RelativePath=".\TWR\TwrWnd.h"
-				>
-			</File>
+				<File
+					RelativePath=".\TWR\AppliBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\BaseDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\DialogAppliBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\ModelessDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\stdafx.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\tstring.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrCheckbox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrCombobox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrCore.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\TwrWnd.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="リソース ファイル"
