@@ -437,6 +437,7 @@ void NoMeiryoUI::OnBnClickedAll()
 		sizeof(NONCLIENTMETRICS),
 		&metricsAll,
 		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+		// SPIF_UPDATEINIFILE);
 
 	// アイコンのフォント設定
 	SystemParametersInfo(SPI_SETICONTITLELOGFONT,
@@ -464,6 +465,7 @@ void NoMeiryoUI::OnBnClickedAll()
 	menuFontName = metricsAll.lfCaptionFont.lfFaceName;
 
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
+	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
 
 	UpdateData(false);
 }
