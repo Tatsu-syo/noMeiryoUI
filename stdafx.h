@@ -12,6 +12,7 @@
 #include <windows.h>
 
 // C ランタイム ヘッダー ファイル
+#include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>

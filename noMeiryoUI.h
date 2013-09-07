@@ -34,6 +34,8 @@ private:
 	NONCLIENTMETRICS metricsAll;
 	LOGFONT iconFontAll;
 
+	TwrWnd *verInfo;
+
 	void selectFont(enum fontType type);
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
