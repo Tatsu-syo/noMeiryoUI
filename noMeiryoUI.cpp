@@ -75,6 +75,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 {
 	// アプリ固有の初期化を行います。
 	noMeiryoUI = false;
+	verInfo = NULL;
 
 	if (_tcsstr(lpCmdLine, _T("noMeiryoUI")) != NULL) {
 		noMeiryoUI = true;
@@ -91,7 +92,9 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 int NoMeiryoUI::OnAppliEnd()
 {
 	// この関数をオーバーライドしてアプリ固有の後処理を行います。
-	// 本アプリケーションでは特に処理なし。
+	if (verInfo != NULL) {
+		delete verInfo;
+	}
 	return 0;
 }
 
@@ -132,6 +135,17 @@ int NoMeiryoUI::OnWindowShow()
 	// このタイミングでダイアログが存在するので、ここに処理を入れることで
 	// ダイアログがある状態で起動時の初期化処理を行うことができます。
 
+	// 
+	DWORD dwVersion = GetVersion();
+	TCHAR buf[16];
+
+	_stprintf(buf,_T("%d.%d"),
+		(DWORD)(LOBYTE(LOWORD(dwVersion))),
+		(DWORD)(HIBYTE(LOWORD(dwVersion))) );
+	verInfo = GetDlgItem(IDC_STATIC_VERNO);
+	verInfo->setText(buf);
+
+	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
 	FillMemory(&metricsAll,sizeof(NONCLIENTMETRICS),0x00);
 	FillMemory(&iconFont,sizeof(LOGFONT),0x00);
@@ -185,7 +199,6 @@ int NoMeiryoUI::OnWindowShow()
 	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
 	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
 	iconFontAll = metricsAll.lfMenuFont;
-
 
 	UpdateData(false);
 

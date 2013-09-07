@@ -35,6 +35,7 @@ private:
 	LOGFONT iconFontAll;
 
 	bool noMeiryoUI;
+	TwrWnd *verInfo;
 
 	void selectFont(enum fontType type);
 	INT_PTR OnBnClickedOk();
