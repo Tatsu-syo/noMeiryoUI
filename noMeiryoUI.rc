@@ -58,7 +58,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_S
 CAPTION "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
 FONT 10, "‚l‚r ‚oƒSƒVƒbƒN", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.03",IDC_STATIC,7,7,125,8,SS_NOPREFIX
+    LTEXT           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.04",IDC_STATIC,7,7,125,8,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012,2013",IDC_STATIC,173,7,125,8
     LTEXT           "‚·‚×‚Ä‚ÌƒtƒHƒ“ƒg",IDC_STATIC,7,37,89,12
     EDITTEXT        IDC_EDIT_ALL,102,37,91,12,ES_AUTOHSCROLL | ES_READONLY
@@ -85,7 +85,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,197,153,50,14,WS_GROUP
     PUSHBUTTON      "ƒLƒƒƒ“ƒZƒ‹",IDCANCEL,250,153,50,14,WS_GROUP
     LTEXT           "Windows Version:",IDC_STATIC,7,18,59,8,SS_NOPREFIX
-    LTEXT           "",IDC_STATIC_VERNO,65,18,39,8
+    LTEXT           "",IDC_STATIC_VERNO,65,18,117,8
 END
 
 
@@ -145,8 +145,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,3,0
- PRODUCTVERSION 2,0,3,0
+ FILEVERSION 2,0,4,0
+ PRODUCTVERSION 2,0,4,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -163,12 +163,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "T.Syoji's Personal Development"
             VALUE "FileDescription", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-            VALUE "FileVersion", "2, 0, 3, 0"
+            VALUE "FileVersion", "2, 0, 4, 0"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012,2013"
-            VALUE "OriginalFilename", "noMeiryo.exe"
+            VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-            VALUE "ProductVersion", "2, 0, 3, 0"
+            VALUE "ProductVersion", "2, 0, 4, 0"
         END
     END
     BLOCK "VarFileInfo"
