@@ -40,6 +40,7 @@ private:
 	void selectFont(enum fontType type);
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
+	void SetWinVer();
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

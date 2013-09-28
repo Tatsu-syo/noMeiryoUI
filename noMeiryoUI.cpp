@@ -135,15 +135,7 @@ int NoMeiryoUI::OnWindowShow()
 	// このタイミングでダイアログが存在するので、ここに処理を入れることで
 	// ダイアログがある状態で起動時の初期化処理を行うことができます。
 
-	// 
-	DWORD dwVersion = GetVersion();
-	TCHAR buf[16];
-
-	_stprintf(buf,_T("%d.%d"),
-		(DWORD)(LOBYTE(LOWORD(dwVersion))),
-		(DWORD)(HIBYTE(LOWORD(dwVersion))) );
-	verInfo = GetDlgItem(IDC_STATIC_VERNO);
-	verInfo->setText(buf);
+	SetWinVer();
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
@@ -494,3 +486,126 @@ void NoMeiryoUI::OnBnClickedAll()
 
 	UpdateData(false);
 }
+
+/**
+ * Windowsのバージョンを取得して、画面に設定する。
+ */
+void NoMeiryoUI::SetWinVer()
+{
+	// Windowsの内部バージョンを調べる。
+	DWORD dwVersion = GetVersion();
+	TCHAR buf[128];
+
+	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+
+	// サーバーかどうかの追加情報を取得するため
+	// GetVersionExをOSVERSIONINFOEXを渡して呼び出す。
+	// Windows 98/Me,NT4以前は考慮しないので呼び分けはなし。
+	OSVERSIONINFOEX infoEx;
+	memset(&infoEx, 0, sizeof(OSVERSIONINFOEX));
+	infoEx.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO *)&infoEx);
+
+	switch(major) {
+		case 5:
+			switch (minor) {
+				case 0:
+					_stprintf(buf,
+						_T("Windows 2000 (%d.%d)"),
+						major,minor);
+					break;
+				case 1:
+					_stprintf(buf,
+						_T("Windows XP (%d.%d)"),
+						major,minor);
+					break;
+				case 2:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Windows XP 64bit (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Windows Server 2003 (%d.%d)"),
+							major,minor);
+					}
+					break;
+			}
+			break;
+		case 6:
+			switch (minor) {
+				case 0:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Windows Vista (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Windows Server 2008 (%d.%d)"),
+							major,minor);
+					}
+					break;
+				case 1:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Windows 7 (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Windows Server 2008 R2 (%d.%d)"),
+							major,minor);
+					}
+					break;
+				case 2:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Windows 8 (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Windows Server 2012 (%d.%d)"),
+							major,minor);
+					}
+					break;
+				case 3:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Windows 8.1 (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Windows Server 2012 R2 (%d.%d)"),
+							major,minor);
+					}
+					break;
+				default:
+					if (infoEx.wProductType == VER_NT_WORKSTATION) {
+						_stprintf(buf,
+							_T("Future Windows Client (%d.%d)"),
+							major,minor);
+					} else {
+						_stprintf(buf,
+							_T("Future Windows Server (%d.%d)"),
+							major,minor);
+					}
+					break;
+			}
+			break;
+		default:
+			if (infoEx.wProductType == VER_NT_WORKSTATION) {
+				_stprintf(buf,
+					_T("Future Windows Client (%d.%d)"),
+					major,minor);
+			} else {
+				_stprintf(buf,
+					_T("Future Windows Server (%d.%d)"),
+					major,minor);
+			}
+			break;
+	}
+
+	verInfo = GetDlgItem(IDC_STATIC_VERNO);
+	verInfo->setText(buf);
+}
+
