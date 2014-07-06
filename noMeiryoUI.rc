@@ -58,7 +58,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_S
 CAPTION "Meiryo UIも大っきらい!!"
 FONT 10, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 2.13(test)",IDC_STATIC,7,7,138,8,SS_NOPREFIX
+    LTEXT           "Meiryo UIも大っきらい!! Version 2.13(test2)",IDC_STATIC,7,7,138,8,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2014",IDC_STATIC,161,7,137,8
     LTEXT           "すべてのフォント",IDC_STATIC,7,37,89,12
     EDITTEXT        IDC_EDIT_ALL,102,37,91,12,ES_AUTOHSCROLL | ES_READONLY
@@ -172,8 +172,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,3,0
- PRODUCTVERSION 2,1,3,0
+ FILEVERSION 2,1,3,1
+ PRODUCTVERSION 2,1,3,1
  FILEFLAGSMASK 0x37L
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -190,12 +190,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "T.Syoji's Personal Development"
             VALUE "FileDescription", "Meiryo UIも大っきらい!!"
-            VALUE "FileVersion", "2, 1, 3, 0"
+            VALUE "FileVersion", "2, 1, 3, 1"
             VALUE "InternalName", "noMeiryo"
-            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012,2013"
+            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2014"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!!"
-            VALUE "ProductVersion", "2, 1, 3, 0"
+            VALUE "ProductVersion", "2, 1, 3, 1"
             VALUE "SpecialBuild", "2013/12/23調査用ビルド"
         END
     END
