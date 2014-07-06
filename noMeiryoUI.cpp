@@ -8,7 +8,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "stdafx.h"
 
 #include <windows.h>
+#include <windowsx.h>
 #include <commdlg.h>
+#include <process.h>
+#include <Objbase.h>
 #ifdef DEBUG
 #include <vld.h>
 #endif
@@ -30,6 +33,8 @@ NoMeiryoUI *appObj;
  */
 DialogAppliBase *createAppli()
 {
+	CoInitialize(NULL);
+
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
 	appObj = new NoMeiryoUI();
 	return appObj;
@@ -160,6 +165,8 @@ int NoMeiryoUI::OnWindowShow()
 		&iconFont,
 		0);
 
+	double point = getFontPoint(&(metrics.lfCaptionFont));
+
 	//
 	// すべてのフォント用の情報取得
 	//
@@ -196,6 +203,49 @@ int NoMeiryoUI::OnWindowShow()
 
 	return 0;
 }
+
+/**
+ * フォントサイズを算出する。
+ *
+ * @param font
+ * @return フォントサイズ
+ */
+double NoMeiryoUI::getFontPoint(LOGFONT *font)
+{
+	// フォントを作成する。
+	HFONT hFont = CreateFontIndirect(font);
+	// 自身のウインドウハンドルから作成したデバイスコンテキストに
+	// フォントを設定する。
+	HDC dc = GetDC(this->getHwnd());
+	SelectFont(dc, hFont);
+
+	// デバイスコンテキストからTEXTMETRICを取得する。
+	TEXTMETRIC metric;
+	GetTextMetrics(dc, &metric);
+
+	int logPixelY = GetDeviceCaps(dc, LOGPIXELSY);
+
+	ReleaseDC(this->getHwnd(), dc);
+	DeleteObject(hFont);
+
+	int height;
+	if (font->lfHeight < 0) {
+		// 負の場合はlfHeightはフォント自体の高さ。
+		height = 0 - font->lfHeight;
+	} else if (font->lfHeight > 0) {
+		// 正の場合はすでにInternal Leadingを含んでいるのでその分を引く。
+		height = font->lfHeight - metric.tmInternalLeading;
+	} else {
+		// 0の場合はデフォルトの大きさを作成したフォントから取得する。
+		height = metric.tmAscent + metric.tmDescent - metric.tmInternalLeading;
+	}
+
+	double point = (double)height * 72 / logPixelY;
+
+	return point;
+}
+
+
 
 /**
  * ダイアログコントロールとオブジェクトの内容の同期を取る。
@@ -399,31 +449,8 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		}
 	}
 
-	// アイコン以外のフォント設定
-	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		&metrics,
-		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
-
-	// アイコンのフォント設定
-	SystemParametersInfo(SPI_SETICONTITLELOGFONT,
-		sizeof(LOGFONT),
-		&iconFont,
-		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
-
-	// 色を再設定することで画面をリフレッシュする。
-	// のだが、IObit StartMenu 8が起動しているときはSetSysColorsを
-	// 呼び出すと応答がなくなるので呼び出しを行わないことにした。
-#if 0
-	DWORD btnColor;
-	btnColor = GetSysColor(COLOR_BTNTEXT);
-
-	INT colorItems[1];
-	colorItems[0] = COLOR_BTNTEXT;
-	COLORREF colors[1];
-	colors[0] = btnColor;
-	SetSysColors(1,colorItems,colors);
-#endif
+	// フォント変更を実施する。
+	setFont(&metrics, &iconFont);
 
 	return (INT_PTR)TRUE;
 }
@@ -445,18 +472,117 @@ void NoMeiryoUI::OnBnClickedAll()
 		}
 	}
 
-	// アイコン以外のフォント設定
+	// フォント変更を実施する。
+	setFont(&metricsAll, &iconFontAll);
+
+	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
+	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
+	iconFontName = iconFontAll.lfFaceName;
+	paletteFontName = metricsAll.lfCaptionFont.lfFaceName;
+	hintFontName = metricsAll.lfCaptionFont.lfFaceName;
+	messageFontName = metricsAll.lfCaptionFont.lfFaceName;
+	// メニューと選択項目
+	menuFontName = metricsAll.lfCaptionFont.lfFaceName;
+
+	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
+	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
+
+	UpdateData(false);
+}
+
+NONCLIENTMETRICS *s_fontMetrics;
+
+unsigned _stdcall setOnThread(void *p)
+{
+	DWORD_PTR ptr;
+	LRESULT messageResult;
+
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
-		&metricsAll,
-		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
-		// SPIF_UPDATEINIFILE);
+		s_fontMetrics,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+
+	_endthreadex(0);
+	return 0;
+}
+
+
+/**
+ * 画面各部のフォントを設定する。
+ *
+ * @param fontMetrics アイコン以外のフォント指定用NONCLIENTMETRICS
+ * @param iconLogFont アイコンのフォント
+ */
+void NoMeiryoUI::setFont(
+	NONCLIENTMETRICS *fontMetrics,
+	LOGFONT *iconLogFont
+) {
+
+	DWORD_PTR ptr;
+	LRESULT messageResult;
 
 	// アイコンのフォント設定
 	SystemParametersInfo(SPI_SETICONTITLELOGFONT,
 		sizeof(LOGFONT),
-		&iconFontAll,
-		SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+		iconLogFont,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+
+	messageResult = SendMessageTimeout(
+		HWND_BROADCAST,
+		WM_SETTINGCHANGE,
+		SPI_SETICONTITLELOGFONT,
+		0, // (LPARAM)_T("Environment"),
+		SMTO_ABORTIFHUNG,
+		5000,
+		&ptr);
+	if (messageResult == 0) {
+		if (GetLastError() == ERROR_TIMEOUT) {
+			MessageBox(this->getHwnd(), 
+				_T("SendMessage timeout."),
+				_T("Information"),
+				MB_OK | MB_ICONEXCLAMATION);
+		}
+	}
+
+	// アイコン以外のフォント設定
+#if 0
+	// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
+	// 実行する。
+	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		fontMetrics,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+#else
+	// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
+	// 実行する。
+	s_fontMetrics = fontMetrics;
+
+	HANDLE handle;
+
+	handle = (HANDLE)_beginthreadex(NULL,0,setOnThread,NULL,0,NULL);
+
+	// 一応5秒ほど待つ
+	WaitForSingleObject( handle, 5000 );
+	CloseHandle(handle);
+#endif
+
+
+	messageResult = SendMessageTimeout(
+		HWND_BROADCAST,
+		WM_SETTINGCHANGE,
+		SPI_SETNONCLIENTMETRICS,
+		(LPARAM)_T("WindowMetrics"),
+		SMTO_ABORTIFHUNG,
+		5000,
+		&ptr);
+	if (messageResult == 0) {
+		if (GetLastError() == ERROR_TIMEOUT) {
+			MessageBox(this->getHwnd(), 
+				_T("SendMessage timeout."),
+				_T("Information"),
+				MB_OK | MB_ICONEXCLAMATION);
+		}
+	}
 
 	// 色を再設定することで画面をリフレッシュする。
 	// のだが、IObit StartMenu 8が起動しているときはSetSysColorsを
@@ -472,19 +598,6 @@ void NoMeiryoUI::OnBnClickedAll()
 	SetSysColors(1,colorItems,colors);
 #endif
 
-	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
-	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
-	iconFontName = iconFontAll.lfFaceName;
-	paletteFontName = metricsAll.lfCaptionFont.lfFaceName;
-	hintFontName = metricsAll.lfCaptionFont.lfFaceName;
-	messageFontName = metricsAll.lfCaptionFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metricsAll.lfCaptionFont.lfFaceName;
-
-	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
-	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
-
-	UpdateData(false);
 }
 
 /**

@@ -41,6 +41,11 @@ private:
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
 	void SetWinVer();
+	double getFontPoint(LOGFONT *font);
+	void setFont(
+		NONCLIENTMETRICS *fontMetrics,
+		LOGFONT *iconLogFont
+	);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

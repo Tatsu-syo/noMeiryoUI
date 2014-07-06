@@ -147,7 +147,6 @@ INT_PTR FontSel::OnInitDialog()
 	m_fontSizeList->addItem(_T("14"));
 	m_fontSizeList->addItem(_T("15"));
 	m_fontSizeList->addItem(_T("16"));
-	m_fontSizeList->addItem(_T("16"));
 	m_fontSizeList->addItem(_T("17"));
 	m_fontSizeList->addItem(_T("18"));
 	m_fontSizeList->addItem(_T("19"));
@@ -379,6 +378,7 @@ INT_PTR FontSel::onOK(void)
 
 	int point = _tstoi(size.c_str());
 
+	// サイズの設定
 	HDC hDC = GetDC(this->hWnd);
 	selectedFont.lfHeight = -MulDiv(point, GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	selectedFont.lfWidth = 0;
@@ -395,6 +395,13 @@ INT_PTR FontSel::onOK(void)
 	} else {
 		selectedFont.lfStrikeOut = FALSE;
 	}
+
+	// その他はデフォルトに設定する。
+	selectedFont.lfOutPrecision = 0;
+	selectedFont.lfClipPrecision = 0;
+	selectedFont.lfQuality = 0;
+	// lfPitchAndFamilyはフォントが返したものを設定する。
+	// selectedFont.lfPitchAndFamily = 50;
 
 	return (INT_PTR)1;
 }
