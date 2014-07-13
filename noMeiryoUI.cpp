@@ -124,6 +124,8 @@ INT_PTR NoMeiryoUI::OnInitDialog()
     hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
     SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
+	appMenu = new TwrMenu(this->hWnd);
+
 	return (INT_PTR)FALSE;
 }
 
@@ -305,6 +307,25 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 				return (INT_PTR)0;
 			}
 			break;
+		case IDM_EXIT:
+			EndDialog(hWnd, LOWORD(wParam));
+			break;
+		case IDM_ANOTHER:
+			if (appMenu->isChecked(IDM_ANOTHER)) {
+				appMenu->CheckMenuItem(IDM_ANOTHER, false);
+			} else {
+				appMenu->CheckMenuItem(IDM_ANOTHER, true);
+			}
+			return (INT_PTR)0;
+		case IDM_HELPTOPIC:
+			return (INT_PTR)0;
+		case IDM_ABOUT:
+			MessageBox(hWnd, 
+				_T("Meiryo UIも大っきらい!! Version 2.13\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2014"),
+				_T("Meiryo UIも大っきらい!!について"),
+				MB_OK | MB_ICONINFORMATION);
+
+			return (INT_PTR)0;
 	}
 	return BaseDialog::OnCommand(wParam);
 
@@ -545,27 +566,26 @@ void NoMeiryoUI::setFont(
 	}
 
 	// アイコン以外のフォント設定
-#if 0
-	// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
-	// 実行する。
-	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		fontMetrics,
-		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
-#else
-	// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
-	// 実行する。
-	s_fontMetrics = fontMetrics;
+	if (appMenu->isChecked(IDM_ANOTHER)) {
+		// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
+		// 実行する。
+		s_fontMetrics = fontMetrics;
 
-	HANDLE handle;
+		HANDLE handle;
 
-	handle = (HANDLE)_beginthreadex(NULL,0,setOnThread,NULL,0,NULL);
+		handle = (HANDLE)_beginthreadex(NULL,0,setOnThread,NULL,0,NULL);
 
-	// 一応5秒ほど待つ
-	WaitForSingleObject( handle, 5000 );
-	CloseHandle(handle);
-#endif
-
+		// 一応5秒ほど待つ
+		WaitForSingleObject( handle, 5000 );
+		CloseHandle(handle);
+	} else {
+		// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
+		// 実行する。
+		SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
+			sizeof(NONCLIENTMETRICS),
+			fontMetrics,
+			SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+	}
 
 	messageResult = SendMessageTimeout(
 		HWND_BROADCAST,

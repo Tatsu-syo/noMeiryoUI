@@ -6,6 +6,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define MYAPPLI_H
 
 #include "DialogAppliBase.h"
+#include "TwrMenu.h"
 
 class NoMeiryoUI : public DialogAppliBase {
 private:
@@ -36,6 +37,8 @@ private:
 
 	bool noMeiryoUI;
 	TwrWnd *verInfo;
+
+	TwrMenu *appMenu;
 
 	void selectFont(enum fontType type);
 	INT_PTR OnBnClickedOk();

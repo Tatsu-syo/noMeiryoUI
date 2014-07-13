@@ -56,9 +56,10 @@ END
 IDD_MAIN_DIALOG DIALOGEX 0, 0, 307, 174
 STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Meiryo UIも大っきらい!!"
+MENU IDR_MENU1
 FONT 10, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 2.13(test2)",IDC_STATIC,7,7,138,8,SS_NOPREFIX
+    LTEXT           "Meiryo UIも大っきらい!! Version 2.13",IDC_STATIC,7,7,138,8,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2014",IDC_STATIC,161,7,137,8
     LTEXT           "すべてのフォント",IDC_STATIC,7,37,89,12
     EDITTEXT        IDC_EDIT_ALL,102,37,91,12,ES_AUTOHSCROLL | ES_READONLY
@@ -172,13 +173,13 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,3,1
- PRODUCTVERSION 2,1,3,1
- FILEFLAGSMASK 0x37L
+ FILEVERSION 2,1,3,2
+ PRODUCTVERSION 2,1,3,2
+ FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
- FILEFLAGS 0x21L
+ FILEFLAGS 0x1L
 #else
- FILEFLAGS 0x20L
+ FILEFLAGS 0x0L
 #endif
  FILEOS 0x4L
  FILETYPE 0x1L
@@ -190,13 +191,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "T.Syoji's Personal Development"
             VALUE "FileDescription", "Meiryo UIも大っきらい!!"
-            VALUE "FileVersion", "2, 1, 3, 1"
+            VALUE "FileVersion", "2, 1, 3, 2"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2014"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!!"
-            VALUE "ProductVersion", "2, 1, 3, 1"
-            VALUE "SpecialBuild", "2013/12/23調査用ビルド"
+            VALUE "ProductVersion", "2, 1, 3, 2"
         END
     END
     BLOCK "VarFileInfo"
@@ -212,6 +212,31 @@ END
 //
 
 IDR_RT_MANIFEST         RT_MANIFEST             "noMeiryoUI.exe.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "ファイル(&F)"
+    BEGIN
+        MENUITEM "フォントを設定して終了(&S)",             IDOK
+        MENUITEM SEPARATOR
+        MENUITEM "終了(&X)",                      IDM_EXIT
+    END
+    POPUP "ツール(&T)"
+    BEGIN
+        MENUITEM "別スレッドでフォントを変更する。(&A)",        IDM_ANOTHER
+    END
+    POPUP "ヘルプ(&H)"
+    BEGIN
+        MENUITEM "ヘルプの表示(&C)",                  IDM_HELPTOPIC
+        MENUITEM "バージョン情報(&A)...",              IDM_ABOUT
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
