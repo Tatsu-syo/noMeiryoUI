@@ -1,5 +1,5 @@
 ﻿Meiryo UIも大っきらい!! source file package
-By Tatsuhiko Syoji(Tatsu) 2005,2012,2013
+By Tatsuhiko Syoji(Tatsu) 2005,2012-2014
 
 [必要となるプログラム]
 ・Visual Studio 2008(VC++)

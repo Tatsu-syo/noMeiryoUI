@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012,2013 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2014 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -12,6 +12,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <commdlg.h>
 #include <process.h>
 #include <Objbase.h>
+#include <shellapi.h>
 #ifdef DEBUG
 #include <vld.h>
 #endif
@@ -318,6 +319,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			}
 			return (INT_PTR)0;
 		case IDM_HELPTOPIC:
+			showHelp();
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
@@ -740,5 +742,23 @@ void NoMeiryoUI::SetWinVer()
 
 	verInfo = GetDlgItem(IDC_STATIC_VERNO);
 	verInfo->setText(buf);
+}
+
+/**
+ * ドキュメントファイルを表示する。
+ *
+ */
+void NoMeiryoUI::showHelp(void)
+{
+	// 実行ファイルの情報を得るためのバッファ群
+	TCHAR path[_MAX_PATH+1],drive[_MAX_DRIVE+1],dir[_MAX_DIR+1],helpFile[_MAX_PATH+1];
+
+	// 実行ファイルのあるところのBShelp.htmlのパス名を生成する。
+	::GetModuleFileName(NULL,path,_MAX_PATH);
+	::_tsplitpath(path,drive,dir,NULL,NULL);
+	::_stprintf(helpFile,_T("%s%s%s"),drive,dir,_T("noMeiryoUI.html"));
+	
+	// 関連付けられたアプリでドキュメントファイルを表示する。
+	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
 }
 
