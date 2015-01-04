@@ -1,3 +1,7 @@
+/*
+noMeiryoUI (C) 2005,2012-2015 Tatsuhiko Shoji
+The sources for noMeiryoUI are distributed under the MIT open source license
+*/
 #ifndef NCFileDialog_H
 #define NCFileDialog_H
 
