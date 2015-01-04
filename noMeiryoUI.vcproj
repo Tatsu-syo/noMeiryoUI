@@ -223,6 +223,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\TWR\NCFileDialog.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\TWR\TwrCheckbox.cpp"
 					>
 				</File>
@@ -286,6 +290,10 @@
 				</File>
 				<File
 					RelativePath=".\TWR\ModelessDialog.h"
+					>
+				</File>
+				<File
+					RelativePath=".\TWR\NCFileDialog.h"
 					>
 				</File>
 				<File

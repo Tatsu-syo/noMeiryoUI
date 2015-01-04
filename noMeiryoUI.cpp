@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2014 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2015 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -18,6 +18,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #endif
 #include "noMeiryoUI.h"
 #include "FontSel.h"
+#include "NCFileDialog.h"
 
 #define MAX_LOADSTRING 100
 
@@ -302,6 +303,12 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 		case ID_SET_ALL:
 			OnBnClickedAll();
 			return (INT_PTR)0;
+		case IDM_OPEN:
+			OnLoad();
+			return (INT_PTR)0;
+		case IDM_SAVE:
+			OnSave();
+			return (INT_PTR)0;
 		case IDOK:
 			result = OnBnClickedOk();
 			if (!result) {
@@ -323,7 +330,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.13\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2014"),
+				_T("Meiryo UIも大っきらい!! Version 2.14\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
 				_T("Meiryo UIも大っきらい!!について"),
 				MB_OK | MB_ICONINFORMATION);
 
@@ -432,6 +439,482 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			break;
 	}
 	UpdateData(false);
+}
+
+/**
+ * フォント設定を保存するを選択した時の動作
+ */
+void NoMeiryoUI::OnLoad()
+{
+	NCFileDialog *dlg = new NCFileDialog(
+		TRUE,
+		NULL,
+		NULL,
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		this->getHwnd(),
+		0);
+
+	int result = dlg->DoModal();
+	if (result != IDOK) {
+		delete dlg;
+		return;
+	}
+
+	BOOL loadResult;
+	loadResult = startLoadFont(dlg->GetPathName());
+	if (!loadResult) {
+		MessageBox(
+			this->getHwnd(),
+			_T("フォント設定の読み込みに失敗しました。"),
+			_T("エラー"),
+			MB_OK | MB_ICONEXCLAMATION);
+	}
+
+
+	delete dlg;
+}
+
+/**
+ * フォント情報保存を開始する。
+ *
+ * @param filename iniファイル名
+ * @result TRUE:保存成功 FALSE:保存失敗
+ */
+BOOL NoMeiryoUI::startLoadFont(TCHAR *filename)
+{
+	BOOL loadResult;
+	LOGFONT captionFont;
+	LOGFONT newIconFont;
+	LOGFONT smCaptionFont;
+	LOGFONT statusFont;
+	LOGFONT messageFont;
+	LOGFONT menuFont;
+
+	loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+	loadResult = loadFont(filename, _T("IconFont"), &newIconFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+	loadResult = loadFont(filename, _T("PaletteFont"), &smCaptionFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+	loadResult = loadFont(filename, _T("HintFont"), &statusFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+	loadResult = loadFont(filename, _T("MessageFont"), &messageFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+	loadResult = loadFont(filename, _T("MenuFont"), &menuFont);
+	if (!loadResult) {
+		return FALSE;
+	}
+
+	metrics.lfCaptionFont = captionFont;
+	iconFont = newIconFont;
+	metrics.lfSmCaptionFont = smCaptionFont;
+	metrics.lfStatusFont = statusFont;
+	metrics.lfMessageFont = messageFont;
+	metrics.lfMenuFont = menuFont;
+
+	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	iconFontName = iconFont.lfFaceName;
+	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	hintFontName = metrics.lfStatusFont.lfFaceName;
+	messageFontName = metrics.lfMessageFont.lfFaceName;
+	menuFontName = metrics.lfMenuFont.lfFaceName;
+	UpdateData(false);
+
+	return TRUE;
+}
+
+/**
+ * フォント情報を保存する。
+ *
+ * @param filename iniファイル名
+ * @param category 保存対象フォントのiniファイルセクション名
+ * @param font 保存対象フォントのLOGFONT構造体
+ * @result TRUE:保存成功 FALSE:保存失敗
+ */
+BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
+{
+	TCHAR buf[32];
+	DWORD result;
+
+	result = GetPrivateProfileString(section,
+		_T("FaceName"),
+		_T(""),
+		font->lfFaceName,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	result = GetPrivateProfileString(section,
+		_T("Height"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfHeight = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Width"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfWidth = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Escapement"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfEscapement = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Orientation"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfOrientation = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Weight"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfWeight = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Italic"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfItalic = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Underline"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfUnderline = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("StrikeOut"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfStrikeOut = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("CharSet"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfCharSet = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("OutPrecision"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfOutPrecision = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("ClipPrecision"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfClipPrecision = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("Quality"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfQuality = _ttoi(buf);
+
+	result = GetPrivateProfileString(section,
+		_T("PitchAndFamily"),
+		_T(""),
+		buf,
+		32,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+	font->lfPitchAndFamily = _ttoi(buf);
+
+	return TRUE;
+}
+
+
+/**
+ * フォント設定を保存するを選択した時の動作
+ */
+void NoMeiryoUI::OnSave()
+{
+	NCFileDialog *dlg = new NCFileDialog(
+		FALSE,
+		NULL,
+		NULL,
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		this->getHwnd(),
+		0);
+
+	int result = dlg->DoModal();
+	if (result != IDOK) {
+		delete dlg;
+		return;
+	}
+
+	BOOL saveResult;
+	saveResult = startSaveFont(dlg->GetPathName());
+	if (!saveResult) {
+		MessageBox(
+			this->getHwnd(),
+			_T("フォント設定の保存に失敗しました。"),
+			_T("エラー"),
+			MB_OK | MB_ICONEXCLAMATION);
+	}
+
+
+	delete dlg;
+}
+
+/**
+ * フォント情報保存を開始する。
+ *
+ * @param filename iniファイル名
+ * @result TRUE:保存成功 FALSE:保存失敗
+ */
+BOOL NoMeiryoUI::startSaveFont(TCHAR *filename)
+{
+	BOOL saveResult;
+
+	saveResult = saveFont(filename, _T("TitleFont"), &metrics.lfCaptionFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+	saveResult = saveFont(filename, _T("IconFont"), &iconFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+	saveResult = saveFont(filename, _T("PaletteFont"), &metrics.lfSmCaptionFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+	saveResult = saveFont(filename, _T("HintFont"), &metrics.lfStatusFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+	saveResult = saveFont(filename, _T("MessageFont"), &metrics.lfMessageFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+	saveResult = saveFont(filename, _T("MenuFont"), &metrics.lfMenuFont);
+	if (!saveResult) {
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/**
+ * フォント情報を保存する。
+ *
+ * @param filename iniファイル名
+ * @param category 保存対象フォントのiniファイルセクション名
+ * @param font 保存対象フォントのLOGFONT構造体
+ * @result TRUE:保存成功 FALSE:保存失敗
+ */
+BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
+{
+	TCHAR buf[32];
+	BOOL result;
+
+	result = WritePrivateProfileString(section,
+		_T("FaceName"),
+		font->lfFaceName,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfHeight);
+	result = WritePrivateProfileString(section,
+		_T("Height"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfWidth);
+	result = WritePrivateProfileString(section,
+		_T("Width"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfEscapement);
+	result = WritePrivateProfileString(section,
+		_T("Escapement"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfOrientation);
+	result = WritePrivateProfileString(section,
+		_T("Orientation"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfWeight);
+	result = WritePrivateProfileString(section,
+		_T("Weight"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfItalic);
+	result = WritePrivateProfileString(section,
+		_T("Italic"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfUnderline);
+	result = WritePrivateProfileString(section,
+		_T("Underline"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfStrikeOut);
+	result = WritePrivateProfileString(section,
+		_T("StrikeOut"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfCharSet);
+	result = WritePrivateProfileString(section,
+		_T("CharSet"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfOutPrecision);
+	result = WritePrivateProfileString(section,
+		_T("OutPrecision"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfClipPrecision);
+	result = WritePrivateProfileString(section,
+		_T("ClipPrecision"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfQuality);
+	result = WritePrivateProfileString(section,
+		_T("Quality"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	_stprintf(buf, _T("%ld"), font->lfPitchAndFamily);
+	result = WritePrivateProfileString(section,
+		_T("PitchAndFamily"),
+		buf,
+		filename);
+	if (!result) {
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 /**

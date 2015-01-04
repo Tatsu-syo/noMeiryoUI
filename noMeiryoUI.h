@@ -40,7 +40,14 @@ private:
 
 	TwrMenu *appMenu;
 
+	void OnLoad();
+	BOOL startLoadFont(TCHAR *filename);
+	BOOL loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
+	void OnSave();
+	BOOL startSaveFont(TCHAR *filename);
+	BOOL saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
 	void selectFont(enum fontType type);
+
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
 	void SetWinVer();
