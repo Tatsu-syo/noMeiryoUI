@@ -18,6 +18,8 @@ public:
 	HWND create(HWND parent);
 	void addItem(const TCHAR *item);
 	int getSelectedIndex(void);
+	int getCount(void);
+	tstring getItem(int index);
 	void setStyle(int newStyle) {
 		style = newStyle;
 	}

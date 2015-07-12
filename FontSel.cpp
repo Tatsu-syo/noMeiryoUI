@@ -3,6 +3,7 @@ noMeiryoUI (C) 2005,2012,2013 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
+#include "util.h"
 
 #include <algorithm>
 #include <functional>
@@ -98,6 +99,7 @@ FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 	m_ChersetList = NULL;
 	m_styleList = NULL;
 	m_underline = NULL;
+	previousFont = NULL;
 }
 
 FontSel::~FontSel(void)
@@ -119,6 +121,9 @@ FontSel::~FontSel(void)
 	}
 }
 
+/**
+ * ダイアログ初期化処理
+ */
 INT_PTR FontSel::OnInitDialog()
 {
 	getFont();
@@ -161,10 +166,67 @@ INT_PTR FontSel::OnInitDialog()
 	m_fontSizeList->addItem(_T("48"));
 	m_fontSizeList->addItem(_T("72"));
 
-	m_fontSizeList->setSelectedIndex(4);
+	// 選択する。
+	if (previousFont != NULL) {
+		// フォントサイズ
+		int count = m_fontSizeList->getCount();
+		int point = getFontPointInt(previousFont, this->getHwnd());
+		int selection = -1;
+		for (int i = 0; i < count; i++) {
+			int itemSize = _tstoi(m_fontSizeList->getItem(i).c_str());
+			if (point >= itemSize) {
+				selection = i;
+			}
+		}
+		if (selection > -1) {
+			m_fontSizeList->setSelectedIndex(selection);
+		}
+
+		// フォントフェイス
+		for (int i = 0; i < fonts; i++) {
+			if (!_tcscmp(fontList[i].logFont.lfFaceName, previousFont->lfFaceName)) {
+				m_fontNameList->setSelectedIndex(i);
+
+				// フォントに合った文字コードセットを設定する。
+				setCharset();
+				int charsetCount = fontList[i].charsetList.size();
+				for (int j = 0; j < charsetCount; j++) {
+					if (fontList[i].charsetList[j] == previousFont->lfCharSet) {
+						m_ChersetList->setSelectedIndex(j);
+					}
+				}
+
+				// フォントに合ったスタイル(太字・イタリック)を設定する。
+				setStyle();
+				int style = 0;
+				// イタリック
+				if (previousFont->lfItalic) {
+					style |= 1;
+				}
+				// 太字
+				if (previousFont->lfWeight > 400) {
+					style |= 2;
+				}
+				m_styleList->setSelectedIndex(style);
+
+				// 下線
+				if (previousFont->lfUnderline) {
+					m_underline->setChecked(true);
+				}
+				// 取り消し線
+				if (previousFont->lfStrikeOut) {
+					m_strike->setChecked(true);
+				}
+
+				break;
+			}
+		}
+	}
 
 	return (INT_PTR)FALSE;
 }
+
+
 
 /**
  * 各操作に対する処理の分岐

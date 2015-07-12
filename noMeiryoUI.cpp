@@ -19,6 +19,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
+#include "util.h"
 
 #define MAX_LOADSTRING 100
 
@@ -225,97 +226,42 @@ void NoMeiryoUI::updateDisplay(void)
 	TCHAR buf[16];
 
 	allFontName = metricsAll.lfMenuFont.lfFaceName;
+	point = getFontPointInt(&(metricsAll.lfMenuFont), this->getHwnd());
+	_stprintf(buf, _T(" %3dpt"), point);
+	allFontName = allFontName + buf;
 
 	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	point = getFontPointInt(&(metrics.lfCaptionFont));
+	point = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	titleFontName = titleFontName + buf;
 
 	iconFontName = iconFont.lfFaceName;
-	point = getFontPointInt(&iconFont);
+	point = getFontPointInt(&iconFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	iconFontName = iconFontName + buf;
 
 	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	point = getFontPointInt(&metrics.lfSmCaptionFont);
+	point = getFontPointInt(&metrics.lfSmCaptionFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	paletteFontName = paletteFontName + buf;
 
 	hintFontName = metrics.lfStatusFont.lfFaceName;
-	point = getFontPointInt(&metrics.lfStatusFont);
+	point = getFontPointInt(&metrics.lfStatusFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	hintFontName = hintFontName + buf;
 
 	messageFontName = metrics.lfMessageFont.lfFaceName;
-	point = getFontPointInt(&metrics.lfMessageFont);
+	point = getFontPointInt(&metrics.lfMessageFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	messageFontName = messageFontName + buf;
 
 	// メニューと選択項目
 	menuFontName = metrics.lfMenuFont.lfFaceName;
-	point = getFontPointInt(&metrics.lfMenuFont);
+	point = getFontPointInt(&metrics.lfMenuFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	menuFontName = menuFontName + buf;
 
 	UpdateData(false);
-}
-
-/**
- * フォントサイズを整数で算出する。(Windows 8)
- *
- * @param font フォント情報
- * @return フォントサイズ
- */
-int NoMeiryoUI::getFontPointInt(LOGFONT *font)
-{
-	double point = getFontPoint(font);
-
-	if (point - abs((int)point) > 0.74) {
-		return (int)point + 1;
-	} else {
-		return (int)point;
-	}
-}
-
-/**
- * フォントサイズを算出する。(Windows 7/コモンダイアログ互換)
- *
- * @param font フォント情報
- * @return フォントサイズ
- */
-double NoMeiryoUI::getFontPoint(LOGFONT *font)
-{
-	// フォントを作成する。
-	HFONT hFont = CreateFontIndirect(font);
-	// 自身のウインドウハンドルから作成したデバイスコンテキストに
-	// フォントを設定する。
-	HDC dc = GetDC(this->getHwnd());
-	SelectFont(dc, hFont);
-
-	// デバイスコンテキストからTEXTMETRICを取得する。
-	TEXTMETRIC metric;
-	GetTextMetrics(dc, &metric);
-
-	int logPixelY = GetDeviceCaps(dc, LOGPIXELSY);
-
-	ReleaseDC(this->getHwnd(), dc);
-	DeleteObject(hFont);
-
-	int height;
-	if (font->lfHeight < 0) {
-		// 負の場合はlfHeightはフォント自体の高さ。
-		height = 0 - font->lfHeight;
-	} else if (font->lfHeight > 0) {
-		// 正の場合はすでにInternal Leadingを含んでいるのでその分を引く。
-		height = font->lfHeight - metric.tmInternalLeading;
-	} else {
-		// 0の場合はデフォルトの大きさを作成したフォントから取得する。
-		height = metric.tmAscent + metric.tmDescent - metric.tmInternalLeading;
-	}
-
-	double point = (double)height * 72 / logPixelY;
-
-	return point;
 }
 
 /**
@@ -422,11 +368,45 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	// font.rgbColors = rgbCurrent;
 
 	try {
+		LOGFONT *target;
+		switch (type) {
+			case all:
+				target = &metricsAll.lfMenuFont;
+				break;
+
+			case title:
+				target = &metrics.lfCaptionFont;
+				break;
+
+			case icon:
+				target = &iconFont;
+				break;
+
+			case palette:
+				target = &metrics.lfSmCaptionFont;
+				break;
+
+			case hint:
+				target = &metrics.lfStatusFont;
+				break;
+
+			case message:
+				target = &metrics.lfMessageFont;
+				break;
+
+			case menu:
+				// メニューと選択項目
+				target = &metrics.lfMenuFont;
+				break;
+		}
+
 		// result = ChooseFont(&font);
 		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL);
 		if (noMeiryoUI) {
 			selector->setNoMeiryoUI();
 		}
+		// 選択していたフォントをフォント選択ダイアログに設定する。
+		selector->setPreviousFont(target);
 
 		result = selector->showModal();
 		if (result != IDOK){

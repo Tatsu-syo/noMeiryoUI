@@ -28,6 +28,7 @@ private:
 	TwrCheckbox *m_strike;
 
 	LOGFONT selectedFont;
+	LOGFONT *previousFont;
 
 	void setCharset(void);
 	void setStyle(void);
@@ -43,6 +44,9 @@ public:
 
 	LOGFONT getSelectedFont() {
 		return selectedFont;
+	}
+	void setPreviousFont(LOGFONT *item) {
+		previousFont = item;
 	}
 	void setNoMeiryoUI();
 

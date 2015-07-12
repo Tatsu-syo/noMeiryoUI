@@ -54,8 +54,6 @@ private:
 	void OnSet8();
 	void SetWinVer();
 
-	int getFontPointInt(LOGFONT *font);
-	double getFontPoint(LOGFONT *font);
 	void setFont(
 		NONCLIENTMETRICS *fontMetrics,
 		LOGFONT *iconLogFont

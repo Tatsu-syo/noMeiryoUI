@@ -207,6 +207,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\util.cpp"
+				>
+			</File>
 			<Filter
 				Name="TWR"
 				>
@@ -271,6 +275,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\util.h"
 				>
 			</File>
 			<Filter

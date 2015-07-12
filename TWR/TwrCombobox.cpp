@@ -96,6 +96,21 @@ int TwrCombobox::getSelectedIndex(void)
 }
 
 /**
+ * 要素の数を取得します。
+ *
+ * @return -1:選択されていない -1以外:選択された場所
+ */
+int TwrCombobox::getCount(void)
+{
+	LRESULT result = SendMessage(hWnd, CB_GETCOUNT, 0, 0);
+	if (result == CB_ERR) {
+		return -1;
+	} else {
+		return (int)result;
+	}
+}
+
+/**
  * コンボボックスをクリアします。
  */
 void TwrCombobox::clear(void)
@@ -133,6 +148,31 @@ tstring TwrCombobox::getSelectedText(void)
 	try {
 		buf = new TCHAR[len + 1];
 		SendMessage(hWnd, CB_GETLBTEXT, item, (LPARAM)buf);
+
+		ret = buf;
+		delete []buf;
+	} catch (...) {
+	}
+
+	return ret;	
+}
+
+/**
+ * 指定した位置の文字列を返します。
+ *
+ * @param index 取得する項目の位置
+ * @return 文字列(選択されてない場合は空)
+ */
+tstring TwrCombobox::getItem(int index)
+{
+	TCHAR *buf;
+	tstring ret = _T("");
+	LRESULT len;
+
+	len = SendMessage(hWnd, CB_GETLBTEXTLEN, index, 0);
+	try {
+		buf = new TCHAR[len + 1];
+		SendMessage(hWnd, CB_GETLBTEXT, index, (LPARAM)buf);
 
 		ret = buf;
 		delete []buf;
