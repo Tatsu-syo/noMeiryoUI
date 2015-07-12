@@ -384,6 +384,9 @@ void FontSel::setStyle(void)
 	m_styleList->setSelectedIndex(0);
 }
 
+/**
+ * OKボタンを押下した時の動作
+ */
 INT_PTR FontSel::onOK(void)
 {
 	int selectedFontIndex = m_fontNameList->getSelectedIndex();
@@ -445,6 +448,12 @@ INT_PTR FontSel::onOK(void)
 	selectedFont.lfHeight = -MulDiv(point, GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	selectedFont.lfWidth = 0;
 	ReleaseDC(this->hWnd, hDC);
+
+	// Windows 8互換の場合はピクセル数から計算したポイントが指定したポイントより小さい場合、
+	// フォントの高さのピクセル数の絶対値を増やす。
+	if (abs(getFontPointInt(&selectedFont, this->getHwnd())) < point) {
+		selectedFont.lfHeight--;
+	}
 
 	if (m_underline->isChecked()) {
 		selectedFont.lfUnderline = TRUE;

@@ -16,11 +16,17 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 {
 	double point = getFontPoint(font, hWnd);
 
-	if (point - abs((int)point) > 0.74) {
+#if 1
+	// Windows 8ディスプレイコントロールパネル互換 
+	return (int)point;
+#else
+	// Windows 7以前互換 
+	if (point - abs((int)point) > 0.49) {
 		return (int)point + 1;
 	} else {
 		return (int)point;
 	}
+#endif
 }
 
 /**

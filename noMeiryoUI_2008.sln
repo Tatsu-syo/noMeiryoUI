@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "noMeiryoUI", "noMeiryoUI_2008.vcproj", "{0F28EA7F-B997-4CBB-8BCA-96A013FCBE7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F28EA7F-B997-4CBB-8BCA-96A013FCBE7D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0F28EA7F-B997-4CBB-8BCA-96A013FCBE7D}.Debug|Win32.Build.0 = Debug|Win32
+		{0F28EA7F-B997-4CBB-8BCA-96A013FCBE7D}.Release|Win32.ActiveCfg = Release|Win32
+		{0F28EA7F-B997-4CBB-8BCA-96A013FCBE7D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
