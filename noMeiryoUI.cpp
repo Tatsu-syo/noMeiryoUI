@@ -169,8 +169,6 @@ int NoMeiryoUI::OnWindowShow()
 		&iconFont,
 		0);
 
-	double point = getFontPoint(&(metrics.lfCaptionFont));
-
 	//
 	// すべてのフォント用の情報取得
 	//
@@ -199,6 +197,84 @@ int NoMeiryoUI::OnWindowShow()
 	updateDisplay();
 
 	return 0;
+}
+
+/**
+ * ダイアログコントロールとオブジェクトの内容の同期を取る。
+ *
+ * @param toObj true:コントロール→オブジェクト false:オブジェクト→コントロール
+ */
+void NoMeiryoUI::UpdateData(bool toObj)
+{
+	// ここにダイアログのコントロールと同期を取るメンバ変数を記述します。
+	DDX_Text(toObj,IDC_EDIT_ALL, allFontName);
+	DDX_Text(toObj,IDC_EDIT_TITLE, titleFontName);
+	DDX_Text(toObj,IDC_EDIT_ICON, iconFontName);
+	DDX_Text(toObj,IDC_EDIT_PALETTE, paletteFontName);
+	DDX_Text(toObj,IDC_EDIT_HINT, hintFontName);
+	DDX_Text(toObj,IDC_EDIT_MESSAGE, messageFontName);
+	DDX_Text(toObj,IDC_EDIT_MENU, menuFontName);
+}
+
+/**
+ * フォント表示を更新する。
+ */
+void NoMeiryoUI::updateDisplay(void)
+{
+	int point;
+	TCHAR buf[16];
+
+	allFontName = metricsAll.lfMenuFont.lfFaceName;
+
+	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	point = getFontPointInt(&(metrics.lfCaptionFont));
+	_stprintf(buf, _T(" %3dpt"), point);
+	titleFontName = titleFontName + buf;
+
+	iconFontName = iconFont.lfFaceName;
+	point = getFontPointInt(&iconFont);
+	_stprintf(buf, _T(" %3dpt"), point);
+	iconFontName = iconFontName + buf;
+
+	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	point = getFontPointInt(&metrics.lfSmCaptionFont);
+	_stprintf(buf, _T(" %3dpt"), point);
+	paletteFontName = paletteFontName + buf;
+
+	hintFontName = metrics.lfStatusFont.lfFaceName;
+	point = getFontPointInt(&metrics.lfStatusFont);
+	_stprintf(buf, _T(" %3dpt"), point);
+	hintFontName = hintFontName + buf;
+
+	messageFontName = metrics.lfMessageFont.lfFaceName;
+	point = getFontPointInt(&metrics.lfMessageFont);
+	_stprintf(buf, _T(" %3dpt"), point);
+	messageFontName = messageFontName + buf;
+
+	// メニューと選択項目
+	menuFontName = metrics.lfMenuFont.lfFaceName;
+	point = getFontPointInt(&metrics.lfMenuFont);
+	_stprintf(buf, _T(" %3dpt"), point);
+	menuFontName = menuFontName + buf;
+
+	UpdateData(false);
+}
+
+/**
+ * フォントサイズを整数で算出する。(Windows 8)
+ *
+ * @param font フォント情報
+ * @return フォントサイズ
+ */
+int NoMeiryoUI::getFontPointInt(LOGFONT *font)
+{
+	double point = getFontPoint(font);
+
+	if (point - abs((int)point) > 0.74) {
+		return (int)point + 1;
+	} else {
+		return (int)point;
+	}
 }
 
 /**
@@ -240,42 +316,6 @@ double NoMeiryoUI::getFontPoint(LOGFONT *font)
 	double point = (double)height * 72 / logPixelY;
 
 	return point;
-}
-
-
-
-/**
- * ダイアログコントロールとオブジェクトの内容の同期を取る。
- *
- * @param toObj true:コントロール→オブジェクト false:オブジェクト→コントロール
- */
-void NoMeiryoUI::UpdateData(bool toObj)
-{
-	// ここにダイアログのコントロールと同期を取るメンバ変数を記述します。
-	DDX_Text(toObj,IDC_EDIT_ALL, allFontName);
-	DDX_Text(toObj,IDC_EDIT_TITLE, titleFontName);
-	DDX_Text(toObj,IDC_EDIT_ICON, iconFontName);
-	DDX_Text(toObj,IDC_EDIT_PALETTE, paletteFontName);
-	DDX_Text(toObj,IDC_EDIT_HINT, hintFontName);
-	DDX_Text(toObj,IDC_EDIT_MESSAGE, messageFontName);
-	DDX_Text(toObj,IDC_EDIT_MENU, menuFontName);
-}
-
-/**
- * フォント表示を更新する。
- */
-void NoMeiryoUI::updateDisplay(void)
-{
-	allFontName = metricsAll.lfMenuFont.lfFaceName;
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	iconFontName = iconFont.lfFaceName;
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-
-	UpdateData(false);
 }
 
 /**
@@ -343,7 +383,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.14\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
+				_T("Meiryo UIも大っきらい!! Version 2.15\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
 				_T("Meiryo UIも大っきらい!!について"),
 				MB_OK | MB_ICONINFORMATION);
 
@@ -1265,6 +1305,17 @@ void NoMeiryoUI::SetWinVer()
 							major,minor);
 					}
 					break;
+			}
+			break;
+		case 10:
+			if (infoEx.wProductType == VER_NT_WORKSTATION) {
+				_stprintf(buf,
+					_T("Windows 10 (%d.%d)"),
+					major,minor);
+			} else {
+				_stprintf(buf,
+					_T("Windows Server 2016 (%d.%d)"),
+					major,minor);
 			}
 			break;
 		default:
