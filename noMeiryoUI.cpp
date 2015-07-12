@@ -188,23 +188,15 @@ int NoMeiryoUI::OnWindowShow()
 		&iconFontAll,
 		0);
 
-	// 表示用フォント名を設定する。
-	allFontName = metricsAll.lfMenuFont.lfFaceName;
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	iconFontName = iconFont.lfFaceName;
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-
+	// メニューフォントの情報を他のフォントの情報にあてる。
 	metricsAll.lfStatusFont = metricsAll.lfMenuFont;
 	metricsAll.lfMessageFont = metricsAll.lfMenuFont;
 	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
 	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
 	iconFontAll = metricsAll.lfMenuFont;
 
-	UpdateData(false);
+	// 表示を更新する。
+	updateDisplay();
 
 	return 0;
 }
@@ -267,6 +259,23 @@ void NoMeiryoUI::UpdateData(bool toObj)
 	DDX_Text(toObj,IDC_EDIT_HINT, hintFontName);
 	DDX_Text(toObj,IDC_EDIT_MESSAGE, messageFontName);
 	DDX_Text(toObj,IDC_EDIT_MENU, menuFontName);
+}
+
+/**
+ * フォント表示を更新する。
+ */
+void NoMeiryoUI::updateDisplay(void)
+{
+	allFontName = metricsAll.lfMenuFont.lfFaceName;
+	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	iconFontName = iconFont.lfFaceName;
+	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	hintFontName = metrics.lfStatusFont.lfFaceName;
+	messageFontName = metrics.lfMessageFont.lfFaceName;
+	// メニューと選択項目
+	menuFontName = metrics.lfMenuFont.lfFaceName;
+
+	UpdateData(false);
 }
 
 /**
@@ -442,7 +451,9 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			menuFontName = logfont.lfFaceName;
 			break;
 	}
-	UpdateData(false);
+
+	// 表示を更新する。
+	updateDisplay();
 }
 
 /**
@@ -527,13 +538,8 @@ BOOL NoMeiryoUI::startLoadFont(TCHAR *filename)
 	metrics.lfMessageFont = messageFont;
 	metrics.lfMenuFont = menuFont;
 
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	iconFontName = iconFont.lfFaceName;
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-	UpdateData(false);
+	// 表示を更新する。
+	updateDisplay();
 
 	return TRUE;
 }
@@ -985,19 +991,11 @@ void NoMeiryoUI::OnBnClickedAll()
 	// フォント変更を実施する。
 	setFont(&metricsAll, &iconFontAll);
 
-	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
-	titleFontName = metricsAll.lfCaptionFont.lfFaceName;
-	iconFontName = iconFontAll.lfFaceName;
-	paletteFontName = metricsAll.lfCaptionFont.lfFaceName;
-	hintFontName = metricsAll.lfCaptionFont.lfFaceName;
-	messageFontName = metricsAll.lfCaptionFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metricsAll.lfCaptionFont.lfFaceName;
-
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
 	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
 
-	UpdateData(false);
+	// 表示を更新する。
+	updateDisplay();
 }
 
 /**
@@ -1050,16 +1048,8 @@ void NoMeiryoUI::OnSet8(void)
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = 1;
 
-	// 表示用フォント名を設定する。
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	iconFontName = iconFont.lfFaceName;
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	// メニューと選択項目
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-
-	UpdateData(false);
+	// 表示を更新する。
+	updateDisplay();
 
 }
 

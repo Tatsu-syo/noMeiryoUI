@@ -47,6 +47,7 @@ private:
 	BOOL startSaveFont(TCHAR *filename);
 	BOOL saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
 	void selectFont(enum fontType type);
+	void updateDisplay(void);
 
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
