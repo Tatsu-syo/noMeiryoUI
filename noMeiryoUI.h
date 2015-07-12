@@ -50,6 +50,7 @@ private:
 
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
+	void OnSet8();
 	void SetWinVer();
 	double getFontPoint(LOGFONT *font);
 	void setFont(

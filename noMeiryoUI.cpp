@@ -188,6 +188,7 @@ int NoMeiryoUI::OnWindowShow()
 		&iconFontAll,
 		0);
 
+	// 表示用フォント名を設定する。
 	allFontName = metricsAll.lfMenuFont.lfFaceName;
 	titleFontName = metrics.lfCaptionFont.lfFaceName;
 	iconFontName = iconFont.lfFaceName;
@@ -209,9 +210,9 @@ int NoMeiryoUI::OnWindowShow()
 }
 
 /**
- * フォントサイズを算出する。
+ * フォントサイズを算出する。(Windows 7/コモンダイアログ互換)
  *
- * @param font
+ * @param font フォント情報
  * @return フォントサイズ
  */
 double NoMeiryoUI::getFontPoint(LOGFONT *font)
@@ -318,6 +319,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 		case IDM_EXIT:
 			EndDialog(hWnd, LOWORD(wParam));
 			break;
+		case IDM_SET_8:
+			OnSet8();
+			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
 				appMenu->CheckMenuItem(IDM_ANOTHER, false);
@@ -476,7 +480,7 @@ void NoMeiryoUI::OnLoad()
 }
 
 /**
- * フォント情報保存を開始する。
+ * フォント情報読み込みを開始する。
  *
  * @param filename iniファイル名
  * @result TRUE:保存成功 FALSE:保存失敗
@@ -994,6 +998,69 @@ void NoMeiryoUI::OnBnClickedAll()
 	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
 
 	UpdateData(false);
+}
+
+/**
+ * Windows 8/8.1の場合のプリセット値を設定する。
+ */
+void NoMeiryoUI::OnSet8(void)
+{
+	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
+	// NONCLIENTMETRICSの内容を取得しなおす。
+	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
+
+	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfCaptionFont.lfHeight = -15;
+	metrics.lfCaptionFont.lfWeight = 400;
+	metrics.lfCaptionFont.lfCharSet = 1;
+
+	memset(&iconFont, 0, sizeof(LOGFONTW));
+	_tcscpy(iconFont.lfFaceName, _T("Meiryo UI"));
+	iconFont.lfHeight = -12;
+	iconFont.lfWeight = 400;
+	iconFont.lfCharSet = 1;
+
+	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfSmCaptionFont.lfHeight = -15;
+	metrics.lfSmCaptionFont.lfWeight = 400;
+	metrics.lfSmCaptionFont.lfCharSet = 1;
+
+	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfStatusFont.lfHeight = -12;
+	metrics.lfStatusFont.lfWeight = 400;
+	metrics.lfStatusFont.lfCharSet = 1;
+
+	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfMessageFont.lfHeight = -12;
+	metrics.lfMessageFont.lfWeight = 400;
+	metrics.lfMessageFont.lfCharSet = 1;
+
+	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfMenuFont.lfHeight = -12;
+	metrics.lfMenuFont.lfWeight = 400;
+	metrics.lfMenuFont.lfCharSet = 1;
+
+	// 表示用フォント名を設定する。
+	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	iconFontName = iconFont.lfFaceName;
+	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	hintFontName = metrics.lfStatusFont.lfFaceName;
+	messageFontName = metrics.lfMessageFont.lfFaceName;
+	// メニューと選択項目
+	menuFontName = metrics.lfMenuFont.lfFaceName;
+
+	UpdateData(false);
+
 }
 
 NONCLIENTMETRICS *s_fontMetrics;
