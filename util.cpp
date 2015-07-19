@@ -5,8 +5,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 #include "util.h"
 
+/** Windows 8のフォントサイズ算出式を使用するか？ */
+bool WIN8_SIZE = true;
+
 /**
- * フォントサイズを整数で算出する。(Windows 8)
+ * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
  *
  * @param font フォント情報
  * @param hWnd ウインドウハンドル
@@ -16,21 +19,32 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 {
 	double point = getFontPoint(font, hWnd);
 
-#if 1
-	// Windows 8ディスプレイコントロールパネル互換 
-	return (int)point;
-#else
-	// Windows 7以前互換 
-	if (point - abs((int)point) > 0.49) {
-		return (int)point + 1;
+	if (WIN8_SIZE) {
+		// Windows 8ディスプレイコントロールパネル互換
+		if (point > 10) {
+			return (int)point;
+		} else {
+			// 10ptまではWindows 7と同様に計算する。
+			// Windows 7以前互換 
+			if (point - abs((int)point) > 0.49) {
+				return (int)point + 1;
+			} else {
+				return (int)point;
+			}
+		}
 	} else {
-		return (int)point;
+		// Windows 7以前互換 
+		if (point - abs((int)point) > 0.49) {
+			return (int)point + 1;
+		} else {
+			return (int)point;
+		}
 	}
-#endif
 }
 
 /**
- * フォントサイズを算出する。(Windows 7/コモンダイアログ互換)
+ * フォントのピクセル数に対応するポイント数を算出する。
+ * (Windows 7/コモンダイアログ互換)
  *
  * @param font フォント情報
  * @param hWnd ウインドウハンドル

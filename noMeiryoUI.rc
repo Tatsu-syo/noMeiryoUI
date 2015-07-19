@@ -18,13 +18,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 resources
+// 日本語 (日本) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-#ifdef _WIN32
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -41,7 +39,7 @@ IDI_SMALL               ICON                    "noMeiryoUI.ico"
 // Accelerator
 //
 
-IDC_NOMEIRYOUI ACCELERATORS 
+IDC_NOMEIRYOUI ACCELERATORS
 BEGIN
     "?",            IDM_ABOUT,              ASCII,  ALT
     "/",            IDM_ABOUT,              ASCII,  ALT
@@ -115,7 +113,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_MAIN_DIALOG, DIALOG
     BEGIN
@@ -218,7 +216,7 @@ IDR_RT_MANIFEST         RT_MANIFEST             "noMeiryoUI.exe.manifest"
 // Menu
 //
 
-IDR_MENU1 MENU 
+IDR_MENU1 MENU
 BEGIN
     POPUP "ファイル(&F)"
     BEGIN
@@ -235,6 +233,7 @@ BEGIN
     POPUP "ツール(&T)"
     BEGIN
         MENUITEM "別スレッドでフォントを変更する。(&A)",        IDM_ANOTHER
+        MENUITEM "フォントサイズをWindows 7と同様に扱う(&7)", IDM_COMPAT7
     END
     POPUP "ヘルプ(&H)"
     BEGIN
@@ -249,13 +248,13 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "noMeiryoUI"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
-#endif    // 日本語 resources
+#endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

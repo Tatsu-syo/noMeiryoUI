@@ -9,6 +9,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <windows.h>
 #include <windowsx.h>
 
+extern bool WIN8_SIZE;
+
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);
 

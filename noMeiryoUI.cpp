@@ -13,9 +13,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <process.h>
 #include <Objbase.h>
 #include <shellapi.h>
-#ifdef DEBUG
-#include <vld.h>
-#endif
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
@@ -30,6 +27,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 // アプリケーションオブジェクト
 NoMeiryoUI *appObj;
+static bool use7Compat = true;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -89,6 +87,28 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 		noMeiryoUI = true;
 	}
 
+	DWORD dwVersion = GetVersion();
+
+	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+	if (major < 6) {
+		// Windows XP or earlyer
+		WIN8_SIZE = false;
+		use7Compat = false;
+	} else if (major == 6) {
+		if (minor < 2) {
+			// Windows Vista/7
+			WIN8_SIZE = false;
+			use7Compat = false;
+		} else {
+			// Windows 8/8.1
+			WIN8_SIZE = true;
+		}
+	} else {
+		// Windows 10 or later
+		WIN8_SIZE = true;
+	}
+
 	return 0;
 }
 
@@ -128,6 +148,11 @@ INT_PTR NoMeiryoUI::OnInitDialog()
     SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
 	appMenu = new TwrMenu(this->hWnd);
+
+	if (!use7Compat) {
+		// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
+		appMenu->SetEnabled(IDM_COMPAT7, false);
+	}
 
 	return (INT_PTR)FALSE;
 }
@@ -323,6 +348,17 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			} else {
 				appMenu->CheckMenuItem(IDM_ANOTHER, true);
 			}
+			return (INT_PTR)0;
+		case IDM_COMPAT7:
+			if (appMenu->isChecked(IDM_COMPAT7)) {
+				appMenu->CheckMenuItem(IDM_COMPAT7, false);
+				WIN8_SIZE = true;
+			} else {
+				appMenu->CheckMenuItem(IDM_COMPAT7, true);
+				WIN8_SIZE = false;
+			}
+			updateDisplay();
+
 			return (INT_PTR)0;
 		case IDM_HELPTOPIC:
 			showHelp();

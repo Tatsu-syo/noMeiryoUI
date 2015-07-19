@@ -12,6 +12,8 @@ public:
 	TwrMenu(HWND wnd);
 	void CheckMenuItem(int id,bool checked);
 	bool isChecked(int item);
+	void SetEnabled(int id, bool enabled);
+
 };
 
 

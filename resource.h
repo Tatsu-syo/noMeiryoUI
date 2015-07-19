@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by noMeiryoUI.rc
+// Microsoft Visual C++ で生成されたインクルード ファイル。
+// noMeiryoUI.rc で使用
 //
 #define IDC_MYICON                      2
 #define ID_SEL_ALL                      3
@@ -52,6 +52,7 @@
 #define IDM_SAVE                        32782
 #define ID_32783                        32783
 #define IDM_SET_8                       32784
+#define IDM_COMPAT7                     32786
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -60,7 +61,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        134
-#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

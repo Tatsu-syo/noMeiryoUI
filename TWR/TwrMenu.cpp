@@ -67,3 +67,29 @@ bool TwrMenu::isChecked(int item)
 		 return false;
 	 }
 }
+
+/**
+ * メニューの有効状態を設定する。
+ *
+ * @param id メニューID
+ * @param true:有効にする false:有効にしない
+ */
+void TwrMenu::SetEnabled(int id, bool enabled)
+{
+	MENUITEMINFO info;
+
+	memset(&info, 0, sizeof(MENUITEMINFO));
+	info.cbSize = sizeof(MENUITEMINFO);
+	info.fMask = MIIM_STATE;
+
+	GetMenuItemInfo(menuHandle, id, FALSE, &info);
+	if (enabled) {
+		if (info.fState & MFS_ENABLED) {
+			info.fState ^= MFS_ENABLED;
+		}
+	} else {
+		info.fState |= MFS_DISABLED;
+	}
+	SetMenuItemInfo(menuHandle, id, FALSE, &info);
+}
+

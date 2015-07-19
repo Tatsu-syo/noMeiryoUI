@@ -25,6 +25,16 @@ bool operator>(const FontInfo& left, const FontInfo& right)
 	return (_tcscmp(left.logFont.lfFaceName, right.logFont.lfFaceName) < 0);
 }
 
+/**
+ * EnumFontFamiliesExのコールバック
+ *
+ *
+ * @param lpelfe 論理的なフォントデータ
+ * @param lpntme 物理的なフォントデータ
+ * @param FontType フォントの種類
+ * @param lParam アプリケーション定義のデータ
+ * @return 0:列挙を中止する 1:次のフォントを列挙する。
+ */
 int CALLBACK EnumFontFamExProc(
   ENUMLOGFONTEX *lpelfe,    // 論理的なフォントデータ
   NEWTEXTMETRICEX *lpntme,  // 物理的なフォントデータ
@@ -90,8 +100,9 @@ int getFont()
 	return 0;
 }
 
-
-
+/**
+ * コンストラクタ
+ */
 FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 {
 	m_fontNameList = NULL;
@@ -102,6 +113,9 @@ FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 	previousFont = NULL;
 }
 
+/**
+ * デストラクタ
+ */
 FontSel::~FontSel(void)
 {
 	if (m_fontSizeList != NULL) {
@@ -171,7 +185,7 @@ INT_PTR FontSel::OnInitDialog()
 		// フォントサイズ
 		int count = m_fontSizeList->getCount();
 		int point = getFontPointInt(previousFont, this->getHwnd());
-		int selection = -1;
+		int selection = 0;
 		for (int i = 0; i < count; i++) {
 			int itemSize = _tstoi(m_fontSizeList->getItem(i).c_str());
 			if (point >= itemSize) {
@@ -451,8 +465,11 @@ INT_PTR FontSel::onOK(void)
 
 	// Windows 8互換の場合はピクセル数から計算したポイントが指定したポイントより小さい場合、
 	// フォントの高さのピクセル数の絶対値を増やす。
-	if (abs(getFontPointInt(&selectedFont, this->getHwnd())) < point) {
-		selectedFont.lfHeight--;
+	if (WIN8_SIZE) {
+		if (abs(getFontPointInt(&selectedFont, this->getHwnd())) < point) {
+			// ピクセル数はマイナスで指定するので1減らして絶対値を増やす。
+			selectedFont.lfHeight--;
+		}
 	}
 
 	if (m_underline->isChecked()) {
