@@ -232,7 +232,7 @@ BEGIN
     END
     POPUP "ツール(&T)"
     BEGIN
-        MENUITEM "別スレッドでフォントを変更する。(&A)",        IDM_ANOTHER
+        MENUITEM "別スレッドでフォントを変更する(&A)",         IDM_ANOTHER
         MENUITEM "フォントサイズをWindows 7と同様に扱う(&7)", IDM_COMPAT7
     END
     POPUP "ヘルプ(&H)"
