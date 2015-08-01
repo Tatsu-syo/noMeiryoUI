@@ -155,6 +155,14 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	}
 	appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
+	// Windows 8.1以前ではWindows 10用のプリセットを使用不可とする。
+	DWORD dwVersion = GetVersion();
+
+	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+	if (major < 10) {
+		appMenu->setEnabled(IDM_SET_10, false);
+	}
 	return (INT_PTR)FALSE;
 }
 
@@ -342,6 +350,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			break;
 		case IDM_SET_8:
 			OnSet8();
+			return (INT_PTR)0;
+		case IDM_SET_10:
+			OnSet10();
 			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
@@ -1101,6 +1112,61 @@ void NoMeiryoUI::OnSet8(void)
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Meiryo UI"));
+	metrics.lfMenuFont.lfHeight = -12;
+	metrics.lfMenuFont.lfWeight = 400;
+	metrics.lfMenuFont.lfCharSet = 1;
+
+	// 表示を更新する。
+	updateDisplay();
+
+}
+
+/**
+* Windows 10の場合のプリセット値を設定する。
+*/
+void NoMeiryoUI::OnSet10(void)
+{
+	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
+	// NONCLIENTMETRICSの内容を取得しなおす。
+	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
+
+	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Yu Gothic UI"));
+	metrics.lfCaptionFont.lfHeight = -12;
+	metrics.lfCaptionFont.lfWeight = 400;
+	metrics.lfCaptionFont.lfCharSet = 1;
+
+	memset(&iconFont, 0, sizeof(LOGFONTW));
+	_tcscpy(iconFont.lfFaceName, _T("Yu Gothic UI"));
+	iconFont.lfHeight = -12;
+	iconFont.lfWeight = 400;
+	iconFont.lfCharSet = 1;
+
+	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Yu Gothic UI"));
+	metrics.lfSmCaptionFont.lfHeight = -12;
+	metrics.lfSmCaptionFont.lfWeight = 400;
+	metrics.lfSmCaptionFont.lfCharSet = 1;
+
+	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Yu Gothic UI"));
+	metrics.lfStatusFont.lfHeight = -12;
+	metrics.lfStatusFont.lfWeight = 400;
+	metrics.lfStatusFont.lfCharSet = 1;
+
+	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Yu Gothic UI"));
+	metrics.lfMessageFont.lfHeight = -12;
+	metrics.lfMessageFont.lfWeight = 400;
+	metrics.lfMessageFont.lfCharSet = 1;
+
+	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Yu Gothic UI"));
 	metrics.lfMenuFont.lfHeight = -12;
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = 1;

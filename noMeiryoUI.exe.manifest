@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
 <assemblyIdentity
-    version="2.1.5.0"
+    version="2.1.6.0"
     processorArchitecture="X86"
     name="TatsuhikoSyoji.noMeiryoUI.noMeiryoUI"
     type="win32"
 />
-<description>noMeiryoUI set system fonts on Windows 8/8.1</description>
+<description>noMeiryoUI set system fonts on Windows 8.x/10</description>
 <dependency>
     <dependentAssembly>
         <assemblyIdentity

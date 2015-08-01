@@ -52,6 +52,7 @@ private:
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
 	void OnSet8();
+	void OnSet10(void);
 	void SetWinVer();
 
 	void setFont(
