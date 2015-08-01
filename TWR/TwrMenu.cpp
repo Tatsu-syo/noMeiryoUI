@@ -74,7 +74,7 @@ bool TwrMenu::isChecked(int item)
  * @param id メニューID
  * @param true:有効にする false:有効にしない
  */
-void TwrMenu::SetEnabled(int id, bool enabled)
+void TwrMenu::setEnabled(int id, bool enabled)
 {
 	MENUITEMINFO info;
 

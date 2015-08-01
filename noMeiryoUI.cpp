@@ -151,8 +151,9 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	if (!use7Compat) {
 		// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
-		appMenu->SetEnabled(IDM_COMPAT7, false);
+		appMenu->setEnabled(IDM_COMPAT7, false);
 	}
+	appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
 	return (INT_PTR)FALSE;
 }
@@ -1111,6 +1112,12 @@ void NoMeiryoUI::OnSet8(void)
 
 NONCLIENTMETRICS *s_fontMetrics;
 
+/**
+ * スレッドでアイコン以外のフォントを設定する。
+ *
+ * @param p スレッドに渡すパラメータ(未使用)
+ * @return 0
+ */
 unsigned _stdcall setOnThread(void *p)
 {
 	DWORD_PTR ptr;
@@ -1121,7 +1128,6 @@ unsigned _stdcall setOnThread(void *p)
 		s_fontMetrics,
 		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
 
-	_endthreadex(0);
 	return 0;
 }
 
@@ -1169,13 +1175,21 @@ void NoMeiryoUI::setFont(
 		// 実行する。
 		s_fontMetrics = fontMetrics;
 
-		HANDLE handle;
+		// フォント設定を実行するスレッドを開始する。
+		uintptr_t startResult = _beginthreadex(NULL, 0, setOnThread, NULL, 0, NULL);
+		if (startResult != 0) {
+			// 正常にスレッドを開始したらスレッド終了を待機する。
+			HANDLE handle;
+			handle = (HANDLE)startResult;
 
-		handle = (HANDLE)_beginthreadex(NULL,0,setOnThread,NULL,0,NULL);
-
-		// 一応5秒ほど待つ
-		WaitForSingleObject( handle, 5000 );
-		CloseHandle(handle);
+			// 一応5秒ほど待つ
+			DWORD waitResult = WaitForSingleObject(handle, 5000);
+			if (waitResult == WAIT_TIMEOUT) {
+				// スレッドが終了しない場合はどうしようもないのでスレッドを終了する。
+				TerminateThread(handle, 0);
+			}
+			CloseHandle(handle);
+		}
 	} else {
 		// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
