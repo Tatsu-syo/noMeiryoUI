@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-<assemblyIdentity
-    version="2.1.6.0"
-    processorArchitecture="X86"
-    name="TatsuhikoSyoji.noMeiryoUI.noMeiryoUI"
-    type="win32"
-/>
-<description>noMeiryoUI set system fonts on Windows 8.x/10</description>
-<dependency>
-    <dependentAssembly>
-        <assemblyIdentity
-            type="win32"
-            name="Microsoft.Windows.Common-Controls"
-            version="6.0.0.0"
-            processorArchitecture="X86"
-            publicKeyToken="6595b64144ccf1df"
-            language="*"
-        />
-    </dependentAssembly>
-</dependency>
-<compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+  <assemblyIdentity
+      version="2.1.6.1"
+      processorArchitecture="X86"
+      name="TatsuhikoSyoji.noMeiryoUI.noMeiryoUI"
+      type="win32"
+  />
+  <description>noMeiryoUI set system fonts on Windows 8.x/10</description>
+  <dependency>
+      <dependentAssembly>
+          <assemblyIdentity
+              type="win32"
+              name="Microsoft.Windows.Common-Controls"
+              version="6.0.0.0"
+              processorArchitecture="X86"
+              publicKeyToken="6595b64144ccf1df"
+              language="*"
+          />
+      </dependentAssembly>
+  </dependency>
+  <asmv3:application xmlns:asmv3="urn:schemas-microsoft-com:asm.v3">
+    <asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
+      <dpiAware>True</dpiAware>
+    </asmv3:windowsSettings>
+  </asmv3:application>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
     <application>
         <!-- Windows 10 -->
         <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/>
@@ -32,5 +37,5 @@
         <!--Windows Vista-->
         <supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />
     </application>
-</compatibility>
+  </compatibility>
 </assembly>

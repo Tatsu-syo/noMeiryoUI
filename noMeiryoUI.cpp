@@ -377,7 +377,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.16 Beta 1\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
+				_T("Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.16 Beta 2\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
 				_T("Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!‚É‚Â‚¢‚Ä"),
 				MB_OK | MB_ICONINFORMATION);
 
