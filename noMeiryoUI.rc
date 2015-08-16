@@ -57,7 +57,7 @@ CAPTION "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
 MENU IDR_MENU1
 FONT 10, "‚l‚r ‚oƒSƒVƒbƒN", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.16 Beta2",IDC_STATIC,7,7,138,8,SS_NOPREFIX
+    LTEXT           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! Version 2.16",IDC_STATIC,7,7,138,8,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2015",IDC_STATIC,161,7,137,8
     LTEXT           "‚·‚×‚Ä‚ÌƒtƒHƒ“ƒg",IDC_STATIC,7,37,89,12
     EDITTEXT        IDC_EDIT_ALL,102,37,91,12,ES_AUTOHSCROLL | ES_READONLY
@@ -171,8 +171,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,1,6,1
- PRODUCTVERSION 2,1,6,1
+ FILEVERSION 2,1,6,2
+ PRODUCTVERSION 2,1,6,2
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -189,12 +189,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "T.Syoji's Personal Development"
             VALUE "FileDescription", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-            VALUE "FileVersion", "2.1.6.1"
+            VALUE "FileVersion", "2.1.6.2"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2015"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-            VALUE "ProductVersion", "2.1.6.1"
+            VALUE "ProductVersion", "2.1.6.2"
         END
     END
     BLOCK "VarFileInfo"

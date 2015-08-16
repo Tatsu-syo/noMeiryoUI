@@ -54,6 +54,7 @@ private:
 	void OnSet8();
 	void OnSet10(void);
 	void SetWinVer();
+	int getDPI(void);
 
 	void setFont(
 		NONCLIENTMETRICS *fontMetrics,

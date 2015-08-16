@@ -21,7 +21,7 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 
 	if (WIN8_SIZE) {
 		// Windows 8ディスプレイコントロールパネル互換
-		if (point > 10) {
+		if ((point > 10) || (point < 8)) {
 			return (int)point;
 		} else {
 			// 10ptまではWindows 7と同様に計算する。

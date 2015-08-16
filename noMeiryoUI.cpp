@@ -103,10 +103,12 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 		} else {
 			// Windows 8/8.1
 			WIN8_SIZE = true;
+			use7Compat = true;
 		}
 	} else {
 		// Windows 10 or later
-		WIN8_SIZE = true;
+		WIN8_SIZE = false;
+		use7Compat = false;
 	}
 
 	return 0;
@@ -377,7 +379,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.16 Beta 2\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
+				_T("Meiryo UIも大っきらい!! Version 2.16\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
 				_T("Meiryo UIも大っきらい!!について"),
 				MB_OK | MB_ICONINFORMATION);
 
@@ -1067,10 +1069,32 @@ void NoMeiryoUI::OnBnClickedAll()
 }
 
 /**
+ * システムのDPIを取得する。
+ *
+ * @return 取得したDPI
+ */
+int NoMeiryoUI::getDPI(void)
+{
+	// DPIを取得する。
+	int dpiY = 96;
+	HDC hdc = GetDC(NULL);
+
+	if (hdc) {
+		dpiY = GetDeviceCaps(hdc, LOGPIXELSY);
+		ReleaseDC(NULL, hdc);
+	}
+
+	return dpiY;
+}
+
+/**
  * Windows 8/8.1の場合のプリセット値を設定する。
  */
 void NoMeiryoUI::OnSet8(void)
 {
+	// DPIを取得する。
+	int dpiY = getDPI();
+
 	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
 	// NONCLIENTMETRICSの内容を取得しなおす。
 	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
@@ -1082,39 +1106,45 @@ void NoMeiryoUI::OnSet8(void)
 
 	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfCaptionFont.lfHeight = -15;
+	metrics.lfCaptionFont.lfHeight = MulDiv(-15,dpiY,96);
 	metrics.lfCaptionFont.lfWeight = 400;
 	metrics.lfCaptionFont.lfCharSet = 1;
+	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, _T("Meiryo UI"));
-	iconFont.lfHeight = -12;
+	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
 	iconFont.lfWeight = 400;
 	iconFont.lfCharSet = 1;
+	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfSmCaptionFont.lfHeight = -15;
+	metrics.lfSmCaptionFont.lfHeight = MulDiv(-15, dpiY, 96);
 	metrics.lfSmCaptionFont.lfWeight = 400;
 	metrics.lfSmCaptionFont.lfCharSet = 1;
+	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfStatusFont.lfHeight = -12;
+	metrics.lfStatusFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfStatusFont.lfWeight = 400;
 	metrics.lfStatusFont.lfCharSet = 1;
+	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfMessageFont.lfHeight = -12;
+	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMessageFont.lfWeight = 400;
 	metrics.lfMessageFont.lfCharSet = 1;
+	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfMenuFont.lfHeight = -12;
+	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = 1;
+	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
@@ -1122,10 +1152,13 @@ void NoMeiryoUI::OnSet8(void)
 }
 
 /**
-* Windows 10の場合のプリセット値を設定する。
-*/
+ * Windows 10の場合のプリセット値を設定する。
+ */
 void NoMeiryoUI::OnSet10(void)
 {
+	// DPIを取得する。
+	int dpiY = getDPI();
+
 	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
 	// NONCLIENTMETRICSの内容を取得しなおす。
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -1137,39 +1170,45 @@ void NoMeiryoUI::OnSet10(void)
 
 	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfCaptionFont.lfHeight = -12;
+	metrics.lfCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfCaptionFont.lfWeight = 400;
 	metrics.lfCaptionFont.lfCharSet = 1;
+	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, _T("Yu Gothic UI"));
-	iconFont.lfHeight = -12;
+	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
 	iconFont.lfWeight = 400;
 	iconFont.lfCharSet = 1;
+	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfSmCaptionFont.lfHeight = -12;
+	metrics.lfSmCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfSmCaptionFont.lfWeight = 400;
 	metrics.lfSmCaptionFont.lfCharSet = 1;
+	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfStatusFont.lfHeight = -12;
+	metrics.lfStatusFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfStatusFont.lfWeight = 400;
 	metrics.lfStatusFont.lfCharSet = 1;
+	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfMessageFont.lfHeight = -12;
+	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMessageFont.lfWeight = 400;
 	metrics.lfMessageFont.lfCharSet = 1;
+	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfMenuFont.lfHeight = -12;
+	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = 1;
+	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
