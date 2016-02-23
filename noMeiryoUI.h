@@ -40,6 +40,22 @@ private:
 
 	TwrMenu *appMenu;
 
+	HFONT allFont;
+	HFONT titleFont;
+	HFONT iconFontHandle;
+	HFONT paletteFont;
+	HFONT hintFont;
+	HFONT messageFont;
+	HFONT menuFont;
+
+	TwrWnd *allFontTextBox;
+	TwrWnd *titleFontTextBox;
+	TwrWnd *iconFontTextBox;
+	TwrWnd *paletteFontTextBox;
+	TwrWnd *hintFontTextBox;
+	TwrWnd *messageFontTextBox;
+	TwrWnd *menuFontTextBox;
+
 	void OnLoad();
 	BOOL startLoadFont(TCHAR *filename);
 	BOOL loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
@@ -61,6 +77,7 @@ private:
 		LOGFONT *iconLogFont
 	);
 	void showHelp(void);
+	HFONT NoMeiryoUI::createFont(LOGFONT *font);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

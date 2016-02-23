@@ -83,6 +83,22 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	noMeiryoUI = false;
 	verInfo = NULL;
 
+	allFont = NULL;
+	titleFont = NULL;
+	iconFontHandle = NULL;
+	paletteFont = NULL;
+	hintFont = NULL;
+	messageFont = NULL;
+	menuFont = NULL;
+
+	allFontTextBox = NULL;
+	titleFontTextBox = NULL;
+	iconFontTextBox = NULL;
+	paletteFontTextBox = NULL;
+	hintFontTextBox = NULL;
+	messageFontTextBox = NULL;
+	menuFontTextBox = NULL;
+
 	if (_tcsstr(lpCmdLine, _T("noMeiryoUI")) != NULL) {
 		noMeiryoUI = true;
 	}
@@ -125,6 +141,51 @@ int NoMeiryoUI::OnAppliEnd()
 	if (verInfo != NULL) {
 		delete verInfo;
 	}
+
+	if (allFont != NULL) {
+		DeleteObject(allFont);
+	}
+	if (titleFont != NULL) {
+		DeleteObject(titleFont);
+	}
+	if (iconFontHandle != NULL) {
+		DeleteObject(iconFontHandle);
+	}
+	if (paletteFont != NULL) {
+		DeleteObject(paletteFont);
+	}
+	if (hintFont != NULL) {
+		DeleteObject(hintFont);
+	}
+	if (messageFont != NULL) {
+		DeleteObject(messageFont);
+	}
+	if (menuFont != NULL) {
+		DeleteObject(menuFont);
+	}
+
+	if (allFontTextBox != NULL) {
+		delete allFontTextBox;
+	}
+	if (titleFontTextBox != NULL) {
+		delete titleFontTextBox;
+	}
+	if (iconFontTextBox != NULL) {
+		delete iconFontTextBox;
+	}
+	if (paletteFontTextBox != NULL) {
+		delete paletteFontTextBox;
+	}
+	if (hintFontTextBox != NULL) {
+		delete hintFontTextBox;
+	}
+	if (messageFontTextBox != NULL) {
+		delete messageFontTextBox;
+	}
+	if (menuFontTextBox != NULL) {
+		delete menuFontTextBox;
+	}
+
 	return 0;
 }
 
@@ -165,6 +226,7 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
+
 	return (INT_PTR)FALSE;
 }
 
@@ -230,10 +292,43 @@ int NoMeiryoUI::OnWindowShow()
 	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
 	iconFontAll = metricsAll.lfMenuFont;
 
+	allFontTextBox = GetDlgItem(IDC_EDIT_ALL);
+	titleFontTextBox = GetDlgItem(IDC_EDIT_TITLE);
+	iconFontTextBox = GetDlgItem(IDC_EDIT_ICON);
+	paletteFontTextBox = GetDlgItem(IDC_EDIT_PALETTE);
+	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
+	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
+	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
+
 	// 表示を更新する。
 	updateDisplay();
 
 	return 0;
+}
+
+HFONT NoMeiryoUI::createFont(LOGFONT *font)
+{
+	HDC hDC = GetDC(this->hWnd);
+
+	HFONT newFont = CreateFont(
+		-MulDiv(10, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		0,
+		0,
+		0,
+		font->lfWeight,
+		font->lfItalic,
+		font->lfUnderline,
+		font->lfStrikeOut,
+		font->lfCharSet,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		PROOF_QUALITY, // CLEARTYPE_QUALITY,
+		FIXED_PITCH | FF_MODERN,
+		font->lfFaceName);
+
+	ReleaseDC(this->hWnd, hDC);
+
+	return newFont;
 }
 
 /**
@@ -298,6 +393,49 @@ void NoMeiryoUI::updateDisplay(void)
 	menuFontName = menuFontName + buf;
 
 	UpdateData(false);
+
+	if (allFont != NULL) {
+		DeleteObject(allFont);
+	}
+	allFont = createFont(&metricsAll.lfMenuFont);
+	allFontTextBox->setFont(allFont);
+
+	if (titleFont != NULL) {
+		DeleteObject(titleFont);
+	}
+	titleFont = createFont(&metrics.lfCaptionFont);
+	titleFontTextBox->setFont(titleFont);
+
+	if (iconFontHandle != NULL) {
+		DeleteObject(iconFontHandle);
+	}
+	iconFontHandle = createFont(&iconFont);
+	iconFontTextBox->setFont(iconFontHandle);
+
+	if (paletteFont != NULL) {
+		DeleteObject(paletteFont);
+	}
+	paletteFont = createFont(&metrics.lfSmCaptionFont);
+	paletteFontTextBox->setFont(paletteFont);
+
+	if (hintFont != NULL) {
+		DeleteObject(hintFont);
+	}
+	hintFont = createFont(&metrics.lfStatusFont);
+	hintFontTextBox->setFont(hintFont);
+
+	if (messageFont != NULL) {
+		DeleteObject(messageFont);
+	}
+	messageFont = createFont(&metrics.lfMessageFont);
+	messageFontTextBox->setFont(messageFont);
+
+	if (menuFont != NULL) {
+		DeleteObject(menuFont);
+	}
+	menuFont = createFont(&metrics.lfMenuFont);
+	menuFontTextBox->setFont(menuFont);
+
 }
 
 /**
@@ -379,7 +517,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.16\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2015"),
+				_T("Meiryo UIも大っきらい!! Version 2.17\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"),
 				_T("Meiryo UIも大っきらい!!について"),
 				MB_OK | MB_ICONINFORMATION);
 
@@ -488,37 +626,66 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			iconFontAll = logfont;
 
 			allFontName = logfont.lfFaceName;
+
+			DeleteObject(allFont);
+			allFont = createFont(&metricsAll.lfMenuFont);
+			allFontTextBox->setFont(allFont);
+
 			break;
 
 		case title:
 			metrics.lfCaptionFont = logfont;
 			titleFontName = logfont.lfFaceName;
+
+			DeleteObject(titleFont);
+			titleFont = createFont(&metrics.lfCaptionFont);
+			titleFontTextBox->setFont(titleFont);
 			break;
 
 		case icon:
 			iconFont = logfont;
 			iconFontName = logfont.lfFaceName;
+
+			DeleteObject(iconFontHandle);
+			iconFontHandle = createFont(&iconFont);
+			iconFontTextBox->setFont(iconFontHandle);
 			break;
 
 		case palette:
 			metrics.lfSmCaptionFont = logfont;
 			paletteFontName = logfont.lfFaceName;
+
+			DeleteObject(paletteFont);
+			paletteFont = createFont(&metrics.lfSmCaptionFont);
+			paletteFontTextBox->setFont(paletteFont);
 			break;
 
 		case hint:
 			metrics.lfStatusFont = logfont;
 			hintFontName = logfont.lfFaceName;
+
+			DeleteObject(hintFont);
+			hintFont = createFont(&metrics.lfStatusFont);
+			hintFontTextBox->setFont(hintFont);
 			break;
 
 		case message:
 			metrics.lfMessageFont = logfont;
 			messageFontName = logfont.lfFaceName;
+
+			DeleteObject(messageFont);
+			messageFont = createFont(&metrics.lfMessageFont);
+			messageFontTextBox->setFont(messageFont);
 			break;
 
 		case menu:
 			// メニューと選択項目
 			metrics.lfMenuFont = logfont;
 			menuFontName = logfont.lfFaceName;
+
+			DeleteObject(menuFont);
+			menuFont = createFont(&metrics.lfMenuFont);
+			menuFontTextBox->setFont(menuFont);
 			break;
 	}
 
@@ -615,12 +782,12 @@ BOOL NoMeiryoUI::startLoadFont(TCHAR *filename)
 }
 
 /**
- * フォント情報を保存する。
+ * フォント情報を読み込む。
  *
  * @param filename iniファイル名
- * @param category 保存対象フォントのiniファイルセクション名
- * @param font 保存対象フォントのLOGFONT構造体
- * @result TRUE:保存成功 FALSE:保存失敗
+ * @param category 読み込み対象フォントのiniファイルセクション名
+ * @param font 読み込み対象フォントのLOGFONT構造体
+ * @result TRUE:読み込み成功 FALSE:読み込み失敗
  */
 BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 {
