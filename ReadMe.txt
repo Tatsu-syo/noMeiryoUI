@@ -27,5 +27,5 @@ MITライセンス(http://opensource.org/licenses/mit-license.php)に従いま�
 [作者]
 庄子 達彦(Tatsu)
 E-mail Address rxk16664@nifty.ne.jp
-My Web page http://homepage3.nifty.com/Tatsu_syo/index.html
+My Web page http://tatsu.life.coocan.jp/index.html
 ------------------------------------------------------------------------
