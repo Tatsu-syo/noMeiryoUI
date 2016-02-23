@@ -1,26 +1,24 @@
 ﻿Meiryo UIも大っきらい!! source file package
-By Tatsuhiko Syoji(Tatsu) 2005,2012-2015
+By Tatsuhiko Syoji(Tatsu) 2005,2012-2016
 
 [必要となるプログラム]
-・Visual Studio 2008(VC++)
-・Visual Leak Detector(デバッグ版のビルドにのみ必要。)
+・Visual Studio 2008/2015(VC++)
 
 [ファイル]
 ReadMe.txt:本ファイルです。
 LICENSE.txt : MITライセンスの条文です。
-noMeiryoUI.sln : Visual Studio 2008用ソリューションファイルです。
-noMeiryoUI.vcproj : Visual Studio 2008用プロジェクトファイルです。
+noMeiryoUI_2008.sln : Visual Studio 2008用ソリューションファイルです。
+noMeiryoUI_2008.vcproj : Visual Studio 2008用プロジェクトファイルです。
+noMeiryoUI.sln : Visual Studio 2015用ソリューションファイルです。
+noMeiryoUI.vcxproj : Visual Studio 2015用プロジェクトファイルです。
+noMeiryoUI.vcxproj.filters : Visual Studio 2015用プロジェクトファイルです。
 TWRフォルダ配下のファイル : GUI構築に使用したファイルです。
 その他のファイル : Meiryo UIも大っきらい!!自身のソースファイルです。
 
 [使い方]
 1.まず、本アーカイブをディレクトリ付きで展開します。
-2.デバッグ版をビルドする場合はVisual Leak Detector(http://vld.codeplex.com/)を
-　セットアップします。
-　Visual Leak Detectorを使わない場合はvld.hをインクルードしている個所を
-　削除してください。
-3.noMeiryoUI.slnを開きます。
-4.ビルドを行うと実行ファイルがデバッグ版はDebugフォルダに、リリース版は
+2.noMeiryoUI_2008.sln(Visual Studio 2008)かnoMeiryoUI.sln(Visual Studio 2015)を開きます。
+3.ビルドを行うと実行ファイルがデバッグ版はDebugフォルダに、リリース版は
 　Releaseフォルダに生成されます。
 
 [ライセンス]
