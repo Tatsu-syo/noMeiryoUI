@@ -251,6 +251,29 @@ int NoMeiryoUI::OnWindowShow()
 	FillMemory(&iconFont,sizeof(LOGFONT),0x00);
 	FillMemory(&iconFontAll,sizeof(LOGFONT),0x00);
 
+	// 現在のフォントを取得する。
+	getActualFont();
+
+	// テキストボックス制御用にダイアログの各テキストボックスを取得する。
+	allFontTextBox = GetDlgItem(IDC_EDIT_ALL);
+	titleFontTextBox = GetDlgItem(IDC_EDIT_TITLE);
+	iconFontTextBox = GetDlgItem(IDC_EDIT_ICON);
+	paletteFontTextBox = GetDlgItem(IDC_EDIT_PALETTE);
+	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
+	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
+	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
+
+	// 表示を更新する。
+	updateDisplay();
+
+	return 0;
+}
+
+/**
+ * 現在設定されているフォントを取得する。
+ */
+void NoMeiryoUI::getActualFont(void)
+{
 	//
 	// 個別のフォント用の情報取得
 	//
@@ -291,21 +314,14 @@ int NoMeiryoUI::OnWindowShow()
 	metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
 	metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
 	iconFontAll = metricsAll.lfMenuFont;
-
-	allFontTextBox = GetDlgItem(IDC_EDIT_ALL);
-	titleFontTextBox = GetDlgItem(IDC_EDIT_TITLE);
-	iconFontTextBox = GetDlgItem(IDC_EDIT_ICON);
-	paletteFontTextBox = GetDlgItem(IDC_EDIT_PALETTE);
-	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
-	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
-	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
-
-	// 表示を更新する。
-	updateDisplay();
-
-	return 0;
 }
 
+/**
+ * フォント情報からフォントのハンドルを作成する。
+ *
+ * @param font フォントの情報
+ * @return フォントハンドル
+ */
 HFONT NoMeiryoUI::createFont(LOGFONT *font)
 {
 	HDC hDC = GetDC(this->hWnd);
@@ -353,6 +369,7 @@ void NoMeiryoUI::UpdateData(bool toObj)
  */
 void NoMeiryoUI::updateDisplay(void)
 {
+	// フォント名、ポイント数表示文字列を作成する。
 	int point;
 	TCHAR buf[16];
 
@@ -394,6 +411,8 @@ void NoMeiryoUI::updateDisplay(void)
 
 	UpdateData(false);
 
+
+	// 選択したフォントをテキストボックスに設定する。
 	if (allFont != NULL) {
 		DeleteObject(allFont);
 	}
@@ -714,13 +733,16 @@ void NoMeiryoUI::OnLoad()
 	}
 
 	BOOL loadResult;
-	loadResult = startLoadFont(dlg->GetPathName());
+	loadResult = loadFontInfo(dlg->GetPathName());
 	if (!loadResult) {
 		MessageBox(
 			this->getHwnd(),
 			_T("フォント設定の読み込みに失敗しました。"),
 			_T("エラー"),
 			MB_OK | MB_ICONEXCLAMATION);
+	} else {
+		// フォント設定の読み込みに成功したらテキストボックスに設定する。
+		updateDisplay();
 	}
 
 
@@ -728,12 +750,12 @@ void NoMeiryoUI::OnLoad()
 }
 
 /**
- * フォント情報読み込みを開始する。
+ * フォント情報を読み込む。
  *
  * @param filename iniファイル名
  * @result TRUE:保存成功 FALSE:保存失敗
  */
-BOOL NoMeiryoUI::startLoadFont(TCHAR *filename)
+BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 {
 	BOOL loadResult;
 	LOGFONT captionFont;
@@ -774,9 +796,6 @@ BOOL NoMeiryoUI::startLoadFont(TCHAR *filename)
 	metrics.lfStatusFont = statusFont;
 	metrics.lfMessageFont = messageFont;
 	metrics.lfMenuFont = menuFont;
-
-	// 表示を更新する。
-	updateDisplay();
 
 	return TRUE;
 }

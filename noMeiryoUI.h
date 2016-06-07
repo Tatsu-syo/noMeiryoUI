@@ -57,7 +57,7 @@ private:
 	TwrWnd *menuFontTextBox;
 
 	void OnLoad();
-	BOOL startLoadFont(TCHAR *filename);
+	BOOL loadFontInfo(TCHAR *filename);
 	BOOL loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
 	void OnSave();
 	BOOL startSaveFont(TCHAR *filename);
@@ -77,7 +77,8 @@ private:
 		LOGFONT *iconLogFont
 	);
 	void showHelp(void);
-	HFONT NoMeiryoUI::createFont(LOGFONT *font);
+	HFONT createFont(LOGFONT *font);
+	void getActualFont(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
