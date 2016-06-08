@@ -229,6 +229,46 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
 
+	// フォント情報取得用構造体の初期化
+	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
+	FillMemory(&metricsAll, sizeof(NONCLIENTMETRICS), 0x00);
+	FillMemory(&iconFont, sizeof(LOGFONT), 0x00);
+	FillMemory(&iconFontAll, sizeof(LOGFONT), 0x00);
+
+	// 現在のフォントを取得する。
+	if (settingFile[0] == _T('\0')) {
+		getActualFont();
+	} else {
+		// 現在のフォントと付随する画面各部の幅等の情報を取得しておく。
+		getActualFont();
+
+		BOOL loadResult = loadFontInfo(settingFile);
+		if (loadResult) {
+			if (setOnStart) {
+				// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
+				OnBnClickedOk();
+				EndDialog(hWnd, 0);
+
+				return (INT_PTR)FALSE;
+			} else {
+				// メニューフォントの情報をすべてのフォントの各フォントの情報にあてる。
+				metricsAll.lfMenuFont = metrics.lfMenuFont;
+				metricsAll.lfStatusFont = metricsAll.lfMenuFont;
+				metricsAll.lfMessageFont = metricsAll.lfMenuFont;
+				metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
+				metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
+				iconFontAll = metricsAll.lfMenuFont;
+			}
+		} else {
+			// 読み込み失敗時は念のため再度現在のフォント等の情報を
+			// 取得しておく。
+			getActualFont();
+		}
+	}
+
+	// 表示を更新する。
+	updateDisplay();
+
 	return (INT_PTR)FALSE;
 }
 
@@ -247,15 +287,6 @@ int NoMeiryoUI::OnWindowShow()
 
 	SetWinVer();
 
-	// フォント情報取得用構造体の初期化
-	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
-	FillMemory(&metricsAll,sizeof(NONCLIENTMETRICS),0x00);
-	FillMemory(&iconFont,sizeof(LOGFONT),0x00);
-	FillMemory(&iconFontAll,sizeof(LOGFONT),0x00);
-
-	// 現在のフォントを取得する。
-	getActualFont();
-
 	// テキストボックス制御用にダイアログの各テキストボックスを取得する。
 	allFontTextBox = GetDlgItem(IDC_EDIT_ALL);
 	titleFontTextBox = GetDlgItem(IDC_EDIT_TITLE);
@@ -264,9 +295,6 @@ int NoMeiryoUI::OnWindowShow()
 	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
 	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
 	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
-
-	// 表示を更新する。
-	updateDisplay();
 
 	return 0;
 }
@@ -631,7 +659,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_ABOUT:
 			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.17\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"),
+				_T("Meiryo UIも大っきらい!! Version 2.20\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"),
 				_T("Meiryo UIも大っきらい!!について"),
 				MB_OK | MB_ICONINFORMATION);
 
