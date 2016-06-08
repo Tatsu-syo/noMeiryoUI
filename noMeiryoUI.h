@@ -36,6 +36,7 @@ private:
 	LOGFONT iconFontAll;
 
 	bool noMeiryoUI;
+	bool noTahoma;
 	TwrWnd *verInfo;
 
 	TwrMenu *appMenu;
@@ -55,6 +56,9 @@ private:
 	TwrWnd *hintFontTextBox;
 	TwrWnd *messageFontTextBox;
 	TwrWnd *menuFontTextBox;
+
+	TCHAR settingFile[MAX_PATH];
+	bool setOnStart;
 
 	void OnLoad();
 	BOOL loadFontInfo(TCHAR *filename);
@@ -79,6 +83,8 @@ private:
 	void showHelp(void);
 	HFONT createFont(LOGFONT *font);
 	void getActualFont(void);
+	void getOption(TCHAR *lpCmdLine);
+	void parseOption(TCHAR *param, int argCount);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

@@ -49,5 +49,6 @@ public:
 		previousFont = item;
 	}
 	void setNoMeiryoUI();
+	void setNoTahoma();
 
 };

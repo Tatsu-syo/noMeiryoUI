@@ -81,6 +81,9 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 {
 	// アプリ固有の初期化を行います。
 	noMeiryoUI = false;
+	noTahoma = false;
+	setOnStart = false;
+	_tcscpy(settingFile, _T(""));
 	verInfo = NULL;
 
 	allFont = NULL;
@@ -98,10 +101,6 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	hintFontTextBox = NULL;
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
-
-	if (_tcsstr(lpCmdLine, _T("noMeiryoUI")) != NULL) {
-		noMeiryoUI = true;
-	}
 
 	DWORD dwVersion = GetVersion();
 
@@ -126,6 +125,9 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 		WIN8_SIZE = false;
 		use7Compat = false;
 	}
+
+	// オプションを取得する。
+	getOption(lpCmdLine);
 
 	return 0;
 }
@@ -267,6 +269,99 @@ int NoMeiryoUI::OnWindowShow()
 	updateDisplay();
 
 	return 0;
+}
+
+/**
+ * コマンドラインオプションを取得する。
+ *
+ * @param lpCmdLine コマンドライン
+ */
+void NoMeiryoUI::getOption(TCHAR *lpCmdLine)
+{
+	TCHAR *p;
+	TCHAR *paramStart;
+	bool firstCommand = false;
+	bool capturing = false;
+	TCHAR delimiter;
+	int argCount = 0;
+
+	p = lpCmdLine;
+	while (*p != _T('\0')) {
+		if (*p == _T('\"')) {
+			if (!capturing) {
+				capturing = true;
+				delimiter = _T('\"');
+				// 次の文字からパラメータ開始
+				paramStart = p + 1;
+			} else {
+				if (delimiter == _T('\"')) {
+					// 解析中で区切り文字がダブルクォーテーションの場合
+					// パラメータ終了とする。
+					capturing = false;
+					*p = _T('\0');
+					argCount++;
+					// ここでパラメータの個数に応じた処理を行う。
+					parseOption(paramStart, argCount);
+				}
+			}
+		} else if (_istspace(*p)) {
+			// 空白の場合
+			if (capturing) {
+				if (delimiter != _T('\"')) {
+					// 解析中で区切り文字がダブルクォーテーションでない場合
+					// パラメータ終了とする。
+					capturing = false;
+					*p = _T('\0');
+					argCount++;
+					// ここでパラメータの個数に応じた処理を行う。
+					parseOption(paramStart, argCount);
+				}
+			}
+		} else {
+			if (!capturing) {
+				// パラメータ開始
+				capturing = true;
+				paramStart = p;
+				delimiter = _T(' ');
+			}
+		}
+		p++;
+	}
+	if (capturing) {
+		// まだコマンドライン解析が続いていたらここまでをコマンドラインとする。
+		argCount++;
+		// ここでパラメータの個数に応じた処理を行う。
+		parseOption(paramStart, argCount);
+	}
+
+}
+
+/**
+ * オプションの位置に応じた解析を行う。
+ *
+ * @param param パラメータ
+ * @param argCount オプションの個数
+ */
+void NoMeiryoUI::parseOption(TCHAR *param, int argCount)
+{
+	switch (argCount) {
+		case 1:
+			// 設定ファイル名
+			if (_tcscmp(_T("--"), param)) {
+				_tcscpy(settingFile, param);
+			}
+			break;
+		default:
+			if (!_tcscmp(param, _T("-set"))) {
+				setOnStart = true;
+			} else if (!_tcscmp(param, _T("noMeiryoUI"))) {
+				noMeiryoUI = true;
+			} else if (!_tcscmp(param, _T("noTahoma"))) {
+				noTahoma = true;
+			}
+
+			break;
+	}
 }
 
 /**
@@ -611,6 +706,9 @@ void NoMeiryoUI::selectFont(enum fontType type)
 		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL);
 		if (noMeiryoUI) {
 			selector->setNoMeiryoUI();
+		}
+		if (noTahoma) {
+			selector->setNoTahoma();
 		}
 		// 選択していたフォントをフォント選択ダイアログに設定する。
 		selector->setPreviousFont(target);

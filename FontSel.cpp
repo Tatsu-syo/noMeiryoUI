@@ -14,6 +14,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 std::vector<struct FontInfo> fontList;
 static bool noMeiryoUI = false;
+static bool noTahoma = false;
 
 bool operator<(const FontInfo& left, const FontInfo& right)
 {
@@ -52,6 +53,12 @@ int CALLBACK EnumFontFamExProc(
 	}
 	if (noMeiryoUI) {
 		if (!_tcscmp(_T("Meiryo UI"), lpelfe->elfLogFont.lfFaceName)) {
+			return 1;
+		}
+	}
+
+	if (noTahoma) {
+		if (!_tcscmp(_T("Tahoma"), lpelfe->elfLogFont.lfFaceName)) {
 			return 1;
 		}
 	}
@@ -497,4 +504,9 @@ INT_PTR FontSel::onOK(void)
 void FontSel::setNoMeiryoUI()
 {
 	noMeiryoUI = true;
+}
+
+void FontSel::setNoTahoma()
+{
+	noTahoma = true;
 }
