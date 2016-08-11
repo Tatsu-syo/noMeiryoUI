@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012,2013 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include <string.h>
@@ -19,6 +19,16 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 TwrMenu::TwrMenu(HWND wnd)
 {
 	menuHandle = GetMenu(wnd);
+}
+
+/**
+ * コンストラクタ
+ *
+ * @param オブジェクトに結び付けるウインドウのハンドル
+ */
+TwrMenu::TwrMenu(HMENU menu)
+{
+	menuHandle = menu;
 }
 
 /**
@@ -93,3 +103,20 @@ void TwrMenu::setEnabled(int id, bool enabled)
 	SetMenuItemInfo(menuHandle, id, FALSE, &info);
 }
 
+/**
+ * メニューの文言を設定する。
+ *
+ * @param position メニューの位置/メニュー項目のID
+ * @param message 設定するメッセージ
+ * @param byPosition 指定方法(TRUE:メニューの位置 FALSE:メニュー項目のID)
+ */
+void TwrMenu::setText(int position, TCHAR *message, BOOL byPosition)
+{
+	MENUITEMINFO info;
+
+	info.cbSize = sizeof(MENUITEMINFO);
+	info.fMask = MIIM_FTYPE | MIIM_STRING;
+	info.fType = MFT_STRING;
+	info.dwTypeData = message;
+	SetMenuItemInfo(menuHandle, position, byPosition, &info);
+}
