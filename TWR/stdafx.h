@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2015 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // stdafx.h : 標準のシステム インクルード ファイルのインクルード ファイル、または
@@ -21,5 +21,3 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <memory.h>
 #include <tchar.h>
 
-
-// TODO: プログラムに必要な追加ヘッダーをここで参照してください。

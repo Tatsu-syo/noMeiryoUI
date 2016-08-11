@@ -2,8 +2,8 @@
 noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
-#ifndef MYAPPLI_H
-#define MYAPPLI_H
+#ifndef NOMEIRYOUI_H
+#define NOMEIRYOUI_H
 
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
@@ -98,11 +98,5 @@ public:
 	void UpdateData(bool toObj);
 
 };
-
-#include	<windows.h>
-#include	<sddl.h>
-#include	<tchar.h>
-
-TCHAR *getSID(void);
 
 #endif

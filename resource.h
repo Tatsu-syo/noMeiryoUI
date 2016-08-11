@@ -38,6 +38,19 @@
 #define IDC_CHECK_UNDERLINE             1006
 #define IDC_CHECK_STRIKE                1008
 #define IDC_STATIC_VERNO                1009
+#define IDC_STATIC_APP_TITLE            1010
+#define IDC_STATIC_WIN_VER              1011
+#define IDC_STATIC_ALL_FONT             1012
+#define IDC_STATIC_TITLE_BAR            1013
+#define IDC_STATIC_ICON                 1014
+#define IDC_STATIC_PALETTE_TITLE        1015
+#define IDC_STATIC_HINT                 1016
+#define IDC_STATIC_MESSAGE              1017
+#define IDC_STATIC_MENU                 1018
+#define IDC_STATIC_AUTHOR               1019
+#define IDC_STATIC_NAME                 1020
+#define IDC_STATIC_STYLE                1021
+#define IDC_STATIC_SIZE                 1022
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -55,7 +68,10 @@
 #define IDM_COMPAT7                     32786
 #define ID_32787                        32787
 #define IDM_SET_10                      32788
+#define ID_Menu32789                    32789
+#define ID_AAA_BBB                      32790
 #define IDC_STATIC                      -1
+#define IDC_STATIC_CHARSET              -1
 
 // Next default values for new objects
 // 
@@ -63,8 +79,8 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        134
-#define _APS_NEXT_COMMAND_VALUE         32789
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_COMMAND_VALUE         32791
+#define _APS_NEXT_CONTROL_VALUE         1023
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

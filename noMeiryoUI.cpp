@@ -228,6 +228,9 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
+	// メニュー文字列変更テスト
+	//appMenu->setText(0, _T("&File"));
+	//appMenu->setText(IDM_OPEN, _T("L&oad font settings..."), FALSE);
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -677,26 +680,11 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 void NoMeiryoUI::selectFont(enum fontType type)
 {
 
-	CHOOSEFONT font;
 	INT_PTR result;
 	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
 
-	// 設定したいフォントを選択する。
-	FillMemory(&font,sizeof(CHOOSEFONT),0x00);
 	FillMemory(&logfont,sizeof(LOGFONT),0x00);
 	
-	font.lStructSize = sizeof(CHOOSEFONT);
-	font.hwndOwner = this->hWnd;
-	font.hDC = NULL;
-	font.lpLogFont = &logfont;
-	font.Flags = CF_SCREENFONTS;
-	font.hInstance = hInst;
-	font.lpTemplateName = _T("");
-	font.lpszStyle = _T("");
-	font.nFontType = SCREEN_FONTTYPE;
-	font.nSizeMax = 72;
-	// font.rgbColors = rgbCurrent;
-
 	try {
 		LOGFONT *target;
 		switch (type) {
@@ -730,7 +718,6 @@ void NoMeiryoUI::selectFont(enum fontType type)
 				break;
 		}
 
-		// result = ChooseFont(&font);
 		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL);
 		if (noMeiryoUI) {
 			selector->setNoMeiryoUI();
