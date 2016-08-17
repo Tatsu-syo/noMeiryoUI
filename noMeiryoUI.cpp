@@ -13,6 +13,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <process.h>
 #include <Objbase.h>
 #include <shellapi.h>
+#include <locale.h>
+#include <mbctype.h>
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
@@ -28,6 +30,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 // アプリケーションオブジェクト
 NoMeiryoUI *appObj;
 static bool use7Compat = true;
+bool useResource = false;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -35,6 +38,30 @@ static bool use7Compat = true;
 DialogAppliBase *createAppli()
 {
 	CoInitialize(NULL);
+	TCHAR iniPath[MAX_PATH];
+	TCHAR *p;
+
+	::GetModuleFileName(NULL, iniPath, _MAX_PATH);
+	p = _tcsrchr(iniPath, '\\');
+	if (p != NULL) {
+		*(p + 1) = '\0';
+	}
+
+	// ロケールの初期化
+	char *localeName = setlocale(LC_ALL, "");
+	_setmbcp(_MB_CP_LOCALE);
+	localeName = "aaa";
+	if (strstr(localeName, "Japanese_Japan") != NULL) {
+		useResource = false;
+	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
+		useResource = true;
+		_tcscat(iniPath, _T("ChineseSimplified.lng"));
+		readResourceFile(iniPath);
+	} else {
+		useResource = true;
+		_tcscat(iniPath, _T("English.lng"));
+		readResourceFile(iniPath);
+	}
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
 	appObj = new NoMeiryoUI();
@@ -228,9 +255,6 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
-	// メニュー文字列変更テスト
-	//appMenu->setText(0, _T("&File"));
-	//appMenu->setText(IDM_OPEN, _T("L&oad font settings..."), FALSE);
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -269,7 +293,13 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		}
 	}
 
-	// 表示を更新する。
+	if (useResource) {
+		// 日本語以外のOSで起動している場合は
+		// UI文字列をリソースに合わせて変更する。
+		applyResource();
+	}
+
+	// フォント名表示を更新する。
 	updateDisplay();
 
 	return (INT_PTR)FALSE;
@@ -489,6 +519,58 @@ void NoMeiryoUI::UpdateData(bool toObj)
 	DDX_Text(toObj,IDC_EDIT_MESSAGE, messageFontName);
 	DDX_Text(toObj,IDC_EDIT_MENU, menuFontName);
 }
+
+/**
+ * リソースを各項目に設定する。
+ */
+void NoMeiryoUI::applyResource()
+{
+	HDC hDC = GetDC(this->hWnd);
+
+	HFONT newFont = CreateFont(
+		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		FALSE,
+		DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		PROOF_QUALITY, // CLEARTYPE_QUALITY,
+		FIXED_PITCH | FF_MODERN,
+		langResource[0].c_str());
+
+	ReleaseDC(this->hWnd, hDC);
+
+
+	// アプリタイトル
+	setText(langResource[1].c_str());
+
+	// メニュー文字列変更テスト
+	appMenu->setText(0, langResource[2].c_str(), TRUE);
+	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
+	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
+	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
+	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
+	appMenu->setText(1, langResource[7].c_str(), TRUE);
+	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
+	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
+	appMenu->setText(2, langResource[10].c_str(), TRUE);
+	appMenu->setText(IDM_ANOTHER, langResource[11].c_str(), FALSE);
+	appMenu->setText(IDM_COMPAT7, langResource[12].c_str(), FALSE);
+	appMenu->setText(3, langResource[13].c_str(), TRUE);
+	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
+	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
+
+	setChildText(IDC_STATIC_ALL_FONT, _T("All font"));
+	setChildFont(IDC_STATIC_ALL_FONT, newFont);
+
+	DeleteObject(newFont);
+}
+
 
 /**
  * フォント表示を更新する。

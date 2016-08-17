@@ -273,3 +273,30 @@ HWND BaseDialog::GetDlgItemRaw(int item)
 	return ::GetDlgItem(hWnd, item);
 }
 
+/**
+ * 子項目のテキストを設定する。
+ *
+ * @param id 子項目のID
+ * @param message 設定するテキスト
+ */
+void BaseDialog::setChildText(int id, TCHAR *message)
+{
+	HWND target;
+
+	target = ::GetDlgItem(hWnd, id);
+	SetWindowText(target, message);
+}
+
+/**
+* 子項目のフォントを設定する。
+*
+* @param id 子項目のID
+* @param font 設定するフォント
+*/
+void BaseDialog::setChildFont(int id, HFONT font)
+{
+	HWND target;
+
+	target = ::GetDlgItem(hWnd, id);
+	SendMessage(target, WM_SETFONT, (WPARAM)font, MAKELPARAM(TRUE, 0));
+}

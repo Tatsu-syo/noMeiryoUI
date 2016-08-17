@@ -59,8 +59,8 @@ CAPTION "Meiryo UIも大っきらい!!"
 MENU IDR_MENU1
 FONT 10, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 2.20",IDC_STATIC_APP_TITLE,7,7,138,8,SS_NOPREFIX
-    RTEXT           "Copyright (C) Tatsu 2005,2012-2016",IDC_STATIC_AUTHOR,161,7,137,8
+    LTEXT           "Meiryo UIも大っきらい!! Version 2.20",IDC_STATIC_APP_TITLE,7,7,164,8,SS_NOPREFIX
+    RTEXT           "Copyright (C) Tatsu 2005,2012-2016",IDC_STATIC_AUTHOR,170,7,128,8
     LTEXT           "すべてのフォント",IDC_STATIC_ALL_FONT,7,37,89,12
     EDITTEXT        IDC_EDIT_ALL,102,37,91,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_ALL,197,36,50,14,WS_GROUP
@@ -83,8 +83,8 @@ BEGIN
     LTEXT           "メニュー/選択項目",IDC_STATIC_MENU,7,128,89,12
     EDITTEXT        IDC_EDIT_MENU,102,128,91,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_MENU,197,127,50,14,WS_GROUP
-    DEFPUSHBUTTON   "OK",IDOK,197,153,50,14,WS_GROUP
-    PUSHBUTTON      "キャンセル",IDCANCEL,250,153,50,14,WS_GROUP
+    DEFPUSHBUTTON   "設定",IDOK,197,153,50,14,WS_GROUP
+    PUSHBUTTON      "終了",IDCANCEL,250,153,50,14,WS_GROUP
     LTEXT           "Windows Version:",IDC_STATIC_WIN_VER,7,18,59,8,SS_NOPREFIX
     LTEXT           "",IDC_STATIC_VERNO,65,18,117,8
 END
@@ -173,8 +173,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,2,0,0
- PRODUCTVERSION 2,2,0,0
+ FILEVERSION 2,3,0,0
+ PRODUCTVERSION 2,3,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -189,14 +189,14 @@ BEGIN
     BEGIN
         BLOCK "041104b0"
         BEGIN
-            VALUE "CompanyName", "T.Syoji's Personal Development"
+            VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIも大っきらい!!"
-            VALUE "FileVersion", "2.2.0.0"
+            VALUE "FileVersion", "2.3.0.0"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2016"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!!"
-            VALUE "ProductVersion", "2.2.0.0"
+            VALUE "ProductVersion", "2.3.0.0"
         END
     END
     BLOCK "VarFileInfo"

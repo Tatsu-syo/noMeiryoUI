@@ -133,3 +133,4 @@ INT_PTR DialogAppliBase::OnInitDialog()
 
 	return (INT_PTR)FALSE;
 }
+
