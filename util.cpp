@@ -127,6 +127,17 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("MENU_HELP"));
 	readResourceItem(file, _T("MENU_HELP_HELP"));
 	readResourceItem(file, _T("MENU_HELP_ABOUT"));
+	readResourceItem(file, _T("DLG_ALL_FONT"));
+	readResourceItem(file, _T("DLG_TITLE_BAR"));
+	readResourceItem(file, _T("DLG_ICON"));
+	readResourceItem(file, _T("DLG_PALETTE"));
+	readResourceItem(file, _T("DLG_HINT"));
+	readResourceItem(file, _T("DLG_MESSAGE"));
+	readResourceItem(file, _T("DLG_MENU"));
+	readResourceItem(file, _T("DLG_SELECT"));
+	readResourceItem(file, _T("DLG_SET_ALL"));
+	readResourceItem(file, _T("DLG_SET"));
+	readResourceItem(file, _T("DLG_EXIT"));
 
 }
 

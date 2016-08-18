@@ -86,6 +86,7 @@ private:
 	void getOption(TCHAR *lpCmdLine);
 	void parseOption(TCHAR *param, int argCount);
 	void applyResource();
+	void showVersion(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

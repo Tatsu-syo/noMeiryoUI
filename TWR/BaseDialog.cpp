@@ -279,7 +279,7 @@ HWND BaseDialog::GetDlgItemRaw(int item)
  * @param id 子項目のID
  * @param message 設定するテキスト
  */
-void BaseDialog::setChildText(int id, TCHAR *message)
+void BaseDialog::setChildText(int id, const TCHAR *message)
 {
 	HWND target;
 

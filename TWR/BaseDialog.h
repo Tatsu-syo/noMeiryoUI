@@ -34,7 +34,7 @@ public:
 
 	TwrWnd *GetDlgItem(int item);
 	HWND GetDlgItemRaw(int item);
-	void setChildText(int id, TCHAR *message);
+	void setChildText(int id, const TCHAR *message);
 	void setChildFont(int id, HFONT font);
 
 	virtual void UpdateData(bool toObj);

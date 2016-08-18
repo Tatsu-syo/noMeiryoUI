@@ -50,6 +50,7 @@ DialogAppliBase *createAppli()
 	// ロケールの初期化
 	char *localeName = setlocale(LC_ALL, "");
 	_setmbcp(_MB_CP_LOCALE);
+
 	localeName = "aaa";
 	if (strstr(localeName, "Japanese_Japan") != NULL) {
 		useResource = false;
@@ -253,6 +254,13 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
 	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
 	if (major < 10) {
+		appMenu->setEnabled(IDM_SET_10, false);
+	}
+
+	if (useResource) {
+		// 海外版は初期設定のフォントが異なるのでプリセットメニューを
+		// すべて使えなくしておく。
+		appMenu->setEnabled(IDM_SET_8, false);
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
 
@@ -549,7 +557,7 @@ void NoMeiryoUI::applyResource()
 	// アプリタイトル
 	setText(langResource[1].c_str());
 
-	// メニュー文字列変更テスト
+	// メニュー文字列変更
 	appMenu->setText(0, langResource[2].c_str(), TRUE);
 	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
 	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
@@ -565,8 +573,50 @@ void NoMeiryoUI::applyResource()
 	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
 	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
 
-	setChildText(IDC_STATIC_ALL_FONT, _T("All font"));
+	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
 	setChildFont(IDC_STATIC_ALL_FONT, newFont);
+	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
+	setChildFont(IDC_STATIC_TITLE_BAR, newFont);
+	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
+	setChildFont(IDC_STATIC_ICON, newFont);
+	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
+	setChildFont(IDC_STATIC_PALETTE_TITLE, newFont);
+	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
+	setChildFont(IDC_STATIC_HINT, newFont);
+	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
+	setChildFont(IDC_STATIC_MESSAGE, newFont);
+	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
+	setChildFont(IDC_STATIC_MENU, newFont);
+
+	setChildText(ID_SEL_ALL, langResource[23].c_str());
+	setChildFont(ID_SEL_ALL, newFont);
+	setChildText(ID_SEL_TITLE, langResource[23].c_str());
+	setChildFont(ID_SEL_TITLE, newFont);
+	setChildText(ID_SEL_ICON, langResource[23].c_str());
+	setChildFont(ID_SEL_ICON, newFont);
+	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
+	setChildFont(ID_SEL_PALETTE, newFont);
+	setChildText(ID_SEL_HINT, langResource[23].c_str());
+	setChildFont(ID_SEL_HINT, newFont);
+	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
+	setChildFont(ID_SEL_MESSAGE, newFont);
+	setChildText(ID_SEL_MENU, langResource[23].c_str());
+	setChildFont(ID_SEL_MENU, newFont);
+	setChildText(ID_SET_ALL, langResource[24].c_str());
+	setChildFont(ID_SET_ALL, newFont);
+	setChildText(IDOK, langResource[25].c_str());
+	setChildFont(IDOK, newFont);
+	setChildText(IDCANCEL, langResource[26].c_str());
+	setChildFont(IDCANCEL, newFont);
+
+	TCHAR buf[64];
+	_stprintf(buf, _T("%s Version 2.30"), langResource[1].c_str());
+	setChildText(IDC_STATIC_APP_TITLE, buf);
+	setChildFont(IDC_STATIC_APP_TITLE, newFont);
+
+	setChildFont(IDC_STATIC_VERNO, newFont);
+	setChildFont(IDC_STATIC_AUTHOR, newFont);
+
 
 	DeleteObject(newFont);
 }
@@ -743,11 +793,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			showHelp();
 			return (INT_PTR)0;
 		case IDM_ABOUT:
-			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.20\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"),
-				_T("Meiryo UIも大っきらい!!について"),
-				MB_OK | MB_ICONINFORMATION);
-
+			showVersion();
 			return (INT_PTR)0;
 	}
 	return BaseDialog::OnCommand(wParam);
@@ -1743,22 +1789,22 @@ void NoMeiryoUI::SetWinVer()
 			switch (minor) {
 				case 0:
 					_stprintf(buf,
-						_T("Windows 2000 (%d.%d)"),
+						_T("Windows Version:Windows 2000 (%d.%d)"),
 						major,minor);
 					break;
 				case 1:
 					_stprintf(buf,
-						_T("Windows XP (%d.%d)"),
+						_T("Windows Version:Windows XP (%d.%d)"),
 						major,minor);
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows XP 64bit (%d.%d)"),
+							_T("Windows Version:Windows XP 64bit (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2003 (%d.%d)"),
+							_T("Windows Version:Windows Server 2003 (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -1769,55 +1815,55 @@ void NoMeiryoUI::SetWinVer()
 				case 0:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Vista (%d.%d)"),
+							_T("Windows Version:Windows Vista (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2008 (%d.%d)"),
+							_T("Windows Version:Windows Server 2008 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 1:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 7 (%d.%d)"),
+							_T("Windows Version:Windows 7 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2008 R2 (%d.%d)"),
+							_T("Windows Version:Windows Server 2008 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 8 (%d.%d)"),
+							_T("Windows Version:Windows 8 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2012 (%d.%d)"),
+							_T("Windows Version:Windows Server 2012 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 3:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 8.1 (%d.%d)"),
+							_T("Windows Version:Windows 8.1 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2012 R2 (%d.%d)"),
+							_T("Windows Version:Windows Server 2012 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				default:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Future Windows Client (%d.%d)"),
+							_T("Windows Version:Future Windows Client (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Future Windows Server (%d.%d)"),
+							_T("Windows Version:Future Windows Server (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -1826,22 +1872,22 @@ void NoMeiryoUI::SetWinVer()
 		case 10:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Windows 10 (%d.%d)"),
+					_T("Windows Version:Windows 10 (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Server 2016 (%d.%d)"),
+					_T("Windows Version:Windows Server 2016 (%d.%d)"),
 					major,minor);
 			}
 			break;
 		default:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Future Windows Client (%d.%d)"),
+					_T("Windows Version:Future Windows Client (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Future Windows Server (%d.%d)"),
+					_T("Windows Version:Future Windows Server (%d.%d)"),
 					major,minor);
 			}
 			break;
@@ -1867,5 +1913,31 @@ void NoMeiryoUI::showHelp(void)
 	
 	// 関連付けられたアプリでドキュメントファイルを表示する。
 	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
+}
+
+/**
+ * バージョン番号を表示する。
+ *
+ */
+void NoMeiryoUI::showVersion(void)
+{
+	TCHAR version[128];
+	TCHAR title[64];
+	const TCHAR *appTitle;
+
+	if (useResource) {
+		appTitle = langResource[1].c_str();
+		_stprintf(title, _T("About No!! Meiryo UI"));
+	} else {
+		appTitle = _T("Meiryo UIも大っきらい!!");
+		_stprintf(title, _T("Meiryo UIも大っきらい!!について"));
+	}
+
+	_stprintf(version, _T("%s Version 2.30\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"), appTitle);
+
+	MessageBox(hWnd,
+		version,
+		title,
+		MB_OK | MB_ICONINFORMATION);
 }
 
