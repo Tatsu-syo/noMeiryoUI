@@ -11,6 +11,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TwrCombobox.h"
 #include "TwrCheckbox.h"
 
+extern bool useResource;
+
 struct FontInfo {
 	LOGFONT logFont;
 	std::vector<int> charsetList;
@@ -30,6 +32,7 @@ private:
 	LOGFONT selectedFont;
 	LOGFONT *previousFont;
 
+	void applyResource();
 	void setCharset(void);
 	void setStyle(void);
 	INT_PTR onOK(void);

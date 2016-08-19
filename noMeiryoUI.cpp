@@ -51,7 +51,7 @@ DialogAppliBase *createAppli()
 	char *localeName = setlocale(LC_ALL, "");
 	_setmbcp(_MB_CP_LOCALE);
 
-	localeName = "aaa";
+	//localeName = "aaa";
 	if (strstr(localeName, "Japanese_Japan") != NULL) {
 		useResource = false;
 	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {

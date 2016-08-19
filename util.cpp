@@ -138,6 +138,50 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("DLG_SET_ALL"));
 	readResourceItem(file, _T("DLG_SET"));
 	readResourceItem(file, _T("DLG_EXIT"));
+	readResourceItem(file, _T("DLG_FONT_SEL"));
+	readResourceItem(file, _T("DLG_FONT_NAME"));
+	readResourceItem(file, _T("DLG_STYLE"));
+	readResourceItem(file, _T("DLG_SIZE"));
+	readResourceItem(file, _T("DLG_UNDERLINE"));
+	readResourceItem(file, _T("DLG_STRIKE"));
+	readResourceItem(file, _T("DLG_CHARSET"));
+	readResourceItem(file, _T("DLG_OK"));
+	readResourceItem(file, _T("DLG_CANCEL"));
 
+	readResourceItem(file, _T("DLG_CHARSET_ANSI"));
+	readResourceItem(file, _T("DLG_CHARSET_BALTIC"));
+	readResourceItem(file, _T("DLG_CHARSET_BIG5"));
+	readResourceItem(file, _T("DLG_CHARSET_DEFAULT"));
+	readResourceItem(file, _T("DLG_CHARSET_EASTEUROPE"));
+	readResourceItem(file, _T("DLG_CHARSET_GB2312"));
+	readResourceItem(file, _T("DLG_CHARSET_GREEK"));
+	readResourceItem(file, _T("DLG_CHARSET_HANGUL"));
+	readResourceItem(file, _T("DLG_CHARSET_MAC"));
+	readResourceItem(file, _T("DLG_CHARSET_OEM"));
+	readResourceItem(file, _T("DLG_CHARSET_RUSSIAN"));
+	readResourceItem(file, _T("DLG_CHARSET_SHIFTJIS"));
+	readResourceItem(file, _T("DLG_CHARSET_SYMBOL"));
+	readResourceItem(file, _T("DLG_CHARSET_TURKISH"));
+	readResourceItem(file, _T("DLG_CHARSET_VIETNAMESE"));
+	readResourceItem(file, _T("DLG_CHARSET_JOHAB"));
+	readResourceItem(file, _T("DLG_CHARSET_ARABIC"));
+	readResourceItem(file, _T("DLG_CHARSET_HEBREW"));
+	readResourceItem(file, _T("DLG_CHARSET_THAI"));
+
+	readResourceItem(file, _T("DLG_STYLE_NORMAL"));
+	readResourceItem(file, _T("DLG_STYLE_ITALIC"));
+	readResourceItem(file, _T("DLG_STYLE_BOLD"));
+	readResourceItem(file, _T("DLG_STYLE_BOLD_ITALIC"));
+
+	readResourceItem(file, _T("MSG_SETTING_FILE"));
+	readResourceItem(file, _T("MSG_ALL_FILE"));
+	readResourceItem(file, _T("MSG_LOAD_FAIL"));
+	readResourceItem(file, _T("MSG_SAVE_FAIL"));
+	readResourceItem(file, _T("MSG_ERROR"));
+	readResourceItem(file, _T("MSG_ABOUT"));
+	readResourceItem(file, _T("MSG_NO_FONT"));
+	readResourceItem(file, _T("MSG_NO_STYLE"));
+	readResourceItem(file, _T("MSG_NO_SIZE"));
+	readResourceItem(file, _T("MSG_NO_CHARSET"));
 }
 
