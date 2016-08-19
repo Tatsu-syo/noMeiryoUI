@@ -870,8 +870,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 		delete []selector;
 	} catch (...) {
 		MessageBox(this->hWnd,
-			_T("フォント選択ダイアログ内で内部エラーが発生しました。"),
-			_T("内部エラー"),
+			_T("Internal error in font selection dialog."),
+			_T("Error"),
 			MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
@@ -954,16 +954,92 @@ void NoMeiryoUI::selectFont(enum fontType type)
 }
 
 /**
+ * ファイルダイアログ用のファイルマスク文字列作成
+ *
+ * @param ファイルマスク文字列バッファ
+ * @param ファイルの種類名
+ * @param ファイルのマスク
+ * @param すべてのファイルの種類名
+ * @param すべてのファイルのマスク
+ */
+void setFileMask(
+	TCHAR *buf,
+	const TCHAR *fileMsg,
+	const TCHAR *fileExt,
+	const TCHAR *allMsg,
+	const TCHAR *allExt)
+{
+	TCHAR *pDst = buf;
+	int len;
+
+	len = _tcslen(fileMsg);
+	for (int i = 0; i < len; i++) {
+		*pDst = fileMsg[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(fileExt);
+	for (int i = 0; i < len; i++) {
+		*pDst = fileExt[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(allMsg);
+	for (int i = 0; i < len; i++) {
+		*pDst = allMsg[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(allExt);
+	for (int i = 0; i < len; i++) {
+		*pDst = allExt[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	*pDst = _T('\0');
+	pDst++;
+}
+
+
+/**
  * フォント設定を保存するを選択した時の動作
  */
 void NoMeiryoUI::OnLoad()
 {
+	TCHAR buf[128];
+
+	if (useResource) {
+		setFileMask(
+			buf,
+			langResource[59].c_str(),
+			_T("*.ini"),
+			langResource[60].c_str(),
+			_T("*.*")
+		);
+	} else {
+		setFileMask(
+			buf,
+			_T("設定ファイル"),
+			_T("*.ini"),
+			_T("すべてのファイル"),
+			_T("*.*")
+		);
+	}
+
 	NCFileDialog *dlg = new NCFileDialog(
 		TRUE,
 		NULL,
 		NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		buf,
 		this->getHwnd(),
 		0);
 
@@ -976,10 +1052,20 @@ void NoMeiryoUI::OnLoad()
 	BOOL loadResult;
 	loadResult = loadFontInfo(dlg->GetPathName());
 	if (!loadResult) {
+		const TCHAR *message;
+		const TCHAR *title;
+
+		if (useResource) {
+			message = langResource[61].c_str();
+			title = langResource[63].c_str();
+		} else {
+			message = _T("フォント設定の読み込みに失敗しました。");
+			title = _T("エラー");
+		}
 		MessageBox(
 			this->getHwnd(),
-			_T("フォント設定の読み込みに失敗しました。"),
-			_T("エラー"),
+			message,
+			title,
 			MB_OK | MB_ICONEXCLAMATION);
 	} else {
 		// フォント設定の読み込みに成功したらテキストボックスに設定する。
@@ -1216,12 +1302,32 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
  */
 void NoMeiryoUI::OnSave()
 {
+	TCHAR buf[128];
+
+	if (useResource) {
+		setFileMask(
+			buf,
+			langResource[59].c_str(),
+			_T("*.ini"),
+			langResource[60].c_str(),
+			_T("*.*")
+		);
+	} else {
+		setFileMask(
+			buf,
+			_T("設定ファイル"),
+			_T("*.ini"),
+			_T("すべてのファイル"),
+			_T("*.*")
+		);
+	}
+
 	NCFileDialog *dlg = new NCFileDialog(
 		FALSE,
 		NULL,
 		NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		buf,
 		this->getHwnd(),
 		0);
 
@@ -1234,10 +1340,20 @@ void NoMeiryoUI::OnSave()
 	BOOL saveResult;
 	saveResult = startSaveFont(dlg->GetPathName());
 	if (!saveResult) {
+		const TCHAR *message;
+		const TCHAR *title;
+
+		if (useResource) {
+			message = langResource[62].c_str();
+			title = langResource[63].c_str();
+		} else {
+			message = _T("フォント設定の保存に失敗しました。");
+			title = _T("エラー");
+		}
 		MessageBox(
 			this->getHwnd(),
-			_T("フォント設定の保存に失敗しました。"),
-			_T("エラー"),
+			message,
+			title,
 			MB_OK | MB_ICONEXCLAMATION);
 	}
 
@@ -1431,6 +1547,7 @@ BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
  */
 INT_PTR NoMeiryoUI::OnBnClickedOk()
 {
+#if 0
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
 	bool hasVerticalFont = false;
 	if (metrics.lfCaptionFont.lfFaceName[0] == _T('@')) {
@@ -1461,6 +1578,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 			return (INT_PTR)FALSE;
 		}
 	}
+#endif
 
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
@@ -1474,6 +1592,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
  */
 void NoMeiryoUI::OnBnClickedAll()
 {
+#if 0
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
 	if (metricsAll.lfMenuFont.lfFaceName[0] == _T('@')) {
 		int answer = MessageBox(hWnd,
@@ -1484,6 +1603,7 @@ void NoMeiryoUI::OnBnClickedAll()
 			return;
 		}
 	}
+#endif
 
 	// フォント変更を実施する。
 	setFont(&metricsAll, &iconFontAll);
@@ -1926,8 +2046,8 @@ void NoMeiryoUI::showVersion(void)
 	const TCHAR *appTitle;
 
 	if (useResource) {
-		appTitle = langResource[1].c_str();
-		_stprintf(title, _T("About No!! Meiryo UI"));
+		_stprintf(title, _T("%s"),
+			langResource[64].c_str());
 	} else {
 		appTitle = _T("Meiryo UIも大っきらい!!");
 		_stprintf(title, _T("Meiryo UIも大っきらい!!について"));
