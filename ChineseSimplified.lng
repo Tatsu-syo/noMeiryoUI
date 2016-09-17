@@ -1,5 +1,3 @@
-;This file is placeholder file.Please translate.
-;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=System
 TITLE=No!! Meiryo UI

@@ -1,3 +1,5 @@
+;This file is sample translation file.
+;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=System
 TITLE=No!! Meiryo UI
@@ -68,4 +70,4 @@ MSG_NO_FONT=Please select font.
 MSG_NO_STYLE=Please select style.
 MSG_NO_SIZE=Please select size.
 MSG_NO_CHARSET=Please select charset.
-
+MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
