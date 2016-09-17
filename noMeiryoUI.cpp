@@ -32,6 +32,12 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 NoMeiryoUI *appObj;
 static bool use7Compat = true;
 bool useResource = false;
+enum language {
+	Japanese,
+	SimplifiedChinese,
+	English
+};
+enum language language;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -55,14 +61,17 @@ DialogAppliBase *createAppli()
 	//localeName = "aaa";
 	if (strstr(localeName, "Japanese_Japan") != NULL) {
 		useResource = false;
+		language = Japanese;
 	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
 		useResource = true;
 		_tcscat(iniPath, _T("ChineseSimplified.lng"));
 		readResourceFile(iniPath);
+		language = SimplifiedChinese;
 	} else {
 		useResource = true;
 		_tcscat(iniPath, _T("English.lng"));
 		readResourceFile(iniPath);
+		language = English;
 	}
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
@@ -2040,7 +2049,11 @@ void NoMeiryoUI::showHelp(void)
 	// 実行ファイルのあるところのBShelp.htmlのパス名を生成する。
 	::GetModuleFileName(NULL,path,_MAX_PATH);
 	::_tsplitpath(path,drive,dir,NULL,NULL);
-	::_stprintf(helpFile,_T("%s%s%s"),drive,dir,_T("noMeiryoUI.html"));
+	if (language == Japanese) {
+		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_ja-jp.chm"));
+	} else {
+		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_en.chm"));
+	}
 	
 	// 関連付けられたアプリでドキュメントファイルを表示する。
 	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
