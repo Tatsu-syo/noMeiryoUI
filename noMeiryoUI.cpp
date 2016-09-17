@@ -610,7 +610,7 @@ void NoMeiryoUI::applyResource()
 	setChildFont(IDCANCEL, newFont);
 
 	TCHAR buf[64];
-	_stprintf(buf, _T("%s Version 2.30"), langResource[1].c_str());
+	_stprintf(buf, _T("%s Version 2.31"), langResource[1].c_str());
 	setChildText(IDC_STATIC_APP_TITLE, buf);
 	setChildFont(IDC_STATIC_APP_TITLE, newFont);
 
@@ -2041,7 +2041,7 @@ void NoMeiryoUI::showHelp(void)
  */
 void NoMeiryoUI::showVersion(void)
 {
-	TCHAR version[128];
+	TCHAR version[256];
 	TCHAR title[64];
 	const TCHAR *appTitle;
 
@@ -2053,7 +2053,7 @@ void NoMeiryoUI::showVersion(void)
 		_stprintf(title, _T("Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!‚É‚Â‚¢‚Ä"));
 	}
 
-	_stprintf(version, _T("%s Version 2.30\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"), appTitle);
+	_stprintf(version, _T("%s Version 2.31\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"), title);
 
 	MessageBox(hWnd,
 		version,
