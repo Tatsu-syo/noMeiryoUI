@@ -19,6 +19,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+#include "resource.h"
 
 #define MAX_LOADSTRING 100
 
@@ -306,6 +307,19 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		// UI文字列をリソースに合わせて変更する。
 		applyResource();
 	}
+	// メインダイアログのバージョン表記設定
+	TCHAR buf[64];
+	TCHAR verString[32];
+	const TCHAR *appName;
+	LoadString(hInst, IDS_VERSION, verString, 32);
+	if (useResource) {
+		appName = langResource[1].c_str();
+	} else {
+		appName = _T("Meiryo UIも大っきらい!!");
+	}
+	_stprintf(buf, verString, appName);
+	setChildText(IDC_STATIC_APP_TITLE, buf);
+
 
 	// フォント名表示を更新する。
 	updateDisplay();
@@ -609,9 +623,6 @@ void NoMeiryoUI::applyResource()
 	setChildText(IDCANCEL, langResource[26].c_str());
 	setChildFont(IDCANCEL, newFont);
 
-	TCHAR buf[64];
-	_stprintf(buf, _T("%s Version 2.31"), langResource[1].c_str());
-	setChildText(IDC_STATIC_APP_TITLE, buf);
 	setChildFont(IDC_STATIC_APP_TITLE, newFont);
 
 	setChildFont(IDC_STATIC_VERNO, newFont);
@@ -2041,22 +2052,32 @@ void NoMeiryoUI::showHelp(void)
  */
 void NoMeiryoUI::showVersion(void)
 {
-	TCHAR version[256];
+	TCHAR aboutContent[256];
+	TCHAR version[64];
+	TCHAR transAuthor[64];
 	TCHAR title[64];
-	const TCHAR *appTitle;
+	const TCHAR *appName;
+	TCHAR verString[32];
 
 	if (useResource) {
+		appName = langResource[1].c_str();
 		_stprintf(title, _T("%s"),
 			langResource[64].c_str());
+		_tcscpy(transAuthor, langResource[69].c_str());
 	} else {
-		appTitle = _T("Meiryo UIも大っきらい!!");
+		appName = _T("Meiryo UIも大っきらい!!");
 		_stprintf(title, _T("Meiryo UIも大っきらい!!について"));
+		_tcscpy(transAuthor, _T("Tatsuhiko Syoji(Tatsu)"));
 	}
+	LoadString(hInst, IDS_VERSION, verString, 32);
 
-	_stprintf(version, _T("%s Version 2.31\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"), title);
+	_stprintf(version, verString, appName);
+	_stprintf(aboutContent,
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2016\nTranslated by %s"),
+		version, transAuthor);
 
 	MessageBox(hWnd,
-		version,
+		aboutContent,
 		title,
 		MB_OK | MB_ICONINFORMATION);
 }

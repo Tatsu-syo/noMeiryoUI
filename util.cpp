@@ -183,5 +183,6 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("MSG_NO_STYLE"));
 	readResourceItem(file, _T("MSG_NO_SIZE"));
 	readResourceItem(file, _T("MSG_NO_CHARSET"));
+	readResourceItem(file, _T("MSG_TRANSLATE"));
 }
 
