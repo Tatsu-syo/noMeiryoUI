@@ -110,13 +110,13 @@ void TwrMenu::setEnabled(int id, bool enabled)
  * @param message 設定するメッセージ
  * @param byPosition 指定方法(TRUE:メニューの位置 FALSE:メニュー項目のID)
  */
-void TwrMenu::setText(int position, TCHAR *message, BOOL byPosition)
+void TwrMenu::setText(int position, const TCHAR *message, BOOL byPosition)
 {
 	MENUITEMINFO info;
 
 	info.cbSize = sizeof(MENUITEMINFO);
 	info.fMask = MIIM_FTYPE | MIIM_STRING;
 	info.fType = MFT_STRING;
-	info.dwTypeData = message;
+	info.dwTypeData = (LPTSTR)message;
 	SetMenuItemInfo(menuHandle, position, byPosition, &info);
 }

@@ -16,6 +16,7 @@
 #define IDD_ABOUTBOX                    103
 #define IDD_MAIN_DIALOG                 103
 #define IDM_ABOUT                       104
+#define IDS_VERSION                     104
 #define IDI_NOMEIRYOUI                  107
 #define IDI_SMALL                       108
 #define IDC_NOMEIRYOUI                  109

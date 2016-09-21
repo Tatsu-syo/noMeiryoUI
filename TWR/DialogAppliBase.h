@@ -13,7 +13,7 @@ extern HINSTANCE hInst;								// 現在のインターフェイス
 void addModelessDialog(HWND dialog);
 void delModelessDialog(HWND dialog);
 
-int doEvents();
+//int doEvents();
 
 class DialogAppliBase : public BaseDialog {
 protected:

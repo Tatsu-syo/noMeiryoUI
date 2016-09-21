@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012,2013 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma once
@@ -10,6 +10,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "basedialog.h"
 #include "TwrCombobox.h"
 #include "TwrCheckbox.h"
+
+extern bool useResource;
 
 struct FontInfo {
 	LOGFONT logFont;
@@ -30,6 +32,7 @@ private:
 	LOGFONT selectedFont;
 	LOGFONT *previousFont;
 
+	void applyResource();
 	void setCharset(void);
 	void setStyle(void);
 	INT_PTR onOK(void);

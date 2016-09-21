@@ -17,7 +17,7 @@ public:
 	void CheckMenuItem(int id,bool checked);
 	bool isChecked(int item);
 	void setEnabled(int id, bool enabled);
-	void setText(int id, TCHAR *message, BOOL byPosition = TRUE);
+	void setText(int id, const TCHAR *message, BOOL byPosition = TRUE);
 
 	/**
 	 * サブメニューを取得する。

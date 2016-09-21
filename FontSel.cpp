@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012,2013 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -8,9 +8,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <algorithm>
 #include <functional>
 
-#ifdef DEBUG
-#include <vld.h>
-#endif
 
 std::vector<struct FontInfo> fontList;
 static bool noMeiryoUI = false;
@@ -244,6 +241,10 @@ INT_PTR FontSel::OnInitDialog()
 		}
 	}
 
+	if (useResource) {
+		applyResource();
+	}
+
 	return (INT_PTR)FALSE;
 }
 
@@ -277,6 +278,61 @@ INT_PTR FontSel::OnCommand(WPARAM wParam)
 }
 
 /**
+ * リソースを各項目に設定する。
+ */
+void FontSel::applyResource()
+{
+	HDC hDC = GetDC(this->hWnd);
+
+	HFONT newFont = CreateFont(
+		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		FALSE,
+		DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		PROOF_QUALITY, // CLEARTYPE_QUALITY,
+		FIXED_PITCH | FF_MODERN,
+		langResource[0].c_str());
+
+	ReleaseDC(this->hWnd, hDC);
+
+
+	// アプリタイトル
+	setText(langResource[27].c_str());
+
+	setChildText(IDC_STATIC_NAME, langResource[28].c_str());
+	setChildFont(IDC_STATIC_NAME, newFont);
+	setChildText(IDC_STATIC_STYLE, langResource[29].c_str());
+	setChildFont(IDC_STATIC_STYLE, newFont);
+	setChildText(IDC_STATIC_SIZE, langResource[30].c_str());
+	setChildFont(IDC_STATIC_SIZE, newFont);
+
+	setChildText(IDC_CHECK_UNDERLINE, langResource[31].c_str());
+	setChildFont(IDC_CHECK_UNDERLINE, newFont);
+	setChildText(IDC_CHECK_STRIKE, langResource[32].c_str());
+	setChildFont(IDC_CHECK_STRIKE, newFont);
+	setChildText(IDC_STATIC_CHARSET, langResource[33].c_str());
+	setChildFont(IDC_STATIC_CHARSET, newFont);
+
+	setChildText(IDOK, langResource[34].c_str());
+	setChildFont(IDOK, newFont);
+	setChildText(IDCANCEL, langResource[35].c_str());
+	setChildFont(IDCANCEL, newFont);
+
+	setChildFont(IDC_COMBO_NAME, newFont);
+	setChildFont(IDC_COMBO_STYLE, newFont);
+	setChildFont(IDC_COMBO_SIZE, newFont);
+	setChildFont(IDC_COMBO_CHARSET, newFont);
+
+}
+
+/**
  * 選択したフォントに合った文字セットの選択肢を設定します。
  */
 void FontSel::setCharset(void)
@@ -290,62 +346,138 @@ void FontSel::setCharset(void)
 		for (int i = 0; i < charsetCount; i++) {
 			switch (fontList[selected].charsetList[i]) {
 				case ANSI_CHARSET:
-					m_ChersetList->addItem(_T("欧文"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[36].c_str());
+					} else {
+						m_ChersetList->addItem(_T("欧文"));
+					}
 					break;
 				case BALTIC_CHARSET:
-					m_ChersetList->addItem(_T("バルト諸国言語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[37].c_str());
+					} else {
+						m_ChersetList->addItem(_T("バルト諸国言語"));
+					}
 					break;
 				case CHINESEBIG5_CHARSET:
-					m_ChersetList->addItem(_T("繁体字"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[38].c_str());
+					} else {
+						m_ChersetList->addItem(_T("繁体字"));
+					}
 					break;
 				case DEFAULT_CHARSET:
-					m_ChersetList->addItem(_T("デフォルト言語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[39].c_str());
+					} else {
+						m_ChersetList->addItem(_T("デフォルト言語"));
+					}
 					break;
 				case EASTEUROPE_CHARSET:
-					m_ChersetList->addItem(_T("中央ヨーロッパ言語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[40].c_str());
+					} else {
+						m_ChersetList->addItem(_T("東ヨーロッパ言語"));
+					}
 					break;
 				case GB2312_CHARSET:
-					m_ChersetList->addItem(_T("簡体字"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[41].c_str());
+					} else {
+						m_ChersetList->addItem(_T("簡体字"));
+					}
 					break;
 				case GREEK_CHARSET:
-					m_ChersetList->addItem(_T("ギリシャ文字"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[42].c_str());
+					} else {
+						m_ChersetList->addItem(_T("ギリシャ文字"));
+					}
 					break;
 				case HANGUL_CHARSET:
-					m_ChersetList->addItem(_T("韓国語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[43].c_str());
+					} else {
+						m_ChersetList->addItem(_T("韓国語"));
+					}
 					break;
 				case MAC_CHARSET:
-					m_ChersetList->addItem(_T("Mac文字セット"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[44].c_str());
+					} else {
+						m_ChersetList->addItem(_T("Mac文字セット"));
+					}
 					break;
 				case OEM_CHARSET:
-					m_ChersetList->addItem(_T("OEM文字セット"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[45].c_str());
+					} else {
+						m_ChersetList->addItem(_T("OEM文字セット"));
+					}
 					break;
 				case RUSSIAN_CHARSET:
-					m_ChersetList->addItem(_T("ロシア語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[46].c_str());
+					} else {
+						m_ChersetList->addItem(_T("ロシア語"));
+					}
 					break;
 				case SHIFTJIS_CHARSET:
-					m_ChersetList->addItem(_T("日本語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[47].c_str());
+					} else {
+						m_ChersetList->addItem(_T("日本語"));
+					}
 					initialIndex = i;
 					break;
 				case SYMBOL_CHARSET:
-					m_ChersetList->addItem(_T("シンボル"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[48].c_str());
+					} else {
+						m_ChersetList->addItem(_T("シンボル"));
+					}
 					break;
 				case TURKISH_CHARSET:
-					m_ChersetList->addItem(_T("トルコ語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[49].c_str());
+					} else {
+						m_ChersetList->addItem(_T("トルコ語"));
+					}
 					break;
 				case VIETNAMESE_CHARSET:
-					m_ChersetList->addItem(_T("ベトナム語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[50].c_str());
+					} else {
+						m_ChersetList->addItem(_T("ベトナム語"));
+					}
 					break;
 				case JOHAB_CHARSET:
-					m_ChersetList->addItem(_T("韓国語(組合型)"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[51].c_str());
+					} else {
+						m_ChersetList->addItem(_T("韓国語(組合型)"));
+					}
 					break;
 				case ARABIC_CHARSET:
-					m_ChersetList->addItem(_T("アラビア語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[52].c_str());
+					} else {
+						m_ChersetList->addItem(_T("アラビア語"));
+					}
 					break;
 				case HEBREW_CHARSET:
-					m_ChersetList->addItem(_T("ヘブライ語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[53].c_str());
+					} else {
+						m_ChersetList->addItem(_T("ヘブライ語"));
+					}
 					break;
 				case THAI_CHARSET:
-					m_ChersetList->addItem(_T("タイ語"));
+					if (useResource) {
+						m_ChersetList->addItem(langResource[54].c_str());
+					} else {
+						m_ChersetList->addItem(_T("タイ語"));
+					}
 					break;
 				default:
 					m_ChersetList->addItem(_T(""));
@@ -389,17 +521,35 @@ void FontSel::setStyle(void)
 */
 	m_styleList->clear();
 
-	tstring styleName = _T("標準");
+	tstring styleName;
+	if (useResource) {
+		styleName = langResource[55].c_str();
+	} else {
+		styleName = _T("標準");
+	}
 	m_styleList->addItem(styleName.c_str());
 
 	// styleName = p;
-	styleName = _T("斜体");
+	if (useResource) {
+		styleName = langResource[56].c_str();
+	} else {
+		styleName = _T("斜体");
+	}
 	m_styleList->addItem(styleName.c_str());
 
-	styleName = _T("太字");
+	if (useResource) {
+		styleName = langResource[57].c_str();
+	} else {
+		styleName = _T("太字");
+	}
 	m_styleList->addItem(styleName.c_str());
 
-	styleName = _T("太字 斜体");
+	if (useResource) {
+		styleName = langResource[58].c_str();
+	} else {
+		styleName = _T("太字 斜体");
+
+	}
 	m_styleList->addItem(styleName.c_str());
 
 	m_styleList->setSelectedIndex(0);
@@ -414,35 +564,64 @@ INT_PTR FontSel::onOK(void)
 	int selectedCharset = m_ChersetList->getSelectedIndex();
 	int selectedStyle = m_styleList->getSelectedIndex();
 
+	tstring error;
+	tstring message;
+
+	if (useResource) {
+		error = langResource[63].c_str();
+	} else {
+		error = _T("エラー");
+	}
+
 	if (selectedFontIndex < 0) {
-		MessageBox(this->hWnd, 
-			_T("フォントを選択してください。"),
-			_T("エラー"),
+		if (useResource) {
+			message = langResource[65].c_str();
+		} else {
+			message = _T("フォントを選択してください。");
+		}
+		MessageBox(this->hWnd,
+			message.c_str(),
+			error.c_str(),
 			MB_ICONEXCLAMATION | MB_OK);
 		return (INT_PTR)0;
 	}
 
 	if (selectedStyle < 0) {
-		MessageBox(this->hWnd, 
-			_T("スタイルを選択してください。"),
-			_T("エラー"),
+		if (useResource) {
+			message = langResource[66].c_str();
+		} else {
+			message = _T("スタイルを選択してください。");
+		}
+		MessageBox(this->hWnd,
+			message.c_str(),
+			error.c_str(),
 			MB_ICONEXCLAMATION | MB_OK);
 		return (INT_PTR)0;
 	}
 
 	if (selectedCharset < 0) {
-		MessageBox(this->hWnd, 
-			_T("文字セットを選択してください。"),
-			_T("エラー"),
+		if (useResource) {
+			message = langResource[67].c_str();
+		} else {
+			message = _T("文字セットを選択してください。");
+		}
+		MessageBox(this->hWnd,
+			message.c_str(),
+			error.c_str(),
 			MB_ICONEXCLAMATION | MB_OK);
 		return (INT_PTR)0;
 	}
 
 	tstring size = m_fontSizeList->getSelectedText();
 	if (size.length() < 1) {
-		MessageBox(this->hWnd, 
-			_T("サイズを選択してください。"),
-			_T("エラー"),
+		if (useResource) {
+			message = langResource[68].c_str();
+		} else {
+			message = _T("文字セットを選択してください。");
+		}
+		MessageBox(this->hWnd,
+			message.c_str(),
+			error.c_str(),
 			MB_ICONEXCLAMATION | MB_OK);
 		return (INT_PTR)0;
 	}

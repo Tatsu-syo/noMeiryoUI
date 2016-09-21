@@ -13,6 +13,8 @@ noMeiryoUI.sln : Visual Studio 2015用ソリューションファイルです。
 noMeiryoUI.vcxproj : Visual Studio 2015用プロジェクトファイルです。
 noMeiryoUI.vcxproj.filters : Visual Studio 2015用プロジェクトファイルです。
 TWRフォルダ配下のファイル : GUI構築に使用したファイルです。
+help\ja-jpフォルダ配下のファイル : 日本語版ヘルプファイルのソースファイルです。
+help\en-usフォルダ配下のファイル : 簡単な英語版ヘルプファイルのソースファイルです。
 その他のファイル : Meiryo UIも大っきらい!!自身のソースファイルです。
 
 [使い方]
@@ -20,6 +22,7 @@ TWRフォルダ配下のファイル : GUI構築に使用したファイルで�
 2.noMeiryoUI_2008.sln(Visual Studio 2008)かnoMeiryoUI.sln(Visual Studio 2015)を開きます。
 3.ビルドを行うと実行ファイルがデバッグ版はDebugフォルダに、リリース版は
 　Releaseフォルダに生成されます。
+4.ヘルプファイルはhelpフォルダ下の各言語のフォルダの.hhpファイルをHTML Helo workshopで開いて編集し、作成してください。
 
 [ライセンス]
 MITライセンス(http://opensource.org/licenses/mit-license.php)に従います。

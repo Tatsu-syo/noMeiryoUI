@@ -13,10 +13,13 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <process.h>
 #include <Objbase.h>
 #include <shellapi.h>
+#include <locale.h>
+#include <mbctype.h>
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+#include "resource.h"
 
 #define MAX_LOADSTRING 100
 
@@ -28,6 +31,13 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 // アプリケーションオブジェクト
 NoMeiryoUI *appObj;
 static bool use7Compat = true;
+bool useResource = false;
+enum language {
+	Japanese,
+	SimplifiedChinese,
+	English
+};
+enum language language;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -35,6 +45,34 @@ static bool use7Compat = true;
 DialogAppliBase *createAppli()
 {
 	CoInitialize(NULL);
+	TCHAR iniPath[MAX_PATH];
+	TCHAR *p;
+
+	::GetModuleFileName(NULL, iniPath, _MAX_PATH);
+	p = _tcsrchr(iniPath, '\\');
+	if (p != NULL) {
+		*(p + 1) = '\0';
+	}
+
+	// ロケールの初期化
+	char *localeName = setlocale(LC_ALL, "");
+	_setmbcp(_MB_CP_LOCALE);
+
+	//localeName = "aaa";
+	if (strstr(localeName, "Japanese_Japan") != NULL) {
+		useResource = false;
+		language = Japanese;
+	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
+		useResource = true;
+		_tcscat(iniPath, _T("ChineseSimplified.lng"));
+		readResourceFile(iniPath);
+		language = SimplifiedChinese;
+	} else {
+		useResource = true;
+		_tcscat(iniPath, _T("English.lng"));
+		readResourceFile(iniPath);
+		language = English;
+	}
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
 	appObj = new NoMeiryoUI();
@@ -228,9 +266,13 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
-	// メニュー文字列変更テスト
-	//appMenu->setText(0, _T("&File"));
-	//appMenu->setText(IDM_OPEN, _T("L&oad font settings..."), FALSE);
+
+	if (useResource) {
+		// 海外版は初期設定のフォントが異なるのでプリセットメニューを
+		// すべて使えなくしておく。
+		appMenu->setEnabled(IDM_SET_8, false);
+		appMenu->setEnabled(IDM_SET_10, false);
+	}
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -269,7 +311,26 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		}
 	}
 
-	// 表示を更新する。
+	if (useResource) {
+		// 日本語以外のOSで起動している場合は
+		// UI文字列をリソースに合わせて変更する。
+		applyResource();
+	}
+	// メインダイアログのバージョン表記設定
+	TCHAR buf[64];
+	TCHAR verString[32];
+	const TCHAR *appName;
+	LoadString(hInst, IDS_VERSION, verString, 32);
+	if (useResource) {
+		appName = langResource[1].c_str();
+	} else {
+		appName = _T("Meiryo UIも大っきらい!!");
+	}
+	_stprintf(buf, verString, appName);
+	setChildText(IDC_STATIC_APP_TITLE, buf);
+
+
+	// フォント名表示を更新する。
 	updateDisplay();
 
 	return (INT_PTR)FALSE;
@@ -491,6 +552,97 @@ void NoMeiryoUI::UpdateData(bool toObj)
 }
 
 /**
+ * リソースを各項目に設定する。
+ */
+void NoMeiryoUI::applyResource()
+{
+	HDC hDC = GetDC(this->hWnd);
+
+	HFONT newFont = CreateFont(
+		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		0,
+		0,
+		0,
+		FW_NORMAL,
+		FALSE,
+		FALSE,
+		FALSE,
+		DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS,
+		CLIP_DEFAULT_PRECIS,
+		PROOF_QUALITY, // CLEARTYPE_QUALITY,
+		FIXED_PITCH | FF_MODERN,
+		langResource[0].c_str());
+
+	ReleaseDC(this->hWnd, hDC);
+
+
+	// アプリタイトル
+	setText(langResource[1].c_str());
+
+	// メニュー文字列変更
+	appMenu->setText(0, langResource[2].c_str(), TRUE);
+	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
+	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
+	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
+	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
+	appMenu->setText(1, langResource[7].c_str(), TRUE);
+	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
+	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
+	appMenu->setText(2, langResource[10].c_str(), TRUE);
+	appMenu->setText(IDM_ANOTHER, langResource[11].c_str(), FALSE);
+	appMenu->setText(IDM_COMPAT7, langResource[12].c_str(), FALSE);
+	appMenu->setText(3, langResource[13].c_str(), TRUE);
+	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
+	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
+
+	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
+	setChildFont(IDC_STATIC_ALL_FONT, newFont);
+	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
+	setChildFont(IDC_STATIC_TITLE_BAR, newFont);
+	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
+	setChildFont(IDC_STATIC_ICON, newFont);
+	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
+	setChildFont(IDC_STATIC_PALETTE_TITLE, newFont);
+	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
+	setChildFont(IDC_STATIC_HINT, newFont);
+	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
+	setChildFont(IDC_STATIC_MESSAGE, newFont);
+	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
+	setChildFont(IDC_STATIC_MENU, newFont);
+
+	setChildText(ID_SEL_ALL, langResource[23].c_str());
+	setChildFont(ID_SEL_ALL, newFont);
+	setChildText(ID_SEL_TITLE, langResource[23].c_str());
+	setChildFont(ID_SEL_TITLE, newFont);
+	setChildText(ID_SEL_ICON, langResource[23].c_str());
+	setChildFont(ID_SEL_ICON, newFont);
+	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
+	setChildFont(ID_SEL_PALETTE, newFont);
+	setChildText(ID_SEL_HINT, langResource[23].c_str());
+	setChildFont(ID_SEL_HINT, newFont);
+	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
+	setChildFont(ID_SEL_MESSAGE, newFont);
+	setChildText(ID_SEL_MENU, langResource[23].c_str());
+	setChildFont(ID_SEL_MENU, newFont);
+	setChildText(ID_SET_ALL, langResource[24].c_str());
+	setChildFont(ID_SET_ALL, newFont);
+	setChildText(IDOK, langResource[25].c_str());
+	setChildFont(IDOK, newFont);
+	setChildText(IDCANCEL, langResource[26].c_str());
+	setChildFont(IDCANCEL, newFont);
+
+	setChildFont(IDC_STATIC_APP_TITLE, newFont);
+
+	setChildFont(IDC_STATIC_VERNO, newFont);
+	setChildFont(IDC_STATIC_AUTHOR, newFont);
+
+
+	DeleteObject(newFont);
+}
+
+
+/**
  * フォント表示を更新する。
  */
 void NoMeiryoUI::updateDisplay(void)
@@ -661,11 +813,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			showHelp();
 			return (INT_PTR)0;
 		case IDM_ABOUT:
-			MessageBox(hWnd, 
-				_T("Meiryo UIも大っきらい!! Version 2.20\n\nBy Tatsuhiko Syoji(Tatsu) 2005,2012-2016"),
-				_T("Meiryo UIも大っきらい!!について"),
-				MB_OK | MB_ICONINFORMATION);
-
+			showVersion();
 			return (INT_PTR)0;
 	}
 	return BaseDialog::OnCommand(wParam);
@@ -742,8 +890,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 		delete []selector;
 	} catch (...) {
 		MessageBox(this->hWnd,
-			_T("フォント選択ダイアログ内で内部エラーが発生しました。"),
-			_T("内部エラー"),
+			_T("Internal error in font selection dialog."),
+			_T("Error"),
 			MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
@@ -826,16 +974,92 @@ void NoMeiryoUI::selectFont(enum fontType type)
 }
 
 /**
+ * ファイルダイアログ用のファイルマスク文字列作成
+ *
+ * @param ファイルマスク文字列バッファ
+ * @param ファイルの種類名
+ * @param ファイルのマスク
+ * @param すべてのファイルの種類名
+ * @param すべてのファイルのマスク
+ */
+void setFileMask(
+	TCHAR *buf,
+	const TCHAR *fileMsg,
+	const TCHAR *fileExt,
+	const TCHAR *allMsg,
+	const TCHAR *allExt)
+{
+	TCHAR *pDst = buf;
+	int len;
+
+	len = _tcslen(fileMsg);
+	for (int i = 0; i < len; i++) {
+		*pDst = fileMsg[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(fileExt);
+	for (int i = 0; i < len; i++) {
+		*pDst = fileExt[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(allMsg);
+	for (int i = 0; i < len; i++) {
+		*pDst = allMsg[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	len = _tcslen(allExt);
+	for (int i = 0; i < len; i++) {
+		*pDst = allExt[i];
+		pDst++;
+	}
+	*pDst = _T('\0');
+	pDst++;
+
+	*pDst = _T('\0');
+	pDst++;
+}
+
+
+/**
  * フォント設定を保存するを選択した時の動作
  */
 void NoMeiryoUI::OnLoad()
 {
+	TCHAR buf[128];
+
+	if (useResource) {
+		setFileMask(
+			buf,
+			langResource[59].c_str(),
+			_T("*.ini"),
+			langResource[60].c_str(),
+			_T("*.*")
+		);
+	} else {
+		setFileMask(
+			buf,
+			_T("設定ファイル"),
+			_T("*.ini"),
+			_T("すべてのファイル"),
+			_T("*.*")
+		);
+	}
+
 	NCFileDialog *dlg = new NCFileDialog(
 		TRUE,
 		NULL,
 		NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		buf,
 		this->getHwnd(),
 		0);
 
@@ -848,10 +1072,20 @@ void NoMeiryoUI::OnLoad()
 	BOOL loadResult;
 	loadResult = loadFontInfo(dlg->GetPathName());
 	if (!loadResult) {
+		const TCHAR *message;
+		const TCHAR *title;
+
+		if (useResource) {
+			message = langResource[61].c_str();
+			title = langResource[63].c_str();
+		} else {
+			message = _T("フォント設定の読み込みに失敗しました。");
+			title = _T("エラー");
+		}
 		MessageBox(
 			this->getHwnd(),
-			_T("フォント設定の読み込みに失敗しました。"),
-			_T("エラー"),
+			message,
+			title,
 			MB_OK | MB_ICONEXCLAMATION);
 	} else {
 		// フォント設定の読み込みに成功したらテキストボックスに設定する。
@@ -1088,12 +1322,32 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
  */
 void NoMeiryoUI::OnSave()
 {
+	TCHAR buf[128];
+
+	if (useResource) {
+		setFileMask(
+			buf,
+			langResource[59].c_str(),
+			_T("*.ini"),
+			langResource[60].c_str(),
+			_T("*.*")
+		);
+	} else {
+		setFileMask(
+			buf,
+			_T("設定ファイル"),
+			_T("*.ini"),
+			_T("すべてのファイル"),
+			_T("*.*")
+		);
+	}
+
 	NCFileDialog *dlg = new NCFileDialog(
 		FALSE,
 		NULL,
 		NULL,
 		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		_T("設定ファイル(*.ini)\0*.ini\0すべてのファイル(*.*)\0*.*\0\0"),
+		buf,
 		this->getHwnd(),
 		0);
 
@@ -1106,10 +1360,20 @@ void NoMeiryoUI::OnSave()
 	BOOL saveResult;
 	saveResult = startSaveFont(dlg->GetPathName());
 	if (!saveResult) {
+		const TCHAR *message;
+		const TCHAR *title;
+
+		if (useResource) {
+			message = langResource[62].c_str();
+			title = langResource[63].c_str();
+		} else {
+			message = _T("フォント設定の保存に失敗しました。");
+			title = _T("エラー");
+		}
 		MessageBox(
 			this->getHwnd(),
-			_T("フォント設定の保存に失敗しました。"),
-			_T("エラー"),
+			message,
+			title,
 			MB_OK | MB_ICONEXCLAMATION);
 	}
 
@@ -1303,6 +1567,7 @@ BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
  */
 INT_PTR NoMeiryoUI::OnBnClickedOk()
 {
+#if 0
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
 	bool hasVerticalFont = false;
 	if (metrics.lfCaptionFont.lfFaceName[0] == _T('@')) {
@@ -1333,6 +1598,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 			return (INT_PTR)FALSE;
 		}
 	}
+#endif
 
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
@@ -1346,6 +1612,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
  */
 void NoMeiryoUI::OnBnClickedAll()
 {
+#if 0
 	// 誤って縦書き用フォントを指定しないよう問い合わせを行う。
 	if (metricsAll.lfMenuFont.lfFaceName[0] == _T('@')) {
 		int answer = MessageBox(hWnd,
@@ -1356,6 +1623,7 @@ void NoMeiryoUI::OnBnClickedAll()
 			return;
 		}
 	}
+#endif
 
 	// フォント変更を実施する。
 	setFont(&metricsAll, &iconFontAll);
@@ -1661,22 +1929,22 @@ void NoMeiryoUI::SetWinVer()
 			switch (minor) {
 				case 0:
 					_stprintf(buf,
-						_T("Windows 2000 (%d.%d)"),
+						_T("Windows Version:Windows 2000 (%d.%d)"),
 						major,minor);
 					break;
 				case 1:
 					_stprintf(buf,
-						_T("Windows XP (%d.%d)"),
+						_T("Windows Version:Windows XP (%d.%d)"),
 						major,minor);
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows XP 64bit (%d.%d)"),
+							_T("Windows Version:Windows XP 64bit (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2003 (%d.%d)"),
+							_T("Windows Version:Windows Server 2003 (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -1687,55 +1955,55 @@ void NoMeiryoUI::SetWinVer()
 				case 0:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Vista (%d.%d)"),
+							_T("Windows Version:Windows Vista (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2008 (%d.%d)"),
+							_T("Windows Version:Windows Server 2008 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 1:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 7 (%d.%d)"),
+							_T("Windows Version:Windows 7 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2008 R2 (%d.%d)"),
+							_T("Windows Version:Windows Server 2008 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 8 (%d.%d)"),
+							_T("Windows Version:Windows 8 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2012 (%d.%d)"),
+							_T("Windows Version:Windows Server 2012 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 3:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows 8.1 (%d.%d)"),
+							_T("Windows Version:Windows 8.1 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Server 2012 R2 (%d.%d)"),
+							_T("Windows Version:Windows Server 2012 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				default:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Future Windows Client (%d.%d)"),
+							_T("Windows Version:Future Windows Client (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Future Windows Server (%d.%d)"),
+							_T("Windows Version:Future Windows Server (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -1744,22 +2012,22 @@ void NoMeiryoUI::SetWinVer()
 		case 10:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Windows 10 (%d.%d)"),
+					_T("Windows Version:Windows 10 (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Server 2016 (%d.%d)"),
+					_T("Windows Version:Windows Server 2016 (%d.%d)"),
 					major,minor);
 			}
 			break;
 		default:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Future Windows Client (%d.%d)"),
+					_T("Windows Version:Future Windows Client (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Future Windows Server (%d.%d)"),
+					_T("Windows Version:Future Windows Server (%d.%d)"),
 					major,minor);
 			}
 			break;
@@ -1781,9 +2049,49 @@ void NoMeiryoUI::showHelp(void)
 	// 実行ファイルのあるところのBShelp.htmlのパス名を生成する。
 	::GetModuleFileName(NULL,path,_MAX_PATH);
 	::_tsplitpath(path,drive,dir,NULL,NULL);
-	::_stprintf(helpFile,_T("%s%s%s"),drive,dir,_T("noMeiryoUI.html"));
+	if (language == Japanese) {
+		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_ja-jp.chm"));
+	} else {
+		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_en.chm"));
+	}
 	
 	// 関連付けられたアプリでドキュメントファイルを表示する。
 	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
+}
+
+/**
+ * バージョン番号を表示する。
+ *
+ */
+void NoMeiryoUI::showVersion(void)
+{
+	TCHAR aboutContent[256];
+	TCHAR version[64];
+	TCHAR transAuthor[64];
+	TCHAR title[64];
+	const TCHAR *appName;
+	TCHAR verString[32];
+
+	if (useResource) {
+		appName = langResource[1].c_str();
+		_stprintf(title, _T("%s"),
+			langResource[64].c_str());
+		_tcscpy(transAuthor, langResource[69].c_str());
+	} else {
+		appName = _T("Meiryo UIも大っきらい!!");
+		_stprintf(title, _T("Meiryo UIも大っきらい!!について"));
+		_tcscpy(transAuthor, _T("Tatsuhiko Syoji(Tatsu)"));
+	}
+	LoadString(hInst, IDS_VERSION, verString, 32);
+
+	_stprintf(version, verString, appName);
+	_stprintf(aboutContent,
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2016\nTranslated by %s"),
+		version, transAuthor);
+
+	MessageBox(hWnd,
+		aboutContent,
+		title,
+		MB_OK | MB_ICONINFORMATION);
 }
 

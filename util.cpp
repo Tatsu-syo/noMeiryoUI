@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2015 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
@@ -7,6 +7,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 /** Windows 8のフォントサイズ算出式を使用するか？ */
 bool WIN8_SIZE = true;
+/** 言語リソース */
+std::vector<tstring> langResource;
 
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
@@ -83,5 +85,104 @@ double getFontPoint(LOGFONT *font, HWND hWnd)
 	double point = (double)height * 72 / logPixelY;
 
 	return point;
+}
+
+/**
+ * リソースの読み込みを行う。
+ *
+ * @param file リソースファイル名
+ * @param key キー名
+ */
+void readResourceItem(TCHAR *file, TCHAR *key)
+{
+	TCHAR buf[255];
+
+	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
+	// 各言語の文字コードのファイルとして読んでくれる。
+	GetPrivateProfileString(_T("RESOURCE"), key, _T(""), buf, 255, file);
+
+	langResource.push_back(buf);
+}
+
+/**
+ * リソースの読み込みを開始する。
+ *
+ * @param file リソースファイル名
+ */
+void readResourceFile(TCHAR *file)
+{
+	readResourceItem(file, _T("FONT_FACE"));
+	readResourceItem(file, _T("TITLE"));
+	readResourceItem(file, _T("MENU_FILE"));
+	readResourceItem(file, _T("MENU_FILE_LOAD"));
+	readResourceItem(file, _T("MENU_FILE_SAVE"));
+	readResourceItem(file, _T("MENU_FILE_SET_QUIT"));
+	readResourceItem(file, _T("MENU_FILE_QUIT"));
+	readResourceItem(file, _T("MENU_PRESET"));
+	readResourceItem(file, _T("MENU_PRESET_8"));
+	readResourceItem(file, _T("MENU_PRESET_10"));
+	readResourceItem(file, _T("MENU_TOOLS"));
+	readResourceItem(file, _T("MENU_TOOLS_THREAD"));
+	readResourceItem(file, _T("MENU_TOOLS_SEVEN"));
+	readResourceItem(file, _T("MENU_HELP"));
+	readResourceItem(file, _T("MENU_HELP_HELP"));
+	readResourceItem(file, _T("MENU_HELP_ABOUT"));
+	readResourceItem(file, _T("DLG_ALL_FONT"));
+	readResourceItem(file, _T("DLG_TITLE_BAR"));
+	readResourceItem(file, _T("DLG_ICON"));
+	readResourceItem(file, _T("DLG_PALETTE"));
+	readResourceItem(file, _T("DLG_HINT"));
+	readResourceItem(file, _T("DLG_MESSAGE"));
+	readResourceItem(file, _T("DLG_MENU"));
+	readResourceItem(file, _T("DLG_SELECT"));
+	readResourceItem(file, _T("DLG_SET_ALL"));
+	readResourceItem(file, _T("DLG_SET"));
+	readResourceItem(file, _T("DLG_EXIT"));
+	readResourceItem(file, _T("DLG_FONT_SEL"));
+	readResourceItem(file, _T("DLG_FONT_NAME"));
+	readResourceItem(file, _T("DLG_STYLE"));
+	readResourceItem(file, _T("DLG_SIZE"));
+	readResourceItem(file, _T("DLG_UNDERLINE"));
+	readResourceItem(file, _T("DLG_STRIKE"));
+	readResourceItem(file, _T("DLG_CHARSET"));
+	readResourceItem(file, _T("DLG_OK"));
+	readResourceItem(file, _T("DLG_CANCEL"));
+
+	readResourceItem(file, _T("DLG_CHARSET_ANSI"));
+	readResourceItem(file, _T("DLG_CHARSET_BALTIC"));
+	readResourceItem(file, _T("DLG_CHARSET_BIG5"));
+	readResourceItem(file, _T("DLG_CHARSET_DEFAULT"));
+	readResourceItem(file, _T("DLG_CHARSET_EASTEUROPE"));
+	readResourceItem(file, _T("DLG_CHARSET_GB2312"));
+	readResourceItem(file, _T("DLG_CHARSET_GREEK"));
+	readResourceItem(file, _T("DLG_CHARSET_HANGUL"));
+	readResourceItem(file, _T("DLG_CHARSET_MAC"));
+	readResourceItem(file, _T("DLG_CHARSET_OEM"));
+	readResourceItem(file, _T("DLG_CHARSET_RUSSIAN"));
+	readResourceItem(file, _T("DLG_CHARSET_SHIFTJIS"));
+	readResourceItem(file, _T("DLG_CHARSET_SYMBOL"));
+	readResourceItem(file, _T("DLG_CHARSET_TURKISH"));
+	readResourceItem(file, _T("DLG_CHARSET_VIETNAMESE"));
+	readResourceItem(file, _T("DLG_CHARSET_JOHAB"));
+	readResourceItem(file, _T("DLG_CHARSET_ARABIC"));
+	readResourceItem(file, _T("DLG_CHARSET_HEBREW"));
+	readResourceItem(file, _T("DLG_CHARSET_THAI"));
+
+	readResourceItem(file, _T("DLG_STYLE_NORMAL"));
+	readResourceItem(file, _T("DLG_STYLE_ITALIC"));
+	readResourceItem(file, _T("DLG_STYLE_BOLD"));
+	readResourceItem(file, _T("DLG_STYLE_BOLD_ITALIC"));
+
+	readResourceItem(file, _T("MSG_SETTING_FILE"));
+	readResourceItem(file, _T("MSG_ALL_FILE"));
+	readResourceItem(file, _T("MSG_LOAD_FAIL"));
+	readResourceItem(file, _T("MSG_SAVE_FAIL"));
+	readResourceItem(file, _T("MSG_ERROR"));
+	readResourceItem(file, _T("MSG_ABOUT"));
+	readResourceItem(file, _T("MSG_NO_FONT"));
+	readResourceItem(file, _T("MSG_NO_STYLE"));
+	readResourceItem(file, _T("MSG_NO_SIZE"));
+	readResourceItem(file, _T("MSG_NO_CHARSET"));
+	readResourceItem(file, _T("MSG_TRANSLATE"));
 }
 
