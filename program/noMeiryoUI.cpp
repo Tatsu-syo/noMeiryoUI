@@ -1675,42 +1675,42 @@ void NoMeiryoUI::OnSet8(void)
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Meiryo UI"));
 	metrics.lfCaptionFont.lfHeight = MulDiv(-15,dpiY,96);
 	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = 1;
+	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, _T("Meiryo UI"));
 	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
 	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = 1;
+	iconFont.lfCharSet = DEFAULT_CHARSET;
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Meiryo UI"));
 	metrics.lfSmCaptionFont.lfHeight = MulDiv(-15, dpiY, 96);
 	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = 1;
+	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Meiryo UI"));
 	metrics.lfStatusFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = 1;
+	metrics.lfStatusFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Meiryo UI"));
 	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = 1;
+	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Meiryo UI"));
 	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = 1;
+	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
@@ -1739,21 +1739,21 @@ void NoMeiryoUI::OnSet10(void)
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Yu Gothic UI"));
 	metrics.lfCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = 1;
+	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, _T("Yu Gothic UI"));
 	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
 	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = 1;
+	iconFont.lfCharSet = DEFAULT_CHARSET;
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Yu Gothic UI"));
 	metrics.lfSmCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = 1;
+	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
@@ -1767,14 +1767,14 @@ void NoMeiryoUI::OnSet10(void)
 	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Yu Gothic UI"));
 	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = 1;
+	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Yu Gothic UI"));
 	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
 	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = 1;
+	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
