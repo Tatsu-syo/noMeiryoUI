@@ -9,6 +9,14 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 bool WIN8_SIZE = true;
 /** 言語リソース */
 std::vector<tstring> langResource;
+/** フォント名(Windows 8.x) */
+std::vector<tstring> fontFaces8;
+/** フォントサイズ(Windows 8.x) */
+std::vector<int> fontSizes8;
+/** フォント名(Windows 10) */
+std::vector<tstring> fontFaces10;
+/** フォントサイズ(Windows 8.x) */
+std::vector<int> fontSizes10;
 
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
@@ -332,3 +340,217 @@ void readResourceFile(TCHAR *file)
 	);
 }
 
+/**
+ * リソースの読み込みを行う(フォント名用)。
+ *
+ * @param buffer 格納先
+ * @param file リソースファイル名
+ * @param key キー名
+ */
+int readFontFace(std::vector<tstring> &buffer, TCHAR *file, TCHAR *key)
+{
+	TCHAR buf[255];
+	int len;
+
+	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
+	// 各言語の文字コードのファイルとして読んでくれる。
+	len = GetPrivateProfileString(_T(PRESET_SECTION), key, _T(""), buf, 255, file);
+	if (len > 0) {
+		buffer.push_back(buf);
+	}
+
+	return len;
+}
+
+/**
+ * リソースの読み込みを行う(フォント名用)。
+ *
+ * @param buffer 格納先
+ * @param file リソースファイル名
+ * @param key キー名
+ */
+int readFontSize(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
+{
+	int size;
+
+	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
+	// 各言語の文字コードのファイルとして読んでくれる。
+	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 0, file);
+	buffer.push_back(size);
+
+	return size;
+}
+
+/**
+ * Windows 8のフォントプリセットリソースの読み込みを行う
+ *
+ * @param file リソースファイル名
+ * @return 0:設定失敗 1:設定成功
+ */
+int readFontResource8(TCHAR *file)
+{
+	int result;
+
+	result = readFontFace(fontFaces8, file, _T("CAPTION_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces8, file, _T("ICON_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces8, file, _T("SMALLCAPTION_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces8, file, _T("STATUS_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces8, file, _T("MESSAGE_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces8, file, _T("MENU_FACE_8"));
+	if (result == 0) {
+		return 0;
+	}
+
+	result = readFontSize(fontSizes8, file, _T("CAPTION_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes8, file, _T("ICON_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes8, file, _T("SMALLCAPTION_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes8, file, _T("STATUS_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes8, file, _T("MESSAGE_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes8, file, _T("MENU_SIZE_8"));
+	if (result == 0) {
+		return 0;
+	}
+
+	return 1;
+}
+
+/**
+ * Windows 10のフォントプリセットリソースの読み込みを行う
+ *
+ * @param file リソースファイル名
+ * @return 0:設定失敗 1:設定成功
+ */
+int readFontResource10(TCHAR *file)
+{
+	int result;
+
+	result = readFontFace(fontFaces10, file, _T("CAPTION_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces10, file, _T("ICON_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces10, file, _T("SMALLCAPTION_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces10, file, _T("STATUS_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces10, file, _T("MESSAGE_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces10, file, _T("MENU_FACE_10"));
+	if (result == 0) {
+		return 0;
+	}
+
+	result = readFontSize(fontSizes10, file, _T("CAPTION_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes10, file, _T("ICON_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes10, file, _T("SMALLCAPTION_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes10, file, _T("STATUS_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes10, file, _T("MESSAGE_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes10, file, _T("MENU_SIZE_10"));
+	if (result == 0) {
+		return 0;
+	}
+
+	return 1;
+}
+
+/**
+ * 日本語版Windows 8のフォントプリセットリソースの設定を行う
+ *
+ * @return 1:設定成功
+ */
+int setFontResourceJa8(void)
+{
+	fontFaces8.push_back(_T("Meiryo UI"));
+	fontFaces8.push_back(_T("Meiryo UI"));
+	fontFaces8.push_back(_T("Meiryo UI"));
+	fontFaces8.push_back(_T("Meiryo UI"));
+	fontFaces8.push_back(_T("Meiryo UI"));
+	fontFaces8.push_back(_T("Meiryo UI"));
+
+	fontSizes8.push_back(11);
+	fontSizes8.push_back(9);
+	fontSizes8.push_back(11);
+	fontSizes8.push_back(9);
+	fontSizes8.push_back(9);
+	fontSizes8.push_back(9);
+
+	return 1;
+}
+
+/**
+ * 日本語版Windows 8のフォントプリセットリソースの設定を行う
+ *
+ * @return 1:設定成功
+ */
+int setFontResourceJa10(void)
+{
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+	fontFaces10.push_back(_T("Yu Gothic UI"));
+
+	fontSizes10.push_back(9);
+	fontSizes10.push_back(9);
+	fontSizes10.push_back(9);
+	fontSizes10.push_back(9);
+	fontSizes10.push_back(9);
+	fontSizes10.push_back(9);
+
+	return 1;
+}

@@ -1,4 +1,9 @@
+; noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+; The sources for noMeiryoUI are distributed under the MIT open source license
+
 ;This file is sample translation file.
+
+;In RESOURCE section,
 ;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=System
@@ -71,3 +76,42 @@ MSG_NO_STYLE=Please select style.
 MSG_NO_SIZE=Please select size.
 MSG_NO_CHARSET=Please select charset.
 MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
+
+[PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
+; For Windows 8.x
+; Font face
+;CAPTION_FACE_8=Microsoft YaHei UI
+;ICON_FACE_8=Microsoft YaHei UI
+;SMALLCAPTION_FACE_8=Microsoft YaHei UI
+;STATUS_FACE_8=Microsoft YaHei UI
+;MESSAGE_FACE_8=Microsoft YaHei UI
+;MENU_FACE_8=Microsoft YaHei UI
+
+; Font size
+;CAPTION_SIZE_8=11
+;ICON_SIZE_8=9
+;SMALLCAPTION_SIZE_8=11
+;STATUS_SIZE_8=9
+;MESSAGE_SIZE_8=9
+;MENU_SIZE_8=9
+
+; For Windows 10
+; Font face
+;CAPTION_FACE_10=Microsoft YaHei UI
+;ICON_FACE_10=Microsoft YaHei UI
+;SMALLCAPTION_FACE_10=Microsoft YaHei UI
+;STATUS_FACE_10=Microsoft YaHei UI
+;MESSAGE_FACE_10=Microsoft YaHei UI
+;MENU_FACE_10=Microsoft YaHei UI
+
+; Font size
+;CAPTION_SIZE_10=9
+;ICON_SIZE_10=9
+;SMALLCAPTION_SIZE_10=9
+;STATUS_SIZE_10=9
+;MESSAGE_SIZE_10=9
+;MENU_SIZE_10=9

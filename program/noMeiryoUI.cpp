@@ -38,6 +38,8 @@ enum language {
 	English
 };
 enum language language;
+bool has8Preset = true;
+bool has10Preset = true;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -59,19 +61,40 @@ DialogAppliBase *createAppli()
 	_setmbcp(_MB_CP_LOCALE);
 
 	//localeName = "aaa";
+	int readResult;
 	if (strstr(localeName, "Japanese_Japan") != NULL) {
 		useResource = false;
 		language = Japanese;
+		setFontResourceJa8();
+		setFontResourceJa10();
 	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
 		useResource = true;
 		_tcscat(iniPath, _T("ChineseSimplified.lng"));
 		readResourceFile(iniPath);
 		language = SimplifiedChinese;
+
+		readResult = readFontResource8(iniPath);
+		if (!readResult) {
+			has8Preset = false;
+		}
+		readResult = readFontResource10(iniPath);
+		if (!readResult) {
+			has10Preset = false;
+		}
 	} else {
 		useResource = true;
 		_tcscat(iniPath, _T("English.lng"));
 		readResourceFile(iniPath);
 		language = English;
+
+		readResult = readFontResource8(iniPath);
+		if (!readResult) {
+			has8Preset = false;
+		}
+		readResult = readFontResource10(iniPath);
+		if (!readResult) {
+			has10Preset = false;
+		}
 	}
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
@@ -258,7 +281,15 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	}
 	appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
-	// Windows 8.1以前ではWindows 10用のプリセットを使用不可とする。
+	if (useResource) {
+		// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
+		// ある場合のみプリセットを有効にする。
+		appMenu->setEnabled(IDM_SET_8, has8Preset);
+		appMenu->setEnabled(IDM_SET_10, has10Preset);
+	}
+
+	// Windows 8.1以前ではWindows 10にあるフォントがない場合があるので
+	// Windows 10用のプリセットを使用不可とする。
 	DWORD dwVersion = GetVersion();
 
 	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
@@ -267,12 +298,6 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
 
-	if (useResource) {
-		// 海外版は初期設定のフォントが異なるのでプリセットメニューを
-		// すべて使えなくしておく。
-		appMenu->setEnabled(IDM_SET_8, false);
-		appMenu->setEnabled(IDM_SET_10, false);
-	}
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -1672,43 +1697,43 @@ void NoMeiryoUI::OnSet8(void)
 		0);
 
 	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfCaptionFont.lfHeight = MulDiv(-15,dpiY,96);
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces8[0].c_str());
+	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes8[0],dpiY,72);
 	metrics.lfCaptionFont.lfWeight = 400;
 	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, _T("Meiryo UI"));
-	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(iconFont.lfFaceName, fontFaces8[1].c_str());
+	iconFont.lfHeight = -MulDiv(fontSizes8[1], dpiY, 72);
 	iconFont.lfWeight = 400;
 	iconFont.lfCharSet = DEFAULT_CHARSET;
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfSmCaptionFont.lfHeight = MulDiv(-15, dpiY, 96);
+	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces8[2].c_str());
+	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes8[2], dpiY, 72);
 	metrics.lfSmCaptionFont.lfWeight = 400;
 	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfStatusFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces8[3].c_str());
+	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes8[3], dpiY, 72);
 	metrics.lfStatusFont.lfWeight = 400;
 	metrics.lfStatusFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces8[4].c_str());
+	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes8[4], dpiY, 72);
 	metrics.lfMessageFont.lfWeight = 400;
 	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Meiryo UI"));
-	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces8[5].c_str());
+	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes8[5], dpiY, 72);
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMenuFont.lfQuality = 5;
@@ -1736,43 +1761,43 @@ void NoMeiryoUI::OnSet10(void)
 		0);
 
 	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
 	metrics.lfCaptionFont.lfWeight = 400;
 	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, _T("Yu Gothic UI"));
-	iconFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
+	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
 	iconFont.lfWeight = 400;
 	iconFont.lfCharSet = DEFAULT_CHARSET;
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfSmCaptionFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
+	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
 	metrics.lfSmCaptionFont.lfWeight = 400;
 	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfStatusFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
+	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
 	metrics.lfStatusFont.lfWeight = 400;
 	metrics.lfStatusFont.lfCharSet = 1;
 	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfMessageFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
+	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
 	metrics.lfMessageFont.lfWeight = 400;
 	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, _T("Yu Gothic UI"));
-	metrics.lfMenuFont.lfHeight = MulDiv(-12, dpiY, 96);
+	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
+	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
 	metrics.lfMenuFont.lfWeight = 400;
 	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
 	metrics.lfMenuFont.lfQuality = 5;

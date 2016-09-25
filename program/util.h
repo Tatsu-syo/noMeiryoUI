@@ -11,12 +11,26 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <vector>
 #include "TWR/tstring.h"
 
+#define PRESET_SECTION "PRESET"
+
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
+/** フォント名(Windows 8.x) */
+extern std::vector<tstring> fontFaces8;
+/** フォントサイズ(Windows 8.x) */
+extern std::vector<int> fontSizes8;
+/** フォント名(Windows 10) */
+extern std::vector<tstring> fontFaces10;
+/** フォントサイズ(Windows 8.x) */
+extern std::vector<int> fontSizes10;
 
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);
 void readResourceFile(TCHAR *file);
+int readFontResource8(TCHAR *file);
+int readFontResource10(TCHAR *file);
+int setFontResourceJa8(void);
+int setFontResourceJa10(void);
 
 #endif
