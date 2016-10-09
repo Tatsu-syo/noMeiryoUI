@@ -1,0 +1,18 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=noMeiryoUI_zh-cn.chm
+Contents file=ToC.hhc
+Default topic=contents\02.html
+Display compile progress=No
+Language=0x804 中文(简体，中国)
+Title=No!! Meiryo UI使用方法
+
+
+[FILES]
+contents\01.html
+contents\02.html
+contents\03.html
+contents\04.html
+
+[INFOTYPES]
+
