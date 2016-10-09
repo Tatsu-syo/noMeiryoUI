@@ -40,6 +40,7 @@ enum language {
 enum language language;
 bool has8Preset = true;
 bool has10Preset = true;
+TCHAR *helpFileName;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -67,6 +68,7 @@ DialogAppliBase *createAppli()
 		language = Japanese;
 		setFontResourceJa8();
 		setFontResourceJa10();
+		helpFileName = _T("noMeiryoUI_ja-jp.chm");
 	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
 		useResource = true;
 		_tcscat(iniPath, _T("ChineseSimplified.lng"));
@@ -81,6 +83,7 @@ DialogAppliBase *createAppli()
 		if (!readResult) {
 			has10Preset = false;
 		}
+		helpFileName = _T("noMeiryoUI_zh-cn.chm");
 	} else {
 		useResource = true;
 		_tcscat(iniPath, _T("English.lng"));
@@ -95,6 +98,7 @@ DialogAppliBase *createAppli()
 		if (!readResult) {
 			has10Preset = false;
 		}
+		helpFileName = _T("noMeiryoUI_en.chm");
 	}
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
@@ -2074,11 +2078,7 @@ void NoMeiryoUI::showHelp(void)
 	// 実行ファイルのあるところのBShelp.htmlのパス名を生成する。
 	::GetModuleFileName(NULL,path,_MAX_PATH);
 	::_tsplitpath(path,drive,dir,NULL,NULL);
-	if (language == Japanese) {
-		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_ja-jp.chm"));
-	} else {
-		::_stprintf(helpFile, _T("%s%s%s"), drive, dir, _T("noMeiryoUI_en.chm"));
-	}
+	::_stprintf(helpFile, _T("%s%s%s"), drive, dir, helpFileName);
 	
 	// 関連付けられたアプリでドキュメントファイルを表示する。
 	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
