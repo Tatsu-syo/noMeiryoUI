@@ -8,6 +8,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
 
+void initializeLocale(void);
+
 class NoMeiryoUI : public DialogAppliBase {
 private:
 

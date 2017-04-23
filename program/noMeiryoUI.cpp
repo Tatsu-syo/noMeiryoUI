@@ -48,6 +48,19 @@ TCHAR *helpFileName;
 DialogAppliBase *createAppli()
 {
 	CoInitialize(NULL);
+
+	initializeLocale();
+
+	// ここでユーザーのアプリケーションオブジェクトを作成します。
+	appObj = new NoMeiryoUI();
+	return appObj;
+}
+
+/**
+ * 各国語の判定と各国語に合わせた初期化を行います。
+ */
+void initializeLocale(void)
+{
 	TCHAR iniPath[MAX_PATH];
 	TCHAR *p;
 
@@ -69,27 +82,24 @@ DialogAppliBase *createAppli()
 		setFontResourceJa8();
 		setFontResourceJa10();
 		helpFileName = _T("noMeiryoUI_ja-jp.chm");
-	} else if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
-		useResource = true;
-		_tcscat(iniPath, _T("ChineseSimplified.lng"));
-		readResourceFile(iniPath);
-		language = SimplifiedChinese;
-
-		readResult = readFontResource8(iniPath);
-		if (!readResult) {
-			has8Preset = false;
-		}
-		readResult = readFontResource10(iniPath);
-		if (!readResult) {
-			has10Preset = false;
-		}
-		helpFileName = _T("noMeiryoUI_zh-cn.chm");
 	} else {
+		// If you want to add language support, add language detection, language file,
+		// and help file name.
 		useResource = true;
-		_tcscat(iniPath, _T("English.lng"));
-		readResourceFile(iniPath);
-		language = English;
+		if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
+			_tcscat(iniPath, _T("ChineseSimplified.lng"));
+			language = SimplifiedChinese;
+			helpFileName = _T("noMeiryoUI_zh-cn.chm");
 
+		} else {
+			// Fallback language support
+			_tcscat(iniPath, _T("English.lng"));
+			language = English;
+			helpFileName = _T("noMeiryoUI_en.chm");
+		}
+		// Language support routine ends here.
+
+		readResourceFile(iniPath);
 		readResult = readFontResource8(iniPath);
 		if (!readResult) {
 			has8Preset = false;
@@ -98,12 +108,7 @@ DialogAppliBase *createAppli()
 		if (!readResult) {
 			has10Preset = false;
 		}
-		helpFileName = _T("noMeiryoUI_en.chm");
 	}
-
-	// ここでユーザーのアプリケーションオブジェクトを作成します。
-	appObj = new NoMeiryoUI();
-	return appObj;
 }
 
 /**
