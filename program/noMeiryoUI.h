@@ -75,7 +75,8 @@ private:
 	void OnBnClickedAll();
 	void OnSet8();
 	void OnSet10(void);
-	void SetWinVer();
+	void SetWinVer(void);
+	void getWin10Ver(TCHAR *buf, DWORD major, DWORD minor);
 	int getDPI(void);
 
 	void setFont(
