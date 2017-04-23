@@ -72,7 +72,12 @@ void initializeLocale(void)
 
 	// ƒƒP[ƒ‹‚Ì‰Šú‰»
 	char *localeName = setlocale(LC_ALL, "");
-	_setmbcp(_MB_CP_LOCALE);
+	char *codePage = strchr(localeName, '.');
+	if (codePage != NULL) {
+		_setmbcp(atoi(codePage + 1));
+	} else {
+		_setmbcp(_MB_CP_LOCALE);
+	}
 
 	//localeName = "aaa";
 	int readResult;
