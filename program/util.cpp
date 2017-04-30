@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
@@ -341,6 +341,9 @@ void readResourceFile(TCHAR *file)
 	);
 	readResourceItem(file, _T("MSG_TRANSLATE"),
 		_T("Tatsuhiko Shoji(Tatsu)")
+	);
+	readResourceItem(file, _T("FONT_CHARSET"),
+		_T("1")
 	);
 }
 

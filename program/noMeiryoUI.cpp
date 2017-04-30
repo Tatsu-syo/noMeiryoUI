@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -612,7 +612,7 @@ void NoMeiryoUI::applyResource()
 		FALSE,
 		FALSE,
 		FALSE,
-		DEFAULT_CHARSET,
+		_tstoi(langResource[70].c_str()),
 		OUT_DEFAULT_PRECIS,
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,
@@ -2157,7 +2157,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2016\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2017\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
