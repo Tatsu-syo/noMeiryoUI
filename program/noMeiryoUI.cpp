@@ -34,6 +34,7 @@ static bool use7Compat = true;
 bool useResource = false;
 enum language {
 	Japanese,
+	fallback,
 	SimplifiedChinese,
 	English
 };
@@ -96,9 +97,14 @@ void initializeLocale(void)
 			language = SimplifiedChinese;
 			helpFileName = _T("noMeiryoUI_zh-cn.chm");
 
+		} else if (strstr(localeName, "English") != NULL) {
+			_tcscat(iniPath, _T("English.lng"));
+			language = English;
+			helpFileName = _T("noMeiryoUI_en.chm");
+
 		} else {
 			// Fallback language support
-			_tcscat(iniPath, _T("English.lng"));
+			_tcscat(iniPath, _T("Default.lng"));
 			language = English;
 			helpFileName = _T("noMeiryoUI_en.chm");
 		}
@@ -1714,42 +1720,42 @@ void NoMeiryoUI::OnSet8(void)
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces8[0].c_str());
 	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes8[0],dpiY,72);
 	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfCaptionFont.lfCharSet = fontCharset8[0];
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, fontFaces8[1].c_str());
 	iconFont.lfHeight = -MulDiv(fontSizes8[1], dpiY, 72);
 	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = DEFAULT_CHARSET;
+	iconFont.lfCharSet = fontCharset8[1];
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces8[2].c_str());
 	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes8[2], dpiY, 72);
 	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfSmCaptionFont.lfCharSet = fontCharset8[2];
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces8[3].c_str());
 	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes8[3], dpiY, 72);
 	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfStatusFont.lfCharSet = fontCharset8[3];
 	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces8[4].c_str());
 	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes8[4], dpiY, 72);
 	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfMessageFont.lfCharSet = fontCharset8[4];
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces8[5].c_str());
 	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes8[5], dpiY, 72);
 	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfMenuFont.lfCharSet = fontCharset8[5];
 	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
@@ -1778,42 +1784,42 @@ void NoMeiryoUI::OnSet10(void)
 	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
 	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
 	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
 	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
 	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
 	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = DEFAULT_CHARSET;
+	iconFont.lfCharSet = fontCharset10[1];
 	iconFont.lfQuality = 5;
 
 	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
 	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
 	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
 	metrics.lfSmCaptionFont.lfQuality = 5;
 
 	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
 	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
 	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = 1;
+	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
 	metrics.lfStatusFont.lfQuality = 5;
 
 	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
 	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
 	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
 	metrics.lfMessageFont.lfQuality = 5;
 
 	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
 	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
 	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
 	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = DEFAULT_CHARSET;
+	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
 	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。

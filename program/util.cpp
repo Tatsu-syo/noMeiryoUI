@@ -13,10 +13,14 @@ std::vector<tstring> langResource;
 std::vector<tstring> fontFaces8;
 /** フォントサイズ(Windows 8.x) */
 std::vector<int> fontSizes8;
+/** フォント文字セット(Windows 8.x) */
+std::vector<int> fontCharset8;
 /** フォント名(Windows 10) */
 std::vector<tstring> fontFaces10;
 /** フォントサイズ(Windows 8.x) */
 std::vector<int> fontSizes10;
+/** フォント文字セット(Windows 10) */
+std::vector<int> fontCharset10;
 
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
@@ -363,7 +367,7 @@ int readFontFace(std::vector<tstring> &buffer, TCHAR *file, TCHAR *key)
 }
 
 /**
- * リソースの読み込みを行う(フォント名用)。
+ * リソースの読み込みを行う(フォントサイズ用)。
  *
  * @param buffer 格納先
  * @param file リソースファイル名
@@ -382,6 +386,25 @@ int readFontSize(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 }
 
 /**
+ * リソースの読み込みを行う(フォント文字セット用)。
+ *
+ * @param buffer 格納先
+ * @param file リソースファイル名
+ * @param key キー名
+ */
+int readFontCharset(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
+{
+	int size;
+
+	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
+	// 各言語の文字コードのファイルとして読んでくれる。
+	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 1, file);
+	buffer.push_back(size);
+
+	return size;
+}
+
+/**
  * Windows 8のフォントプリセットリソースの読み込みを行う
  *
  * @param file リソースファイル名
@@ -391,6 +414,7 @@ int readFontResource8(TCHAR *file)
 {
 	int result;
 
+	// フォント名
 	result = readFontFace(fontFaces8, file, _T("CAPTION_FACE_8"));
 	if (result == 0) {
 		return 0;
@@ -416,6 +440,7 @@ int readFontResource8(TCHAR *file)
 		return 0;
 	}
 
+	// 文字サイズ
 	result = readFontSize(fontSizes8, file, _T("CAPTION_SIZE_8"));
 	if (result == 0) {
 		return 0;
@@ -441,6 +466,14 @@ int readFontResource8(TCHAR *file)
 		return 0;
 	}
 
+	// 文字セット
+	readFontCharset(fontCharset8, file, _T("CAPTION_CHARSET_8"));
+	readFontCharset(fontCharset8, file, _T("ICON_CHARSET_8"));
+	readFontCharset(fontCharset8, file, _T("SMALLCAPTION_CHARSET_8"));
+	readFontCharset(fontCharset8, file, _T("STATUS_CHARSET_8"));
+	readFontCharset(fontCharset8, file, _T("MESSAGE_CHARSET_8"));
+	readFontCharset(fontCharset8, file, _T("MENU_CHARSET_8"));
+
 	return 1;
 }
 
@@ -454,6 +487,7 @@ int readFontResource10(TCHAR *file)
 {
 	int result;
 
+	// フォント名
 	result = readFontFace(fontFaces10, file, _T("CAPTION_FACE_10"));
 	if (result == 0) {
 		return 0;
@@ -479,6 +513,7 @@ int readFontResource10(TCHAR *file)
 		return 0;
 	}
 
+	// 文字サイズ
 	result = readFontSize(fontSizes10, file, _T("CAPTION_SIZE_10"));
 	if (result == 0) {
 		return 0;
@@ -504,6 +539,14 @@ int readFontResource10(TCHAR *file)
 		return 0;
 	}
 
+	// 文字セット
+	readFontCharset(fontCharset10, file, _T("CAPTION_CHARSET_10"));
+	readFontCharset(fontCharset10, file, _T("ICON_CHARSET_10"));
+	readFontCharset(fontCharset10, file, _T("SMALLCAPTION_CHARSET_10"));
+	readFontCharset(fontCharset10, file, _T("STATUS_CHARSET_10"));
+	readFontCharset(fontCharset10, file, _T("MESSAGE_CHARSET_10"));
+	readFontCharset(fontCharset10, file, _T("MENU_CHARSET_10"));
+
 	return 1;
 }
 
@@ -528,6 +571,13 @@ int setFontResourceJa8(void)
 	fontSizes8.push_back(9);
 	fontSizes8.push_back(9);
 
+	fontCharset8.push_back(1);
+	fontCharset8.push_back(1);
+	fontCharset8.push_back(1);
+	fontCharset8.push_back(1);
+	fontCharset8.push_back(1);
+	fontCharset8.push_back(1);
+
 	return 1;
 }
 
@@ -551,6 +601,13 @@ int setFontResourceJa10(void)
 	fontSizes10.push_back(9);
 	fontSizes10.push_back(9);
 	fontSizes10.push_back(9);
+
+	fontCharset10.push_back(1);
+	fontCharset10.push_back(1);
+	fontCharset10.push_back(1);
+	fontCharset10.push_back(1);
+	fontCharset10.push_back(1);
+	fontCharset10.push_back(1);
 
 	return 1;
 }
