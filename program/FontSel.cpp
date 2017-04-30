@@ -293,7 +293,7 @@ void FontSel::applyResource()
 		FALSE,
 		FALSE,
 		FALSE,
-		DEFAULT_CHARSET,
+		_tstoi(langResource[70].c_str()),
 		OUT_DEFAULT_PRECIS,
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,

@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+; noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;This file is sample translation file.
@@ -7,6 +7,7 @@
 ;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=System
+FONT_CHARSET=1
 TITLE=No!! Meiryo UI
 MENU_FILE=&File
 MENU_FILE_LOAD=L&oad font settings...

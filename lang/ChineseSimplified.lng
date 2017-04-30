@@ -1,5 +1,9 @@
+; noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji,Gekka Tachibana
+; The sources for noMeiryoUI are distributed under the MIT open source license
+
 [RESOURCE]
 FONT_FACE=System
+FONT_CHARSET=1
 TITLE=No!! Meiryo UI
 MENU_FILE=文件(&F)
 MENU_FILE_LOAD=加载字体设定(&O)
