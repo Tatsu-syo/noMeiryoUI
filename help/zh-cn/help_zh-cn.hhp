@@ -1,6 +1,6 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=noMeiryoUI_zh-cn.chm
+Compiled file=Chinese (Simplified)_China.chm
 Contents file=ToC.hhc
 Default topic=contents\02.html
 Display compile progress=No
