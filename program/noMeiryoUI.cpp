@@ -32,16 +32,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 NoMeiryoUI *appObj;
 static bool use7Compat = true;
 bool useResource = false;
-enum language {
-	Japanese,
-	fallback,
-	SimplifiedChinese,
-	English
-};
-enum language language;
 bool has8Preset = true;
 bool has10Preset = true;
-TCHAR *helpFileName;
+TCHAR helpFileName[64];
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -64,6 +57,8 @@ void initializeLocale(void)
 {
 	TCHAR iniPath[MAX_PATH];
 	TCHAR *p;
+	TCHAR langWork[64];
+	TCHAR findPath[MAX_PATH];
 
 	::GetModuleFileName(NULL, iniPath, _MAX_PATH);
 	p = _tcsrchr(iniPath, '\\');
@@ -79,34 +74,54 @@ void initializeLocale(void)
 	} else {
 		_setmbcp(_MB_CP_LOCALE);
 	}
+	mbstowcs(langWork, localeName, 64);
 
 	//localeName = "aaa";
 	int readResult;
 	if (strstr(localeName, "Japanese_Japan") != NULL) {
 		useResource = false;
-		language = Japanese;
 		setFontResourceJa8();
 		setFontResourceJa10();
-		helpFileName = _T("noMeiryoUI_ja-jp.chm");
+		_tcscpy(helpFileName, _T("noMeiryoUI_ja-jp.chm"));
 	} else {
-		// If you want to add language support, add language detection, language file,
-		// and help file name.
+		// Language detection
 		useResource = true;
-		if (strstr(localeName, "Chinese (Simplified)_China") != NULL) {
-			_tcscat(iniPath, _T("ChineseSimplified.lng"));
-			language = SimplifiedChinese;
-			helpFileName = _T("noMeiryoUI_zh-cn.chm");
 
-		} else if (strstr(localeName, "English") != NULL) {
-			_tcscat(iniPath, _T("English.lng"));
-			language = English;
-			helpFileName = _T("noMeiryoUI_en.chm");
-
-		} else {
-			// Fallback language support
-			_tcscat(iniPath, _T("Default.lng"));
-			language = English;
-			helpFileName = _T("noMeiryoUI_en.chm");
+		_tcscpy(findPath, iniPath);
+		p = _tcsrchr(langWork, _T('.'));
+		if (p != NULL) {
+			*p = _T('\0');
+		}
+		_tcscat(findPath, langWork);
+		_tcscat(findPath, _T(".lng"));
+		WIN32_FIND_DATA fileInfo;
+		
+		HANDLE found = FindFirstFile(findPath, &fileInfo);
+		if (found != INVALID_HANDLE_VALUE) {
+			// 言語_地域形式のファイルがある場合
+			_tcscpy(iniPath, findPath);
+			_tcscpy(helpFileName, langWork);
+			_tcscat(helpFileName, _T(".chm"));
+		}
+		else {
+			_tcscpy(findPath, iniPath);
+			p = _tcsrchr(langWork, _T('_'));
+			if (p != NULL) {
+				*p = _T('\0');
+			}
+			_tcscat(findPath, langWork);
+			_tcscat(findPath, _T(".lng"));
+			found = FindFirstFile(findPath, &fileInfo);
+			if (found != INVALID_HANDLE_VALUE) {
+				// 言語のファイルがある場合
+				_tcscpy(iniPath, findPath);
+				_tcscpy(helpFileName, langWork);
+				_tcscat(helpFileName, _T(".chm"));
+			} else {
+				// 言語ファイルが存在しない場合
+				_tcscat(iniPath, _T("Default.lng"));
+				_tcscpy(helpFileName, _T("English.chm"));
+			}
 		}
 		// Language support routine ends here.
 
