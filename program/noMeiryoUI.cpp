@@ -82,7 +82,7 @@ void initializeLocale(void)
 		useResource = false;
 		setFontResourceJa8();
 		setFontResourceJa10();
-		_tcscpy(helpFileName, _T("noMeiryoUI_ja-jp.chm"));
+		_tcscpy(helpFileName, _T("Japanese.chm"));
 	} else {
 		// Language detection
 		useResource = true;
