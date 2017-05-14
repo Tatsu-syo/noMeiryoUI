@@ -91,17 +91,37 @@ default.lng : 言語ファイルのサンプルを兼ねた簡体字中国語・
 　CAPTION_SIZE_8=11
 　CAPTION_CHARSET_8=1
 
-ヘルプ・言語ファイルを訳した場合、プログラムに組み込む必要がありますので、
-下記の作者のほうにご連絡ください。
+4.最後に、Meiryo UIも大っきらい!!が言語ファイルを読み込めるように
+　言語ファイル・ヘルプファイルをリネームします。
+　utilディレクトリのlocaletest.exeをコマンドプロンプトから
+　実行すると 言語名_国名.コードページ の形式で現在のWindowsの表示等の
+　言語が表示されます。
+　言語名で表示する場合は'_'より前の文字列にそれぞれのファイルの拡張子を
+　つけた名前に言語ファイルとヘルプファイルの名前を変更してください。
+　言語名と国に合わせた表示を行う場合は'.'より前の文字列にそれぞれのファイルの
+　拡張子をつけた名前に言語ファイルとヘルプファイルの名前を変更してください。
+　ファイル名の変更が終わったらnoMeiryoUI.exeと同じフォルダに置くことで
+　言語ファイルが読み込まれ、ヘルプファイルが表示されます。
 
-もしくは、utilディレクトリのlocaletest.exeをコマンドプロンプトから
-実行した結果を参考にnoMeiryoUI.cppのinitializeLocale関数の
-// If you want to add language support, add language detection, language file,
-// and help file name.
-とある行から
-// Language support routine ends here.
-とある行までの間の言語判定ルーチンにlocaletest.exeを実行して表示された
-言語名にマッチする場合の処理を追加してください。
+　ただし、default.lng、default.hlpは表示する言語の言語ファイルがない場合に
+　使用するので、残すようにしてください。
+
+例)
+・英語(国を問わない)の場合
+English_United States.437
+などと出るので、'_'の前のEnglishにそれぞれの拡張子を付けた名前に
+ファイル名を変更します。
+言語ファイル名はEnglish.lng
+ヘルプファイル名はEnglish.chm
+となります。
+
+・簡体字中国語(中国)の場合
+Chinese (Simplified)_China.936
+と出るのでChinese (Simplified)_Chinaにそれぞれの拡張子を付けた名前に
+ファイル名を変更します。
+言語ファイル名はChinese (Simplified)_China.lng
+ヘルプファイル名はChinese (Simplified)_China.chm
+となります。
 
 [ライセンス]
 MITライセンス(http://opensource.org/licenses/mit-license.php)に従います。
