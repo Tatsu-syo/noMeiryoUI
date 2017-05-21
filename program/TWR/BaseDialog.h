@@ -32,6 +32,10 @@ public:
 		parentWindow = parent;
 	}
 
+	HWND getParent(void)
+	{
+		return parentWindow;
+	}
 	TwrWnd *GetDlgItem(int item);
 	HWND GetDlgItemRaw(int item);
 	void setChildText(int id, const TCHAR *message);

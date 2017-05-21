@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -244,11 +244,43 @@ INT_PTR FontSel::OnInitDialog()
 	if (useResource) {
 		applyResource();
 	}
+	adjustPosition();
 
 	return (INT_PTR)FALSE;
 }
 
+/**
+ * ウインドウ位置を親ウインドウの中央に調整する。
+ */
+void FontSel::adjustPosition(void)
+{
+	RECT parentRect;
+	int parentWidth, parentHeight;
+	RECT myRect;
+	int myWidth, myHeight;
+	int newTop, newLeft;
 
+	GetWindowRect(getParent(), &parentRect);
+	GetWindowRect(this->hWnd, &myRect);
+
+	parentWidth = parentRect.right - parentRect.left + 1;
+	parentHeight = parentRect.bottom - parentRect.top + 1;
+
+	myWidth = myRect.right - myRect.left + 1;
+	myHeight = myRect.bottom - myRect.top + 1;
+
+	if (myWidth >= parentWidth) {
+		newLeft = parentRect.left + 1;
+	} else {
+		newLeft = parentRect.left + (parentWidth - myWidth) / 2;
+	}
+	if (myHeight >= parentHeight) {
+		newTop = parentRect.top + 1;
+	} else {
+		newTop = parentRect.top + (parentHeight - myHeight) / 2;
+	}
+	SetWindowPos(this->hWnd, getParent(), newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
+}
 
 /**
  * 各操作に対する処理の分岐
