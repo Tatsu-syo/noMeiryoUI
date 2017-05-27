@@ -629,7 +629,6 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 	int newTop, newLeft;
 	RECT myRect;
 
-	GetWindowRect(parentHWnd, &parentRect);
 	GetWindowRect(myHWnd, &myRect);
 
 	parentWidth = parentRect.right - parentRect.left + 1;
@@ -641,12 +640,12 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 	if (myWidth >= parentWidth) {
 		newLeft = parentRect.left + 1;
 	} else {
-		newLeft = parentRect.left + (parentWidth - myWidth) / 2;
+		newLeft = parentRect.left + MulDiv((parentWidth - myWidth), 45, 100);
 	}
 	if (myHeight >= parentHeight) {
 		newTop = parentRect.top + 1;
 	} else {
-		newTop = parentRect.top + (parentHeight - myHeight) / 2;
+		newTop = parentRect.top + MulDiv((parentHeight - myHeight), 45, 100);
 	}
 	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
 

@@ -9,6 +9,13 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TwrMenu.h"
 
 void initializeLocale(void);
+BOOL CALLBACK MonitorEnumCallback(
+	HMONITOR hMonitor,
+	HDC hdcMonitor,
+	LPRECT lprcMonitor,
+	LPARAM dwData
+);
+
 
 class NoMeiryoUI : public DialogAppliBase {
 private:

@@ -182,6 +182,10 @@ INT_PTR CALLBACK BaseDialog::dialogProc(HWND hDlg, UINT message, WPARAM wParam, 
             result = OnInitDialog();
 			return result;
 
+		case WM_SHOWWINDOW:
+			result = OnShowWindow(wParam, lParam);
+			return 0;
+
 		case WM_COMMAND:
 			result = OnCommand(wParam);
 			if (result == 0) {
@@ -218,6 +222,18 @@ INT_PTR BaseDialog::OnInitDialog()
 	return (INT_PTR)FALSE;
 }
 
+/**
+ * WM_SHOWWINDOWメッセージによる表示状態変更時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR BaseDialog::OnShowWindow(WPARAM wParam, LPARAM lParam)
+{
+	::DefWindowProc(this->hWnd, WM_SHOWWINDOW, wParam, lParam);
+	return (INT_PTR)0;
+}
 
 /**
  * ダイアログ操作が行われた時に呼び出されます。

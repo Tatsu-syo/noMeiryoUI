@@ -35,6 +35,8 @@ bool useResource = false;
 bool has8Preset = true;
 bool has10Preset = true;
 TCHAR helpFileName[64];
+RECT myMonitorLect;
+bool firstMonitor = false;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -393,7 +395,60 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// フォント名表示を更新する。
 	updateDisplay();
 
+	EnumDisplayMonitors(NULL, NULL, MonitorEnumCallback, 0);
+
+	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+
 	return (INT_PTR)FALSE;
+}
+
+/**
+ * カーソルのいるモニターを判定するためのEnumDisplayMonitorsのコールバック
+ *
+ * @param hMonitor モニターのハンドル
+ * @param hdcMonitor モニターのディスプレイコンテキスト
+ * @param lprcMonitor モニターの座標情報
+ * @param dwData EnumDisplayMonitors
+ * @return TRUE:列挙を続ける FALSE:列挙をやめ、モニターの座標情報を確定させる
+ */
+BOOL CALLBACK MonitorEnumCallback(
+	HMONITOR hMonitor,
+	HDC hdcMonitor,
+	LPRECT lprcMonitor,
+	LPARAM dwData
+)
+{
+	if (!firstMonitor) {
+		// ディスプレイの情報が何もない状態は避ける。
+		myMonitorLect = *lprcMonitor;
+		firstMonitor = true;
+	}
+
+	CURSORINFO cursofInfo;
+	cursofInfo.cbSize = sizeof(CURSORINFO);
+	BOOL result = GetCursorInfo(&cursofInfo);
+	if (result == 0) {
+		// カーソルの情報を利用できないときはプライマリモニタを
+		// カーソルのいるモニタ扱いとする。
+		if ((myMonitorLect.left == 0) && (myMonitorLect.top == 0)) {
+			myMonitorLect = *lprcMonitor;
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
+
+	// カーソルのいるモニタかどうか判定する。
+	int x = cursofInfo.ptScreenPos.x;
+	int y = cursofInfo.ptScreenPos.y;
+	if ((x >= lprcMonitor->left) && (x <= lprcMonitor->right)) {
+		if ((y >= lprcMonitor->top) && (y <= lprcMonitor->bottom)) {
+			myMonitorLect = *lprcMonitor;
+
+			return FALSE;
+		}
+	}
+	return TRUE;
 }
 
 /**
