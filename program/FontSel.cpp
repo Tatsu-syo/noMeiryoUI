@@ -255,31 +255,10 @@ INT_PTR FontSel::OnInitDialog()
 void FontSel::adjustPosition(void)
 {
 	RECT parentRect;
-	int parentWidth, parentHeight;
-	RECT myRect;
-	int myWidth, myHeight;
-	int newTop, newLeft;
 
 	GetWindowRect(getParent(), &parentRect);
-	GetWindowRect(this->hWnd, &myRect);
 
-	parentWidth = parentRect.right - parentRect.left + 1;
-	parentHeight = parentRect.bottom - parentRect.top + 1;
-
-	myWidth = myRect.right - myRect.left + 1;
-	myHeight = myRect.bottom - myRect.top + 1;
-
-	if (myWidth >= parentWidth) {
-		newLeft = parentRect.left + 1;
-	} else {
-		newLeft = parentRect.left + (parentWidth - myWidth) / 2;
-	}
-	if (myHeight >= parentHeight) {
-		newTop = parentRect.top + 1;
-	} else {
-		newTop = parentRect.top + (parentHeight - myHeight) / 2;
-	}
-	SetWindowPos(this->hWnd, getParent(), newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
+	adjustCenter(parentRect, getParent(), this->hWnd);
 }
 
 /**

@@ -614,3 +614,40 @@ int setFontResourceJa10(void)
 
 	return 1;
 }
+
+/**
+ * ウインドウを親ウインドウの中央に配置する。
+ *
+ * @param parentRect 中心に入れる対象の領域
+ * @param parentHWnd 親ウインドウハンドル
+ * @param myHWnd 中央寄せする要素のウインドウハンドル
+ */
+void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
+{
+	int parentWidth, parentHeight;
+	int myWidth, myHeight;
+	int newTop, newLeft;
+	RECT myRect;
+
+	GetWindowRect(parentHWnd, &parentRect);
+	GetWindowRect(myHWnd, &myRect);
+
+	parentWidth = parentRect.right - parentRect.left + 1;
+	parentHeight = parentRect.bottom - parentRect.top + 1;
+
+	myWidth = myRect.right - myRect.left + 1;
+	myHeight = myRect.bottom - myRect.top + 1;
+
+	if (myWidth >= parentWidth) {
+		newLeft = parentRect.left + 1;
+	} else {
+		newLeft = parentRect.left + (parentWidth - myWidth) / 2;
+	}
+	if (myHeight >= parentHeight) {
+		newTop = parentRect.top + 1;
+	} else {
+		newTop = parentRect.top + (parentHeight - myHeight) / 2;
+	}
+	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
+
+}
