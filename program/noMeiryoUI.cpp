@@ -38,6 +38,7 @@ TCHAR helpFileName[64];
 RECT myMonitorLect;
 bool firstMonitor = false;
 DWORD helpPid;
+bool helpMoved = false;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -2233,13 +2234,17 @@ void NoMeiryoUI::showHelp(void)
 		return;
 	}
 	helpPid = procInfo.dwProcessId;
-	Sleep(200);
+	helpMoved = false;
 
 	// メインウインドウのあるディスプレイの座標系を取得する。
 	EnumDisplayMonitors(NULL, NULL, MonitorNearWindowCallback, (LPARAM)this->hWnd);
-	// 起動したヘルプのウインドウを検索し、メインウインドウのあるディスプレイの
-	// 中央にもっていく。
-	EnumWindows(setWindowSize, 0);
+
+	for (int i = 0; helpMoved == false && i < 25; i++) {
+		// 起動したヘルプのウインドウを検索し、メインウインドウのあるディスプレイの
+		// 中央にもっていく。
+		EnumWindows(setWindowSize, 0);
+		Sleep(200);
+	}
 
 }
 
@@ -2264,6 +2269,7 @@ BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam)
 				// メインウインドウのあるディスプレイの中央に
 				// ヘルプのウインドウ位置を設定する。
 				adjustCenter(myMonitorLect, HWND_TOP, hWnd);
+				helpMoved = true;
 
 				return FALSE;
 			}
