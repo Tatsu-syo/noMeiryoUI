@@ -37,6 +37,7 @@ bool has10Preset = true;
 TCHAR helpFileName[64];
 RECT myMonitorLect;
 bool firstMonitor = false;
+DWORD helpPid;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -395,7 +396,7 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// フォント名表示を更新する。
 	updateDisplay();
 
-	EnumDisplayMonitors(NULL, NULL, MonitorEnumCallback, 0);
+	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
 
 	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
 
@@ -411,7 +412,7 @@ INT_PTR NoMeiryoUI::OnInitDialog()
  * @param dwData EnumDisplayMonitors
  * @return TRUE:列挙を続ける FALSE:列挙をやめ、モニターの座標情報を確定させる
  */
-BOOL CALLBACK MonitorEnumCallback(
+BOOL CALLBACK MonitorNearMouseCallback(
 	HMONITOR hMonitor,
 	HDC hdcMonitor,
 	LPRECT lprcMonitor,
@@ -1897,6 +1898,8 @@ void NoMeiryoUI::OnSet10(void)
 
 }
 
+// 設定するシステムフォントの情報格納用構造体
+// システムフォント設定スレッドで使用する。
 NONCLIENTMETRICS *s_fontMetrics;
 
 /**
@@ -2150,6 +2153,13 @@ void NoMeiryoUI::SetWinVer(void)
 	verInfo->setText(buf);
 }
 
+/**
+ * Windows 10のバージョンを取得する。
+ *
+ * @param buf バージョン番号格納先
+ * @param major メジャーバージョン
+ * @param minor マイナーバージョン
+ */
 void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 {
 	TCHAR release[8];
@@ -2189,16 +2199,119 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 void NoMeiryoUI::showHelp(void)
 {
 	// 実行ファイルの情報を得るためのバッファ群
-	TCHAR path[_MAX_PATH+1],drive[_MAX_DRIVE+1],dir[_MAX_DIR+1],helpFile[_MAX_PATH+1];
+	TCHAR path[_MAX_PATH+1],drive[_MAX_DRIVE+1],dir[_MAX_DIR+1],commandLine[_MAX_PATH+32];
 
 	// 実行ファイルのあるところのBShelp.htmlのパス名を生成する。
 	::GetModuleFileName(NULL,path,_MAX_PATH);
 	::_tsplitpath(path,drive,dir,NULL,NULL);
-	::_stprintf(helpFile, _T("%s%s%s"), drive, dir, helpFileName);
+	::_stprintf(commandLine, _T("hh.exe \"%s%s%s\""), drive, dir, helpFileName);
 	
 	// 関連付けられたアプリでドキュメントファイルを表示する。
-	ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
+	// ShellExecute(hWnd,_T("open"),helpFile,NULL,NULL,SW_SHOW);
+
+	// ウインドウ位置を制御するためCreateProcessでヘルプファイルを表示する
+	STARTUPINFO info;
+	PROCESS_INFORMATION procInfo;
+	BOOL startResult;
+
+	memset(&info, 0, sizeof(STARTUPINFO));
+	memset(&procInfo, 0, sizeof(PROCESS_INFORMATION));
+
+	startResult = CreateProcess(
+		NULL,
+		commandLine,
+		NULL,
+		NULL,
+		FALSE,
+		0,
+		NULL,
+		NULL,
+		&info,
+		&procInfo
+	);
+	if (startResult == FALSE) {
+		return;
+	}
+	helpPid = procInfo.dwProcessId;
+	Sleep(200);
+
+	// メインウインドウのあるディスプレイの座標系を取得する。
+	EnumDisplayMonitors(NULL, NULL, MonitorNearWindowCallback, (LPARAM)this->hWnd);
+	// 起動したヘルプのウインドウを検索し、メインウインドウのあるディスプレイの
+	// 中央にもっていく。
+	EnumWindows(setWindowSize, 0);
+
 }
+
+/**
+ * 各ウインドウに対するチェック処理を行うコールバック
+ *
+ * @param hWnd 見つかったウインドウのハンドル
+ * @param lparam EnumWindowsのLPARAM(未使用)
+ * @return TRUE:列挙を続ける FALSE:列挙を終える。
+ */
+BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam)
+{
+	DWORD wndPid;
+	WINDOWPLACEMENT place;
+	place.length = sizeof(WINDOWPLACEMENT);
+
+	// 起動したプログラムのウインドウを探す
+	GetWindowThreadProcessId(hWnd, &wndPid);
+	if (wndPid == helpPid) {
+		if (IsWindowVisible(hWnd)) {
+			if (IsWindow(hWnd)) {
+				// メインウインドウのあるディスプレイの中央に
+				// ヘルプのウインドウ位置を設定する。
+				adjustCenter(myMonitorLect, HWND_TOP, hWnd);
+
+				return FALSE;
+			}
+		}
+	}
+	return TRUE;
+}
+
+/**
+ * ウインドウのいるモニターを判定するためのEnumDisplayMonitorsのコールバック
+ *
+ * @param hMonitor モニターのハンドル
+ * @param hdcMonitor モニターのディスプレイコンテキスト
+ * @param lprcMonitor モニターの座標情報
+ * @param dwData EnumDisplayMonitorsのパラメータ(メインウインドウのウインドウハンドル)
+ * @return TRUE:列挙を続ける FALSE:列挙をやめ、モニターの座標情報を確定させる
+ */
+BOOL CALLBACK MonitorNearWindowCallback(
+	HMONITOR hMonitor,
+	HDC hdcMonitor,
+	LPRECT lprcMonitor,
+	LPARAM dwData
+)
+{
+	HWND myHwnd = (HWND)dwData;
+	if (!firstMonitor) {
+		// ディスプレイの情報が何もない状態は避ける。
+		myMonitorLect = *lprcMonitor;
+		firstMonitor = true;
+	}
+
+	RECT rect;
+	GetWindowRect(myHwnd, &rect);
+
+	// カーソルのいるモニタかどうか判定する。
+	int x = rect.left;
+	int y = rect.top;
+	if ((x >= lprcMonitor->left) && (x <= lprcMonitor->right)) {
+		if ((y >= lprcMonitor->top) && (y <= lprcMonitor->bottom)) {
+			myMonitorLect = *lprcMonitor;
+
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+
 
 /**
  * バージョン番号を表示する。

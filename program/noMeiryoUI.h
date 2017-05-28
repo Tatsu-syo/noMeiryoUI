@@ -9,12 +9,19 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TwrMenu.h"
 
 void initializeLocale(void);
-BOOL CALLBACK MonitorEnumCallback(
+BOOL CALLBACK MonitorNearMouseCallback(
 	HMONITOR hMonitor,
 	HDC hdcMonitor,
 	LPRECT lprcMonitor,
 	LPARAM dwData
 );
+BOOL CALLBACK MonitorNearWindowCallback(
+	HMONITOR hMonitor,
+	HDC hdcMonitor,
+	LPRECT lprcMonitor,
+	LPARAM dwData
+);
+BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
 
 
 class NoMeiryoUI : public DialogAppliBase {
