@@ -130,4 +130,5 @@ MITライセンス(http://opensource.org/licenses/mit-license.php)に従いま�
 庄子 達彦(Tatsu)
 E-mail Address rxk16664@nifty.ne.jp
 My Web page http://tatsu.life.coocan.jp/index.html
+GitHub project page https://github.com/Tatsu-syo/noMeiryoUI
 ------------------------------------------------------------------------
