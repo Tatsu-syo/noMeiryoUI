@@ -1,0 +1,45 @@
+﻿/*
+noMeiryoUI (C) 2005,2012-2016 Tatsuhiko Shoji
+The sources for noMeiryoUI are distributed under the MIT open source license
+*/
+body{
+	background-color:white;
+	color:black;
+	line-height:1.2em;
+}
+div.chapter{
+	background-color:white;
+	color:black;
+	margin:0.5em;
+	padding:0.5em;
+}
+h1{
+    font-size: 1.3em;
+	line-height:1.2em;
+}
+h2 {
+    font-size: 1.2em;
+}
+
+h3 {
+    font-size: 1.1em;
+	/* border-bottom-width:2px; */
+	border-style:none none double none;
+}
+span.button {
+	background-color:white;
+	color:black;
+	margin:1px;
+	padding:1px;
+	border-style:outset;
+	border-width:2px;
+}
+
+span.check {
+	background-color:white;
+	color:black;
+	margin:1px;
+	padding:1px;
+	border-style:inset;
+	border-width:2px;
+}
