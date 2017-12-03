@@ -124,7 +124,7 @@ Chinese (Simplified)_China.936
 となります。
 
 [ライセンス]
-MITライセンス(http://opensource.org/licenses/mit-license.php)に従います。
+MITライセンス( http://opensource.org/licenses/mit-license.php )に従います。
 
 [作者]
 庄子 達彦(Tatsu)
