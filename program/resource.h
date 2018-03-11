@@ -1,6 +1,7 @@
-// noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
-// The sources for noMeiryoUI are distributed under the MIT open source license
-
+/*
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+The sources for noMeiryoUI are distributed under the MIT open source license
+*/
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
 // noMeiryoUI.rc で使用
