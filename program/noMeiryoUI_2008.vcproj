@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\iniReader.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\noMeiryoUI.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			>
 			<File
 				RelativePath=".\FontSel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\iniReader.h"
 				>
 			</File>
 			<File
