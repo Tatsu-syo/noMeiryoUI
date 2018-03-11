@@ -1,5 +1,5 @@
 ﻿Meiryo UIも大っきらい!! source file package
-By Tatsuhiko Syoji(Tatsu) 2005,2012-2017
+By Tatsuhiko Syoji(Tatsu) 2005,2012-2018
 
 [必要となるプログラム]
 ・Visual Studio 2008/2015以降(VC++)
@@ -52,8 +52,8 @@ default.lng : 言語ファイルのサンプルを兼ねた簡体字中国語・
 　DLG_ALL_FONT=All fonts
 
 　文字セットに対応する数値は以下の通りとなります。
-　ANSI文字セット:0
-　デフォルト文字セット(通常はこれを指定します。)：1
+　ANSI文字セット(通常はこれを指定します。):0
+　デフォルト文字セット：1
 　シンボル：2
 　日本語(SHift-JIS)：128
 　ハングル文字：129
