@@ -5,7 +5,7 @@
 ;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=System
-FONT_CHARSET=1
+FONT_CHARSET=0
 TITLE=No!! Meiryo UI
 MENU_FILE=&File
 MENU_FILE_LOAD=L&oad font settings...
