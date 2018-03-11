@@ -180,6 +180,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FontSel.cpp" />
+    <ClCompile Include="iniReader.cpp" />
     <ClCompile Include="noMeiryoUI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -200,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontSel.h" />
+    <ClInclude Include="iniReader.h" />
     <ClInclude Include="noMeiryoUI.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />

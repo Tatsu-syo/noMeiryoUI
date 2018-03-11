@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -109,6 +109,7 @@ int getFont()
  */
 FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 {
+	displayFont = NULL;
 	m_fontNameList = NULL;
 	m_fontSizeList = NULL;
 	m_ChersetList = NULL;
@@ -136,6 +137,9 @@ FontSel::~FontSel(void)
 	}
 	if (m_underline != NULL) {
 		delete m_underline;
+	}
+	if (displayFont != NULL) {
+		DeleteObject(displayFont);
 	}
 }
 
@@ -295,7 +299,7 @@ void FontSel::applyResource()
 {
 	HDC hDC = GetDC(this->hWnd);
 
-	HFONT newFont = CreateFont(
+	displayFont = CreateFont(
 		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
 		0,
@@ -318,28 +322,28 @@ void FontSel::applyResource()
 	setText(langResource[27].c_str());
 
 	setChildText(IDC_STATIC_NAME, langResource[28].c_str());
-	setChildFont(IDC_STATIC_NAME, newFont);
+	setChildFont(IDC_STATIC_NAME, displayFont);
 	setChildText(IDC_STATIC_STYLE, langResource[29].c_str());
-	setChildFont(IDC_STATIC_STYLE, newFont);
+	setChildFont(IDC_STATIC_STYLE, displayFont);
 	setChildText(IDC_STATIC_SIZE, langResource[30].c_str());
-	setChildFont(IDC_STATIC_SIZE, newFont);
+	setChildFont(IDC_STATIC_SIZE, displayFont);
 
 	setChildText(IDC_CHECK_UNDERLINE, langResource[31].c_str());
-	setChildFont(IDC_CHECK_UNDERLINE, newFont);
+	setChildFont(IDC_CHECK_UNDERLINE, displayFont);
 	setChildText(IDC_CHECK_STRIKE, langResource[32].c_str());
-	setChildFont(IDC_CHECK_STRIKE, newFont);
+	setChildFont(IDC_CHECK_STRIKE, displayFont);
 	setChildText(IDC_STATIC_CHARSET, langResource[33].c_str());
-	setChildFont(IDC_STATIC_CHARSET, newFont);
+	setChildFont(IDC_STATIC_CHARSET, displayFont);
 
 	setChildText(IDOK, langResource[34].c_str());
-	setChildFont(IDOK, newFont);
+	setChildFont(IDOK, displayFont);
 	setChildText(IDCANCEL, langResource[35].c_str());
-	setChildFont(IDCANCEL, newFont);
+	setChildFont(IDCANCEL, displayFont);
 
-	setChildFont(IDC_COMBO_NAME, newFont);
-	setChildFont(IDC_COMBO_STYLE, newFont);
-	setChildFont(IDC_COMBO_SIZE, newFont);
-	setChildFont(IDC_COMBO_CHARSET, newFont);
+	setChildFont(IDC_COMBO_NAME, displayFont);
+	setChildFont(IDC_COMBO_STYLE, displayFont);
+	setChildFont(IDC_COMBO_SIZE, displayFont);
+	setChildFont(IDC_COMBO_CHARSET, displayFont);
 
 }
 

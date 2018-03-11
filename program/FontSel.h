@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma once
@@ -28,6 +28,8 @@ private:
 	TwrCombobox *m_styleList;
 	TwrCheckbox *m_underline;
 	TwrCheckbox *m_strike;
+
+	HFONT displayFont;
 
 	LOGFONT selectedFont;
 	LOGFONT *previousFont;

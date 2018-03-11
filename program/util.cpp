@@ -4,6 +4,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
 #include "util.h"
+#include "iniReader.h"
 
 /** Windows 8のフォントサイズ算出式を使用するか？ */
 bool WIN8_SIZE = true;
@@ -21,6 +22,8 @@ std::vector<tstring> fontFaces10;
 std::vector<int> fontSizes10;
 /** フォント文字セット(Windows 10) */
 std::vector<int> fontCharset10;
+
+int codePage = 0;
 
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
@@ -113,7 +116,11 @@ void readResourceItem(TCHAR *file, TCHAR *key, TCHAR *fallback)
 
 	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
 	// 各言語の文字コードのファイルとして読んでくれる。
-	len = GetPrivateProfileString(_T("RESOURCE"), key, _T(""), buf, 255, file);
+	if (codePage == 0) {
+		len = GetPrivateProfileString(_T("RESOURCE"), key, _T(""), buf, 255, file);
+	} else {
+		len = GetPrivateProfileStringExT("RESOURCE", key, _T(""), buf, 255, file,codePage);
+	}
 	if (len > 0) {
 		langResource.push_back(buf);
 	} else {

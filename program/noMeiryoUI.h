@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef NOMEIRYOUI_H
@@ -56,6 +56,8 @@ private:
 	TwrWnd *verInfo;
 
 	TwrMenu *appMenu;
+
+	HFONT displayFont;
 
 	HFONT allFont;
 	HFONT titleFont;

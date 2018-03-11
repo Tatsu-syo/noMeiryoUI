@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -72,11 +72,13 @@ void initializeLocale(void)
 
 	// ロケールの初期化
 	char *localeName = setlocale(LC_ALL, "");
-	char *codePage = strchr(localeName, '.');
-	if (codePage != NULL) {
-		_setmbcp(atoi(codePage + 1));
+	char *codePageDelim = strchr(localeName, '.');
+	if (codePageDelim != NULL) {
+		_setmbcp(atoi(codePageDelim + 1));
+		codePage = atoi(codePageDelim + 1);
 	} else {
 		_setmbcp(_MB_CP_LOCALE);
+		codePageDelim = 0;
 	}
 	mbstowcs(langWork, localeName, 64);
 
@@ -186,6 +188,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	_tcscpy(settingFile, _T(""));
 	verInfo = NULL;
 
+	displayFont = NULL;
 	allFont = NULL;
 	titleFont = NULL;
 	iconFontHandle = NULL;
@@ -286,6 +289,10 @@ int NoMeiryoUI::OnAppliEnd()
 	}
 	if (menuFontTextBox != NULL) {
 		delete menuFontTextBox;
+	}
+
+	if (displayFont != NULL) {
+		DeleteObject(displayFont);
 	}
 
 	return 0;
@@ -675,7 +682,7 @@ void NoMeiryoUI::applyResource()
 {
 	HDC hDC = GetDC(this->hWnd);
 
-	HFONT newFont = CreateFont(
+	HFONT displayFont = CreateFont(
 		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
 		0,
@@ -714,48 +721,48 @@ void NoMeiryoUI::applyResource()
 	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
 
 	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
-	setChildFont(IDC_STATIC_ALL_FONT, newFont);
+	setChildFont(IDC_STATIC_ALL_FONT, displayFont);
 	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
-	setChildFont(IDC_STATIC_TITLE_BAR, newFont);
+	setChildFont(IDC_STATIC_TITLE_BAR, displayFont);
 	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
-	setChildFont(IDC_STATIC_ICON, newFont);
+	setChildFont(IDC_STATIC_ICON, displayFont);
 	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
-	setChildFont(IDC_STATIC_PALETTE_TITLE, newFont);
+	setChildFont(IDC_STATIC_PALETTE_TITLE, displayFont);
 	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
-	setChildFont(IDC_STATIC_HINT, newFont);
+	setChildFont(IDC_STATIC_HINT, displayFont);
 	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
-	setChildFont(IDC_STATIC_MESSAGE, newFont);
+	setChildFont(IDC_STATIC_MESSAGE, displayFont);
 	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
-	setChildFont(IDC_STATIC_MENU, newFont);
+	setChildFont(IDC_STATIC_MENU, displayFont);
 
 	setChildText(ID_SEL_ALL, langResource[23].c_str());
-	setChildFont(ID_SEL_ALL, newFont);
+	setChildFont(ID_SEL_ALL, displayFont);
 	setChildText(ID_SEL_TITLE, langResource[23].c_str());
-	setChildFont(ID_SEL_TITLE, newFont);
+	setChildFont(ID_SEL_TITLE, displayFont);
 	setChildText(ID_SEL_ICON, langResource[23].c_str());
-	setChildFont(ID_SEL_ICON, newFont);
+	setChildFont(ID_SEL_ICON, displayFont);
 	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
-	setChildFont(ID_SEL_PALETTE, newFont);
+	setChildFont(ID_SEL_PALETTE, displayFont);
 	setChildText(ID_SEL_HINT, langResource[23].c_str());
-	setChildFont(ID_SEL_HINT, newFont);
+	setChildFont(ID_SEL_HINT, displayFont);
 	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
-	setChildFont(ID_SEL_MESSAGE, newFont);
+	setChildFont(ID_SEL_MESSAGE, displayFont);
 	setChildText(ID_SEL_MENU, langResource[23].c_str());
-	setChildFont(ID_SEL_MENU, newFont);
+	setChildFont(ID_SEL_MENU, displayFont);
 	setChildText(ID_SET_ALL, langResource[24].c_str());
-	setChildFont(ID_SET_ALL, newFont);
+	setChildFont(ID_SET_ALL, displayFont);
 	setChildText(IDOK, langResource[25].c_str());
-	setChildFont(IDOK, newFont);
+	setChildFont(IDOK, displayFont);
 	setChildText(IDCANCEL, langResource[26].c_str());
-	setChildFont(IDCANCEL, newFont);
+	setChildFont(IDCANCEL, displayFont);
 
-	setChildFont(IDC_STATIC_APP_TITLE, newFont);
+	setChildFont(IDC_STATIC_APP_TITLE, displayFont);
 
-	setChildFont(IDC_STATIC_VERNO, newFont);
-	setChildFont(IDC_STATIC_AUTHOR, newFont);
+	setChildFont(IDC_STATIC_VERNO, displayFont);
+	setChildFont(IDC_STATIC_AUTHOR, displayFont);
 
 
-	DeleteObject(newFont);
+	//DeleteObject(newFont);
 }
 
 

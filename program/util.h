@@ -27,7 +27,8 @@ extern std::vector<tstring> fontFaces10;
 extern std::vector<int> fontSizes10;
 /** フォント文字セット(Windows 10) */
 extern std::vector<int> fontCharset10;
-
+/** コードページ */
+extern int codePage;
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);

@@ -60,6 +60,9 @@
     <ClCompile Include="TWR\TwrWnd.cpp">
       <Filter>ソース ファイル\TWR</Filter>
     </ClCompile>
+    <ClCompile Include="iniReader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontSel.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="TWR\TwrWnd.h">
       <Filter>ヘッダー ファイル\TWR</Filter>
+    </ClInclude>
+    <ClInclude Include="iniReader.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
