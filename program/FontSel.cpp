@@ -300,7 +300,7 @@ void FontSel::applyResource()
 	HDC hDC = GetDC(this->hWnd);
 
 	displayFont = CreateFont(
-		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
 		0,
 		0,

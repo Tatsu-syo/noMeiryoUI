@@ -638,7 +638,7 @@ HFONT NoMeiryoUI::createFont(LOGFONT *font)
 	HDC hDC = GetDC(this->hWnd);
 
 	HFONT newFont = CreateFont(
-		-MulDiv(10, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
 		0,
 		0,
@@ -683,7 +683,7 @@ void NoMeiryoUI::applyResource()
 	HDC hDC = GetDC(this->hWnd);
 
 	HFONT displayFont = CreateFont(
-		-MulDiv(9, GetDeviceCaps(hDC, LOGPIXELSY), 72),
+		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
 		0,
 		0,

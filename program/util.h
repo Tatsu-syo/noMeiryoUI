@@ -12,6 +12,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TWR/tstring.h"
 
 #define PRESET_SECTION "PRESET"
+#define APP_FONTSIZE 11
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
