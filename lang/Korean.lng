@@ -5,7 +5,7 @@
 ;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=맑은 고딕
-FONT_CHARSET=1
+FONT_CHARSET=129
 TITLE=No!! Meiryo UI
 MENU_FILE=파일(&F)
 MENU_FILE_LOAD=글꼴 설정 열기(&O)...
