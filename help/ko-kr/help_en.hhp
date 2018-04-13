@@ -1,0 +1,18 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Korean.chm
+Contents file=ToC.hhc
+Default topic=contents\02.html
+Display compile progress=No
+Language=0x412 한국어(대한민국)
+Title=No!! Meiryo UI 도움말
+
+
+[FILES]
+contents\01.html
+contents\02.html
+contents\03.html
+contents\04.html
+
+[INFOTYPES]
+
