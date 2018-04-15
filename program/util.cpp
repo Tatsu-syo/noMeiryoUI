@@ -1,48 +1,49 @@
-/*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+ï»¿/*
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
 #include "util.h"
 #include "iniReader.h"
 
-/** Windows 8‚ÌƒtƒHƒ“ƒgƒTƒCƒYZo®‚ğg—p‚·‚é‚©H */
+/** Windows 8ã®ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºç®—å‡ºå¼ã‚’ä½¿ç”¨ã™ã‚‹ã‹ï¼Ÿ */
 bool WIN8_SIZE = true;
-/** Œ¾ŒêƒŠƒ\[ƒX */
+/** è¨€èªãƒªã‚½ãƒ¼ã‚¹ */
 std::vector<tstring> langResource;
-/** ƒtƒHƒ“ƒg–¼(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆå(Windows 8.x) */
 std::vector<tstring> fontFaces8;
-/** ƒtƒHƒ“ƒgƒTƒCƒY(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Windows 8.x) */
 std::vector<int> fontSizes8;
-/** ƒtƒHƒ“ƒg•¶šƒZƒbƒg(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆ(Windows 8.x) */
 std::vector<int> fontCharset8;
-/** ƒtƒHƒ“ƒg–¼(Windows 10) */
+/** ãƒ•ã‚©ãƒ³ãƒˆå(Windows 10) */
 std::vector<tstring> fontFaces10;
-/** ƒtƒHƒ“ƒgƒTƒCƒY(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Windows 8.x) */
 std::vector<int> fontSizes10;
-/** ƒtƒHƒ“ƒg•¶šƒZƒbƒg(Windows 10) */
+/** ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆ(Windows 10) */
 std::vector<int> fontCharset10;
 
 int codePage = 0;
+bool isKorean = false;
 
 /**
- * ƒtƒHƒ“ƒg‚ÌƒsƒNƒZƒ‹”‚É‘Î‰‚·‚éƒ|ƒCƒ“ƒg”‚ğ®”‚ÅZo‚·‚éB(Windows 8)
+ * ãƒ•ã‚©ãƒ³ãƒˆã®ãƒ”ã‚¯ã‚»ãƒ«æ•°ã«å¯¾å¿œã™ã‚‹ãƒã‚¤ãƒ³ãƒˆæ•°ã‚’æ•´æ•°ã§ç®—å‡ºã™ã‚‹ã€‚(Windows 8)
  *
- * @param font ƒtƒHƒ“ƒgî•ñ
- * @param hWnd ƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
- * @return ƒtƒHƒ“ƒgƒTƒCƒY
+ * @param font ãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±
+ * @param hWnd ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+ * @return ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
  */
 int getFontPointInt(LOGFONT *font, HWND hWnd)
 {
 	double point = getFontPoint(font, hWnd);
 
 	if (WIN8_SIZE) {
-		// Windows 8ƒfƒBƒXƒvƒŒƒCƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹ŒİŠ·
+		// Windows 8ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«äº’æ›
 		if ((point > 10) || (point < 8)) {
 			return (int)point;
 		} else {
-			// 10pt‚Ü‚Å‚ÍWindows 7‚Æ“¯—l‚ÉŒvZ‚·‚éB
-			// Windows 7ˆÈ‘OŒİŠ· 
+			// 10ptã¾ã§ã¯Windows 7ã¨åŒæ§˜ã«è¨ˆç®—ã™ã‚‹ã€‚
+			// Windows 7ä»¥å‰äº’æ› 
 			if (point - abs((int)point) > 0.49) {
 				return (int)point + 1;
 			} else {
@@ -50,7 +51,7 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 			}
 		}
 	} else {
-		// Windows 7ˆÈ‘OŒİŠ· 
+		// Windows 7ä»¥å‰äº’æ› 
 		if (point - abs((int)point) > 0.49) {
 			return (int)point + 1;
 		} else {
@@ -60,23 +61,23 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 }
 
 /**
- * ƒtƒHƒ“ƒg‚ÌƒsƒNƒZƒ‹”‚É‘Î‰‚·‚éƒ|ƒCƒ“ƒg”‚ğZo‚·‚éB
- * (Windows 7/ƒRƒ‚ƒ“ƒ_ƒCƒAƒƒOŒİŠ·)
+ * ãƒ•ã‚©ãƒ³ãƒˆã®ãƒ”ã‚¯ã‚»ãƒ«æ•°ã«å¯¾å¿œã™ã‚‹ãƒã‚¤ãƒ³ãƒˆæ•°ã‚’ç®—å‡ºã™ã‚‹ã€‚
+ * (Windows 7/ã‚³ãƒ¢ãƒ³ãƒ€ã‚¤ã‚¢ãƒ­ã‚°äº’æ›)
  *
- * @param font ƒtƒHƒ“ƒgî•ñ
- * @param hWnd ƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
- * @return ƒtƒHƒ“ƒgƒTƒCƒY
+ * @param font ãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±
+ * @param hWnd ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+ * @return ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
  */
 double getFontPoint(LOGFONT *font, HWND hWnd)
 {
-	// ƒtƒHƒ“ƒg‚ğì¬‚·‚éB
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚’ä½œæˆã™ã‚‹ã€‚
 	HFONT hFont = CreateFontIndirect(font);
-	// ©g‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚©‚çì¬‚µ‚½ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚É
-	// ƒtƒHƒ“ƒg‚ğİ’è‚·‚éB
+	// è‡ªèº«ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‹ã‚‰ä½œæˆã—ãŸãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹ã€‚
 	HDC dc = GetDC(hWnd);
 	SelectFont(dc, hFont);
 
-	// ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚©‚çTEXTMETRIC‚ğæ“¾‚·‚éB
+	// ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‹ã‚‰TEXTMETRICã‚’å–å¾—ã™ã‚‹ã€‚
 	TEXTMETRIC metric;
 	GetTextMetrics(dc, &metric);
 
@@ -87,13 +88,13 @@ double getFontPoint(LOGFONT *font, HWND hWnd)
 
 	int height;
 	if (font->lfHeight < 0) {
-		// •‰‚Ìê‡‚ÍlfHeight‚ÍƒtƒHƒ“ƒg©‘Ì‚Ì‚‚³B
+		// è² ã®å ´åˆã¯lfHeightã¯ãƒ•ã‚©ãƒ³ãƒˆè‡ªä½“ã®é«˜ã•ã€‚
 		height = 0 - font->lfHeight;
 	} else if (font->lfHeight > 0) {
-		// ³‚Ìê‡‚Í‚·‚Å‚ÉInternal Leading‚ğŠÜ‚ñ‚Å‚¢‚é‚Ì‚Å‚»‚Ì•ª‚ğˆø‚­B
+		// æ­£ã®å ´åˆã¯ã™ã§ã«Internal Leadingã‚’å«ã‚“ã§ã„ã‚‹ã®ã§ãã®åˆ†ã‚’å¼•ãã€‚
 		height = font->lfHeight - metric.tmInternalLeading;
 	} else {
-		// 0‚Ìê‡‚ÍƒfƒtƒHƒ‹ƒg‚Ì‘å‚«‚³‚ğì¬‚µ‚½ƒtƒHƒ“ƒg‚©‚çæ“¾‚·‚éB
+		// 0ã®å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å¤§ãã•ã‚’ä½œæˆã—ãŸãƒ•ã‚©ãƒ³ãƒˆã‹ã‚‰å–å¾—ã™ã‚‹ã€‚
 		height = metric.tmAscent + metric.tmDescent - metric.tmInternalLeading;
 	}
 
@@ -103,19 +104,19 @@ double getFontPoint(LOGFONT *font, HWND hWnd)
 }
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤B
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†ã€‚
  *
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @param key ƒL[–¼
- * @param “Ç‚İ‚ß‚È‚©‚Á‚½‚Ì•¶š—ñ
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @param key ã‚­ãƒ¼å
+ * @param èª­ã¿è¾¼ã‚ãªã‹ã£ãŸæ™‚ã®æ–‡å­—åˆ—
  */
 void readResourceItem(TCHAR *file, TCHAR *key, TCHAR *fallback)
 {
 	TCHAR buf[255];
 	int len;
 
-	// INIƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞBUnicode”Å‚ÌAPI‚Å‚àƒtƒ@ƒCƒ‹‚ª”ñUnicode‚Ìê‡‚Í
-	// ŠeŒ¾Œê‚Ì•¶šƒR[ƒh‚Ìƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä“Ç‚ñ‚Å‚­‚ê‚éB
+	// INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚Unicodeç‰ˆã®APIã§ã‚‚ãƒ•ã‚¡ã‚¤ãƒ«ãŒéUnicodeã®å ´åˆã¯
+	// å„è¨€èªã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦èª­ã‚“ã§ãã‚Œã‚‹ã€‚
 	if (codePage == 0) {
 		len = GetPrivateProfileString(_T("RESOURCE"), key, _T(""), buf, 255, file);
 	} else {
@@ -130,9 +131,9 @@ void readResourceItem(TCHAR *file, TCHAR *key, TCHAR *fallback)
 }
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğŠJn‚·‚éB
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’é–‹å§‹ã™ã‚‹ã€‚
  *
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
  */
 void readResourceFile(TCHAR *file)
 {
@@ -355,20 +356,24 @@ void readResourceFile(TCHAR *file)
 }
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤(ƒtƒHƒ“ƒg–¼—p)B
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†(ãƒ•ã‚©ãƒ³ãƒˆåç”¨)ã€‚
  *
- * @param buffer Ši”[æ
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @param key ƒL[–¼
+ * @param buffer æ ¼ç´å…ˆ
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @param key ã‚­ãƒ¼å
  */
 int readFontFace(std::vector<tstring> &buffer, TCHAR *file, TCHAR *key)
 {
 	TCHAR buf[255];
 	int len;
 
-	// INIƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞBUnicode”Å‚ÌAPI‚Å‚àƒtƒ@ƒCƒ‹‚ª”ñUnicode‚Ìê‡‚Í
-	// ŠeŒ¾Œê‚Ì•¶šƒR[ƒh‚Ìƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä“Ç‚ñ‚Å‚­‚ê‚éB
-	len = GetPrivateProfileString(_T(PRESET_SECTION), key, _T(""), buf, 255, file);
+	// INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚Unicodeç‰ˆã®APIã§ã‚‚ãƒ•ã‚¡ã‚¤ãƒ«ãŒéUnicodeã®å ´åˆã¯
+	// å„è¨€èªã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦èª­ã‚“ã§ãã‚Œã‚‹ã€‚
+	if (codePage == 0) {
+		len = GetPrivateProfileString(_T(PRESET_SECTION), key, _T(""), buf, 255, file);
+	} else {
+		len = GetPrivateProfileStringExT(PRESET_SECTION, key, _T(""), buf, 255, file, codePage);
+	}
 	if (len > 0) {
 		buffer.push_back(buf);
 	}
@@ -377,18 +382,18 @@ int readFontFace(std::vector<tstring> &buffer, TCHAR *file, TCHAR *key)
 }
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤(ƒtƒHƒ“ƒgƒTƒCƒY—p)B
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†(ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºç”¨)ã€‚
  *
- * @param buffer Ši”[æ
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @param key ƒL[–¼
+ * @param buffer æ ¼ç´å…ˆ
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @param key ã‚­ãƒ¼å
  */
 int readFontSize(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 {
 	int size;
 
-	// INIƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞBUnicode”Å‚ÌAPI‚Å‚àƒtƒ@ƒCƒ‹‚ª”ñUnicode‚Ìê‡‚Í
-	// ŠeŒ¾Œê‚Ì•¶šƒR[ƒh‚Ìƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä“Ç‚ñ‚Å‚­‚ê‚éB
+	// INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚Unicodeç‰ˆã®APIã§ã‚‚ãƒ•ã‚¡ã‚¤ãƒ«ãŒéUnicodeã®å ´åˆã¯
+	// å„è¨€èªã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦èª­ã‚“ã§ãã‚Œã‚‹ã€‚
 	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 0, file);
 	buffer.push_back(size);
 
@@ -396,18 +401,18 @@ int readFontSize(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 }
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤(ƒtƒHƒ“ƒg•¶šƒZƒbƒg—p)B
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†(ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆç”¨)ã€‚
  *
- * @param buffer Ši”[æ
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @param key ƒL[–¼
+ * @param buffer æ ¼ç´å…ˆ
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @param key ã‚­ãƒ¼å
  */
 int readFontCharset(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 {
 	int size;
 
-	// INIƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞBUnicode”Å‚ÌAPI‚Å‚àƒtƒ@ƒCƒ‹‚ª”ñUnicode‚Ìê‡‚Í
-	// ŠeŒ¾Œê‚Ì•¶šƒR[ƒh‚Ìƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä“Ç‚ñ‚Å‚­‚ê‚éB
+	// INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ã€‚Unicodeç‰ˆã®APIã§ã‚‚ãƒ•ã‚¡ã‚¤ãƒ«ãŒéUnicodeã®å ´åˆã¯
+	// å„è¨€èªã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦èª­ã‚“ã§ãã‚Œã‚‹ã€‚
 	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 1, file);
 	buffer.push_back(size);
 
@@ -415,16 +420,16 @@ int readFontCharset(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 }
 
 /**
- * Windows 8‚ÌƒtƒHƒ“ƒgƒvƒŠƒZƒbƒgƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤
+ * Windows 8ã®ãƒ•ã‚©ãƒ³ãƒˆãƒ—ãƒªã‚»ãƒƒãƒˆãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†
  *
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @return 0:İ’è¸”s 1:İ’è¬Œ÷
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @return 0:è¨­å®šå¤±æ•— 1:è¨­å®šæˆåŠŸ
  */
 int readFontResource8(TCHAR *file)
 {
 	int result;
 
-	// ƒtƒHƒ“ƒg–¼
+	// ãƒ•ã‚©ãƒ³ãƒˆå
 	result = readFontFace(fontFaces8, file, _T("CAPTION_FACE_8"));
 	if (result == 0) {
 		return 0;
@@ -450,7 +455,7 @@ int readFontResource8(TCHAR *file)
 		return 0;
 	}
 
-	// •¶šƒTƒCƒY
+	// æ–‡å­—ã‚µã‚¤ã‚º
 	result = readFontSize(fontSizes8, file, _T("CAPTION_SIZE_8"));
 	if (result == 0) {
 		return 0;
@@ -476,7 +481,7 @@ int readFontResource8(TCHAR *file)
 		return 0;
 	}
 
-	// •¶šƒZƒbƒg
+	// æ–‡å­—ã‚»ãƒƒãƒˆ
 	readFontCharset(fontCharset8, file, _T("CAPTION_CHARSET_8"));
 	readFontCharset(fontCharset8, file, _T("ICON_CHARSET_8"));
 	readFontCharset(fontCharset8, file, _T("SMALLCAPTION_CHARSET_8"));
@@ -488,16 +493,16 @@ int readFontResource8(TCHAR *file)
 }
 
 /**
- * Windows 10‚ÌƒtƒHƒ“ƒgƒvƒŠƒZƒbƒgƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğs‚¤
+ * Windows 10ã®ãƒ•ã‚©ãƒ³ãƒˆãƒ—ãƒªã‚»ãƒƒãƒˆãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’è¡Œã†
  *
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
- * @return 0:İ’è¸”s 1:İ’è¬Œ÷
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
+ * @return 0:è¨­å®šå¤±æ•— 1:è¨­å®šæˆåŠŸ
  */
 int readFontResource10(TCHAR *file)
 {
 	int result;
 
-	// ƒtƒHƒ“ƒg–¼
+	// ãƒ•ã‚©ãƒ³ãƒˆå
 	result = readFontFace(fontFaces10, file, _T("CAPTION_FACE_10"));
 	if (result == 0) {
 		return 0;
@@ -523,7 +528,7 @@ int readFontResource10(TCHAR *file)
 		return 0;
 	}
 
-	// •¶šƒTƒCƒY
+	// æ–‡å­—ã‚µã‚¤ã‚º
 	result = readFontSize(fontSizes10, file, _T("CAPTION_SIZE_10"));
 	if (result == 0) {
 		return 0;
@@ -549,7 +554,7 @@ int readFontResource10(TCHAR *file)
 		return 0;
 	}
 
-	// •¶šƒZƒbƒg
+	// æ–‡å­—ã‚»ãƒƒãƒˆ
 	readFontCharset(fontCharset10, file, _T("CAPTION_CHARSET_10"));
 	readFontCharset(fontCharset10, file, _T("ICON_CHARSET_10"));
 	readFontCharset(fontCharset10, file, _T("SMALLCAPTION_CHARSET_10"));
@@ -561,9 +566,9 @@ int readFontResource10(TCHAR *file)
 }
 
 /**
- * “ú–{Œê”ÅWindows 8‚ÌƒtƒHƒ“ƒgƒvƒŠƒZƒbƒgƒŠƒ\[ƒX‚Ìİ’è‚ğs‚¤
+ * æ—¥æœ¬èªç‰ˆWindows 8ã®ãƒ•ã‚©ãƒ³ãƒˆãƒ—ãƒªã‚»ãƒƒãƒˆãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®šã‚’è¡Œã†
  *
- * @return 1:İ’è¬Œ÷
+ * @return 1:è¨­å®šæˆåŠŸ
  */
 int setFontResourceJa8(void)
 {
@@ -592,9 +597,9 @@ int setFontResourceJa8(void)
 }
 
 /**
- * “ú–{Œê”ÅWindows 8‚ÌƒtƒHƒ“ƒgƒvƒŠƒZƒbƒgƒŠƒ\[ƒX‚Ìİ’è‚ğs‚¤
+ * æ—¥æœ¬èªç‰ˆWindows 8ã®ãƒ•ã‚©ãƒ³ãƒˆãƒ—ãƒªã‚»ãƒƒãƒˆãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®šã‚’è¡Œã†
  *
- * @return 1:İ’è¬Œ÷
+ * @return 1:è¨­å®šæˆåŠŸ
  */
 int setFontResourceJa10(void)
 {
@@ -623,11 +628,11 @@ int setFontResourceJa10(void)
 }
 
 /**
- * ƒEƒCƒ“ƒhƒE‚ğeƒEƒCƒ“ƒhƒE‚Ì’†‰›‚É”z’u‚·‚éB
+ * ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä¸­å¤®ã«é…ç½®ã™ã‚‹ã€‚
  *
- * @param parentRect ’†S‚É“ü‚ê‚é‘ÎÛ‚Ì—Ìˆæ
- * @param parentHWnd eƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
- * @param myHWnd ’†‰›Šñ‚¹‚·‚é—v‘f‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
+ * @param parentRect ä¸­å¿ƒã«å…¥ã‚Œã‚‹å¯¾è±¡ã®é ˜åŸŸ
+ * @param parentHWnd è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+ * @param myHWnd ä¸­å¤®å¯„ã›ã™ã‚‹è¦ç´ ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
  */
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 {
@@ -657,3 +662,44 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
 
 }
+
+void getKoreanFontName(TCHAR *dispBuf)
+{
+	if (!_tcscmp(dispBuf, _T("Gulim"))) {
+		_tcscpy(dispBuf, _T("êµ´ë¦¼"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("GulimChe"))) {
+		_tcscpy(dispBuf, _T("êµ´ë¦¼ì²´"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("Gungsuh"))) {
+		_tcscpy(dispBuf, _T("ê¶ì„œ"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("GungsuhChe"))) {
+		_tcscpy(dispBuf, _T("ê¶ì„œì²´"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("Dotum"))) {
+		_tcscpy(dispBuf, _T("ë‹ì›€"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("DotumChe"))) {
+		_tcscpy(dispBuf, _T("ë‹ì›€ì²´"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("Malgun Gothic"))) {
+		_tcscpy(dispBuf, _T("ë§‘ì€ ê³ ë”•"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("Batang"))) {
+		_tcscpy(dispBuf, _T("ë°”íƒ•"));
+	}
+
+	if (!_tcscmp(dispBuf, _T("BatangChe"))) {
+		_tcscpy(dispBuf, _T("ë°”íƒ•ì²´"));
+	}
+
+}
+
