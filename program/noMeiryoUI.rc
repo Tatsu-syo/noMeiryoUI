@@ -196,7 +196,7 @@ BEGIN
             VALUE "FileDescription", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
             VALUE "FileVersion", "2.3.5.0"
             VALUE "InternalName", "noMeiryo"
-            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2017"
+            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2018"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
             VALUE "ProductVersion", "2.3.5.0"
