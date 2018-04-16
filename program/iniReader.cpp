@@ -115,6 +115,10 @@ DWORD GetPrivateProfileStringExT(
 				isComment = true;;
 				break;
 			} else if (!isspace(*firstChar)){
+				if (*firstChar == '[') {
+					// New section start
+					inSection = false;
+				}
 				break;
 			}
 			firstChar++;

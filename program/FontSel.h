@@ -16,6 +16,7 @@ extern bool useResource;
 struct FontInfo {
 	LOGFONT logFont;
 	std::vector<int> charsetList;
+	TCHAR dispName[32];
 };
 
 class FontSel :

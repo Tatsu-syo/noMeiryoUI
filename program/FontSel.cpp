@@ -15,12 +15,12 @@ static bool noTahoma = false;
 
 bool operator<(const FontInfo& left, const FontInfo& right)
 {
-	return (_tcscmp(left.logFont.lfFaceName, right.logFont.lfFaceName) > 0);
+	return (_tcscmp(left.dispName, right.dispName) > 0);
 }
 
 bool operator>(const FontInfo& left, const FontInfo& right)
 {
-	return (_tcscmp(left.logFont.lfFaceName, right.logFont.lfFaceName) < 0);
+	return (_tcscmp(left.dispName, right.dispName) < 0);
 }
 
 /**
@@ -43,6 +43,7 @@ int CALLBACK EnumFontFamExProc(
 	std::vector<int> charset;
 	int fonts;
 	struct FontInfo fontInfo;
+	TCHAR dispBuf[32];
 
 	if (lpelfe->elfLogFont.lfFaceName[0] == _T('@')) {
 		// 縦書きフォントは飛ばす。
@@ -61,6 +62,7 @@ int CALLBACK EnumFontFamExProc(
 	}
 
 	fonts = fontList.size();
+
 	for (int i = 0; i < fonts; i++) {
 		// 同じ名前の文字セット違い
 		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
@@ -73,6 +75,11 @@ int CALLBACK EnumFontFamExProc(
 	fontInfo.logFont = lpelfe->elfLogFont;
 	fontInfo.charsetList.clear();
 	fontInfo.charsetList.push_back(lpelfe->elfLogFont.lfCharSet);
+	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
+	if (isKorean) {
+		getKoreanFontName(dispBuf);
+	}
+	_tcscpy(fontInfo.dispName, dispBuf);
 	fontList.push_back(fontInfo);
 
 	return 1;
@@ -89,9 +96,11 @@ int getFont()
 	fontList.clear();
 
 	hDC = GetDC(GetDesktopWindow());
-	lf.lfFaceName[0] = _T('\0');
 
+	memset(&lf, 0x00, sizeof(LOGFONT));
+	lf.lfFaceName[0] = _T('\0');
 	lf.lfCharSet = DEFAULT_CHARSET;
+	lf.lfPitchAndFamily = 0;
 
 	EnumFontFamiliesEx(hDC,
 		&lf,
@@ -160,7 +169,7 @@ INT_PTR FontSel::OnInitDialog()
 
 	fonts = fontList.size();
 	for (int i = 0; i < fonts; i++) {
-		m_fontNameList->addItem(fontList[i].logFont.lfFaceName);
+		m_fontNameList->addItem(fontList[i].dispName);
 	}
 
 	m_fontSizeList->addItem(_T("6"));

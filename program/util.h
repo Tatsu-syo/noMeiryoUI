@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef UTIL_H
@@ -30,6 +30,8 @@ extern std::vector<int> fontSizes10;
 extern std::vector<int> fontCharset10;
 /** コードページ */
 extern int codePage;
+/** 韓国語環境かどうか */
+extern bool isKorean;
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);
@@ -39,5 +41,6 @@ int readFontResource10(TCHAR *file);
 int setFontResourceJa8(void);
 int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
+void getKoreanFontName(TCHAR *dispBuf);
 
 #endif

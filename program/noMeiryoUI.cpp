@@ -93,6 +93,10 @@ void initializeLocale(void)
 		// Language detection
 		useResource = true;
 
+		if (strstr(localeName, "_Korea") != NULL) {
+			isKorean = true;
+		}
+
 		_tcscpy(findPath, iniPath);
 		p = _tcsrchr(langWork, _T('.'));
 		if (p != NULL) {
@@ -774,39 +778,75 @@ void NoMeiryoUI::updateDisplay(void)
 	// フォント名、ポイント数表示文字列を作成する。
 	int point;
 	TCHAR buf[16];
+	TCHAR dispName[32];
 
 	allFontName = metricsAll.lfMenuFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, allFontName.c_str());
+		getKoreanFontName(dispName);
+		allFontName = dispName;
+	}
 	point = getFontPointInt(&(metricsAll.lfMenuFont), this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	allFontName = allFontName + buf;
 
 	titleFontName = metrics.lfCaptionFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, titleFontName.c_str());
+		getKoreanFontName(dispName);
+		titleFontName = dispName;
+	}
 	point = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	titleFontName = titleFontName + buf;
 
 	iconFontName = iconFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, iconFontName.c_str());
+		getKoreanFontName(dispName);
+		iconFontName = dispName;
+	}
 	point = getFontPointInt(&iconFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	iconFontName = iconFontName + buf;
 
 	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, paletteFontName.c_str());
+		getKoreanFontName(dispName);
+		paletteFontName = dispName;
+	}
 	point = getFontPointInt(&metrics.lfSmCaptionFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	paletteFontName = paletteFontName + buf;
 
 	hintFontName = metrics.lfStatusFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, hintFontName.c_str());
+		getKoreanFontName(dispName);
+		hintFontName = dispName;
+	}
 	point = getFontPointInt(&metrics.lfStatusFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	hintFontName = hintFontName + buf;
 
 	messageFontName = metrics.lfMessageFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, messageFontName.c_str());
+		getKoreanFontName(dispName);
+		messageFontName = dispName;
+	}
 	point = getFontPointInt(&metrics.lfMessageFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	messageFontName = messageFontName + buf;
 
 	// メニューと選択項目
 	menuFontName = metrics.lfMenuFont.lfFaceName;
+	if (isKorean) {
+		_tcscpy(dispName, menuFontName.c_str());
+		getKoreanFontName(dispName);
+		menuFontName = dispName;
+	}
 	point = getFontPointInt(&metrics.lfMenuFont, this->getHwnd());
 	_stprintf(buf, _T(" %3dpt"), point);
 	menuFontName = menuFontName + buf;
@@ -2353,7 +2393,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2017\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2018\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
