@@ -215,7 +215,7 @@ INT_PTR FontSel::OnInitDialog()
 
 		// フォントフェイス
 		for (int i = 0; i < fonts; i++) {
-			if (!_tcscmp(fontList[i].logFont.lfFaceName, previousFont->lfFaceName)) {
+			if (!_tcscmp(fontList[i].dispName, previousFont->lfFaceName)) {
 				m_fontNameList->setSelectedIndex(i);
 
 				// フォントに合った文字コードセットを設定する。
