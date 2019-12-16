@@ -1,0 +1,134 @@
+; noMeiryoUI (C) 2005,2012-2017 Tatsuhiko Shoji
+; The sources for noMeiryoUI are distributed under the MIT open source license
+
+;This file is sample translation file.
+
+;In RESOURCE section,
+;FONT_FACE key is dialog font name, other key is message.
+[RESOURCE]
+FONT_FACE=Sistema
+FONT_CHARSET=0
+TITLE=No!! Meiryo UI
+MENU_FILE=&Arquivo
+MENU_FILE_LOAD=Carr&egar as configurações de fonte...
+MENU_FILE_SAVE=Sa&lvar as configurações de fonte...
+MENU_FILE_SET_QUIT=&Configurar as fontes do sistema e sair
+MENU_FILE_QUIT=Sa&ir
+MENU_PRESET=&Pré-configuração
+MENU_PRESET_8=Windows 8/8.1
+MENU_PRESET_10=Windows 10
+MENU_TOOLS=&Ferramentas
+MENU_TOOLS_THREAD=Configurar as fontes do sistema em encadeamentos separados
+MENU_TOOLS_SEVEN=Calcular o tamanho das fontes igual ao Windows 7
+MENU_HELP=Aj&uda
+MENU_HELP_HELP=Aju&da
+MENU_HELP_ABOUT=&Sobre o No!! Meiryo UI
+DLG_ALL_FONT=Todas as fontes
+DLG_TITLE_BAR=Barra de título
+DLG_ICON=Ícone
+DLG_PALETTE=Título da paleta
+DLG_HINT=Dica
+DLG_MESSAGE=Caixa de mensagem
+DLG_MENU=Menu
+DLG_SELECT=Selec. ...
+DLG_SET_ALL=Conf. tudo
+DLG_SET=Configurar
+DLG_EXIT=Sair
+DLG_FONT_SEL=Selecionar a Fonte
+DLG_FONT_NAME=&Nome da fonte
+DLG_STYLE=Est&ilo
+DLG_SIZE=&Tamanho
+DLG_UNDERLINE=&Sublinhado
+DLG_STRIKE=Tac&hado
+DLG_CHARSET=&Conjunto de caracteres
+DLG_OK=OK
+DLG_CANCEL=Cancelar
+DLG_CHARSET_ANSI=Ansi
+DLG_CHARSET_BALTIC=Báltico
+DLG_CHARSET_BIG5=Chinês Tradicional
+DLG_CHARSET_DEFAULT=Padrão
+DLG_CHARSET_EASTEUROPE=Leste Europeu
+DLG_CHARSET_GB2312=Chinês Simplificado
+DLG_CHARSET_GREEK=Grego
+DLG_CHARSET_HANGUL=Hangul
+DLG_CHARSET_MAC=Mac
+DLG_CHARSET_OEM=OEM
+DLG_CHARSET_RUSSIAN=Russo
+DLG_CHARSET_SHIFTJIS=Japonês
+DLG_CHARSET_SYMBOL=Símbolo
+DLG_CHARSET_TURKISH=Turco
+DLG_CHARSET_VIETNAMESE=Vietnamita
+DLG_CHARSET_JOHAB=Coreano Johab
+DLG_CHARSET_ARABIC=Árabe
+DLG_CHARSET_HEBREW=Hebraico
+DLG_CHARSET_THAI=Tailandês
+DLG_STYLE_NORMAL=Normal
+DLG_STYLE_ITALIC=Itálico
+DLG_STYLE_BOLD=Negrito
+DLG_STYLE_BOLD_ITALIC=Negrito Itálico
+MSG_SETTING_FILE=Arquivo de Configurações de Fontes (*.ini)
+MSG_ALL_FILE=Todos os Arquivos (*.*)
+MSG_LOAD_FAIL=Falha ao carregar o arquivo das configurações das fontes.
+MSG_SAVE_FAIL=Falha ao salvar o arquivo das configurações das fontes.
+MSG_ERROR=Erro
+MSG_ABOUT=Sobre o No!! Meiryo UI
+MSG_NO_FONT=Por favor, selecione a fonte.
+MSG_NO_STYLE=Por favor, selecione o estilo.
+MSG_NO_SIZE=Por favor, selecione o tamanho.
+MSG_NO_CHARSET=Por favor, selecione o conjunto de caracteres.
+MSG_TRANSLATE=Claudio Mantovani Vieira
+
+[PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
+; For Windows 8.x
+; Font face
+CAPTION_FACE_8=Segoe UI
+ICON_FACE_8=Segoe UI
+SMALLCAPTION_FACE_8=Segoe UI
+STATUS_FACE_8=Segoe UI
+MESSAGE_FACE_8=Segoe UI
+MENU_FACE_8=Segoe UI
+
+; Font size
+CAPTION_SIZE_8=11
+ICON_SIZE_8=9
+SMALLCAPTION_SIZE_8=11
+STATUS_SIZE_8=9
+MESSAGE_SIZE_8=9
+MENU_SIZE_8=9
+
+; Font charset
+CAPTION_CHARSET_8=1
+ICON_CHARSET_8=1
+SMALLCAPTION_CHARSET_8=1
+STATUS_CHARSET_8=1
+MESSAGE_CHARSET_8=1
+MENU_CHARSET_8=1
+
+; For Windows 10
+; Font face
+CAPTION_FACE_10=Segoe UI
+ICON_FACE_10=Segoe UI
+SMALLCAPTION_FACE_10=Segoe UI
+STATUS_FACE_10=Segoe UI
+MESSAGE_FACE_10=Segoe UI
+MENU_FACE_10=Segoe UI
+
+; Font size
+CAPTION_SIZE_10=9
+ICON_SIZE_10=9
+SMALLCAPTION_SIZE_10=9
+STATUS_SIZE_10=9
+MESSAGE_SIZE_10=9
+MENU_SIZE_10=9
+
+; Font charset
+CAPTION_CHARSET_10=1
+ICON_CHARSET_10=1
+SMALLCAPTION_CHARSET_10=1
+STATUS_CHARSET_10=1
+MESSAGE_CHARSET_10=1
+MENU_CHARSET_10=1
