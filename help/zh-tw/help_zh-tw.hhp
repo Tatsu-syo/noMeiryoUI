@@ -1,11 +1,11 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=Portuguese_Brazil.chm
+Compiled file=Chinese (Traditional)_Taiwan.chm
 Contents file=ToC.hhc
 Default topic=contents\02.html
 Display compile progress=No
-Language=0x416 ƒ|ƒ‹ƒgƒKƒ‹Œê (ƒuƒ‰ƒWƒ‹)
-Title=No!! Meiryo UI help
+Language=0x404 ¤¤¤å (ÁcÅé¡A¥xÆW)
+Title=No!! Meiryo UI »¡©ú
 
 
 [FILES]
