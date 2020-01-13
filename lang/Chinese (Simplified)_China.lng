@@ -72,7 +72,7 @@ MSG_NO_FONT=请选择字体。
 MSG_NO_STYLE=请选择字形。
 MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
-MSG_TRANSLATE=立花 月下,kingofotaku
+MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030
 
 [PRESET]
 ; For Windows 8.x
