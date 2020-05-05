@@ -353,6 +353,17 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("FONT_CHARSET"),
 		_T("1")
 	);
+
+	// 71
+	readResourceItem(file, _T("DLG_APPLY"),
+		_T("Apply")
+	);
+	readResourceItem(file, _T("DLG_ALL_GROUP"),
+		_T("All font setting")
+	);
+	readResourceItem(file, _T("DLG_INDIVIDUAL_GROUP"),
+		_T("Individual font setting")
+	);
 }
 
 /**

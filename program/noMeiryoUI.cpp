@@ -63,6 +63,7 @@ void initializeLocale(void)
 	TCHAR *p;
 	TCHAR langWork[64];
 	TCHAR findPath[MAX_PATH];
+	TCHAR langFileName[MAX_PATH];
 
 	::GetModuleFileName(NULL, iniPath, _MAX_PATH);
 	p = _tcsrchr(iniPath, '\\');
@@ -109,8 +110,9 @@ void initializeLocale(void)
 		HANDLE found = FindFirstFile(findPath, &fileInfo);
 		if (found != INVALID_HANDLE_VALUE) {
 			// 言語_地域形式のファイルがある場合
-			_tcscpy(iniPath, findPath);
-			_tcscpy(helpFileName, langWork);
+			_tcscpy(langFileName, findPath);
+			_tcscpy(helpFileName, iniPath);
+			_tcscat(helpFileName, langWork);
 			_tcscat(helpFileName, _T(".chm"));
 		}
 		else {
@@ -124,23 +126,26 @@ void initializeLocale(void)
 			found = FindFirstFile(findPath, &fileInfo);
 			if (found != INVALID_HANDLE_VALUE) {
 				// 言語のファイルがある場合
-				_tcscpy(iniPath, findPath);
-				_tcscpy(helpFileName, langWork);
+				_tcscpy(langFileName, findPath);
+				_tcscpy(helpFileName, iniPath);
+				_tcscat(helpFileName, langWork);
 				_tcscat(helpFileName, _T(".chm"));
 			} else {
 				// 言語ファイルが存在しない場合
-				_tcscat(iniPath, _T("Default.lng"));
-				_tcscpy(helpFileName, _T("English.chm"));
+				_tcscpy(langFileName, iniPath);
+				_tcscat(langFileName, _T("Default.lng"));
+				_tcscpy(helpFileName, iniPath);
+				_tcscat(helpFileName, _T("English.chm"));
 			}
 		}
 		// Language support routine ends here.
 
-		readResourceFile(iniPath);
-		readResult = readFontResource8(iniPath);
+		readResourceFile(langFileName);
+		readResult = readFontResource8(langFileName);
 		if (!readResult) {
 			has8Preset = false;
 		}
-		readResult = readFontResource10(iniPath);
+		readResult = readFontResource10(langFileName);
 		if (!readResult) {
 			has10Preset = false;
 		}
