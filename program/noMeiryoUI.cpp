@@ -568,7 +568,13 @@ void NoMeiryoUI::parseOption(TCHAR *param, int argCount)
 		case 1:
 			// ê›íËÉtÉ@ÉCÉãñº
 			if (_tcscmp(_T("--"), param)) {
-				_tcscpy(settingFile, param);
+				if ((_tcschr(param, '\\') == NULL) && (_tcschr(param, '/') == NULL)) {
+					GetCurrentDirectory(MAX_PATH, settingFile);
+					_tcscat(settingFile, _T("\\"));
+				} else {
+					settingFile[0] = _T('\0');
+				}
+				_tcscat(settingFile, param);
 			}
 			break;
 		default:
