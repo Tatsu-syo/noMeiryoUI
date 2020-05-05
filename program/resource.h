@@ -1,7 +1,3 @@
-/*
-noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
-The sources for noMeiryoUI are distributed under the MIT open source license
-*/
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
 // noMeiryoUI.rc で使用
@@ -14,7 +10,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define ID_SEL_HINT                     7
 #define ID_SEL_MESSAGE                  8
 #define ID_SEL_MENU                     9
+#define ID_APPLY                        10
 #define ID_SET_ALL                      11
+#define ID_SET_ALL2                     12
+#define ID_APPLY_ALL                    12
 #define IDD_NOMEIRYOUI_DIALOG           102
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103

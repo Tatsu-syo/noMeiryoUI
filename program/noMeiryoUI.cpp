@@ -941,6 +941,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			OnBnClickedAll();
 			EndDialog(hWnd, LOWORD(wParam));
 			return BaseDialog::OnCommand(wParam);
+		case ID_APPLY_ALL:
+			OnBnClickedAll();
+			return (INT_PTR)0;
 		case IDM_OPEN:
 			OnLoad();
 			return (INT_PTR)0;
@@ -955,6 +958,12 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			break;
 		case IDM_EXIT:
 			EndDialog(hWnd, LOWORD(wParam));
+			break;
+		case ID_APPLY:
+			result = OnBnClickedOk();
+			if (!result) {
+				return (INT_PTR)0;
+			}
 			break;
 		case IDM_SET_8:
 			OnSet8();
