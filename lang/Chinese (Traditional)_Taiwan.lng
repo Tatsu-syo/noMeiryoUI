@@ -21,6 +21,8 @@ MENU_TOOLS_SEVEN=跟 Windows 7 一樣計算文字大小
 MENU_HELP=幫助(&H)
 MENU_HELP_HELP=說明(&H)
 MENU_HELP_ABOUT=關於 No!! Meiryo UI (&A)
+DLG_ALL_GROUP=全部字型設定
+DLG_INDIVIDUAL_GROUP=個別字型設定
 DLG_ALL_FONT=全部字型
 DLG_TITLE_BAR=標題列
 DLG_ICON=圖示
@@ -32,6 +34,7 @@ DLG_SELECT=選取
 DLG_SET_ALL=設定全部
 DLG_SET=設定
 DLG_EXIT=退出
+DLG_APPLY=套用
 DLG_FONT_SEL=字型選取
 DLG_FONT_NAME=字型名稱(&F)
 DLG_STYLE=字型樣式(&Y)
@@ -66,7 +69,7 @@ DLG_STYLE_BOLD=粗體
 DLG_STYLE_BOLD_ITALIC=粗斜體
 MSG_SETTING_FILE=字型設定檔(*.ini)
 MSG_ALL_FILE=所有檔案(*.*)
-MSG_LOAD_FAIL=字型設定檔加載失敗。
+MSG_LOAD_FAIL=字型設定檔載入失敗。
 MSG_SAVE_FAIL=字型設定檔儲存失敗。
 MSG_ERROR=錯誤
 MSG_ABOUT=關於 No!! Meiryo UI
@@ -77,6 +80,10 @@ MSG_NO_CHARSET=請選取字集。
 MSG_TRANSLATE=Austin Chang
 
 [PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
 ; For Windows 8.x
 ; Font face
 CAPTION_FACE_8=Microsoft JhengHei UI
