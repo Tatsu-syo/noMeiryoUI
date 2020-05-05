@@ -34,7 +34,7 @@ static bool use7Compat = true;
 bool useResource = false;
 bool has8Preset = true;
 bool has10Preset = true;
-TCHAR helpFileName[64];
+TCHAR helpFileName[MAX_PATH];
 RECT myMonitorLect;
 bool firstMonitor = false;
 DWORD helpPid;
@@ -111,8 +111,8 @@ void initializeLocale(void)
 		if (found != INVALID_HANDLE_VALUE) {
 			// 言語_地域形式のファイルがある場合
 			_tcscpy(langFileName, findPath);
-			_tcscpy(helpFileName, iniPath);
-			_tcscat(helpFileName, langWork);
+
+			_tcscpy(helpFileName, langWork);
 			_tcscat(helpFileName, _T(".chm"));
 		}
 		else {
@@ -127,13 +127,13 @@ void initializeLocale(void)
 			if (found != INVALID_HANDLE_VALUE) {
 				// 言語のファイルがある場合
 				_tcscpy(langFileName, findPath);
-				_tcscpy(helpFileName, iniPath);
-				_tcscat(helpFileName, langWork);
+
+				_tcscpy(helpFileName, langWork);
 				_tcscat(helpFileName, _T(".chm"));
 			} else {
 				// 言語ファイルが存在しない場合
 				_tcscpy(langFileName, iniPath);
-				_tcscat(langFileName, _T("Default.lng"));
+
 				_tcscpy(helpFileName, iniPath);
 				_tcscat(helpFileName, _T("English.chm"));
 			}
