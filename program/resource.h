@@ -12,7 +12,6 @@
 #define ID_SEL_MENU                     9
 #define ID_APPLY                        10
 #define ID_SET_ALL                      11
-#define ID_SET_ALL2                     12
 #define ID_APPLY_ALL                    12
 #define IDD_NOMEIRYOUI_DIALOG           102
 #define IDS_APP_TITLE                   103
@@ -55,6 +54,7 @@
 #define IDC_STATIC_NAME                 1020
 #define IDC_STATIC_STYLE                1021
 #define IDC_STATIC_SIZE                 1022
+#define IDC_GROUP_ALL                   1023
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -76,6 +76,7 @@
 #define ID_AAA_BBB                      32790
 #define IDC_STATIC                      -1
 #define IDC_STATIC_CHARSET              -1
+#define IDC_GROUP_INDIVIDUAL            -1
 
 // Next default values for new objects
 // 
@@ -84,7 +85,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        134
 #define _APS_NEXT_COMMAND_VALUE         32791
-#define _APS_NEXT_CONTROL_VALUE         1023
+#define _APS_NEXT_CONTROL_VALUE         1024
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

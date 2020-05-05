@@ -766,6 +766,17 @@ void NoMeiryoUI::applyResource()
 	setChildText(IDCANCEL, langResource[26].c_str());
 	setChildFont(IDCANCEL, displayFont);
 
+	setChildText(ID_APPLY, langResource[71].c_str());
+	setChildFont(ID_APPLY, displayFont);
+	setChildText(ID_APPLY_ALL, langResource[71].c_str());
+	setChildFont(ID_APPLY_ALL, displayFont);
+
+	setChildText(IDC_GROUP_ALL, langResource[72].c_str());
+	setChildFont(IDC_GROUP_ALL, displayFont);
+
+	setChildText(IDC_GROUP_INDIVIDUAL, langResource[73].c_str());
+	setChildFont(IDC_GROUP_INDIVIDUAL, displayFont);
+
 	setChildFont(IDC_STATIC_APP_TITLE, displayFont);
 
 	setChildFont(IDC_STATIC_VERNO, displayFont);
@@ -2196,7 +2207,7 @@ void NoMeiryoUI::SetWinVer(void)
 				getWin10Ver(buf, major, minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Windows Server 2016 (%d.%d)"),
+					_T("Windows Version:Windows Server 2016/2019 (%d.%d)"),
 					major,minor);
 			}
 			break;
