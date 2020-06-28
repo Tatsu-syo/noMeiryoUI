@@ -22,7 +22,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 (日本) resources
+// ??? (??) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
@@ -63,7 +63,7 @@ CAPTION "Meiryo UIも大っきらい!!"
 MENU IDR_MENU1
 FONT 11, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 2.40.1",IDC_STATIC_APP_TITLE,7,7,130,14,SS_NOPREFIX
+    LTEXT           "Meiryo UIも大っきらい!! Version 2.40.1",IDC_STATIC_APP_TITLE,7,7,141,14,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2020",IDC_STATIC_AUTHOR,137,7,161,14
     LTEXT           "",IDC_STATIC_VERNO,7,20,293,10
     GROUPBOX        "全体設定",IDC_GROUP_ALL,7,37,293,45
@@ -266,7 +266,7 @@ BEGIN
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
-#endif    // 日本語 (日本) resources
+#endif    // ??? (??) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
