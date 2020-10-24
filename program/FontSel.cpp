@@ -24,8 +24,22 @@ bool operator>(const FontInfo& left, const FontInfo& right)
 }
 
 /**
+ * TypeInfoにENUMLOGFONTEXから情報をコピーする。 
+ * 
+ * @param typeInfo コピー先フォント情報
+ * @param lpelfe コピー元ENUMLOGFONTEX
+ */
+void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
+{
+	_tcscpy(typeInfo.typeName, _T("Standard"));
+	if (lpelfe->elfStyle[0] != _T('\0')) {
+		_tcscpy(typeInfo.typeName, lpelfe->elfStyle);
+	}
+	typeInfo.logFont = lpelfe->elfLogFont;
+}
+
+/**
  * EnumFontFamiliesExのコールバック
- *
  *
  * @param lpelfe 論理的なフォントデータ
  * @param lpntme 物理的なフォントデータ
@@ -61,20 +75,49 @@ int CALLBACK EnumFontFamExProc(
 		}
 	}
 
+	// _tcscpy(fontInfo.typeName, _T("Normal"));
+
 	fonts = fontList.size();
 
 	for (int i = 0; i < fonts; i++) {
-		// 同じ名前の文字セット違い
+		// 同じ名前か?
 		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
-			fontList[i].charsetList.push_back(lpelfe->elfLogFont.lfCharSet);
+		// if (!_tcscmp(fontList[i].fullName, lpelfe->elfFullName)) {
+			for (int j = 0; j < fontList[i].charsetList.size(); j++) {
+				struct TypeInfo fontInfo;
+				copyTypeInfo(fontInfo, lpelfe);
+
+				// 同じ文字セットか?
+				if (fontList[i].charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
+					// 文字スタイルのみ違う
+					fontList[i].charsetList[j].fonts.push_back(fontInfo);
+					break;
+				} else {
+					// 文字セットも異なる
+					struct CharsetInfo charset;
+					charset.charset = lpelfe->elfLogFont.lfCharSet;
+					charset.fonts.push_back(fontInfo);
+					fontList[i].charsetList.push_back(charset);
+					break;
+				}
+			}
 			return 1;
 		}
 	}
 
 	// 見つからない場合は追加する。
 	fontInfo.logFont = lpelfe->elfLogFont;
+	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
 	fontInfo.charsetList.clear();
-	fontInfo.charsetList.push_back(lpelfe->elfLogFont.lfCharSet);
+
+	struct TypeInfo typeInfo;
+	copyTypeInfo(typeInfo, lpelfe);
+
+	struct CharsetInfo charsetInfo;
+	charsetInfo.charset = lpelfe->elfLogFont.lfCharSet;
+	charsetInfo.fonts.push_back(typeInfo);
+	fontInfo.charsetList.push_back(charsetInfo);
+
 	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
 	if (isKorean) {
 		getKoreanFontName(dispBuf);
@@ -222,7 +265,7 @@ INT_PTR FontSel::OnInitDialog()
 				setCharset();
 				int charsetCount = fontList[i].charsetList.size();
 				for (int j = 0; j < charsetCount; j++) {
-					if (fontList[i].charsetList[j] == previousFont->lfCharSet) {
+					if (fontList[i].charsetList[j].charset == previousFont->lfCharSet) {
 						m_ChersetList->setSelectedIndex(j);
 					}
 				}
@@ -288,6 +331,11 @@ INT_PTR FontSel::OnCommand(WPARAM wParam)
 		case IDC_COMBO_NAME:
 			if (HIWORD(wParam) == CBN_SELCHANGE) {
 				setCharset();
+				setStyle();
+			}
+			break;
+		case IDC_COMBO_CHARSET:
+			if (HIWORD(wParam) == CBN_SELCHANGE) {
 				setStyle();
 			}
 			break;
@@ -368,7 +416,7 @@ void FontSel::setCharset(void)
 		m_ChersetList->clear();
 		int charsetCount = fontList[selected].charsetList.size();
 		for (int i = 0; i < charsetCount; i++) {
-			switch (fontList[selected].charsetList[i]) {
+			switch (fontList[selected].charsetList[i].charset) {
 				case ANSI_CHARSET:
 					if (useResource) {
 						m_ChersetList->addItem(langResource[36].c_str());
@@ -519,6 +567,13 @@ void FontSel::setCharset(void)
 void FontSel::setStyle(void)
 {
 	int selected = m_fontNameList->getSelectedIndex();
+	int charset = m_ChersetList->getSelectedIndex();
+
+	m_styleList->clear();
+	for (int i = 0; i < fontList[selected].charsetList[charset].fonts.size(); i++) {
+		m_styleList->addItem(fontList[selected].charsetList[charset].fonts[i].typeName);
+	}
+
 /*
 	int weight = fontList[selected].logFont.lfWeight;
 	TCHAR *p = _T("既定の太さ");
@@ -543,8 +598,8 @@ void FontSel::setStyle(void)
 		p = _T("極太");	// Heavy
 	}
 */
-	m_styleList->clear();
 
+	/*
 	tstring styleName;
 	if (useResource) {
 		styleName = langResource[55].c_str();
@@ -575,6 +630,7 @@ void FontSel::setStyle(void)
 
 	}
 	m_styleList->addItem(styleName.c_str());
+	*/
 
 	m_styleList->setSelectedIndex(0);
 }
@@ -650,8 +706,10 @@ INT_PTR FontSel::onOK(void)
 		return (INT_PTR)0;
 	}
 
-	selectedFont = fontList[selectedFontIndex].logFont;
-	selectedFont.lfCharSet = fontList[selectedFontIndex].charsetList[selectedCharset];
+	selectedFont = fontList[selectedFontIndex].charsetList[selectedCharset].fonts[selectedStyle].logFont;
+	// selectedFont.lfCharSet = fontList[selectedFontIndex].charsetList[selectedCharset].charset;
+
+	/*
 	if (selectedStyle > 1) {
 		if (selectedFont.lfWeight < 600) {
 			selectedFont.lfWeight = FW_BOLD;
@@ -664,6 +722,7 @@ INT_PTR FontSel::onOK(void)
 	} else {
 		selectedFont.lfItalic = FALSE;
 	}
+	*/
 
 	int point = _tstoi(size.c_str());
 

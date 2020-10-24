@@ -13,10 +13,21 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 extern bool useResource;
 
+struct TypeInfo {
+	TCHAR typeName[32];
+	LOGFONT logFont;
+};
+
+struct CharsetInfo {
+	int charset;
+	std::vector<struct TypeInfo> fonts;
+};
+
 struct FontInfo {
 	LOGFONT logFont;
-	std::vector<int> charsetList;
+	std::vector<struct CharsetInfo> charsetList;
 	TCHAR dispName[32];
+	TCHAR fullName[LF_FULLFACESIZE];
 };
 
 class FontSel :
@@ -59,3 +70,5 @@ public:
 	void setNoTahoma();
 
 };
+
+void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe);
