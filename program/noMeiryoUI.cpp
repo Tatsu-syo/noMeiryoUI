@@ -2243,6 +2243,7 @@ void NoMeiryoUI::SetWinVer(void)
 void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 {
 	TCHAR release[8];
+	TCHAR releaseName[8];
 	TCHAR build[8];
 	DWORD ubr = 0;
 
@@ -2259,6 +2260,15 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 	if (result == ERROR_SUCCESS) {
 		size = sizeof(TCHAR) * 8;
 		RegQueryValueEx(key, _T("ReleaseId"), NULL, NULL, (LPBYTE)release, (LPDWORD)&size);
+
+		// Display Version for Windows 10 20H2 and later
+		size = sizeof(TCHAR) * 8;
+		LSTATUS found = RegQueryValueEx(
+			key, _T("DisplayVersion"), NULL, NULL, (LPBYTE)releaseName, (LPDWORD)&size);
+		if (found == ERROR_SUCCESS) {
+			_tcscpy(release, releaseName);
+		}
+
 		size = sizeof(TCHAR) * 8;
 		RegQueryValueEx(key, _T("CurrentBuild"), NULL, NULL, (LPBYTE)build, (LPDWORD)&size);
 		size = sizeof(DWORD);
