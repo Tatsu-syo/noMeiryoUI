@@ -39,6 +39,103 @@ void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 }
 
 /**
+ * Charsetに対するEnumFontFamiliesExのコールバック
+ *
+ * @param lpelfe 論理的なフォントデータ
+ * @param lpntme 物理的なフォントデータ
+ * @param FontType フォントの種類
+ * @param lParam アプリケーション定義のデータ
+ * @return 0:列挙を中止する 1:次のフォントを列挙する。
+ */
+int CALLBACK EnumFontCharsetProc(
+	ENUMLOGFONTEX* lpelfe,    // 論理的なフォントデータ
+	NEWTEXTMETRICEX* lpntme,  // 物理的なフォントデータ
+	DWORD FontType,           // フォントの種類
+	LPARAM lParam             // アプリケーション定義のデータ
+)
+{
+	int fonts;
+	TCHAR dispBuf[32];
+	struct FontInfo fontInfo;
+
+	fonts = fontList.size();
+	for (int i = 0; i < fonts; i++) {
+		// 同じ名前か?
+		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
+			// if (!_tcscmp(fontList[i].fullName, lpelfe->elfFullName)) {
+			struct TypeInfo fontInfo;
+			copyTypeInfo(fontInfo, lpelfe);
+
+			for (int j = 0; j < fontList[i].charsetList.size(); j++) {
+
+				// 同じ文字セットか?
+				if (fontList[i].charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
+					// 同じ文字セットで文字スタイルのみ違う
+					fontList[i].charsetList[j].fonts.push_back(fontInfo);
+					return 1;
+				}
+			}
+
+			// 文字セットも異なる
+			struct CharsetInfo charset;
+			charset.charset = lpelfe->elfLogFont.lfCharSet;
+			charset.fonts.push_back(fontInfo);
+			fontList[i].charsetList.push_back(charset);
+
+			return 1;
+		}
+	}
+
+	fontInfo.logFont = lpelfe->elfLogFont;
+	/* 表示名 */
+	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
+
+	/* フォントタイプ情報を作る */
+	struct TypeInfo typeInfo;
+	copyTypeInfo(typeInfo, lpelfe);
+
+	/* 文字セットごとのフォントタイプVectorに入れる */
+	fontInfo.charsetList.clear();
+	struct CharsetInfo charsetInfo;
+	charsetInfo.charset = lpelfe->elfLogFont.lfCharSet;
+	charsetInfo.fonts.push_back(typeInfo);
+	fontInfo.charsetList.push_back(charsetInfo);
+
+	/* 韓国語はフォント情報と表示するフォント名が異なるケースがあるので名前を操作する */
+	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
+	if (isKorean) {
+		getKoreanFontName(dispBuf);
+	}
+	_tcscpy(fontInfo.dispName, dispBuf);
+
+	fontList.push_back(fontInfo);
+
+	return 1;
+}
+
+/**
+ * Charsetに対するフォントを取得する
+ * 
+ * @param lf フォント名とCharsetの入ったフォント情報
+ */
+int getCharsetFont(LOGFONT *lf)
+{
+	lf->lfPitchAndFamily = 0;
+	HDC hDC;
+	hDC = GetDC(GetDesktopWindow());
+
+	EnumFontFamiliesEx(
+		hDC,
+		lf,
+		(FONTENUMPROC)EnumFontCharsetProc,
+		(LPARAM)0,
+		0
+	);
+
+	return 0;
+}
+
+/**
  * EnumFontFamiliesExのコールバック
  *
  * @param lpelfe 論理的なフォントデータ
@@ -90,14 +187,17 @@ int CALLBACK EnumFontFamExProc(
 				// 同じ文字セットか?
 				if (fontList[i].charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
 					// 文字スタイルのみ違う
-					fontList[i].charsetList[j].fonts.push_back(fontInfo);
+					// fontList[i].charsetList[j].fonts.push_back(fontInfo);
 					break;
 				} else {
 					// 文字セットも異なる
+					getCharsetFont(&lpelfe->elfLogFont);
+					/*
 					struct CharsetInfo charset;
 					charset.charset = lpelfe->elfLogFont.lfCharSet;
 					charset.fonts.push_back(fontInfo);
 					fontList[i].charsetList.push_back(charset);
+					*/
 					break;
 				}
 			}
@@ -106,6 +206,10 @@ int CALLBACK EnumFontFamExProc(
 	}
 
 	// 見つからない場合は追加する。
+	// 見つからない場合はさらに探す
+	getCharsetFont(&lpelfe->elfLogFont);
+
+	/*
 	fontInfo.logFont = lpelfe->elfLogFont;
 	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
 	fontInfo.charsetList.clear();
@@ -123,7 +227,7 @@ int CALLBACK EnumFontFamExProc(
 		getKoreanFontName(dispBuf);
 	}
 	_tcscpy(fontInfo.dispName, dispBuf);
-	fontList.push_back(fontInfo);
+	*/
 
 	return 1;
 }
@@ -564,7 +668,7 @@ void FontSel::setCharset(void)
 /**
  * 選択したフォントに合ったスタイルの選択肢を設定します。
  */
-void FontSel::setStyle(void)
+void FontSel::setStyle()
 {
 	int selected = m_fontNameList->getSelectedIndex();
 	int charset = m_ChersetList->getSelectedIndex();
@@ -573,64 +677,6 @@ void FontSel::setStyle(void)
 	for (int i = 0; i < fontList[selected].charsetList[charset].fonts.size(); i++) {
 		m_styleList->addItem(fontList[selected].charsetList[charset].fonts[i].typeName);
 	}
-
-/*
-	int weight = fontList[selected].logFont.lfWeight;
-	TCHAR *p = _T("既定の太さ");
-
-	if (weight < 200) {
-		p = _T("極細");
-	} else if (weight < 300) {
-		p = _T("特細");
-	} else if (weight < 400) {
-		p = _T("細");
-	} else if (weight < 500) {
-		p = _T("標準");	// Normal
-	} else if (weight < 600) {
-		p = _T("中間");	// Medium
-	} else if (weight < 700) {
-		p = _T("太目");	// Semi Bold
-	} else if (weight < 800) {
-		p = _T("太");	// Bold
-	} else if (weight < 900) {
-		p = _T("特太");	// Ultra Bold
-	} else {
-		p = _T("極太");	// Heavy
-	}
-*/
-
-	/*
-	tstring styleName;
-	if (useResource) {
-		styleName = langResource[55].c_str();
-	} else {
-		styleName = _T("標準");
-	}
-	m_styleList->addItem(styleName.c_str());
-
-	// styleName = p;
-	if (useResource) {
-		styleName = langResource[56].c_str();
-	} else {
-		styleName = _T("斜体");
-	}
-	m_styleList->addItem(styleName.c_str());
-
-	if (useResource) {
-		styleName = langResource[57].c_str();
-	} else {
-		styleName = _T("太字");
-	}
-	m_styleList->addItem(styleName.c_str());
-
-	if (useResource) {
-		styleName = langResource[58].c_str();
-	} else {
-		styleName = _T("太字 斜体");
-
-	}
-	m_styleList->addItem(styleName.c_str());
-	*/
 
 	m_styleList->setSelectedIndex(0);
 }

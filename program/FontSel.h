@@ -49,7 +49,7 @@ private:
 	void adjustPosition(void);
 	void applyResource();
 	void setCharset(void);
-	void setStyle(void);
+	void setStyle();
 	INT_PTR onOK(void);
 
 protected:
