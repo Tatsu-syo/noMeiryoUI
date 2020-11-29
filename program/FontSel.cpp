@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -8,8 +8,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <algorithm>
 #include <functional>
 
-
+/** フォントのリスト */
 std::vector<struct FontInfo> fontList;
+/** 文字セットと対応するスタイルのリスト */
+std::vector<struct CharsetInfo> charsetList;
+
 static bool noMeiryoUI = false;
 static bool noTahoma = false;
 
@@ -56,61 +59,28 @@ int CALLBACK EnumFontCharsetProc(
 {
 	int fonts;
 	TCHAR dispBuf[32];
-	struct FontInfo fontInfo;
 
-	fonts = fontList.size();
-	for (int i = 0; i < fonts; i++) {
-		// 同じ名前か?
-		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
-			// if (!_tcscmp(fontList[i].fullName, lpelfe->elfFullName)) {
-			struct TypeInfo fontInfo;
-			copyTypeInfo(fontInfo, lpelfe);
+	struct TypeInfo fontInfo;
+	copyTypeInfo(fontInfo, lpelfe);
 
-			for (int j = 0; j < fontList[i].charsetList.size(); j++) {
+	for (int j = 0; j < charsetList.size(); j++) {
 
-				// 同じ文字セットか?
-				if (fontList[i].charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
-					// 同じ文字セットで文字スタイルのみ違う
-					fontList[i].charsetList[j].fonts.push_back(fontInfo);
-					return 1;
-				}
-			}
-
-			// 文字セットも異なる
-			struct CharsetInfo charset;
-			charset.charset = lpelfe->elfLogFont.lfCharSet;
-			charset.fonts.push_back(fontInfo);
-			fontList[i].charsetList.push_back(charset);
-
+		// 同じ文字セットか?
+		if (charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
+			// 同じ文字セットで文字スタイルのみ違う
+			charsetList[j].fonts.push_back(fontInfo);
 			return 1;
 		}
 	}
 
-	fontInfo.logFont = lpelfe->elfLogFont;
-	/* 表示名 */
-	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
-
-	/* フォントタイプ情報を作る */
-	struct TypeInfo typeInfo;
-	copyTypeInfo(typeInfo, lpelfe);
-
-	/* 文字セットごとのフォントタイプVectorに入れる */
-	fontInfo.charsetList.clear();
-	struct CharsetInfo charsetInfo;
-	charsetInfo.charset = lpelfe->elfLogFont.lfCharSet;
-	charsetInfo.fonts.push_back(typeInfo);
-	fontInfo.charsetList.push_back(charsetInfo);
-
-	/* 韓国語はフォント情報と表示するフォント名が異なるケースがあるので名前を操作する */
-	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
-	if (isKorean) {
-		getKoreanFontName(dispBuf);
-	}
-	_tcscpy(fontInfo.dispName, dispBuf);
-
-	fontList.push_back(fontInfo);
+	// 文字セットも異なる
+	struct CharsetInfo charset;
+	charset.charset = lpelfe->elfLogFont.lfCharSet;
+	charset.fonts.push_back(fontInfo);
+	charsetList.push_back(charset);
 
 	return 1;
+
 }
 
 /**
@@ -121,6 +91,10 @@ int CALLBACK EnumFontCharsetProc(
 int getCharsetFont(LOGFONT *lf)
 {
 	lf->lfPitchAndFamily = 0;
+	lf->lfCharSet = DEFAULT_CHARSET;
+
+	charsetList.clear();
+
 	HDC hDC;
 	hDC = GetDC(GetDesktopWindow());
 
@@ -172,62 +146,26 @@ int CALLBACK EnumFontFamExProc(
 		}
 	}
 
-	// _tcscpy(fontInfo.typeName, _T("Normal"));
-
 	fonts = fontList.size();
 
 	for (int i = 0; i < fonts; i++) {
 		// 同じ名前か?
 		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
-		// if (!_tcscmp(fontList[i].fullName, lpelfe->elfFullName)) {
-			for (int j = 0; j < fontList[i].charsetList.size(); j++) {
-				struct TypeInfo fontInfo;
-				copyTypeInfo(fontInfo, lpelfe);
-
-				// 同じ文字セットか?
-				if (fontList[i].charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
-					// 文字スタイルのみ違う
-					// fontList[i].charsetList[j].fonts.push_back(fontInfo);
-					break;
-				} else {
-					// 文字セットも異なる
-					getCharsetFont(&lpelfe->elfLogFont);
-					/*
-					struct CharsetInfo charset;
-					charset.charset = lpelfe->elfLogFont.lfCharSet;
-					charset.fonts.push_back(fontInfo);
-					fontList[i].charsetList.push_back(charset);
-					*/
-					break;
-				}
-			}
 			return 1;
 		}
 	}
 
 	// 見つからない場合は追加する。
-	// 見つからない場合はさらに探す
-	getCharsetFont(&lpelfe->elfLogFont);
-
-	/*
 	fontInfo.logFont = lpelfe->elfLogFont;
 	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
-	fontInfo.charsetList.clear();
-
-	struct TypeInfo typeInfo;
-	copyTypeInfo(typeInfo, lpelfe);
-
-	struct CharsetInfo charsetInfo;
-	charsetInfo.charset = lpelfe->elfLogFont.lfCharSet;
-	charsetInfo.fonts.push_back(typeInfo);
-	fontInfo.charsetList.push_back(charsetInfo);
+	// fontInfo.charsetList.clear();
 
 	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
 	if (isKorean) {
 		getKoreanFontName(dispBuf);
 	}
 	_tcscpy(fontInfo.dispName, dispBuf);
-	*/
+	fontList.push_back(fontInfo);
 
 	return 1;
 }
@@ -367,15 +305,19 @@ INT_PTR FontSel::OnInitDialog()
 
 				// フォントに合った文字コードセットを設定する。
 				setCharset();
-				int charsetCount = fontList[i].charsetList.size();
+				int charsetCount = charsetList.size();
+				int charset = 0;
 				for (int j = 0; j < charsetCount; j++) {
-					if (fontList[i].charsetList[j].charset == previousFont->lfCharSet) {
+					if (charsetList[j].charset == previousFont->lfCharSet) {
 						m_ChersetList->setSelectedIndex(j);
+						charset = j;
 					}
 				}
 
-				// フォントに合ったスタイル(太字・イタリック)を設定する。
+				// フォントに合ったスタイルを設定する。
 				setStyle();
+
+#if 0
 				int style = 0;
 				// イタリック
 				if (previousFont->lfItalic) {
@@ -386,6 +328,7 @@ INT_PTR FontSel::OnInitDialog()
 					style |= 2;
 				}
 				m_styleList->setSelectedIndex(style);
+#endif
 
 				// 下線
 				if (previousFont->lfUnderline) {
@@ -517,10 +460,13 @@ void FontSel::setCharset(void)
 	int initialIndex = 0;	// 初期選択
 
 	if (selected > -1) {
+		// 選択したフォントに対応した文字セットとスタイルを取得する
+		getCharsetFont(&fontList[selected].logFont);
+
 		m_ChersetList->clear();
-		int charsetCount = fontList[selected].charsetList.size();
+		int charsetCount = charsetList.size();
 		for (int i = 0; i < charsetCount; i++) {
-			switch (fontList[selected].charsetList[i].charset) {
+			switch (charsetList[i].charset) {
 				case ANSI_CHARSET:
 					if (useResource) {
 						m_ChersetList->addItem(langResource[36].c_str());
@@ -661,7 +607,7 @@ void FontSel::setCharset(void)
 			}
 		}
 	}
-	// 自分の言語を優先して選択する。
+	// 文字セットを選択状態にする。
 	m_ChersetList->setSelectedIndex(initialIndex);
 }
 
@@ -672,10 +618,11 @@ void FontSel::setStyle()
 {
 	int selected = m_fontNameList->getSelectedIndex();
 	int charset = m_ChersetList->getSelectedIndex();
+	int styleCount = charsetList[charset].fonts.size();
 
 	m_styleList->clear();
-	for (int i = 0; i < fontList[selected].charsetList[charset].fonts.size(); i++) {
-		m_styleList->addItem(fontList[selected].charsetList[charset].fonts[i].typeName);
+	for (int i = 0; i < styleCount; i++) {
+		m_styleList->addItem(charsetList[charset].fonts[i].typeName);
 	}
 
 	m_styleList->setSelectedIndex(0);
@@ -752,7 +699,7 @@ INT_PTR FontSel::onOK(void)
 		return (INT_PTR)0;
 	}
 
-	selectedFont = fontList[selectedFontIndex].charsetList[selectedCharset].fonts[selectedStyle].logFont;
+	selectedFont = charsetList[selectedCharset].fonts[selectedStyle].logFont;
 	// selectedFont.lfCharSet = fontList[selectedFontIndex].charsetList[selectedCharset].charset;
 
 	/*
@@ -798,13 +745,6 @@ INT_PTR FontSel::onOK(void)
 	} else {
 		selectedFont.lfStrikeOut = FALSE;
 	}
-
-	// その他はデフォルトに設定する。
-	selectedFont.lfOutPrecision = 0;
-	selectedFont.lfClipPrecision = 0;
-	selectedFont.lfQuality = 0;
-	// lfPitchAndFamilyはフォントが返したものを設定する。
-	// selectedFont.lfPitchAndFamily = 50;
 
 	return (INT_PTR)1;
 }

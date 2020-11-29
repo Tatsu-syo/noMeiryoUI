@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma once
@@ -13,19 +13,22 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 extern bool useResource;
 
+/** スタイルの情報 */
 struct TypeInfo {
 	TCHAR typeName[32];
 	LOGFONT logFont;
 };
 
+/** 文字セットと対応するスタイルの情報 */
 struct CharsetInfo {
 	int charset;
 	std::vector<struct TypeInfo> fonts;
 };
 
+/** フォントの情報 */
 struct FontInfo {
 	LOGFONT logFont;
-	std::vector<struct CharsetInfo> charsetList;
+	// std::vector<struct CharsetInfo> charsetList;
 	TCHAR dispName[32];
 	TCHAR fullName[LF_FULLFACESIZE];
 };
