@@ -31,7 +31,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 // アプリケーションオブジェクト
 NoMeiryoUI *appObj;
 static bool use7Compat = true;
-bool useResource = false;
 bool has8Preset = true;
 bool has10Preset = true;
 TCHAR helpFileName[MAX_PATH];
@@ -85,70 +84,62 @@ void initializeLocale(void)
 
 	//localeName = "aaa";
 	int readResult;
-	if (strstr(localeName, "Japanese_Japan") != NULL) {
-		useResource = false;
-		setFontResourceJa8();
-		setFontResourceJa10();
-		_tcscpy(helpFileName, _T("Japanese.chm"));
-	} else {
-		// Language detection
-		useResource = true;
 
-		if (strstr(localeName, "_Korea") != NULL) {
-			isKorean = true;
-		}
+	// Language detection
+	if (strstr(localeName, "_Korea") != NULL) {
+		isKorean = true;
+	}
 
+	_tcscpy(findPath, iniPath);
+	p = _tcsrchr(langWork, _T('.'));
+	if (p != NULL) {
+		*p = _T('\0');
+	}
+	_tcscat(findPath, langWork);
+	_tcscat(findPath, _T(".lng"));
+	WIN32_FIND_DATA fileInfo;
+		
+	HANDLE found = FindFirstFile(findPath, &fileInfo);
+	if (found != INVALID_HANDLE_VALUE) {
+		// 言語_地域形式のファイルがある場合
+		_tcscpy(langFileName, findPath);
+
+		_tcscpy(helpFileName, langWork);
+		_tcscat(helpFileName, _T(".chm"));
+	}
+	else {
 		_tcscpy(findPath, iniPath);
-		p = _tcsrchr(langWork, _T('.'));
+		p = _tcsrchr(langWork, _T('_'));
 		if (p != NULL) {
 			*p = _T('\0');
 		}
 		_tcscat(findPath, langWork);
 		_tcscat(findPath, _T(".lng"));
-		WIN32_FIND_DATA fileInfo;
-		
-		HANDLE found = FindFirstFile(findPath, &fileInfo);
+		found = FindFirstFile(findPath, &fileInfo);
 		if (found != INVALID_HANDLE_VALUE) {
-			// 言語_地域形式のファイルがある場合
+			// 言語のファイルがある場合
 			_tcscpy(langFileName, findPath);
 
 			_tcscpy(helpFileName, langWork);
 			_tcscat(helpFileName, _T(".chm"));
-		}
-		else {
-			_tcscpy(findPath, iniPath);
-			p = _tcsrchr(langWork, _T('_'));
-			if (p != NULL) {
-				*p = _T('\0');
-			}
-			_tcscat(findPath, langWork);
-			_tcscat(findPath, _T(".lng"));
-			found = FindFirstFile(findPath, &fileInfo);
-			if (found != INVALID_HANDLE_VALUE) {
-				// 言語のファイルがある場合
-				_tcscpy(langFileName, findPath);
+		} else {
+			// 言語ファイルが存在しない場合
+			_tcscpy(langFileName, iniPath);
+			_tcscat(langFileName, _T("default.lng"));
 
-				_tcscpy(helpFileName, langWork);
-				_tcscat(helpFileName, _T(".chm"));
-			} else {
-				// 言語ファイルが存在しない場合
-				_tcscpy(langFileName, iniPath);
+			_tcscpy(helpFileName, _T("default.chm"));
+		}
+	}
+	// Language support routine ends here.
 
-				_tcscpy(helpFileName, iniPath);
-				_tcscat(helpFileName, _T("English.chm"));
-			}
-		}
-		// Language support routine ends here.
-
-		readResourceFile(langFileName);
-		readResult = readFontResource8(langFileName);
-		if (!readResult) {
-			has8Preset = false;
-		}
-		readResult = readFontResource10(langFileName);
-		if (!readResult) {
-			has10Preset = false;
-		}
+	readResourceFile(langFileName);
+	readResult = readFontResource8(langFileName);
+	if (!readResult) {
+		has8Preset = false;
+	}
+	readResult = readFontResource10(langFileName);
+	if (!readResult) {
+		has10Preset = false;
 	}
 }
 
@@ -336,12 +327,10 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	}
 	appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
-	if (useResource) {
-		// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
-		// ある場合のみプリセットを有効にする。
-		appMenu->setEnabled(IDM_SET_8, has8Preset);
-		appMenu->setEnabled(IDM_SET_10, has10Preset);
-	}
+	// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
+	// ある場合のみプリセットを有効にする。
+	appMenu->setEnabled(IDM_SET_8, has8Preset);
+	appMenu->setEnabled(IDM_SET_10, has10Preset);
 
 	// Windows 8.1以前ではWindows 10にあるフォントがない場合があるので
 	// Windows 10用のプリセットを使用不可とする。
@@ -391,21 +380,15 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		}
 	}
 
-	if (useResource) {
-		// 日本語以外のOSで起動している場合は
-		// UI文字列をリソースに合わせて変更する。
-		applyResource();
-	}
+	// UI文字列をリソースに合わせて変更する。
+	applyResource();
+
 	// メインダイアログのバージョン表記設定
 	TCHAR buf[64];
 	TCHAR verString[32];
 	const TCHAR *appName;
 	LoadString(hInst, IDS_VERSION, verString, 32);
-	if (useResource) {
-		appName = langResource[1].c_str();
-	} else {
-		appName = _T("Meiryo UIも大っきらい!!");
-	}
+	appName = langResource[1].c_str();
 	_stprintf(buf, verString, appName);
 	setChildText(IDC_STATIC_APP_TITLE, buf);
 
@@ -1232,23 +1215,13 @@ void NoMeiryoUI::OnLoad()
 {
 	TCHAR buf[128];
 
-	if (useResource) {
-		setFileMask(
-			buf,
-			langResource[59].c_str(),
-			_T("*.ini"),
-			langResource[60].c_str(),
-			_T("*.*")
-		);
-	} else {
-		setFileMask(
-			buf,
-			_T("設定ファイル"),
-			_T("*.ini"),
-			_T("すべてのファイル"),
-			_T("*.*")
-		);
-	}
+	setFileMask(
+		buf,
+		langResource[59].c_str(),
+		_T("*.ini"),
+		langResource[60].c_str(),
+		_T("*.*")
+	);
 
 	NCFileDialog *dlg = new NCFileDialog(
 		TRUE,
@@ -1271,13 +1244,8 @@ void NoMeiryoUI::OnLoad()
 		const TCHAR *message;
 		const TCHAR *title;
 
-		if (useResource) {
-			message = langResource[61].c_str();
-			title = langResource[63].c_str();
-		} else {
-			message = _T("フォント設定の読み込みに失敗しました。");
-			title = _T("エラー");
-		}
+		message = langResource[61].c_str();
+		title = langResource[63].c_str();
 		MessageBox(
 			this->getHwnd(),
 			message,
@@ -1520,23 +1488,13 @@ void NoMeiryoUI::OnSave()
 {
 	TCHAR buf[128];
 
-	if (useResource) {
-		setFileMask(
-			buf,
-			langResource[59].c_str(),
-			_T("*.ini"),
-			langResource[60].c_str(),
-			_T("*.*")
-		);
-	} else {
-		setFileMask(
-			buf,
-			_T("設定ファイル"),
-			_T("*.ini"),
-			_T("すべてのファイル"),
-			_T("*.*")
-		);
-	}
+	setFileMask(
+		buf,
+		langResource[59].c_str(),
+		_T("*.ini"),
+		langResource[60].c_str(),
+		_T("*.*")
+	);
 
 	NCFileDialog *dlg = new NCFileDialog(
 		FALSE,
@@ -1559,13 +1517,9 @@ void NoMeiryoUI::OnSave()
 		const TCHAR *message;
 		const TCHAR *title;
 
-		if (useResource) {
-			message = langResource[62].c_str();
-			title = langResource[63].c_str();
-		} else {
-			message = _T("フォント設定の保存に失敗しました。");
-			title = _T("エラー");
-		}
+		message = langResource[62].c_str();
+		title = langResource[63].c_str();
+
 		MessageBox(
 			this->getHwnd(),
 			message,
@@ -2421,16 +2375,11 @@ void NoMeiryoUI::showVersion(void)
 	const TCHAR *appName;
 	TCHAR verString[32];
 
-	if (useResource) {
-		appName = langResource[1].c_str();
-		_stprintf(title, _T("%s"),
-			langResource[64].c_str());
-		_tcscpy(transAuthor, langResource[69].c_str());
-	} else {
-		appName = _T("Meiryo UIも大っきらい!!");
-		_stprintf(title, _T("Meiryo UIも大っきらい!!について"));
-		_tcscpy(transAuthor, _T("Tatsuhiko Syoji(Tatsu)"));
-	}
+	appName = langResource[1].c_str();
+	_stprintf(title, _T("%s"),
+		langResource[64].c_str());
+	_tcscpy(transAuthor, langResource[69].c_str());
+
 	LoadString(hInst, IDS_VERSION, verString, 32);
 
 	_stprintf(version, verString, appName);

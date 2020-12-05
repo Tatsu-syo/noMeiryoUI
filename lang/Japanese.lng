@@ -1,0 +1,135 @@
+; noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
+; The sources for noMeiryoUI are distributed under the MIT open source license
+
+;In RESOURCE section,
+;FONT_FACE key is dialog font name, other key is message.
+[RESOURCE]
+FONT_FACE=ＭＳ Ｐゴシック
+FONT_CHARSET=1
+TITLE=Meiryo UIも大っきらい!!
+MENU_FILE=ファイル(&F)
+MENU_FILE_LOAD=フォント設定を読み込む(&O)...
+MENU_FILE_SAVE=フォント設定を保存する(&A)...
+MENU_FILE_SET_QUIT=フォントを設定して終了(&S)
+MENU_FILE_QUIT=終了(&X)
+MENU_PRESET=プリセット(&P)
+MENU_PRESET_8=Windows 8/8.1
+MENU_PRESET_10=Windows 10
+MENU_TOOLS=ツール(&T)
+MENU_TOOLS_THREAD=別スレッドでフォントを変更する(&A)
+MENU_TOOLS_SEVEN=フォントサイズをWindows 7と同様に扱う(&7)
+MENU_HELP=ヘルプ(&H)
+MENU_HELP_HELP=ヘルプの表示(&C)
+MENU_HELP_ABOUT=バージョン情報(&A)...
+DLG_ALL_GROUP=全体設定
+DLG_INDIVIDUAL_GROUP=個別設定
+DLG_ALL_FONT=すべてのフォント
+DLG_TITLE_BAR=タイトルバー
+DLG_ICON=アイコン
+DLG_PALETTE=パレットタイトル
+DLG_HINT=ヒント
+DLG_MESSAGE=メッセージボックス
+DLG_MENU=メニュー/選択項目
+DLG_SELECT=選択...
+DLG_SET_ALL=一括設定
+DLG_SET=設定
+DLG_EXIT=終了
+DLG_APPLY=適用
+DLG_FONT_SEL=フォント選択
+DLG_FONT_NAME=フォント名(&F)：
+DLG_STYLE=スタイル(&Y)：
+DLG_SIZE=サイズ(&S)：
+DLG_UNDERLINE=下線(&U)
+DLG_STRIKE=取り消し線(&T)
+DLG_CHARSET=文字セット(&C)：
+DLG_OK=OK
+DLG_CANCEL=キャンセル
+DLG_CHARSET_ANSI=欧文
+DLG_CHARSET_BALTIC=バルト諸国言語
+DLG_CHARSET_BIG5=繁体字
+DLG_CHARSET_DEFAULT=デフォルト言語
+DLG_CHARSET_EASTEUROPE=東ヨーロッパ言語
+DLG_CHARSET_GB2312=簡体字
+DLG_CHARSET_GREEK=ギリシャ文字
+DLG_CHARSET_HANGUL=韓国語
+DLG_CHARSET_MAC=Mac文字セット
+DLG_CHARSET_OEM=OEM文字セット
+DLG_CHARSET_RUSSIAN=ロシア語
+DLG_CHARSET_SHIFTJIS=日本語
+DLG_CHARSET_SYMBOL=シンボル
+DLG_CHARSET_TURKISH=トルコ語
+DLG_CHARSET_VIETNAMESE=ベトナム語
+DLG_CHARSET_JOHAB=韓国語(組合型)
+DLG_CHARSET_ARABIC=アラビア語
+DLG_CHARSET_HEBREW=ヘブライ語
+DLG_CHARSET_THAI=タイ語
+DLG_STYLE_NORMAL=標準
+DLG_STYLE_ITALIC=斜体
+DLG_STYLE_BOLD=太字
+DLG_STYLE_BOLD_ITALIC=太字 斜体
+MSG_SETTING_FILE=フォント設定ファイル(*.ini)
+MSG_ALL_FILE=すべてのファイル(*.*)
+MSG_LOAD_FAIL=フォント設定の読み込みに失敗しました。
+MSG_SAVE_FAIL=フォント設定の保存に失敗しました。
+MSG_ERROR=エラー
+MSG_ABOUT=Meiryo UIも大っきらい!!について
+MSG_NO_FONT=フォントを選択してください。
+MSG_NO_STYLE=スタイルを選択してください。
+MSG_NO_SIZE=文字サイズを選択してください。
+MSG_NO_CHARSET=文字セットを選択してください。
+MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
+
+[PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
+; For Windows 8.x
+; Font face
+CAPTION_FACE_8=Meiryo UI
+ICON_FACE_8=Meiryo UI
+SMALLCAPTION_FACE_8=Meiryo UI
+STATUS_FACE_8=Meiryo UI
+MESSAGE_FACE_8=Meiryo UI
+MENU_FACE_8=Meiryo UI
+
+; Font size
+CAPTION_SIZE_8=11
+ICON_SIZE_8=9
+SMALLCAPTION_SIZE_8=11
+STATUS_SIZE_8=9
+MESSAGE_SIZE_8=9
+MENU_SIZE_8=9
+
+; Font charset
+CAPTION_CHARSET_8=1
+ICON_CHARSET_8=1
+SMALLCAPTION_CHARSET_8=1
+STATUS_CHARSET_8=1
+MESSAGE_CHARSET_8=1
+MENU_CHARSET_8=1
+
+; For Windows 10
+; Font face
+CAPTION_FACE_10=Yu Gothic UI
+ICON_FACE_10=Yu Gothic UI
+SMALLCAPTION_FACE_10=Yu Gothic UI
+STATUS_FACE_10=Yu Gothic UI
+MESSAGE_FACE_10=Yu Gothic UI
+MENU_FACE_10=Yu Gothic UI
+
+; Font size
+CAPTION_SIZE_10=9
+ICON_SIZE_10=9
+SMALLCAPTION_SIZE_10=9
+STATUS_SIZE_10=9
+MESSAGE_SIZE_10=9
+MENU_SIZE_10=9
+
+; Font charset
+CAPTION_CHARSET_10=1
+ICON_CHARSET_10=1
+SMALLCAPTION_CHARSET_10=1
+STATUS_CHARSET_10=1
+MESSAGE_CHARSET_10=1
+MENU_CHARSET_10=1

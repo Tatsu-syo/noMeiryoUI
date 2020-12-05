@@ -344,9 +344,7 @@ INT_PTR FontSel::OnInitDialog()
 		}
 	}
 
-	if (useResource) {
-		applyResource();
-	}
+	applyResource();
 	adjustPosition();
 
 	return (INT_PTR)FALSE;
@@ -468,138 +466,62 @@ void FontSel::setCharset(void)
 		for (int i = 0; i < charsetCount; i++) {
 			switch (charsetList[i].charset) {
 				case ANSI_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[36].c_str());
-					} else {
-						m_ChersetList->addItem(_T("欧文"));
-					}
+					m_ChersetList->addItem(langResource[36].c_str());
 					break;
 				case BALTIC_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[37].c_str());
-					} else {
-						m_ChersetList->addItem(_T("バルト諸国言語"));
-					}
+					m_ChersetList->addItem(langResource[37].c_str());
 					break;
 				case CHINESEBIG5_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[38].c_str());
-					} else {
-						m_ChersetList->addItem(_T("繁体字"));
-					}
+					m_ChersetList->addItem(langResource[38].c_str());
 					break;
 				case DEFAULT_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[39].c_str());
-					} else {
-						m_ChersetList->addItem(_T("デフォルト言語"));
-					}
+					m_ChersetList->addItem(langResource[39].c_str());
 					break;
 				case EASTEUROPE_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[40].c_str());
-					} else {
-						m_ChersetList->addItem(_T("東ヨーロッパ言語"));
-					}
+					m_ChersetList->addItem(langResource[40].c_str());
 					break;
 				case GB2312_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[41].c_str());
-					} else {
-						m_ChersetList->addItem(_T("簡体字"));
-					}
+					m_ChersetList->addItem(langResource[41].c_str());
 					break;
 				case GREEK_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[42].c_str());
-					} else {
-						m_ChersetList->addItem(_T("ギリシャ文字"));
-					}
+					m_ChersetList->addItem(langResource[42].c_str());
 					break;
 				case HANGUL_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[43].c_str());
-					} else {
-						m_ChersetList->addItem(_T("韓国語"));
-					}
+					m_ChersetList->addItem(langResource[43].c_str());
 					break;
 				case MAC_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[44].c_str());
-					} else {
-						m_ChersetList->addItem(_T("Mac文字セット"));
-					}
+					m_ChersetList->addItem(langResource[44].c_str());
 					break;
 				case OEM_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[45].c_str());
-					} else {
-						m_ChersetList->addItem(_T("OEM文字セット"));
-					}
+					m_ChersetList->addItem(langResource[45].c_str());
 					break;
 				case RUSSIAN_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[46].c_str());
-					} else {
-						m_ChersetList->addItem(_T("ロシア語"));
-					}
+					m_ChersetList->addItem(langResource[46].c_str());
 					break;
 				case SHIFTJIS_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[47].c_str());
-					} else {
-						m_ChersetList->addItem(_T("日本語"));
-					}
+					m_ChersetList->addItem(langResource[47].c_str());
 					initialIndex = i;
 					break;
 				case SYMBOL_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[48].c_str());
-					} else {
-						m_ChersetList->addItem(_T("シンボル"));
-					}
+					m_ChersetList->addItem(langResource[48].c_str());
 					break;
 				case TURKISH_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[49].c_str());
-					} else {
-						m_ChersetList->addItem(_T("トルコ語"));
-					}
+					m_ChersetList->addItem(langResource[49].c_str());
 					break;
 				case VIETNAMESE_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[50].c_str());
-					} else {
-						m_ChersetList->addItem(_T("ベトナム語"));
-					}
+					m_ChersetList->addItem(langResource[50].c_str());
 					break;
 				case JOHAB_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[51].c_str());
-					} else {
-						m_ChersetList->addItem(_T("韓国語(組合型)"));
-					}
+					m_ChersetList->addItem(langResource[51].c_str());
 					break;
 				case ARABIC_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[52].c_str());
-					} else {
-						m_ChersetList->addItem(_T("アラビア語"));
-					}
+					m_ChersetList->addItem(langResource[52].c_str());
 					break;
 				case HEBREW_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[53].c_str());
-					} else {
-						m_ChersetList->addItem(_T("ヘブライ語"));
-					}
+					m_ChersetList->addItem(langResource[53].c_str());
 					break;
 				case THAI_CHARSET:
-					if (useResource) {
-						m_ChersetList->addItem(langResource[54].c_str());
-					} else {
-						m_ChersetList->addItem(_T("タイ語"));
-					}
+					m_ChersetList->addItem(langResource[54].c_str());
 					break;
 				default:
 					m_ChersetList->addItem(_T(""));
@@ -640,18 +562,10 @@ INT_PTR FontSel::onOK(void)
 	tstring error;
 	tstring message;
 
-	if (useResource) {
-		error = langResource[63].c_str();
-	} else {
-		error = _T("エラー");
-	}
+	error = langResource[63].c_str();
 
 	if (selectedFontIndex < 0) {
-		if (useResource) {
-			message = langResource[65].c_str();
-		} else {
-			message = _T("フォントを選択してください。");
-		}
+		message = langResource[65].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),
@@ -660,11 +574,7 @@ INT_PTR FontSel::onOK(void)
 	}
 
 	if (selectedStyle < 0) {
-		if (useResource) {
-			message = langResource[66].c_str();
-		} else {
-			message = _T("スタイルを選択してください。");
-		}
+		message = langResource[66].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),
@@ -692,7 +602,6 @@ INT_PTR FontSel::onOK(void)
 	}
 
 	selectedFont = charsetList[selectedCharset].fonts[selectedStyle].logFont;
-	// selectedFont.lfCharSet = fontList[selectedFontIndex].charsetList[selectedCharset].charset;
 
 	/*
 	if (selectedStyle > 1) {

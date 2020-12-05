@@ -11,8 +11,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TwrCombobox.h"
 #include "TwrCheckbox.h"
 
-extern bool useResource;
-
 /** ƒXƒ^ƒCƒ‹‚Ìî•ñ */
 struct TypeInfo {
 	TCHAR typeName[32];
