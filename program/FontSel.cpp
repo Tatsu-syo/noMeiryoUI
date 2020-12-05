@@ -673,11 +673,7 @@ INT_PTR FontSel::onOK(void)
 	}
 
 	if (selectedCharset < 0) {
-		if (useResource) {
-			message = langResource[67].c_str();
-		} else {
-			message = _T("文字セットを選択してください。");
-		}
+		message = langResource[68].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),
@@ -687,11 +683,7 @@ INT_PTR FontSel::onOK(void)
 
 	tstring size = m_fontSizeList->getSelectedText();
 	if (size.length() < 1) {
-		if (useResource) {
-			message = langResource[68].c_str();
-		} else {
-			message = _T("文字セットを選択してください。");
-		}
+		message = langResource[67].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),
