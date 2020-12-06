@@ -390,6 +390,12 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("DLG_STYLE_SLANTED"),
 		_T("Slanted")
 	);
+	readResourceItem(file, _T("DLG_CHECK_BOLD"),
+		_T("&Bold")
+	);
+	readResourceItem(file, _T("DLG_CHECK_ITALIC"),
+		_T("&Italic")
+	);
 }
 
 /**

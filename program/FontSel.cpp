@@ -489,9 +489,9 @@ void FontSel::applyResource()
 	setChildText(IDC_STATIC_SIZE, langResource[30].c_str());
 	setChildFont(IDC_STATIC_SIZE, displayFont);
 
-	setChildText(IDC_CHECK_BOLD, langResource[DLG_STYLE_BOLD].c_str());
+	setChildText(IDC_CHECK_BOLD, langResource[DLG_CHECK_BOLD].c_str());
 	setChildFont(IDC_CHECK_BOLD, displayFont);
-	setChildText(IDC_CHECK_ITALIC, langResource[DLG_STYLE_ITALIC].c_str());
+	setChildText(IDC_CHECK_ITALIC, langResource[DLG_CHECK_ITALIC].c_str());
 	setChildFont(IDC_CHECK_ITALIC, displayFont);
 	setChildText(IDC_CHECK_UNDERLINE, langResource[31].c_str());
 	setChildFont(IDC_CHECK_UNDERLINE, displayFont);

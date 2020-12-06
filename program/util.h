@@ -29,6 +29,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define DLG_STYLE_EXTRA_LIGHT 79
 #define DLG_STYLE_SEMI_LIGHT 80
 #define DLG_STYLE_SLANTED 81
+#define DLG_CHECK_BOLD 82
+#define DLG_CHECK_ITALIC 83
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
