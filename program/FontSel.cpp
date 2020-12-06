@@ -106,19 +106,16 @@ int CALLBACK EnumFontCharsetProc(
 	LPARAM lParam             // アプリケーション定義のデータ
 )
 {
-	int fonts;
-	TCHAR dispBuf[32];
-
 	struct TypeInfo fontInfo;
 	copyTypeInfo(fontInfo, lpelfe);
 
-	for (int i = 0; i < charsetList.size(); i++) {
+	for (size_t i = 0; i < charsetList.size(); i++) {
 
 		// 同じ文字セットか?
 		if (charsetList[i].charset == lpelfe->elfLogFont.lfCharSet) {
 			// 同じ文字セットで文字スタイルのみ違う
 			bool found = false;
-			for (int j = 0; j < charsetList[i].fonts.size(); j++) {
+			for (size_t j = 0; j < charsetList[i].fonts.size(); j++) {
 				if (!_tcscmp(charsetList[i].fonts[j].typeName, fontInfo.typeName)) {
 					found = true;
 				}
@@ -265,7 +262,10 @@ FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 	m_fontSizeList = NULL;
 	m_ChersetList = NULL;
 	m_styleList = NULL;
+	m_bold = NULL;
+	m_italic = NULL;
 	m_underline = NULL;
+	m_strike = NULL;
 	previousFont = NULL;
 }
 
@@ -286,8 +286,17 @@ FontSel::~FontSel(void)
 	if (m_styleList != NULL) {
 		delete m_styleList;
 	}
+	if (m_bold != NULL) {
+		delete m_bold;
+	}
+	if (m_italic != NULL) {
+		delete m_italic;
+	}
 	if (m_underline != NULL) {
 		delete m_underline;
+	}
+	if (m_strike != NULL) {
+		delete m_strike;
 	}
 	if (displayFont != NULL) {
 		DeleteObject(displayFont);
@@ -304,6 +313,8 @@ INT_PTR FontSel::OnInitDialog()
 	m_fontSizeList = new TwrCombobox(::GetDlgItem(hWnd, IDC_COMBO_SIZE));
 	m_ChersetList =  new TwrCombobox(::GetDlgItem(hWnd, IDC_COMBO_CHARSET));
 	m_styleList =  new TwrCombobox(::GetDlgItem(hWnd, IDC_COMBO_STYLE));
+	m_bold = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_BOLD));
+	m_italic = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_ITALIC));
 	m_underline = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_UNDERLINE));
 	m_strike = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_STRIKE));
 
@@ -374,19 +385,10 @@ INT_PTR FontSel::OnInitDialog()
 				// フォントに合ったスタイルを設定する。
 				setStyle();
 
-#if 0
-				int style = 0;
 				// イタリック
 				if (previousFont->lfItalic) {
-					style |= 1;
+					m_italic->setChecked(true);
 				}
-				// 太字
-				if (previousFont->lfWeight > 400) {
-					style |= 2;
-				}
-				m_styleList->setSelectedIndex(style);
-#endif
-
 				// 下線
 				if (previousFont->lfUnderline) {
 					m_underline->setChecked(true);
@@ -487,6 +489,10 @@ void FontSel::applyResource()
 	setChildText(IDC_STATIC_SIZE, langResource[30].c_str());
 	setChildFont(IDC_STATIC_SIZE, displayFont);
 
+	setChildText(IDC_CHECK_BOLD, langResource[DLG_STYLE_BOLD].c_str());
+	setChildFont(IDC_CHECK_BOLD, displayFont);
+	setChildText(IDC_CHECK_ITALIC, langResource[DLG_STYLE_ITALIC].c_str());
+	setChildFont(IDC_CHECK_ITALIC, displayFont);
 	setChildText(IDC_CHECK_UNDERLINE, langResource[31].c_str());
 	setChildFont(IDC_CHECK_UNDERLINE, displayFont);
 	setChildText(IDC_CHECK_STRIKE, langResource[32].c_str());
@@ -692,6 +698,14 @@ INT_PTR FontSel::onOK(void)
 		}
 	}
 
+	if (m_bold->isChecked()) {
+		if (selectedFont.lfWeight < 600) {
+			selectedFont.lfWeight = FW_BOLD;
+		}
+	}
+	if (m_italic->isChecked()) {
+		selectedFont.lfItalic = TRUE;
+	}
 	if (m_underline->isChecked()) {
 		selectedFont.lfUnderline = TRUE;
 	} else {

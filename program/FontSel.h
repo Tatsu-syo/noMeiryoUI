@@ -39,6 +39,8 @@ private:
 	TwrCombobox *m_fontSizeList;
 	TwrCombobox *m_ChersetList;
 	TwrCombobox *m_styleList;
+	TwrCheckbox* m_bold;
+	TwrCheckbox* m_italic;
 	TwrCheckbox *m_underline;
 	TwrCheckbox *m_strike;
 

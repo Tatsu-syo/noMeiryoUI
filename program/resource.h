@@ -3,6 +3,9 @@
 // The sources for noMeiryoUI are distributed under the MIT open source license
 //
 //{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ で生成されたインクルード ファイル。
+// noMeiryoUI.rc で使用
+//
 #define IDC_MYICON                      2
 #define ID_SEL_ALL                      3
 #define ID_SEL_TITLE                    4
@@ -40,8 +43,11 @@
 #define IDC_COMBO_CHARSET               1005
 #define IDC_EDIT_MENU                   1006
 #define IDC_CHECK_UNDERLINE             1006
+#define IDC_CHECK_BOLD                  1007
 #define IDC_CHECK_STRIKE                1008
 #define IDC_STATIC_VERNO                1009
+#define IDC_CHECK_BOLD2                 1009
+#define IDC_CHECK_ITALIC                1009
 #define IDC_STATIC_APP_TITLE            1010
 #define IDC_STATIC_WIN_VER              1011
 #define IDC_STATIC_ALL_FONT             1012

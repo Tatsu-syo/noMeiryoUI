@@ -22,7 +22,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// ??? (??) resources
+// 日本語 (日本) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
@@ -107,8 +107,10 @@ BEGIN
     COMBOBOX        IDC_COMBO_STYLE,150,23,95,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
     LTEXT           "サイズ(&S)：",IDC_STATIC_SIZE,252,10,47,12
     COMBOBOX        IDC_COMBO_SIZE,252,23,47,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "下線(&U)",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,110,125,12
-    CONTROL         "取り消し線(&T)",IDC_CHECK_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,124,126,12
+    CONTROL         "太字(&B)",IDC_CHECK_BOLD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,107,125,11
+    CONTROL         "斜体(&I)",IDC_CHECK_ITALIC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,119,125,11
+    CONTROL         "下線(&U)",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,131,125,11
+    CONTROL         "取り消し線(&T)",IDC_CHECK_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,143,126,11
     LTEXT           "文字セット(&C)：",IDC_STATIC_CHARSET,150,110,127,11
     COMBOBOX        IDC_COMBO_CHARSET,150,122,149,14,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,193,144,50,14
@@ -180,8 +182,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,4,0,2
- PRODUCTVERSION 2,4,0,2
+ FILEVERSION 2,4,1,0
+ PRODUCTVERSION 2,4,1,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -266,7 +268,7 @@ BEGIN
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
-#endif    // ??? (??) resources
+#endif    // 日本語 (日本) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
