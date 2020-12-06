@@ -34,9 +34,10 @@ bool operator>(const FontInfo& left, const FontInfo& right)
  */
 void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 {
-	_tcscpy(typeInfo.typeName, _T("Standard"));
 	if (lpelfe->elfStyle[0] != _T('\0')) {
 		_tcscpy(typeInfo.typeName, lpelfe->elfStyle);
+	} else {
+		_tcscpy(typeInfo.typeName, _T("Regular"));
 	}
 	typeInfo.logFont = lpelfe->elfLogFont;
 }
@@ -63,12 +64,20 @@ int CALLBACK EnumFontCharsetProc(
 	struct TypeInfo fontInfo;
 	copyTypeInfo(fontInfo, lpelfe);
 
-	for (int j = 0; j < charsetList.size(); j++) {
+	for (int i = 0; i < charsetList.size(); i++) {
 
 		// 同じ文字セットか?
-		if (charsetList[j].charset == lpelfe->elfLogFont.lfCharSet) {
+		if (charsetList[i].charset == lpelfe->elfLogFont.lfCharSet) {
 			// 同じ文字セットで文字スタイルのみ違う
-			charsetList[j].fonts.push_back(fontInfo);
+			bool found = false;
+			for (int j = 0; j < charsetList[i].fonts.size(); j++) {
+				if (!_tcscmp(charsetList[i].fonts[j].typeName, fontInfo.typeName)) {
+					found = true;
+				}
+			}
+			if (!found) {
+				charsetList[i].fonts.push_back(fontInfo);
+			}
 			return 1;
 		}
 	}
