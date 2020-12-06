@@ -13,7 +13,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 /** ƒXƒ^ƒCƒ‹‚Ìî•ñ */
 struct TypeInfo {
-	TCHAR typeName[32];
+	TCHAR typeName[128];
 	LOGFONT logFont;
 };
 

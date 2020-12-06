@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku
+; noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -65,6 +65,14 @@ DLG_STYLE_NORMAL=常规
 DLG_STYLE_ITALIC=斜体
 DLG_STYLE_BOLD=粗体
 DLG_STYLE_BOLD_ITALIC=粗偏斜体
+DLG_STYLE_MEDIUM=Medium
+DLG_STYLE_SEMI_BOLD=Semibold
+DLG_STYLE_BOOK=Book
+DLG_STYLE_OBLIQUE=Oblique
+DLG_STYLE_LIGHT=Light
+DLG_STYLE_EXTRA_LIGHT=ExtraLight
+DLG_STYLE_SEMI_LIGHT=SemiLight
+DLG_STYLE_SLANTED=Slanted
 MSG_SETTING_FILE=字体设定文件(*.ini)
 MSG_ALL_FILE=所有文件(*.*)
 MSG_LOAD_FAIL=字体设定配置文件加载失败。

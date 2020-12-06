@@ -34,11 +34,59 @@ bool operator>(const FontInfo& left, const FontInfo& right)
  */
 void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 {
+	TCHAR oldStyle[128];
+	TCHAR newStyle[128];
+
 	if (lpelfe->elfStyle[0] != _T('\0')) {
-		_tcscpy(typeInfo.typeName, lpelfe->elfStyle);
+		_tcscpy(oldStyle, lpelfe->elfStyle);
 	} else {
-		_tcscpy(typeInfo.typeName, _T("Regular"));
+		_tcscpy(oldStyle, _T("Regular"));
 	}
+
+	// 文字スタイルの各国語への置き換え
+	strreplace(newStyle, oldStyle, _T("Regular"), langResource[DLG_STYLE_NORMAL].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("SemiBold"), langResource[DLG_STYLE_SEMI_BOLD].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Semibold"), langResource[DLG_STYLE_SEMI_BOLD].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Semi-bold"), langResource[DLG_STYLE_SEMI_BOLD].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Bold Italic"), langResource[DLG_STYLE_BOLD_ITALIC].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("ExtraLight"), langResource[DLG_STYLE_EXTRA_LIGHT].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("SemiLight"), langResource[DLG_STYLE_SEMI_LIGHT].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Bold"), langResource[DLG_STYLE_BOLD].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Italic"), langResource[DLG_STYLE_ITALIC].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Medium"), langResource[DLG_STYLE_MEDIUM].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Book"), langResource[DLG_STYLE_NORMAL].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Light"), langResource[DLG_STYLE_LIGHT].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Oblique"), langResource[DLG_STYLE_OBLIQUE].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	strreplace(newStyle, oldStyle, _T("Slanted"), langResource[DLG_STYLE_SLANTED].c_str(), 128);
+	_tcscpy(oldStyle, newStyle);
+
+	_tcscpy(typeInfo.typeName, newStyle);
 	typeInfo.logFont = lpelfe->elfLogFont;
 }
 

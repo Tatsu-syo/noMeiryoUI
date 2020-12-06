@@ -1,7 +1,8 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
+#pragma warning(disable : 4996)
 
 #include "util.h"
 #include "iniReader.h"
@@ -305,7 +306,7 @@ void readResourceFile(TCHAR *file)
 	);
 
 	readResourceItem(file, _T("DLG_STYLE_NORMAL"),
-		_T("Normal")
+		_T("Regular")
 	);
 	readResourceItem(file, _T("DLG_STYLE_ITALIC"),
 		_T("Italic")
@@ -363,6 +364,31 @@ void readResourceFile(TCHAR *file)
 	);
 	readResourceItem(file, _T("DLG_INDIVIDUAL_GROUP"),
 		_T("Individual font setting")
+	);
+
+	readResourceItem(file, _T("DLG_STYLE_MEDIUM"),
+		_T("Medium")
+	);
+	readResourceItem(file, _T("DLG_STYLE_SEMI_BOLD"),
+		_T("Semibold")
+	);
+	readResourceItem(file, _T("DLG_STYLE_BOOK"),
+		_T("Book")
+	);
+	readResourceItem(file, _T("DLG_STYLE_OBLIQUE"),
+		_T("Oblique")
+	);
+	readResourceItem(file, _T("DLG_STYLE_LIGHT"),
+		_T("Light")
+	);
+	readResourceItem(file, _T("DLG_STYLE_EXTRA_LIGHT"),
+		_T("ExtraLight")
+	);
+	readResourceItem(file, _T("DLG_STYLE_SEMI_LIGHT"),
+		_T("SemiLight")
+	);
+	readResourceItem(file, _T("DLG_STYLE_SLANTED"),
+		_T("Slanted")
 	);
 }
 
@@ -674,6 +700,11 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 
 }
 
+/**
+ * 韓国語のフォント名を置き換える(韓国語専用)
+ * 
+ * @param dispBuf 韓国語のフォント名
+ */
 void getKoreanFontName(TCHAR *dispBuf)
 {
 	if (!_tcscmp(dispBuf, _T("Gulim"))) {
@@ -712,5 +743,55 @@ void getKoreanFontName(TCHAR *dispBuf)
 		_tcscpy(dispBuf, _T("바탕체"));
 	}
 
+}
+
+/**
+ * 文字列を置き換える
+ *
+ * @param buf 置き換えられた文字列
+ * @param source 置き換える対象の文字列
+ * @param oldWord 置換される文字列
+ * @param newWord 置換する文字列
+ * @param bufLen 置き換え先文字列のバッファサイズ
+ *
+ */
+void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen)
+{
+	int p = 0;
+	int newP = 0;
+	int oldLen;
+	int newLen;
+	int copyLen;
+
+	oldLen = _tcslen(oldWord);
+	newLen = _tcslen(newWord);
+
+	while (*(source + p) != _T('\0')) {
+		if (_tcsncmp(source + p, oldWord, oldLen) == 0) {
+			if ((newP + newLen) < bufLen) {
+				_tcscpy(buf + newP, newWord);
+				newP += newLen;
+			} else {
+				copyLen = bufLen - newP;
+				_tcsncpy(buf + newP, newWord, copyLen - 1);
+				newP += (copyLen - 1);
+			}
+			p += oldLen;
+		} else {
+			if (newP >= bufLen) {
+				return;
+			} else if (newP == (bufLen - 1)) {
+				*(buf + newP) = _T('\0');
+				return;
+			} else {
+				*(buf + newP) = *(source + p);
+				newP++;
+				p++;
+			}
+		}
+	}
+	if (newP < bufLen) {
+		*(buf + newP) = _T('\0');
+	}
 }
 

@@ -1,10 +1,13 @@
 /*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <tchar.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <windowsx.h>
@@ -13,6 +16,19 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 #define PRESET_SECTION "PRESET"
 #define APP_FONTSIZE 11
+
+#define DLG_STYLE_NORMAL 55
+#define DLG_STYLE_ITALIC 56
+#define DLG_STYLE_BOLD 57
+#define DLG_STYLE_BOLD_ITALIC 58
+#define DLG_STYLE_MEDIUM 74
+#define DLG_STYLE_SEMI_BOLD 75
+#define DLG_STYLE_BOOK 76
+#define DLG_STYLE_OBLIQUE 77
+#define DLG_STYLE_LIGHT 78
+#define DLG_STYLE_EXTRA_LIGHT 79
+#define DLG_STYLE_SEMI_LIGHT 80
+#define DLG_STYLE_SLANTED 81
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
@@ -42,5 +58,6 @@ int setFontResourceJa8(void);
 int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
 void getKoreanFontName(TCHAR *dispBuf);
+void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
 
 #endif
