@@ -801,3 +801,62 @@ void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCH
 	}
 }
 
+/**
+ * Windows 11かどうか判別する。
+ *
+ * @return TRUE:Windows 11 or later FALSE:Windows 10
+ */
+BOOL isWin11OrLater()
+{
+	OSVERSIONINFOEX osvi;
+	DWORDLONG dwlConditionMask = 0;
+	int op = VER_GREATER_EQUAL;
+
+	// Initialize the OSVERSIONINFOEX structure.
+
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	osvi.dwMajorVersion = 10;
+	osvi.dwMinorVersion = 0;
+	osvi.wServicePackMajor = 0;
+	osvi.wServicePackMinor = 0;
+	osvi.dwBuildNumber = 22000;
+
+	// Initialize the condition mask.
+
+	VER_SET_CONDITION(dwlConditionMask, VER_MAJORVERSION, op);
+	VER_SET_CONDITION(dwlConditionMask, VER_MINORVERSION, op);
+	VER_SET_CONDITION(dwlConditionMask, VER_SERVICEPACKMAJOR, op);
+	VER_SET_CONDITION(dwlConditionMask, VER_SERVICEPACKMINOR, op);
+	VER_SET_CONDITION(dwlConditionMask, VER_BUILDNUMBER, op);
+
+	// Perform the test.
+
+	return VerifyVersionInfo(
+		&osvi,
+		VER_MAJORVERSION | VER_MINORVERSION |
+		VER_SERVICEPACKMAJOR | VER_SERVICEPACKMINOR | VER_BUILDNUMBER,
+		dwlConditionMask);
+}
+
+/**
+ * アプリケーションが実用するWindowsのバージョンを返す(Windows 11対応)<br>
+ * Windows 11はメジャーバージョン11扱いとする。その後のWindowsがメジャーバージョン11返したらその時は10.xx扱いにする。<br>
+ * Windows 7(6.1)/8(6.2)/8.1(6.3)は既存コードとの兼ね合いからそのままとする。
+ * 
+ * @return 上位16ビット：メジャーバージョン 下位16ビット：マイナーバージョン
+ */
+DWORD GetVersionForApp()
+{
+	DWORD dwVersion = GetVersion();
+
+	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+
+	if (major == 10 && isWin11OrLater()) {
+		// Windows 11が普通にやると10返すのでここで１１と判別
+		major = 11;
+	}
+
+	return (major << 16) | minor;
+}

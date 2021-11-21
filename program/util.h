@@ -61,5 +61,7 @@ int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
 void getKoreanFontName(TCHAR *dispBuf);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
+BOOL isWin11OrLater();
+DWORD GetVersionForApp();
 
 #endif

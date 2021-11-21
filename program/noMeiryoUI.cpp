@@ -205,7 +205,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
 
-	DWORD dwVersion = GetVersion();
+	DWORD dwVersion = GetVersionForApp();
 
 	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
 	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
@@ -334,10 +334,11 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	// Windows 8.1以前ではWindows 10にあるフォントがない場合があるので
 	// Windows 10用のプリセットを使用不可とする。
-	DWORD dwVersion = GetVersion();
+	DWORD dwVersion = GetVersionForApp();
 
 	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
 	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
@@ -2230,9 +2231,14 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 		RegCloseKey(key);
 	}
 
+	DWORD calledVer = 10;
+	if (isWin11OrLater()) {
+		calledVer = 11;
+	}
+
 	_stprintf(buf,
-		_T("Windows Version:Windows 10 (%d.%d) Version %s Build %s.%d"),
-		major, minor, release, build, ubr);
+		_T("Windows Version:Windows %d (%d.%d) Version %s Build %s.%d"),
+		calledVer, major, minor, release, build, ubr);
 
 }
 
