@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2020 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku
+; noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -137,3 +137,28 @@ SMALLCAPTION_CHARSET_10=1
 STATUS_CHARSET_10=1
 MESSAGE_CHARSET_10=1
 MENU_CHARSET_10=1
+
+; For Windows 11
+; Font face
+CAPTION_FACE_11=Microsoft YaHei UI
+ICON_FACE_11=Microsoft YaHei UI
+SMALLCAPTION_FACE_11=Microsoft YaHei UI
+STATUS_FACE_11=Microsoft YaHei UI
+MESSAGE_FACE_11=Microsoft YaHei UI
+MENU_FACE_11=Microsoft YaHei UI
+
+; Font size
+CAPTION_SIZE_11=9
+ICON_SIZE_11=9
+SMALLCAPTION_SIZE_11=9
+STATUS_SIZE_11=9
+MESSAGE_SIZE_11=9
+MENU_SIZE_11=9
+
+; Font charset
+CAPTION_CHARSET_11=1
+ICON_CHARSET_11=1
+SMALLCAPTION_CHARSET_11=1
+STATUS_CHARSET_11=1
+MESSAGE_CHARSET_11=1
+MENU_CHARSET_11=1
