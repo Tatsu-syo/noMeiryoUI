@@ -1,7 +1,3 @@
-//
-// noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
-// The sources for noMeiryoUI are distributed under the MIT open source license
-//
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -242,6 +238,7 @@ BEGIN
     BEGIN
         MENUITEM "Windows 8/8.1",               IDM_SET_8
         MENUITEM "Windows 10",                  IDM_SET_10
+        MENUITEM "Windows 11",                  IDM_SET_11
     END
     POPUP "ÉcÅ[Éã(&T)"
     BEGIN

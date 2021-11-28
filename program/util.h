@@ -34,18 +34,28 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
+
 /** フォント名(Windows 8.x) */
 extern std::vector<tstring> fontFaces8;
 /** フォントサイズ(Windows 8.x) */
 extern std::vector<int> fontSizes8;
 /** フォント文字セット(Windows 8.x) */
 extern std::vector<int> fontCharset8;
+
 /** フォント名(Windows 10) */
 extern std::vector<tstring> fontFaces10;
-/** フォントサイズ(Windows 8.x) */
+/** フォントサイズ(Windows 10) */
 extern std::vector<int> fontSizes10;
 /** フォント文字セット(Windows 10) */
 extern std::vector<int> fontCharset10;
+
+/** フォント名(Windows 11) */
+extern std::vector<tstring> fontFaces11;
+/** フォントサイズ(Windows 11) */
+extern std::vector<int> fontSizes11;
+/** フォント文字セット(Windows 11) */
+extern std::vector<int> fontCharset11;
+
 /** コードページ */
 extern int codePage;
 /** 韓国語環境かどうか */
@@ -56,6 +66,7 @@ double getFontPoint(LOGFONT *font, HWND hWnd);
 void readResourceFile(TCHAR *file);
 int readFontResource8(TCHAR *file);
 int readFontResource10(TCHAR *file);
+int readFontResource11(TCHAR* file);
 int setFontResourceJa8(void);
 int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);

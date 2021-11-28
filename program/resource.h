@@ -1,7 +1,3 @@
-//
-// noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
-// The sources for noMeiryoUI are distributed under the MIT open source license
-//
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ で生成されたインクルード ファイル。
 // noMeiryoUI.rc で使用
@@ -81,6 +77,8 @@
 #define IDM_SET_10                      32788
 #define ID_Menu32789                    32789
 #define ID_AAA_BBB                      32790
+#define ID_32791                        32791
+#define IDM_SET_11                      32792
 #define IDC_STATIC                      -1
 #define IDC_STATIC_CHARSET              -1
 #define IDC_GROUP_INDIVIDUAL            -1
@@ -91,7 +89,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        134
-#define _APS_NEXT_COMMAND_VALUE         32791
+#define _APS_NEXT_COMMAND_VALUE         32793
 #define _APS_NEXT_CONTROL_VALUE         1024
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

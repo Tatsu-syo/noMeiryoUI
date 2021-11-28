@@ -33,6 +33,7 @@ NoMeiryoUI *appObj;
 static bool use7Compat = true;
 bool has8Preset = true;
 bool has10Preset = true;
+bool has11Preset = true;
 TCHAR helpFileName[MAX_PATH];
 RECT myMonitorLect;
 bool firstMonitor = false;
@@ -137,9 +138,15 @@ void initializeLocale(void)
 	if (!readResult) {
 		has8Preset = false;
 	}
+
 	readResult = readFontResource10(langFileName);
 	if (!readResult) {
 		has10Preset = false;
+	}
+
+	readResult = readFontResource11(langFileName);
+	if (!readResult) {
+		has11Preset = false;
 	}
 }
 
@@ -331,18 +338,21 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// ある場合のみプリセットを有効にする。
 	appMenu->setEnabled(IDM_SET_8, has8Preset);
 	appMenu->setEnabled(IDM_SET_10, has10Preset);
+	appMenu->setEnabled(IDM_SET_11, has11Preset);
 
-	// Windows 8.1以前ではWindows 10にあるフォントがない場合があるので
-	// Windows 10用のプリセットを使用不可とする。
+	// 先発のOSではフォントがない場合があるので
+	// 後発OS用のプリセットを使用不可とする。
 	DWORD dwVersion = GetVersionForApp();
 
-	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	DWORD major = (DWORD)(LOBYTE(HIWORD(dwVersion)));
 	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
 
 	if (major < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
-
+	if (major < 11) {
+		appMenu->setEnabled(IDM_SET_11, false);
+	}
 
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
@@ -969,6 +979,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			OnSet8();
 			return (INT_PTR)0;
 		case IDM_SET_10:
+			OnSet10();
+			return (INT_PTR)0;
+		case IDM_SET_11:
 			OnSet10();
 			return (INT_PTR)0;
 		case IDM_ANOTHER:
@@ -1873,6 +1886,70 @@ void NoMeiryoUI::OnSet8(void)
  * Windows 10の場合のプリセット値を設定する。
  */
 void NoMeiryoUI::OnSet10(void)
+{
+	// DPIを取得する。
+	int dpiY = getDPI();
+
+	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
+	// NONCLIENTMETRICSの内容を取得しなおす。
+	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
+	metrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
+
+	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	metrics.lfCaptionFont.lfWeight = 400;
+	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
+	metrics.lfCaptionFont.lfQuality = 5;
+
+	memset(&iconFont, 0, sizeof(LOGFONTW));
+	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
+	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
+	iconFont.lfWeight = 400;
+	iconFont.lfCharSet = fontCharset10[1];
+	iconFont.lfQuality = 5;
+
+	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
+	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
+	metrics.lfSmCaptionFont.lfWeight = 400;
+	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
+	metrics.lfSmCaptionFont.lfQuality = 5;
+
+	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
+	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
+	metrics.lfStatusFont.lfWeight = 400;
+	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
+	metrics.lfStatusFont.lfQuality = 5;
+
+	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
+	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
+	metrics.lfMessageFont.lfWeight = 400;
+	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
+	metrics.lfMessageFont.lfQuality = 5;
+
+	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
+	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
+	metrics.lfMenuFont.lfWeight = 400;
+	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
+	metrics.lfMenuFont.lfQuality = 5;
+
+	// 表示を更新する。
+	updateDisplay();
+
+}
+
+/**
+ * Windows 11の場合のプリセット値を設定する。
+ */
+void NoMeiryoUI::OnSet11(void)
 {
 	// DPIを取得する。
 	int dpiY = getDPI();

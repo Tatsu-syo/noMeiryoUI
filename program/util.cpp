@@ -11,18 +11,27 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 bool WIN8_SIZE = true;
 /** 言語リソース */
 std::vector<tstring> langResource;
+
 /** フォント名(Windows 8.x) */
 std::vector<tstring> fontFaces8;
 /** フォントサイズ(Windows 8.x) */
 std::vector<int> fontSizes8;
 /** フォント文字セット(Windows 8.x) */
 std::vector<int> fontCharset8;
+
 /** フォント名(Windows 10) */
 std::vector<tstring> fontFaces10;
-/** フォントサイズ(Windows 8.x) */
+/** フォントサイズ(Windows 10) */
 std::vector<int> fontSizes10;
 /** フォント文字セット(Windows 10) */
 std::vector<int> fontCharset10;
+
+/** フォント名(Windows 11) */
+std::vector<tstring> fontFaces11;
+/** フォントサイズ(Windows 11) */
+std::vector<int> fontSizes11;
+/** フォント文字セット(Windows 11) */
+std::vector<int> fontCharset11;
 
 int codePage = 0;
 bool isKorean = false;
@@ -604,6 +613,79 @@ int readFontResource10(TCHAR *file)
 	readFontCharset(fontCharset10, file, _T("STATUS_CHARSET_10"));
 	readFontCharset(fontCharset10, file, _T("MESSAGE_CHARSET_10"));
 	readFontCharset(fontCharset10, file, _T("MENU_CHARSET_10"));
+
+	return 1;
+}
+
+/**
+ * Windows 11のフォントプリセットリソースの読み込みを行う
+ *
+ * @param file リソースファイル名
+ * @return 0:設定失敗 1:設定成功
+ */
+int readFontResource11(TCHAR* file)
+{
+	int result;
+
+	// フォント名
+	result = readFontFace(fontFaces11, file, _T("CAPTION_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces11, file, _T("ICON_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces11, file, _T("SMALLCAPTION_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces11, file, _T("STATUS_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces11, file, _T("MESSAGE_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontFace(fontFaces11, file, _T("MENU_FACE_11"));
+	if (result == 0) {
+		return 0;
+	}
+
+	// 文字サイズ
+	result = readFontSize(fontSizes11, file, _T("CAPTION_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes11, file, _T("ICON_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes11, file, _T("SMALLCAPTION_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes11, file, _T("STATUS_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes11, file, _T("MESSAGE_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+	result = readFontSize(fontSizes11, file, _T("MENU_SIZE_11"));
+	if (result == 0) {
+		return 0;
+	}
+
+	// 文字セット
+	readFontCharset(fontCharset11, file, _T("CAPTION_CHARSET_11"));
+	readFontCharset(fontCharset11, file, _T("ICON_CHARSET_11"));
+	readFontCharset(fontCharset11, file, _T("SMALLCAPTION_CHARSET_11"));
+	readFontCharset(fontCharset11, file, _T("STATUS_CHARSET_11"));
+	readFontCharset(fontCharset11, file, _T("MESSAGE_CHARSET_11"));
+	readFontCharset(fontCharset11, file, _T("MENU_CHARSET_11"));
 
 	return 1;
 }
