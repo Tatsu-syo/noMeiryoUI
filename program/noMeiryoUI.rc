@@ -182,8 +182,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,4,2,0
- PRODUCTVERSION 2,4,2,0
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -200,12 +200,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "2.4.2.0"
+            VALUE "FileVersion", "3.0.0.0"
             VALUE "InternalName", "noMeiryo"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2021"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "2.4.2.0"
+            VALUE "ProductVersion", "3.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -265,7 +265,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-    IDS_VERSION             "%s Version 2.42"
+    IDS_VERSION             "%s Version 3.0.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 

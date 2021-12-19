@@ -9,6 +9,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <windows.h>
 #include <windowsx.h>
 #include <vector>
@@ -74,5 +75,6 @@ void getKoreanFontName(TCHAR *dispBuf);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
 BOOL isWin11OrLater();
 DWORD GetVersionForApp();
+size_t utf8toUtf16(tstring& dst, const char* src);
 
 #endif

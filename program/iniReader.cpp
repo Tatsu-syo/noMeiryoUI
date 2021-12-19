@@ -1,11 +1,12 @@
 /*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include <stdio.h>
 #include <windows.h>
 #include <tchar.h>
 #include <string.h>
+#include "util.h"
 
 // cl /D "UNICODE" /D "_UNICODE" iniReader.cpp
 
@@ -72,19 +73,15 @@ char *searchAndDelimit(char *start, char delimiter)
  * @param returnString 文字列格納先バッファ
  * @param returnSize 文字列格納先バッファのサイズ
  * @param iniFileName iniファイル名
- * @param codePage 変換先のコードページ
  * @return バッファに格納された文字数
  */
 DWORD GetPrivateProfileStringExT(
 	char *sectionName,
 	TCHAR *keyName,
 	TCHAR *defaultValue,
-	TCHAR *returnString,
-	DWORD returnSize,
-	TCHAR *iniFileName,
-	UINT codePage)
+	tstring &returnString,
+	TCHAR *iniFileName)
 {
-
 	FILE *fp;
 	char key[64];
 	
@@ -98,15 +95,14 @@ DWORD GetPrivateProfileStringExT(
 	strcpy(key, keyName);
 #endif
 	if (fp == NULL) {
-		_tcsncpy(returnString, defaultValue, returnSize - 1);
-		returnString[returnSize - 1] = _T('\0');
-		return _tcslen(returnString);
+		returnString = defaultValue;
+
+		return returnString.length();
 	}
 	
 	while(fgets(valueBuf, 255, fp) != NULL) {
 		/* Skip comment */
 		char *firstChar;
-		char *currentChar;
 		bool isComment = false;
 
 		firstChar = valueBuf;
@@ -149,7 +145,9 @@ DWORD GetPrivateProfileStringExT(
 					/* Key not matched */
 					continue;
 				} else {
-					return getWideString(returnString, keyDelim + 1, returnSize, codePage);
+					fclose(fp);
+					DWORD len = utf8toUtf16(returnString, keyDelim + 1);
+					return len;
 				}
 			}
 		} else {
@@ -170,10 +168,11 @@ DWORD GetPrivateProfileStringExT(
 			}
 		}
 	}
+	fclose(fp);
 
 	/* キーと値が見つからなかった */
-	_tcsncpy(returnString, defaultValue, returnSize - 1);
-	returnString[returnSize - 1] = _T('\0');
-	return _tcslen(returnString);
+	returnString = defaultValue;
+
+	return returnString.length();
 
 }

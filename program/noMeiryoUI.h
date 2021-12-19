@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2018 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef NOMEIRYOUI_H
@@ -22,6 +22,7 @@ BOOL CALLBACK MonitorNearWindowCallback(
 	LPARAM dwData
 );
 BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
+void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeName, TCHAR *iniPath);
 
 
 class NoMeiryoUI : public DialogAppliBase {

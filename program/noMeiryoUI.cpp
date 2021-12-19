@@ -73,13 +73,50 @@ void initializeLocale(void)
 
 	// ロケールの初期化
 	char *localeName = setlocale(LC_ALL, "");
-	char *codePageDelim = strchr(localeName, '.');
+
+	setResourceFileName(langFileName, helpFileName, localeName, iniPath);
+	// Language support routine ends here.
+
+	readResourceFile(langFileName);
+
+	int readResult = readFontResource8(langFileName);
+	if (!readResult) {
+		has8Preset = false;
+	}
+
+	readResult = readFontResource10(langFileName);
+	if (!readResult) {
+		has10Preset = false;
+	}
+
+	readResult = readFontResource11(langFileName);
+	if (!readResult) {
+		has11Preset = false;
+	}
+}
+
+void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
+{
+	TCHAR findPath[MAX_PATH];
+	TCHAR langWork[64];
+
+	if (localeName == NULL) {
+		_tcscpy(langFileName, iniPath);
+		_tcscat(langFileName, _T("default.lng"));
+
+		_tcscpy(helpFileName, iniPath);
+		_tcscpy(helpFileName, _T("default.chm"));
+
+		return;
+	}
+
+	char* codePageDelim = strchr(localeName, '.');
 	if (codePageDelim != NULL) {
 		_setmbcp(atoi(codePageDelim + 1));
 		codePage = atoi(codePageDelim + 1);
-	} else {
+	}
+	else {
 		_setmbcp(_MB_CP_LOCALE);
-		codePageDelim = 0;
 	}
 	mbstowcs(langWork, localeName, 64);
 
@@ -92,14 +129,14 @@ void initializeLocale(void)
 	}
 
 	_tcscpy(findPath, iniPath);
-	p = _tcsrchr(langWork, _T('.'));
+	TCHAR *p = _tcsrchr(langWork, _T('.'));
 	if (p != NULL) {
 		*p = _T('\0');
 	}
 	_tcscat(findPath, langWork);
 	_tcscat(findPath, _T(".lng"));
 	WIN32_FIND_DATA fileInfo;
-		
+
 	HANDLE found = FindFirstFile(findPath, &fileInfo);
 	if (found != INVALID_HANDLE_VALUE) {
 		// 言語_地域形式のファイルがある場合
@@ -123,30 +160,14 @@ void initializeLocale(void)
 
 			_tcscpy(helpFileName, langWork);
 			_tcscat(helpFileName, _T(".chm"));
-		} else {
+		}
+		else {
 			// 言語ファイルが存在しない場合
 			_tcscpy(langFileName, iniPath);
 			_tcscat(langFileName, _T("default.lng"));
 
 			_tcscpy(helpFileName, _T("default.chm"));
 		}
-	}
-	// Language support routine ends here.
-
-	readResourceFile(langFileName);
-	readResult = readFontResource8(langFileName);
-	if (!readResult) {
-		has8Preset = false;
-	}
-
-	readResult = readFontResource10(langFileName);
-	if (!readResult) {
-		has10Preset = false;
-	}
-
-	readResult = readFontResource11(langFileName);
-	if (!readResult) {
-		has11Preset = false;
 	}
 }
 
@@ -2022,9 +2043,6 @@ NONCLIENTMETRICS *s_fontMetrics;
  */
 unsigned _stdcall setOnThread(void *p)
 {
-	DWORD_PTR ptr;
-	LRESULT messageResult;
-
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
 		s_fontMetrics,
