@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -267,6 +267,7 @@ FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 	m_underline = NULL;
 	m_strike = NULL;
 	previousFont = NULL;
+	m_point = 0;
 }
 
 /**
@@ -615,6 +616,8 @@ void FontSel::setStyle()
 
 /**
  * OKボタンを押下した時の動作
+ * 
+ * @return 0:入力異常あり 1:入力は正常
  */
 INT_PTR FontSel::onOK(void)
 {
@@ -682,6 +685,7 @@ INT_PTR FontSel::onOK(void)
 	*/
 
 	int point = _tstoi(size.c_str());
+	m_point = (double)point;
 
 	// サイズの設定
 	HDC hDC = GetDC(this->hWnd);

@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma once
@@ -48,6 +48,7 @@ private:
 
 	LOGFONT selectedFont;
 	LOGFONT *previousFont;
+	double m_point;
 
 	void adjustPosition(void);
 	void applyResource();
@@ -71,6 +72,24 @@ public:
 	}
 	void setNoMeiryoUI();
 	void setNoTahoma();
+
+	/**
+	 * ポイント数を取得する。
+	 * 
+	 * @return 選択されたポイント数
+	 */
+	double getPoint(void) {
+		return m_point;
+	}
+
+	/**
+	 * ポイント数を設定する。(初期表示用)
+	 * 
+	 * @param point ポイント数
+	 */
+	void setPoint(double point) {
+		m_point = point;
+	}
 
 };
 
