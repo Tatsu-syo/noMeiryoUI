@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -381,12 +381,11 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	FillMemory(&iconFont, sizeof(LOGFONT), 0x00);
 	FillMemory(&iconFontAll, sizeof(LOGFONT), 0x00);
 
-	// 現在のフォントを取得する。
-	if (settingFile[0] == _T('\0')) {
-		getActualFont();
-	} else {
-		// 現在のフォントと付随する画面各部の幅等の情報を取得しておく。
-		getActualFont();
+	// 現在のフォントと付随する画面各部の幅等の情報を取得しておく。
+	getActualFont();
+
+	// フォントを読み込む場合の処理
+	if (settingFile[0] != _T('\0')) {
 
 		BOOL loadResult = loadFontInfo(settingFile);
 		if (loadResult) {
@@ -631,6 +630,13 @@ void NoMeiryoUI::getActualFont(void)
 		sizeof(LOGFONT),
 		&iconFont,
 		0);
+
+	fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
+	fontPoints.palette = getFontPointInt(&(metrics.lfSmCaptionFont), this->getHwnd());
+	fontPoints.hint = getFontPointInt(&(metrics.lfStatusFont), this->getHwnd());
+	fontPoints.message = getFontPointInt(&(metrics.lfMessageFont), this->getHwnd());
+	fontPoints.menu = getFontPointInt(&(metrics.lfMenuFont), this->getHwnd());
+	fontPoints.icon = getFontPointInt(&iconFont, this->getHwnd());
 
 	//
 	// すべてのフォント用の情報取得
@@ -1046,7 +1052,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
 
 	FillMemory(&logfont,sizeof(LOGFONT),0x00);
-	
+	double points;
+
 	try {
 		LOGFONT *target;
 		switch (type) {
@@ -1100,6 +1107,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			delete []selector;
 			return;
 		}
+		points = selector->getPoint();
 
 		delete []selector;
 	} catch (...) {
@@ -1125,6 +1133,13 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			allFont = createFont(&metricsAll.lfMenuFont);
 			allFontTextBox->setFont(allFont);
 
+			fontPoints.title = points;
+			fontPoints.palette = points;
+			fontPoints.icon = points;
+			fontPoints.hint = points;
+			fontPoints.menu = points;
+			fontPoints.message = points;
+
 			break;
 
 		case title:
@@ -1134,6 +1149,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(titleFont);
 			titleFont = createFont(&metrics.lfCaptionFont);
 			titleFontTextBox->setFont(titleFont);
+			fontPoints.title = points;
 			break;
 
 		case icon:
@@ -1143,6 +1159,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(iconFontHandle);
 			iconFontHandle = createFont(&iconFont);
 			iconFontTextBox->setFont(iconFontHandle);
+			fontPoints.icon = points;
 			break;
 
 		case palette:
@@ -1152,6 +1169,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(paletteFont);
 			paletteFont = createFont(&metrics.lfSmCaptionFont);
 			paletteFontTextBox->setFont(paletteFont);
+			fontPoints.palette = points;
 			break;
 
 		case hint:
@@ -1161,6 +1179,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(hintFont);
 			hintFont = createFont(&metrics.lfStatusFont);
 			hintFontTextBox->setFont(hintFont);
+			fontPoints.hint = points;
 			break;
 
 		case message:
@@ -1170,6 +1189,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(messageFont);
 			messageFont = createFont(&metrics.lfMessageFont);
 			messageFontTextBox->setFont(messageFont);
+			fontPoints.message = points;
 			break;
 
 		case menu:
@@ -1180,6 +1200,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			DeleteObject(menuFont);
 			menuFont = createFont(&metrics.lfMenuFont);
 			menuFontTextBox->setFont(menuFont);
+			fontPoints.menu = points;
 			break;
 	}
 
@@ -1343,6 +1364,15 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 	metrics.lfMessageFont = messageFont;
 	metrics.lfMenuFont = menuFont;
 
+	int dpi = getSystemDPI();
+
+	fontPoints.title = getFontPointDouble(&(metricsAll.lfCaptionFont), this->getHwnd());
+	fontPoints.palette = getFontPointDouble(&(metricsAll.lfSmCaptionFont), this->getHwnd());
+	fontPoints.hint = getFontPointDouble(&(metricsAll.lfStatusFont), this->getHwnd());
+	fontPoints.message = getFontPointDouble(&(metricsAll.lfMessageFont), this->getHwnd());
+	fontPoints.menu = getFontPointDouble(&(metricsAll.lfMenuFont), this->getHwnd());
+	fontPoints.icon = getFontPointDouble(&iconFont, this->getHwnd());
+
 	return TRUE;
 }
 
@@ -1369,6 +1399,8 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 		return FALSE;
 	}
 
+	int dpi = getSystemDPI();
+
 	result = GetPrivateProfileString(section,
 		_T("Height"),
 		_T(""),
@@ -1378,7 +1410,14 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 	if (!result) {
 		return FALSE;
 	}
-	font->lfHeight = _ttoi(buf);
+	double height = _ttof(buf);
+	if (height < 0) {
+		// Ver.2
+		font->lfHeight = height;
+	} else {
+		// Ver.3
+		font->lfHeight = -MulDiv(height, dpi, 72);
+	}
 
 	result = GetPrivateProfileString(section,
 		_T("Width"),
@@ -1389,7 +1428,14 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 	if (!result) {
 		return FALSE;
 	}
-	font->lfWidth = _ttoi(buf);
+	double width = _ttof(buf);
+	if (height < 0) {
+		// Ver.2
+		font->lfWidth = width;
+	} else {
+		// Ver.3
+		font->lfWidth = -MulDiv(width, dpi, 72);
+	}
 
 	result = GetPrivateProfileString(section,
 		_T("Escapement"),
@@ -1576,27 +1622,33 @@ BOOL NoMeiryoUI::startSaveFont(TCHAR *filename)
 {
 	BOOL saveResult;
 
-	saveResult = saveFont(filename, _T("TitleFont"), &metrics.lfCaptionFont);
+	saveResult = saveFont(
+		filename, _T("TitleFont"), &metrics.lfCaptionFont, fontPoints.title);
 	if (!saveResult) {
 		return FALSE;
 	}
-	saveResult = saveFont(filename, _T("IconFont"), &iconFont);
+	saveResult = saveFont(
+		filename, _T("IconFont"), &iconFont, fontPoints.icon);
 	if (!saveResult) {
 		return FALSE;
 	}
-	saveResult = saveFont(filename, _T("PaletteFont"), &metrics.lfSmCaptionFont);
+	saveResult = saveFont(
+		filename, _T("PaletteFont"), &metrics.lfSmCaptionFont, fontPoints.palette);
 	if (!saveResult) {
 		return FALSE;
 	}
-	saveResult = saveFont(filename, _T("HintFont"), &metrics.lfStatusFont);
+	saveResult = saveFont(
+		filename, _T("HintFont"), &metrics.lfStatusFont, fontPoints.hint);
 	if (!saveResult) {
 		return FALSE;
 	}
-	saveResult = saveFont(filename, _T("MessageFont"), &metrics.lfMessageFont);
+	saveResult = saveFont(
+		filename, _T("MessageFont"), &metrics.lfMessageFont, fontPoints.message);
 	if (!saveResult) {
 		return FALSE;
 	}
-	saveResult = saveFont(filename, _T("MenuFont"), &metrics.lfMenuFont);
+	saveResult = saveFont(
+		filename, _T("MenuFont"), &metrics.lfMenuFont, fontPoints.menu);
 	if (!saveResult) {
 		return FALSE;
 	}
@@ -1610,12 +1662,14 @@ BOOL NoMeiryoUI::startSaveFont(TCHAR *filename)
  * @param filename iniファイル名
  * @param category 保存対象フォントのiniファイルセクション名
  * @param font 保存対象フォントのLOGFONT構造体
+ * @param point フォントサイズ(ポイント)
  * @result TRUE:保存成功 FALSE:保存失敗
  */
-BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
+BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font, double point)
 {
 	TCHAR buf[32];
 	BOOL result;
+
 
 	result = WritePrivateProfileString(section,
 		_T("FaceName"),
@@ -1625,7 +1679,7 @@ BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 		return FALSE;
 	}
 
-	_stprintf(buf, _T("%ld"), font->lfHeight);
+	_stprintf(buf, _T("%f"), point);
 	result = WritePrivateProfileString(section,
 		_T("Height"),
 		buf,
@@ -1634,7 +1688,7 @@ BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 		return FALSE;
 	}
 
-	_stprintf(buf, _T("%ld"), font->lfWidth);
+	_stprintf(buf, _T("%f"), 0);
 	result = WritePrivateProfileString(section,
 		_T("Width"),
 		buf,

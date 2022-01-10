@@ -1,5 +1,5 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma warning(disable : 4996)
@@ -66,6 +66,44 @@ int getFontPointInt(LOGFONT *font, HWND hWnd)
 			return (int)point + 1;
 		} else {
 			return (int)point;
+		}
+	}
+}
+
+/**
+ * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
+ *
+ * @param font フォント情報
+ * @param hWnd ウインドウハンドル
+ * @return フォントサイズ
+ */
+double getFontPointDouble(LOGFONT* font, HWND hWnd)
+{
+	double point = getFontPoint(font, hWnd);
+
+	if (WIN8_SIZE) {
+		// Windows 8ディスプレイコントロールパネル互換
+		if ((point > 10) || (point < 8)) {
+			return point;
+		}
+		else {
+			// 10ptまではWindows 7と同様に計算する。
+			// Windows 7以前互換 
+			if (point - abs((int)point) > 0.49) {
+				return point + 1;
+			}
+			else {
+				return point;
+			}
+		}
+	}
+	else {
+		// Windows 7以前互換 
+		if (point - abs((int)point) > 0.49) {
+			return point + 1;
+		}
+		else {
+			return point;
 		}
 	}
 }
@@ -1036,3 +1074,15 @@ size_t utf8toUtf16(tstring &dst, const char* src)
 	return dst.length();
 }
 
+/**
+ * システムのDPIを取得する。
+ * 
+ * @return システムのDPI
+ */
+int getSystemDPI(void)
+{
+	HDC hDc = GetDC(GetDesktopWindow());
+	int dpi = GetDeviceCaps(hDc, LOGPIXELSY);
+
+	return dpi;
+}

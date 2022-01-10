@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef NOMEIRYOUI_H
@@ -24,6 +24,26 @@ BOOL CALLBACK MonitorNearWindowCallback(
 BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
 void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeName, TCHAR *iniPath);
 
+/** フォントのポイント数を保存する構造体 */
+struct FontPoints {
+	/** タイトルバーフォントサイズ(Point) */
+	double title;
+
+	/** アイコンフォントサイズ(Point) */
+	double icon;
+
+	/** パレットタイトルフォントサイズ(Point) */
+	double palette;
+
+	/** ツールチップフォントサイズ(Point) */
+	double hint;
+
+	/** メッセージボックスフォントサイズ(Point) */
+	double message;
+
+	/** メニューフォントサイズ(Point) */
+	double menu;
+};
 
 class NoMeiryoUI : public DialogAppliBase {
 private:
@@ -48,6 +68,7 @@ private:
 
 	NONCLIENTMETRICS metrics;
 	LOGFONT iconFont;
+	FontPoints fontPoints;
 
 	NONCLIENTMETRICS metricsAll;
 	LOGFONT iconFontAll;
@@ -84,7 +105,7 @@ private:
 	BOOL loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
 	void OnSave();
 	BOOL startSaveFont(TCHAR *filename);
-	BOOL saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
+	BOOL saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font, double point);
 	void selectFont(enum fontType type);
 	void updateDisplay(void);
 

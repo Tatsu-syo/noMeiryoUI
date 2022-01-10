@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef UTIL_H
@@ -76,5 +76,7 @@ void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCH
 BOOL isWin11OrLater();
 DWORD GetVersionForApp();
 size_t utf8toUtf16(tstring& dst, const char* src);
+int getSystemDPI(void);
+double getFontPointDouble(LOGFONT* font, HWND hWnd);
 
 #endif
