@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+; noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;In RESOURCE section,
@@ -31,9 +31,9 @@ DLG_HINT=ヒント
 DLG_MESSAGE=メッセージボックス
 DLG_MENU=メニュー/選択項目
 DLG_SELECT=選択...
-DLG_SET_ALL=一括設定
-DLG_SET=設定
-DLG_EXIT=終了
+DLG_SET_ALL=一括設定して終了
+DLG_SET=設定して終了
+DLG_EXIT=設定せず終了
 DLG_APPLY=適用
 DLG_FONT_SEL=フォント選択
 DLG_FONT_NAME=フォント名(&F)：
