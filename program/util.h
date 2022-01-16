@@ -33,6 +33,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define DLG_CHECK_BOLD 82
 #define DLG_CHECK_ITALIC 83
 
+/** 必要なクライアント領域幅(96DPI) */
+const int REQUIRED_CLIENT_WIDTH = 615;
+/** 必要なクライアント領域高さ(96DPI) */
+const int REQUIRED_CLIENT_HEIGHT = 400;
+
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
 

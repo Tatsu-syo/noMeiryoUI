@@ -803,6 +803,10 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 	myWidth = myRect.right - myRect.left + 1;
 	myHeight = myRect.bottom - myRect.top + 1;
 
+	double scale = (double)getSystemDPI() / 96;
+	int targetWidth = REQUIRED_CLIENT_WIDTH * scale;
+	int targetHeight = REQUIRED_CLIENT_HEIGHT * scale;
+
 	if (myWidth >= parentWidth) {
 		newLeft = parentRect.left + 1;
 	} else {
@@ -813,6 +817,7 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 	} else {
 		newTop = parentRect.top + MulDiv((parentHeight - myHeight), 45, 100);
 	}
+
 	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
 
 }
