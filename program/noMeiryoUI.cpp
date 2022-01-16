@@ -2558,7 +2558,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2021\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2022\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
