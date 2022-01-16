@@ -1,18 +1,12 @@
-﻿################################################################################
-# この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
-################################################################################
+﻿# noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+# The sources for noMeiryoUI are distributed under the MIT open source license
 
 /program/.vs/noMeiryoUI
 /program/Debug
-/program/Debug_2013
+/program/Debug_2008
 /program/Release
-/program/Release_2013
+/program/Release_2008
 /program/noMeiryoUI.aps
 /program/noMeiryoUI.VC.db
 /.vs
-/help/en-us/English.chm
-/help/ja-jp/Japanese.chm
-/help/ko-kr/Korean.chm
-/help/pt-br/Portuguese_Brazil.chm
-/help/zh-cn/Chinese (Simplified)_China.chm
-/help/zh-tw/Chinese (Traditional)_Taiwan.chm
+/help/*/*.chm
