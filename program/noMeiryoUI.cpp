@@ -631,6 +631,25 @@ void NoMeiryoUI::getActualFont(void)
 		&iconFont,
 		0);
 
+	if (metrics.lfCaptionFont.lfHeight > 0) {
+		metrics.lfCaptionFont.lfHeight = 0 - metrics.lfCaptionFont.lfHeight;
+	}
+	if (metrics.lfSmCaptionFont.lfHeight > 0) {
+		metrics.lfSmCaptionFont.lfHeight = 0 - metrics.lfSmCaptionFont.lfHeight;
+	}
+	if (metrics.lfStatusFont.lfHeight > 0) {
+		metrics.lfStatusFont.lfHeight = 0 - metrics.lfStatusFont.lfHeight;
+	}
+	if (metrics.lfMessageFont.lfHeight > 0) {
+		metrics.lfMessageFont.lfHeight = 0 - metrics.lfMessageFont.lfHeight;
+	}
+	if (metrics.lfMenuFont.lfHeight > 0) {
+		metrics.lfMenuFont.lfHeight = 0 - metrics.lfMenuFont.lfHeight;
+	}
+	if (iconFont.lfHeight > 0) {
+		iconFont.lfHeight = 0 - iconFont.lfHeight;
+	}
+
 	fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
 	fontPoints.palette = getFontPointInt(&(metrics.lfSmCaptionFont), this->getHwnd());
 	fontPoints.hint = getFontPointInt(&(metrics.lfStatusFont), this->getHwnd());
@@ -1366,11 +1385,11 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 
 	int dpi = getSystemDPI();
 
-	fontPoints.title = getFontPointDouble(&(metricsAll.lfCaptionFont), this->getHwnd());
-	fontPoints.palette = getFontPointDouble(&(metricsAll.lfSmCaptionFont), this->getHwnd());
-	fontPoints.hint = getFontPointDouble(&(metricsAll.lfStatusFont), this->getHwnd());
-	fontPoints.message = getFontPointDouble(&(metricsAll.lfMessageFont), this->getHwnd());
-	fontPoints.menu = getFontPointDouble(&(metricsAll.lfMenuFont), this->getHwnd());
+	fontPoints.title = getFontPointDouble(&(metrics.lfCaptionFont), this->getHwnd());
+	fontPoints.palette = getFontPointDouble(&(metrics.lfSmCaptionFont), this->getHwnd());
+	fontPoints.hint = getFontPointDouble(&(metrics.lfStatusFont), this->getHwnd());
+	fontPoints.message = getFontPointDouble(&(metrics.lfMessageFont), this->getHwnd());
+	fontPoints.menu = getFontPointDouble(&(metrics.lfMenuFont), this->getHwnd());
 	fontPoints.icon = getFontPointDouble(&iconFont, this->getHwnd());
 
 	return TRUE;
