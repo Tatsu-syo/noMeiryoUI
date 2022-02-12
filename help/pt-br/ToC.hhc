@@ -14,19 +14,19 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Iniciando">
-		<param name="Local" value="contents\01.html">
+		<param name="Local" value="contents/01.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Como usar">
-		<param name="Local" value="contents\02.html">
+		<param name="Local" value="contents/02.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Histórico">
-		<param name="Local" value="contents\03.html">
+		<param name="Local" value="contents/03.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Licença">
-		<param name="Local" value="contents\04.html">
+		<param name="Local" value="contents/04.html">
 		</OBJECT>
 </UL>
 </BODY></HTML>

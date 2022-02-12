@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
+; noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;In RESOURCE section,
@@ -8,11 +8,11 @@ FONT_FACE=Sistema
 FONT_CHARSET=0
 TITLE=No!! Meiryo UI
 MENU_FILE=&Arquivo
-MENU_FILE_LOAD=Carr&egar definições de fonte...
-MENU_FILE_SAVE=Sa&lvar definições de fonte...
-MENU_FILE_SET_QUIT=&Definir fontes do sistema e sair
+MENU_FILE_LOAD=Carr&egar as definições de fonte...
+MENU_FILE_SAVE=Sa&lvar as definições de fonte...
+MENU_FILE_SET_QUIT=&Definir as fontes do sistema e sair
 MENU_FILE_QUIT=Sa&ir
-MENU_PRESET=&Pré-definição
+MENU_PRESET=&Pré-Definição
 MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_TOOLS=&Ferramentas
@@ -22,28 +22,28 @@ MENU_HELP=Aju&da
 MENU_HELP_HELP=Aju&da
 MENU_HELP_ABOUT=&Sobre o No!! Meiryo UI
 DLG_ALL_GROUP=Definir Todas as Fontes
-DLG_INDIVIDUAL_GROUP=Definir Fonte Individual
-DLG_ALL_FONT=Todas as fontes
-DLG_TITLE_BAR=Barra de título
+DLG_INDIVIDUAL_GROUP=Definir a Fonte Individual
+DLG_ALL_FONT=Todas as Fontes
+DLG_TITLE_BAR=Barra de Título
 DLG_ICON=Ícone
-DLG_PALETTE=Título da paleta
+DLG_PALETTE=Título da Paleta
 DLG_HINT=Dica
-DLG_MESSAGE=Caixa de mensagem
+DLG_MESSAGE=Caixa de Mensagem
 DLG_MENU=Menu
-DLG_SELECT=Selec. ...
-DLG_SET_ALL=Def. Tudo
-DLG_SET=Definir
-DLG_EXIT=Sair
+DLG_SELECT=Selec...
+DLG_SET_ALL=Def. Tudo e Sair
+DLG_SET=Definir e Sair
+DLG_EXIT=Sair Sem Definir
 DLG_APPLY=Aplicar
-DLG_FONT_SEL=Selecionar Fonte
-DLG_FONT_NAME=&Nome da fonte
-DLG_STYLE=Est&ilo
+DLG_FONT_SEL=Selecionar a Fonte
+DLG_FONT_NAME=Nome da &Fonte
+DLG_STYLE=&Estilo
 DLG_SIZE=&Tamanho
 DLG_CHECK_BOLD=&Negrito
 DLG_CHECK_ITALIC=&Itálico
 DLG_UNDERLINE=&Sublinhado
 DLG_STRIKE=Tac&hado
-DLG_CHARSET=&Conjunto de caracteres
+DLG_CHARSET=&Conjunto de Caracteres
 DLG_OK=OK
 DLG_CANCEL=Cancelar
 DLG_CHARSET_ANSI=Ansi
