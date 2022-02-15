@@ -1429,7 +1429,7 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 	if (!result) {
 		return FALSE;
 	}
-	double height = _ttof(buf);
+	double height = _wtof(buf);
 	if (height < 0) {
 		// Ver.2
 		font->lfHeight = height;
@@ -1447,7 +1447,7 @@ BOOL NoMeiryoUI::loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font)
 	if (!result) {
 		return FALSE;
 	}
-	double width = _ttof(buf);
+	double width = _wtof(buf);
 	if (height < 0) {
 		// Ver.2
 		font->lfWidth = width;
