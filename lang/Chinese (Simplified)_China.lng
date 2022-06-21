@@ -2,8 +2,8 @@
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
-FONT_FACE=System
-FONT_CHARSET=134
+FONT_FACE=微软雅黑
+FONT_CHARSET=136
 TITLE=No!! Meiryo UI
 MENU_FILE=文件(&F)
 MENU_FILE_LOAD=加载字体配置文件(&O)...
@@ -14,8 +14,8 @@ MENU_PRESET=恢复系统默认字体(&P)
 MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_TOOLS=工具(&T)
-MENU_TOOLS_THREAD=在独立线程中更改系统字体
-MENU_TOOLS_SEVEN=采用与Windows 7中相同的方法计算文字大小
+MENU_TOOLS_THREAD=在分开的线程中更改系统字体
+MENU_TOOLS_SEVEN=采用与 Windows 7 中相同的方法计算文字大小
 MENU_HELP=帮助(&H)
 MENU_HELP_HELP=显示帮助(&H)
 MENU_HELP_ABOUT=关于 No!! Meiryo UI(&A)
@@ -29,7 +29,7 @@ DLG_HINT=当前焦点文字
 DLG_MESSAGE=对话框
 DLG_MENU=菜单
 DLG_SELECT=选择...
-DLG_SET_ALL=统一设置并退出
+DLG_SET_ALL=设置全部并退出
 DLG_SET=设置并退出
 DLG_EXIT=退出
 DLG_APPLY=应用
@@ -47,11 +47,11 @@ DLG_CANCEL=取消
 DLG_CHARSET_ANSI=西欧语言
 DLG_CHARSET_BALTIC=波罗的语
 DLG_CHARSET_BIG5=繁体中文
-DLG_CHARSET_DEFAULT=默认
+DLG_CHARSET_DEFAULT=缺省
 DLG_CHARSET_EASTEUROPE=东欧语言
 DLG_CHARSET_GB2312=简体中文
 DLG_CHARSET_GREEK=希腊语
-DLG_CHARSET_HANGUL=朝鲜文
+DLG_CHARSET_HANGUL=韩文
 DLG_CHARSET_MAC=MAC
 DLG_CHARSET_OEM=OEM
 DLG_CHARSET_RUSSIAN=西里尔文
@@ -59,7 +59,7 @@ DLG_CHARSET_SHIFTJIS=日语
 DLG_CHARSET_SYMBOL=符号
 DLG_CHARSET_TURKISH=土耳其语
 DLG_CHARSET_VIETNAMESE=越南语
-DLG_CHARSET_JOHAB=朝鲜文(johab)
+DLG_CHARSET_JOHAB=韩文(组合型)
 DLG_CHARSET_ARABIC=阿拉伯语
 DLG_CHARSET_HEBREW=希伯来语
 DLG_CHARSET_THAI=泰语
@@ -85,7 +85,7 @@ MSG_NO_FONT=请选择字体。
 MSG_NO_STYLE=请选择字形。
 MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
-MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli
+MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo
 
 [PRESET]
 ; For Windows 8.x
