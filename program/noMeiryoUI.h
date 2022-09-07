@@ -97,6 +97,9 @@ private:
 	TwrWnd *messageFontTextBox;
 	TwrWnd *menuFontTextBox;
 
+	DWORD majorVersion;
+	DWORD minorVersion;
+
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;
 

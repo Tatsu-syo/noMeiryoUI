@@ -95,6 +95,14 @@ void initializeLocale(void)
 	}
 }
 
+/**
+ * リソースファイル名を設定する
+ * 
+ * @param langFileName 言語ファイル名
+ * @param helpFileName ヘルプファイル名
+ * @param localeName ロケール名
+ * @param iniPath iniファイルのパス
+ */
 void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
 {
 	TCHAR findPath[MAX_PATH];
@@ -233,16 +241,15 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
 
-	DWORD dwVersion = GetVersionForApp();
+	// メジャーバージョンを取得する
+	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion);
 
-	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
-	if (major < 6) {
+	if (majorVersion < 6) {
 		// Windows XP or earlyer
 		WIN8_SIZE = false;
 		use7Compat = false;
-	} else if (major == 6) {
-		if (minor < 2) {
+	} else if (majorVersion == 6) {
+		if (minorVersion < 2) {
 			// Windows Vista/7
 			WIN8_SIZE = false;
 			use7Compat = false;
@@ -363,15 +370,10 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	// 先発のOSではフォントがない場合があるので
 	// 後発OS用のプリセットを使用不可とする。
-	DWORD dwVersion = GetVersionForApp();
-
-	DWORD major = (DWORD)(LOBYTE(HIWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
-
-	if (major < 10) {
+	if (majorVersion < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
-	if (major < 11) {
+	if (majorVersion < 11) {
 		appMenu->setEnabled(IDM_SET_11, false);
 	}
 

@@ -79,7 +79,7 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
 void getKoreanFontName(TCHAR *dispBuf);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
 BOOL isWin11OrLater();
-DWORD GetVersionForApp();
+DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion);
 size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);

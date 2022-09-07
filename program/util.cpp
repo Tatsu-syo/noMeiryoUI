@@ -962,19 +962,19 @@ BOOL isWin11OrLater()
  * 
  * @return 上位16ビット：メジャーバージョン 下位16ビット：マイナーバージョン
  */
-DWORD GetVersionForApp()
+DWORD GetVersionForApp(DWORD& majorVersion, DWORD& minorVersion)
 {
 	DWORD dwVersion = GetVersion();
 
-	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+	majorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	minorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));
 
-	if (major == 10 && isWin11OrLater()) {
+	if (majorVersion == 10 && isWin11OrLater()) {
 		// Windows 11が普通にやると10返すのでここで１１と判別
-		major = 11;
+		majorVersion = 11;
 	}
 
-	return (major << 16) | minor;
+	return (majorVersion << 16) | minorVersion;
 }
 
 /**
