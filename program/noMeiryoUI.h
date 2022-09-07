@@ -99,6 +99,7 @@ private:
 
 	DWORD majorVersion;
 	DWORD minorVersion;
+	DWORD buildNumber;
 
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;

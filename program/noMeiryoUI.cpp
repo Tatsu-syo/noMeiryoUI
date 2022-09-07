@@ -242,7 +242,9 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	menuFontTextBox = NULL;
 
 	// メジャーバージョンを取得する
-	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion);
+	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
+
+	// TODO:If Windows 11 Build 22621 Switch on
 
 	if (majorVersion < 6) {
 		// Windows XP or earlyer
@@ -975,9 +977,11 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 
 	switch (LOWORD(wParam)) {
 		case ID_SEL_ALL:
+			// TODO:ワーニングメッセージ in Win11 22H2
 			selectFont(all);
 			return (INT_PTR)0;
 		case ID_SEL_TITLE:
+			// TODO:ワーニングメッセージ in Win11 22H2
 			selectFont(title);
 			return (INT_PTR)0;
 		case ID_SEL_ICON:
@@ -1083,6 +1087,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 				break;
 
 			case title:
+				// TODO:ワーニングメッセージ in Win11 22H2
 				target = &metrics.lfCaptionFont;
 				break;
 
@@ -1144,6 +1149,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			metricsAll.lfMenuFont = logfont;
 			metricsAll.lfStatusFont = logfont;
 			metricsAll.lfMessageFont = logfont;
+			// TODO:Silently ignore on  in Win11 22H2
 			metricsAll.lfCaptionFont = logfont;
 			metricsAll.lfSmCaptionFont = logfont;
 			iconFontAll = logfont;
@@ -1164,6 +1170,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			break;
 
 		case title:
+			// TODO:Silently ignore on  in Win11 22H2
 			metrics.lfCaptionFont = logfont;
 			titleFontName = logfont.lfFaceName;
 
@@ -2401,13 +2408,42 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 		RegCloseKey(key);
 	}
 
-	DWORD calledVer = 10;
-	if (isWin11OrLater()) {
-		calledVer = 11;
+	TCHAR calledVer[8];
+	switch (majorVersion) {
+		case 5:
+			if (minorVersion == 0) {
+				_tcscpy_s(calledVer, _T("2000"));
+			}
+			else {
+				_tcscpy_s(calledVer, _T("XP"));
+			}
+			break;
+		case 6:
+			switch (majorVersion) {
+				case 0:
+					_tcscpy_s(calledVer, _T("Vista"));
+					break;
+				case 1:
+					_tcscpy_s(calledVer, _T("7"));
+					break;
+				case 2:
+					_tcscpy_s(calledVer, _T("8"));
+					break;
+				case 3:
+					_tcscpy_s(calledVer, _T("8.1"));
+					break;
+			}
+			break;
+		case 10:
+			_tcscpy_s(calledVer, _T("10"));
+			break;
+		case 11:
+			_tcscpy_s(calledVer, _T("11"));
+			break;
 	}
 
 	_stprintf(buf,
-		_T("Windows Version:Windows %d (%d.%d) Version %s Build %s.%d"),
+		_T("Windows Version:Windows %s (%d.%d) Version %s Build %s.%d"),
 		calledVer, major, minor, release, build, ubr);
 
 }
