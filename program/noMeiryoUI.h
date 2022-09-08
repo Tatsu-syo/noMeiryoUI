@@ -97,9 +97,12 @@ private:
 	TwrWnd *messageFontTextBox;
 	TwrWnd *menuFontTextBox;
 
+	TwrWnd* titleFontButton;
+
 	DWORD majorVersion;
 	DWORD minorVersion;
 	DWORD buildNumber;
+	int compatLevel;
 
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;

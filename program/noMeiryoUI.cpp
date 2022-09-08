@@ -243,8 +243,13 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
-
-	// TODO:If Windows 11 Build 22621 Switch on
+	// If Windows 11 Build 22621 Switch onにしようと思ったけど
+	// 21H2のあとのInsiderから起きてたので21H2のあとは全部同じ扱い
+	if (majorVersion == 11 && buildNumber > 22000) {
+		compatLevel = 1;
+	} else {
+		compatLevel = 0;
+	}
 
 	if (majorVersion < 6) {
 		// Windows XP or earlyer
@@ -326,6 +331,9 @@ int NoMeiryoUI::OnAppliEnd()
 	}
 	if (menuFontTextBox != NULL) {
 		delete menuFontTextBox;
+	}
+	if (titleFontButton != NULL) {
+		delete titleFontButton;
 	}
 
 	if (displayFont != NULL) {
@@ -431,6 +439,13 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// フォント名表示を更新する。
 	updateDisplay();
 
+	if (compatLevel > 0) {
+		titleFontButton->EnableWindow(FALSE);
+		// TODO:ワーニングメッセージ in Win11 22H2
+		MessageBox(this->getHwnd(), __T("On Windows 11 2022 Update due to Windows reason title bar font can't change."),
+			_T("Warning"), MB_OK | MB_ICONWARNING);
+	}
+
 	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
 
 	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
@@ -510,6 +525,7 @@ int NoMeiryoUI::OnWindowShow()
 	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
 	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
 	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
+	titleFontButton = GetDlgItem(ID_SEL_TITLE);
 
 	return 0;
 }
@@ -981,7 +997,6 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			selectFont(all);
 			return (INT_PTR)0;
 		case ID_SEL_TITLE:
-			// TODO:ワーニングメッセージ in Win11 22H2
 			selectFont(title);
 			return (INT_PTR)0;
 		case ID_SEL_ICON:
@@ -1087,7 +1102,6 @@ void NoMeiryoUI::selectFont(enum fontType type)
 				break;
 
 			case title:
-				// TODO:ワーニングメッセージ in Win11 22H2
 				target = &metrics.lfCaptionFont;
 				break;
 
@@ -1149,8 +1163,10 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			metricsAll.lfMenuFont = logfont;
 			metricsAll.lfStatusFont = logfont;
 			metricsAll.lfMessageFont = logfont;
-			// TODO:Silently ignore on  in Win11 22H2
-			metricsAll.lfCaptionFont = logfont;
+			// Silently ignore on Win11 22H2
+			if (compatLevel < 1) {
+				metricsAll.lfCaptionFont = logfont;
+			}
 			metricsAll.lfSmCaptionFont = logfont;
 			iconFontAll = logfont;
 
@@ -1170,14 +1186,16 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			break;
 
 		case title:
-			// TODO:Silently ignore on  in Win11 22H2
-			metrics.lfCaptionFont = logfont;
-			titleFontName = logfont.lfFaceName;
+			// Silently ignore on Win11 22H2
+			if (compatLevel < 1) {
+				metrics.lfCaptionFont = logfont;
+				titleFontName = logfont.lfFaceName;
 
-			DeleteObject(titleFont);
-			titleFont = createFont(&metrics.lfCaptionFont);
-			titleFontTextBox->setFont(titleFont);
-			fontPoints.title = points;
+				DeleteObject(titleFont);
+				titleFont = createFont(&metrics.lfCaptionFont);
+				titleFontTextBox->setFont(titleFont);
+				fontPoints.title = points;
+			}
 			break;
 
 		case icon:
@@ -1360,10 +1378,14 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 	LOGFONT messageFont;
 	LOGFONT menuFont;
 
-	loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
-	if (!loadResult) {
-		return FALSE;
+	if (compatLevel < 1) {
+		loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
+		if (!loadResult) {
+			return FALSE;
+		}
+		metrics.lfCaptionFont = captionFont;
 	}
+
 	loadResult = loadFont(filename, _T("IconFont"), &newIconFont);
 	if (!loadResult) {
 		return FALSE;
@@ -1385,7 +1407,6 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 		return FALSE;
 	}
 
-	metrics.lfCaptionFont = captionFont;
 	iconFont = newIconFont;
 	metrics.lfSmCaptionFont = smCaptionFont;
 	metrics.lfStatusFont = statusFont;
