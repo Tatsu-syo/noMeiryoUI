@@ -1176,7 +1176,9 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			allFont = createFont(&metricsAll.lfMenuFont);
 			allFontTextBox->setFont(allFont);
 
-			fontPoints.title = points;
+			if (compatLevel < 1) {
+				fontPoints.title = points;
+			}
 			fontPoints.palette = points;
 			fontPoints.icon = points;
 			fontPoints.hint = points;
