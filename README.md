@@ -1,5 +1,7 @@
 # No!! MeiryoUI (Japanese name Meiryo UI mo daikkirai!!)
 
+For early adapters who runs Windows 11 22H2, check discussions.
+
 ## About No!! MeiryoUI
 
 This program sets the system font setting on Windows 8.1/10/11.  
