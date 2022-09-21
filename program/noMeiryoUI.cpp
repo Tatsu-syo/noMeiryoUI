@@ -1165,7 +1165,10 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			// Silently ignore on Win11 22H2
 			if (compatLevel < 1) {
 				metricsAll.lfCaptionFont = logfont;
+			} else {
+				set11TitlePreset(&metricsAll);
 			}
+
 			metricsAll.lfSmCaptionFont = logfont;
 			iconFontAll = logfont;
 
@@ -1888,7 +1891,9 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		}
 	}
 #endif
-
+	if (compatLevel > 0) {
+		set11TitlePreset(&metrics);
+	}
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
 
@@ -1913,6 +1918,9 @@ void NoMeiryoUI::OnBnClickedAll()
 		}
 	}
 #endif
+	if (compatLevel > 0) {
+		set11TitlePreset(&metricsAll);
+	}
 
 	// フォント変更を実施する。
 	setFont(&metricsAll, &iconFontAll);
@@ -2072,6 +2080,25 @@ void NoMeiryoUI::OnSet10(void)
 }
 
 /**
+ * Windows 11のタイトルのプリセットだけを設定する。<br>
+ * Windows 11 22H2用
+ * 
+ * @param metrics 設定するNONCLIENTMETRICS
+ */
+void NoMeiryoUI::set11TitlePreset(NONCLIENTMETRICS *metrics)
+{
+	// DPIを取得する。
+	int dpiY = getDPI();
+
+	memset(&((*metrics).lfCaptionFont), 0, sizeof(LOGFONTW));
+	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	(*metrics).lfCaptionFont.lfWeight = 400;
+	(*metrics).lfCaptionFont.lfCharSet = fontCharset10[0];
+	(*metrics).lfCaptionFont.lfQuality = 5;
+}
+
+/**
  * Windows 11の場合のプリセット値を設定する。
  */
 void NoMeiryoUI::OnSet11(void)
@@ -2088,14 +2115,12 @@ void NoMeiryoUI::OnSet11(void)
 		&metrics,
 		0);
 
-	if (compatLevel < 1) {
-		memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-		_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-		metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-		metrics.lfCaptionFont.lfWeight = 400;
-		metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-		metrics.lfCaptionFont.lfQuality = 5;
-	}
+	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	metrics.lfCaptionFont.lfWeight = 400;
+	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
+	metrics.lfCaptionFont.lfQuality = 5;
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
