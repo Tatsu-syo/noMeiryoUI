@@ -2308,22 +2308,22 @@ void NoMeiryoUI::SetWinVer(void)
 			switch (minor) {
 				case 0:
 					_stprintf(buf,
-						_T("Windows Version:Windows 2000 (%d.%d)"),
+						_T("OS:Windows 2000 (%d.%d)"),
 						major,minor);
 					break;
 				case 1:
 					_stprintf(buf,
-						_T("Windows Version:Windows XP (%d.%d)"),
+						_T("OS:Windows XP (%d.%d)"),
 						major,minor);
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows XP 64bit (%d.%d)"),
+							_T("OS:Windows XP 64bit (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2003 (%d.%d)"),
+							_T("OS:Windows Server 2003 (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -2334,55 +2334,55 @@ void NoMeiryoUI::SetWinVer(void)
 				case 0:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows Vista (%d.%d)"),
+							_T("OS:Windows Vista (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2008 (%d.%d)"),
+							_T("OS:Windows Server 2008 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 1:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 7 (%d.%d)"),
+							_T("OS:Windows 7 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2008 R2 (%d.%d)"),
+							_T("OS:Windows Server 2008 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 8 (%d.%d)"),
+							_T("OS:Windows 8 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2012 (%d.%d)"),
+							_T("OS:Windows Server 2012 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 3:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 8.1 (%d.%d)"),
+							_T("OS:Windows 8.1 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2012 R2 (%d.%d)"),
+							_T("OS:Windows Server 2012 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				default:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Future Windows Client (%d.%d)"),
+							_T("OS:Future Windows Client (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Future Windows Server (%d.%d)"),
+							_T("OS:Future Windows Server (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -2393,18 +2393,18 @@ void NoMeiryoUI::SetWinVer(void)
 				getWin10Ver(buf, major, minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Windows Server 2016/2019/2022 (%d.%d)"),
+					_T("OS:Windows Server 2016/2019/2022 (%d.%d)"),
 					major,minor);
 			}
 			break;
 		default:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Windows Version:Future Windows Client (%d.%d)"),
+					_T("OS:Future Windows Client (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Future Windows Server (%d.%d)"),
+					_T("OS:Future Windows Server (%d.%d)"),
 					major,minor);
 			}
 			break;
@@ -2499,7 +2499,7 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 	}
 
 	_stprintf(buf,
-		_T("Windows Version:Windows %s (%d.%d) Version %s Build %s.%d"),
+		_T("OS:Windows %s (%d.%d) Version %s Build %s.%d"),
 		calledVer, major, minor, release, build, ubr);
 
 }
