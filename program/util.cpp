@@ -444,7 +444,7 @@ void readResourceFile(TCHAR *file)
 		_T("Warning")
 	);
 	readResourceItem(file, _T("MSG_WIN11_22H2RESTRICTION"),
-		_T("On Windows 11 2022 Update due to Windows reason title bar font can't change.")
+		_T("On Windows 11 2022 Update(22H2) due to Windows reason title bar font can't change.")
 	);
 }
 
