@@ -2368,7 +2368,7 @@ void NoMeiryoUI::SetWinVer(void)
 				getWin10Ver(buf, major, minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Windows Server 2016/2019 (%d.%d)"),
+					_T("Windows Version:Windows Server 2016/2019/2022 (%d.%d)"),
 					major,minor);
 			}
 			break;
@@ -2410,6 +2410,8 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 	_tcscpy(release, _T("????"));
 	_tcscpy(build, _T("?"));
 
+	int buildNumber = 0;
+
 	result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
 		_T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
 		0, KEY_READ, &key);
@@ -2430,9 +2432,11 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 		size = sizeof(DWORD);
 		RegQueryValueEx(key, _T("UBR"), NULL, NULL, (LPBYTE)&ubr, (LPDWORD)&size);
 		RegCloseKey(key);
+
+		buildNumber = _tstoi(build);
 	}
 
-	TCHAR calledVer[8];
+	TCHAR calledVer[32];
 	switch (majorVersion) {
 		case 5:
 			if (minorVersion == 0) {
@@ -2463,6 +2467,9 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
+			if (buildNumber >= 22621) {
+				_tcscat_s(calledVer, _T(" 2022 Update"));
+			}
 			break;
 	}
 
