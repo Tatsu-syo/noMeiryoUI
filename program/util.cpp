@@ -440,6 +440,12 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("DLG_CHECK_ITALIC"),
 		_T("&Italic")
 	);
+	readResourceItem(file, _T("MSG_WARNING"),
+		_T("Warning")
+	);
+	readResourceItem(file, _T("MSG_WIN11_22H2RESTRICTION"),
+		_T("On Windows 11 2022 Update due to Windows reason title bar font can't change.")
+	);
 }
 
 /**

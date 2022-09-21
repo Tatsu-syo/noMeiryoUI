@@ -442,8 +442,8 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
 		// TODO:ワーニングメッセージ in Win11 22H2
-		MessageBox(this->getHwnd(), __T("On Windows 11 2022 Update due to Windows reason title bar font can't change."),
-			_T("Warning"), MB_OK | MB_ICONWARNING);
+		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
+			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
 	}
 
 	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
@@ -993,7 +993,6 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 
 	switch (LOWORD(wParam)) {
 		case ID_SEL_ALL:
-			// TODO:ワーニングメッセージ in Win11 22H2
 			selectFont(all);
 			return (INT_PTR)0;
 		case ID_SEL_TITLE:
@@ -2089,12 +2088,14 @@ void NoMeiryoUI::OnSet11(void)
 		&metrics,
 		0);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-	metrics.lfCaptionFont.lfQuality = 5;
+	if (compatLevel < 1) {
+		memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
+		_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+		metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+		metrics.lfCaptionFont.lfWeight = 400;
+		metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
+		metrics.lfCaptionFont.lfQuality = 5;
+	}
 
 	memset(&iconFont, 0, sizeof(LOGFONTW));
 	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());

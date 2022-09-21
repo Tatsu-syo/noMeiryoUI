@@ -32,6 +32,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define DLG_STYLE_SLANTED 81
 #define DLG_CHECK_BOLD 82
 #define DLG_CHECK_ITALIC 83
+#define MSG_WARNING 84
+#define MSG_WIN11_22H2RESTRICTION 85
 
 /** 必要なクライアント領域幅(96DPI) */
 const int REQUIRED_CLIENT_WIDTH = 615;
