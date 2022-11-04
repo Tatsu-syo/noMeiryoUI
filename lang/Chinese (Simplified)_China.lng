@@ -1,6 +1,8 @@
 ; noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
+;In RESOURCE section,
+;FONT_FACE key is dialog font name, other key is message.
 [RESOURCE]
 FONT_FACE=微软雅黑
 FONT_CHARSET=136
@@ -88,14 +90,18 @@ MSG_NO_CHARSET=请选择字符集。
 MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo
 
 [PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
 ; For Windows 8.x
 ; Font face
-CAPTION_FACE_8=Microsoft YaHei UI
-ICON_FACE_8=Microsoft YaHei UI
-SMALLCAPTION_FACE_8=Microsoft YaHei UI
-STATUS_FACE_8=Microsoft YaHei UI
-MESSAGE_FACE_8=Microsoft YaHei UI
-MENU_FACE_8=Microsoft YaHei UI
+CAPTION_FACE_8=Meiryo UI
+ICON_FACE_8=Meiryo UI
+SMALLCAPTION_FACE_8=Meiryo UI
+STATUS_FACE_8=Meiryo UI
+MESSAGE_FACE_8=Meiryo UI
+MENU_FACE_8=Meiryo UI
 
 ; Font size
 CAPTION_SIZE_8=11
@@ -115,12 +121,12 @@ MENU_CHARSET_8=1
 
 ; For Windows 10
 ; Font face
-CAPTION_FACE_10=Microsoft YaHei UI
-ICON_FACE_10=Microsoft YaHei UI
-SMALLCAPTION_FACE_10=Microsoft YaHei UI
-STATUS_FACE_10=Microsoft YaHei UI
-MESSAGE_FACE_10=Microsoft YaHei UI
-MENU_FACE_10=Microsoft YaHei UI
+CAPTION_FACE_10=Yu Gothic UI
+ICON_FACE_10=Yu Gothic UI
+SMALLCAPTION_FACE_10=Yu Gothic UI
+STATUS_FACE_10=Yu Gothic UI
+MESSAGE_FACE_10=Yu Gothic UI
+MENU_FACE_10=Yu Gothic UI
 
 ; Font size
 CAPTION_SIZE_10=9
@@ -140,12 +146,12 @@ MENU_CHARSET_10=1
 
 ; For Windows 11
 ; Font face
-CAPTION_FACE_11=Microsoft YaHei UI
-ICON_FACE_11=Microsoft YaHei UI
-SMALLCAPTION_FACE_11=Microsoft YaHei UI
-STATUS_FACE_11=Microsoft YaHei UI
-MESSAGE_FACE_11=Microsoft YaHei UI
-MENU_FACE_11=Microsoft YaHei UI
+CAPTION_FACE_11=Yu Gothic UI
+ICON_FACE_11=Yu Gothic UI
+SMALLCAPTION_FACE_11=Yu Gothic UI
+STATUS_FACE_11=Yu Gothic UI
+MESSAGE_FACE_11=Yu Gothic UI
+MENU_FACE_11=Yu Gothic UI
 
 ; Font size
 CAPTION_SIZE_11=9
