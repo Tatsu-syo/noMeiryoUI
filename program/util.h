@@ -32,6 +32,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define DLG_STYLE_SLANTED 81
 #define DLG_CHECK_BOLD 82
 #define DLG_CHECK_ITALIC 83
+#define MSG_WARNING 84
+#define MSG_WIN11_22H2RESTRICTION 85
 
 /** 必要なクライアント領域幅(96DPI) */
 const int REQUIRED_CLIENT_WIDTH = 615;
@@ -78,8 +80,8 @@ int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
 void getKoreanFontName(TCHAR *dispBuf);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
-BOOL isWin11OrLater();
-DWORD GetVersionForApp();
+BOOL isWin11OrLater(DWORD& buildNumber);
+DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion, DWORD& buildNumber);
 size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);

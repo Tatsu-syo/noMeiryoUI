@@ -440,6 +440,12 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("DLG_CHECK_ITALIC"),
 		_T("&Italic")
 	);
+	readResourceItem(file, _T("MSG_WARNING"),
+		_T("Warning")
+	);
+	readResourceItem(file, _T("MSG_WIN11_22H2RESTRICTION"),
+		_T("On Windows 11 2022 Update(22H2) due to Windows reason title bar font can't change.")
+	);
 }
 
 /**
@@ -920,24 +926,26 @@ void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCH
 /**
  * Windows 11かどうか判別する。
  *
+ * @param buildNumber ビルド番号格納先
  * @return TRUE:Windows 11 or later FALSE:Windows 10
  */
-BOOL isWin11OrLater()
+BOOL isWin11OrLater(DWORD &buildNumber)
 {
-	OSVERSIONINFOEX osvi;
+	OSVERSIONINFOEX versionInfo;
 	DWORDLONG dwlConditionMask = 0;
 	int op = VER_GREATER_EQUAL;
 
 	// Initialize the OSVERSIONINFOEX structure.
 
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	osvi.dwMajorVersion = 10;
-	osvi.dwMinorVersion = 0;
-	osvi.wServicePackMajor = 0;
-	osvi.wServicePackMinor = 0;
-	osvi.dwBuildNumber = 22000;
+	ZeroMemory(&versionInfo, sizeof(OSVERSIONINFOEX));
+	versionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	versionInfo.dwMajorVersion = 10;
+	versionInfo.dwMinorVersion = 0;
+	versionInfo.wServicePackMajor = 0;
+	versionInfo.wServicePackMinor = 0;
+	versionInfo.dwBuildNumber = 22000;
 
+#if 0
 	// Initialize the condition mask.
 
 	VER_SET_CONDITION(dwlConditionMask, VER_MAJORVERSION, op);
@@ -953,6 +961,16 @@ BOOL isWin11OrLater()
 		VER_MAJORVERSION | VER_MINORVERSION |
 		VER_SERVICEPACKMAJOR | VER_SERVICEPACKMINOR | VER_BUILDNUMBER,
 		dwlConditionMask);
+#endif
+
+	GetVersionEx((OSVERSIONINFO *)&versionInfo);
+
+	buildNumber = versionInfo.dwBuildNumber;
+	if (versionInfo.dwBuildNumber >= 22000) {	// 22000 is first version(21H2)
+		return TRUE;
+	} else{
+		return FALSE;
+	}
 }
 
 /**
@@ -962,19 +980,19 @@ BOOL isWin11OrLater()
  * 
  * @return 上位16ビット：メジャーバージョン 下位16ビット：マイナーバージョン
  */
-DWORD GetVersionForApp()
+DWORD GetVersionForApp(DWORD& majorVersion, DWORD& minorVersion, DWORD &buildNumber)
 {
 	DWORD dwVersion = GetVersion();
 
-	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+	majorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+	minorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));
 
-	if (major == 10 && isWin11OrLater()) {
+	if (majorVersion == 10 && isWin11OrLater(buildNumber)) {
 		// Windows 11が普通にやると10返すのでここで１１と判別
-		major = 11;
+		majorVersion = 11;
 	}
 
-	return (major << 16) | minor;
+	return (majorVersion << 16) | minorVersion;
 }
 
 /**

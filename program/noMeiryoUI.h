@@ -97,6 +97,13 @@ private:
 	TwrWnd *messageFontTextBox;
 	TwrWnd *menuFontTextBox;
 
+	TwrWnd* titleFontButton;
+
+	DWORD majorVersion;
+	DWORD minorVersion;
+	DWORD buildNumber;
+	int compatLevel;
+
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;
 
@@ -114,6 +121,7 @@ private:
 	void OnSet8();
 	void OnSet10(void);
 	void OnSet11(void);
+	void set11TitlePreset(NONCLIENTMETRICS *metrics);
 	void SetWinVer(void);
 	void getWin10Ver(TCHAR *buf, DWORD major, DWORD minor);
 	int getDPI(void);

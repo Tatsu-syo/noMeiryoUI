@@ -1,3 +1,6 @@
+// noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+// The sources for noMeiryoUI are distributed under the MIT open source license
+
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -59,7 +62,7 @@ CAPTION "b"
 MENU IDR_MENU1
 FONT 11, "ÇlÇr ÇoÉSÉVÉbÉN", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! Version 3.0.0",IDC_STATIC_APP_TITLE,7,7,141,14,SS_NOPREFIX
+    LTEXT           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! Version 3.1.0",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2022",IDC_STATIC_AUTHOR,137,7,161,14
     LTEXT           "",IDC_STATIC_VERNO,7,20,293,10
     GROUPBOX        "ëSëÃê›íË",IDC_GROUP_ALL,7,37,293,45
@@ -178,8 +181,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,1
- PRODUCTVERSION 3,0,0,1
+ FILEVERSION 3,1,0,0
+ PRODUCTVERSION 3,1,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -196,12 +199,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.0.0.1"
-            VALUE "InternalName", "noMeiryo"
+            VALUE "FileVersion", "3.1.0.0"
+            VALUE "InternalName", "NoMeiryoUI"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2022"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.0.0.1"
+            VALUE "ProductVersion", "3.1.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -261,7 +264,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!!"
-    IDS_VERSION             "%s Version 3.0.0.1"
+    IDS_VERSION             "%s Version 3.1.0.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 

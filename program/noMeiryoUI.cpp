@@ -95,6 +95,14 @@ void initializeLocale(void)
 	}
 }
 
+/**
+ * リソースファイル名を設定する
+ * 
+ * @param langFileName 言語ファイル名
+ * @param helpFileName ヘルプファイル名
+ * @param localeName ロケール名
+ * @param iniPath iniファイルのパス
+ */
 void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
 {
 	TCHAR findPath[MAX_PATH];
@@ -233,16 +241,22 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
 
-	DWORD dwVersion = GetVersionForApp();
+	// メジャーバージョンを取得する
+	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
+	// If Windows 11 Build 22621 Switch onにしようと思ったけど
+	// 21H2のあとのInsiderから起きてたので21H2のあとは全部同じ扱い
+	if (majorVersion == 11 && buildNumber > 22000) {
+		compatLevel = 1;
+	} else {
+		compatLevel = 0;
+	}
 
-	DWORD major = (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
-	if (major < 6) {
+	if (majorVersion < 6) {
 		// Windows XP or earlyer
 		WIN8_SIZE = false;
 		use7Compat = false;
-	} else if (major == 6) {
-		if (minor < 2) {
+	} else if (majorVersion == 6) {
+		if (minorVersion < 2) {
 			// Windows Vista/7
 			WIN8_SIZE = false;
 			use7Compat = false;
@@ -318,6 +332,9 @@ int NoMeiryoUI::OnAppliEnd()
 	if (menuFontTextBox != NULL) {
 		delete menuFontTextBox;
 	}
+	if (titleFontButton != NULL) {
+		delete titleFontButton;
+	}
 
 	if (displayFont != NULL) {
 		DeleteObject(displayFont);
@@ -363,15 +380,10 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	// 先発のOSではフォントがない場合があるので
 	// 後発OS用のプリセットを使用不可とする。
-	DWORD dwVersion = GetVersionForApp();
-
-	DWORD major = (DWORD)(LOBYTE(HIWORD(dwVersion)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(dwVersion)));
-
-	if (major < 10) {
+	if (majorVersion < 10) {
 		appMenu->setEnabled(IDM_SET_10, false);
 	}
-	if (major < 11) {
+	if (majorVersion < 11) {
 		appMenu->setEnabled(IDM_SET_11, false);
 	}
 
@@ -426,6 +438,13 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	// フォント名表示を更新する。
 	updateDisplay();
+
+	if (compatLevel > 0) {
+		titleFontButton->EnableWindow(FALSE);
+		// TODO:ワーニングメッセージ in Win11 22H2
+		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
+			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+	}
 
 	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
 
@@ -506,6 +525,7 @@ int NoMeiryoUI::OnWindowShow()
 	hintFontTextBox = GetDlgItem(IDC_EDIT_HINT);
 	messageFontTextBox = GetDlgItem(IDC_EDIT_MESSAGE);
 	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
+	titleFontButton = GetDlgItem(ID_SEL_TITLE);
 
 	return 0;
 }
@@ -1142,7 +1162,13 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			metricsAll.lfMenuFont = logfont;
 			metricsAll.lfStatusFont = logfont;
 			metricsAll.lfMessageFont = logfont;
-			metricsAll.lfCaptionFont = logfont;
+			// Silently ignore on Win11 22H2
+			if (compatLevel < 1) {
+				metricsAll.lfCaptionFont = logfont;
+			} else {
+				set11TitlePreset(&metricsAll);
+			}
+
 			metricsAll.lfSmCaptionFont = logfont;
 			iconFontAll = logfont;
 
@@ -1152,7 +1178,9 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			allFont = createFont(&metricsAll.lfMenuFont);
 			allFontTextBox->setFont(allFont);
 
-			fontPoints.title = points;
+			if (compatLevel < 1) {
+				fontPoints.title = points;
+			}
 			fontPoints.palette = points;
 			fontPoints.icon = points;
 			fontPoints.hint = points;
@@ -1162,13 +1190,16 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			break;
 
 		case title:
-			metrics.lfCaptionFont = logfont;
-			titleFontName = logfont.lfFaceName;
+			// Silently ignore on Win11 22H2
+			if (compatLevel < 1) {
+				metrics.lfCaptionFont = logfont;
+				titleFontName = logfont.lfFaceName;
 
-			DeleteObject(titleFont);
-			titleFont = createFont(&metrics.lfCaptionFont);
-			titleFontTextBox->setFont(titleFont);
-			fontPoints.title = points;
+				DeleteObject(titleFont);
+				titleFont = createFont(&metrics.lfCaptionFont);
+				titleFontTextBox->setFont(titleFont);
+				fontPoints.title = points;
+			}
 			break;
 
 		case icon:
@@ -1351,10 +1382,14 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 	LOGFONT messageFont;
 	LOGFONT menuFont;
 
-	loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
-	if (!loadResult) {
-		return FALSE;
+	if (compatLevel < 1) {
+		loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
+		if (!loadResult) {
+			return FALSE;
+		}
+		metrics.lfCaptionFont = captionFont;
 	}
+
 	loadResult = loadFont(filename, _T("IconFont"), &newIconFont);
 	if (!loadResult) {
 		return FALSE;
@@ -1376,7 +1411,6 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 		return FALSE;
 	}
 
-	metrics.lfCaptionFont = captionFont;
 	iconFont = newIconFont;
 	metrics.lfSmCaptionFont = smCaptionFont;
 	metrics.lfStatusFont = statusFont;
@@ -1857,7 +1891,9 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		}
 	}
 #endif
-
+	if (compatLevel > 0) {
+		set11TitlePreset(&metrics);
+	}
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
 
@@ -1882,6 +1918,9 @@ void NoMeiryoUI::OnBnClickedAll()
 		}
 	}
 #endif
+	if (compatLevel > 0) {
+		set11TitlePreset(&metricsAll);
+	}
 
 	// フォント変更を実施する。
 	setFont(&metricsAll, &iconFontAll);
@@ -2038,6 +2077,25 @@ void NoMeiryoUI::OnSet10(void)
 	// 表示を更新する。
 	updateDisplay();
 
+}
+
+/**
+ * Windows 11のタイトルのプリセットだけを設定する。<br>
+ * Windows 11 22H2用
+ * 
+ * @param metrics 設定するNONCLIENTMETRICS
+ */
+void NoMeiryoUI::set11TitlePreset(NONCLIENTMETRICS *metrics)
+{
+	// DPIを取得する。
+	int dpiY = getDPI();
+
+	memset(&((*metrics).lfCaptionFont), 0, sizeof(LOGFONTW));
+	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
+	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	(*metrics).lfCaptionFont.lfWeight = 400;
+	(*metrics).lfCaptionFont.lfCharSet = fontCharset10[0];
+	(*metrics).lfCaptionFont.lfQuality = 5;
 }
 
 /**
@@ -2250,22 +2308,22 @@ void NoMeiryoUI::SetWinVer(void)
 			switch (minor) {
 				case 0:
 					_stprintf(buf,
-						_T("Windows Version:Windows 2000 (%d.%d)"),
+						_T("OS:Windows 2000 (%d.%d)"),
 						major,minor);
 					break;
 				case 1:
 					_stprintf(buf,
-						_T("Windows Version:Windows XP (%d.%d)"),
+						_T("OS:Windows XP (%d.%d)"),
 						major,minor);
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows XP 64bit (%d.%d)"),
+							_T("OS:Windows XP 64bit (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2003 (%d.%d)"),
+							_T("OS:Windows Server 2003 (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -2276,55 +2334,55 @@ void NoMeiryoUI::SetWinVer(void)
 				case 0:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows Vista (%d.%d)"),
+							_T("OS:Windows Vista (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2008 (%d.%d)"),
+							_T("OS:Windows Server 2008 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 1:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 7 (%d.%d)"),
+							_T("OS:Windows 7 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2008 R2 (%d.%d)"),
+							_T("OS:Windows Server 2008 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 2:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 8 (%d.%d)"),
+							_T("OS:Windows 8 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2012 (%d.%d)"),
+							_T("OS:Windows Server 2012 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				case 3:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Windows 8.1 (%d.%d)"),
+							_T("OS:Windows 8.1 (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Windows Server 2012 R2 (%d.%d)"),
+							_T("OS:Windows Server 2012 R2 (%d.%d)"),
 							major,minor);
 					}
 					break;
 				default:
 					if (infoEx.wProductType == VER_NT_WORKSTATION) {
 						_stprintf(buf,
-							_T("Windows Version:Future Windows Client (%d.%d)"),
+							_T("OS:Future Windows Client (%d.%d)"),
 							major,minor);
 					} else {
 						_stprintf(buf,
-							_T("Windows Version:Future Windows Server (%d.%d)"),
+							_T("OS:Future Windows Server (%d.%d)"),
 							major,minor);
 					}
 					break;
@@ -2335,18 +2393,18 @@ void NoMeiryoUI::SetWinVer(void)
 				getWin10Ver(buf, major, minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Windows Server 2016/2019 (%d.%d)"),
+					_T("OS:Windows Server 2016/2019/2022 (%d.%d)"),
 					major,minor);
 			}
 			break;
 		default:
 			if (infoEx.wProductType == VER_NT_WORKSTATION) {
 				_stprintf(buf,
-					_T("Windows Version:Future Windows Client (%d.%d)"),
+					_T("OS:Future Windows Client (%d.%d)"),
 					major,minor);
 			} else {
 				_stprintf(buf,
-					_T("Windows Version:Future Windows Server (%d.%d)"),
+					_T("OS:Future Windows Server (%d.%d)"),
 					major,minor);
 			}
 			break;
@@ -2377,6 +2435,8 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 	_tcscpy(release, _T("????"));
 	_tcscpy(build, _T("?"));
 
+	int buildNumber = 0;
+
 	result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
 		_T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
 		0, KEY_READ, &key);
@@ -2397,15 +2457,49 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 		size = sizeof(DWORD);
 		RegQueryValueEx(key, _T("UBR"), NULL, NULL, (LPBYTE)&ubr, (LPDWORD)&size);
 		RegCloseKey(key);
+
+		buildNumber = _tstoi(build);
 	}
 
-	DWORD calledVer = 10;
-	if (isWin11OrLater()) {
-		calledVer = 11;
+	TCHAR calledVer[32];
+	switch (majorVersion) {
+		case 5:
+			if (minorVersion == 0) {
+				_tcscpy_s(calledVer, _T("2000"));
+			}
+			else {
+				_tcscpy_s(calledVer, _T("XP"));
+			}
+			break;
+		case 6:
+			switch (majorVersion) {
+				case 0:
+					_tcscpy_s(calledVer, _T("Vista"));
+					break;
+				case 1:
+					_tcscpy_s(calledVer, _T("7"));
+					break;
+				case 2:
+					_tcscpy_s(calledVer, _T("8"));
+					break;
+				case 3:
+					_tcscpy_s(calledVer, _T("8.1"));
+					break;
+			}
+			break;
+		case 10:
+			_tcscpy_s(calledVer, _T("10"));
+			break;
+		case 11:
+			_tcscpy_s(calledVer, _T("11"));
+			if (buildNumber >= 22621) {
+				_tcscat_s(calledVer, _T(" 2022 Update"));
+			}
+			break;
 	}
 
 	_stprintf(buf,
-		_T("Windows Version:Windows %d (%d.%d) Version %s Build %s.%d"),
+		_T("OS:Windows %s (%d.%d) Version %s Build %s.%d"),
 		calledVer, major, minor, release, build, ubr);
 
 }
