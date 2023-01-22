@@ -137,6 +137,7 @@ private:
 	void parseOption(TCHAR *param, int argCount);
 	void applyResource();
 	void showVersion(void);
+	void adjustWindowSize(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

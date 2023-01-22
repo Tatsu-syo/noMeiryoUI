@@ -527,7 +527,48 @@ int NoMeiryoUI::OnWindowShow()
 	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
 	titleFontButton = GetDlgItem(ID_SEL_TITLE);
 
+	RECT r;
+	GetClientRect(getHwnd(), &r);
+	adjustWindowSize();
+
 	return 0;
+}
+
+void NoMeiryoUI::adjustWindowSize(void)
+{
+	RECT r;
+
+	GetClientRect(getHwnd(), &r);
+
+	NONCLIENTMETRICS nowMetrics;
+
+	nowMetrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&nowMetrics,
+		0);
+
+	int width;
+	int height;
+
+	width = 614 + nowMetrics.iBorderWidth * 2;
+	height = 398 +
+		nowMetrics.iCaptionHeight +
+		nowMetrics.iMenuHeight +
+		nowMetrics.iBorderWidth * 2;
+
+	RECT nowRect;
+	GetWindowRect(getHwnd(), &nowRect);
+
+	RECT newRect;
+	SetWindowPos(
+		getHwnd(),
+		HWND_TOP,
+		nowRect.left,
+		nowRect.bottom,
+		width,
+		height,
+		SWP_SHOWWINDOW);
 }
 
 /**
@@ -2179,7 +2220,7 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 
 	// Adjust caption Height
 	int captionHeight =
-		0 - realMetrics.lfCaptionFont.lfHeight + 4;
+		0 - realMetrics.lfCaptionFont.lfHeight + 10;
 	realMetrics.iCaptionHeight = captionHeight;
 
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
@@ -2296,6 +2337,7 @@ void NoMeiryoUI::setFont(
 	SetSysColors(1,colorItems,colors);
 #endif
 
+	adjustWindowSize();
 }
 
 /**
