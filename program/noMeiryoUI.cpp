@@ -565,7 +565,7 @@ void NoMeiryoUI::adjustWindowSize(void)
 		getHwnd(),
 		HWND_TOP,
 		nowRect.left,
-		nowRect.bottom,
+		nowRect.top,
 		width,
 		height,
 		SWP_SHOWWINDOW);
