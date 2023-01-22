@@ -2167,6 +2167,28 @@ void NoMeiryoUI::OnSet11(void)
 NONCLIENTMETRICS *s_fontMetrics;
 
 /**
+ * フォントの設定を行う。
+ * 
+ * @param fontMetrics 設定するフォント設定
+ */
+void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
+{
+	NONCLIENTMETRICS realMetrics;
+
+	memcpy(&realMetrics, fontMetrics, fontMetrics->cbSize);
+
+	// Adjust caption Height
+	int captionHeight =
+		0 - realMetrics.lfCaptionFont.lfHeight + 4;
+	realMetrics.iCaptionHeight = captionHeight;
+
+	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&realMetrics,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+}
+
+/**
  * スレッドでアイコン以外のフォントを設定する。
  *
  * @param p スレッドに渡すパラメータ(未使用)
@@ -2174,14 +2196,10 @@ NONCLIENTMETRICS *s_fontMetrics;
  */
 unsigned _stdcall setOnThread(void *p)
 {
-	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		s_fontMetrics,
-		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+	setFontAdjusted(s_fontMetrics);
 
 	return 0;
 }
-
 
 /**
  * 画面各部のフォントを設定する。
@@ -2244,10 +2262,7 @@ void NoMeiryoUI::setFont(
 	} else {
 		// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
-		SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-			sizeof(NONCLIENTMETRICS),
-			fontMetrics,
-			SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+		setFontAdjusted(fontMetrics);
 	}
 
 	messageResult = SendMessageTimeout(
@@ -2652,7 +2667,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2022\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2023\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
