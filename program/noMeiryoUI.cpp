@@ -439,16 +439,18 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// フォント名表示を更新する。
 	updateDisplay();
 
-	if (compatLevel > 0) {
-		titleFontButton->EnableWindow(FALSE);
-		// TODO:ワーニングメッセージ in Win11 22H2
-		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
-			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
-	}
-
 	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
 
 	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+
+	adjustWindowSize();
+
+	if (compatLevel > 0) {
+		titleFontButton->EnableWindow(FALSE);
+		// ワーニングメッセージ in Win11 22H2
+		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
+			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+	}
 
 	return (INT_PTR)FALSE;
 }
@@ -527,10 +529,6 @@ int NoMeiryoUI::OnWindowShow()
 	menuFontTextBox = GetDlgItem(IDC_EDIT_MENU);
 	titleFontButton = GetDlgItem(ID_SEL_TITLE);
 
-	RECT r;
-	GetClientRect(getHwnd(), &r);
-	adjustWindowSize();
-
 	return 0;
 }
 
@@ -548,11 +546,16 @@ void NoMeiryoUI::adjustWindowSize(void)
 		&nowMetrics,
 		0);
 
+	HDC dc = GetDC(getHwnd());
+
+	int logPixelY = GetDeviceCaps(dc, LOGPIXELSY);
+	double scale = (double)logPixelY / 96;
+
 	int width;
 	int height;
 
-	width = 614 + nowMetrics.iBorderWidth * 2;
-	height = 398 +
+	width = 614 * scale + nowMetrics.iBorderWidth * 2;
+	height = 398 * scale +
 		nowMetrics.iCaptionHeight +
 		nowMetrics.iMenuHeight +
 		nowMetrics.iBorderWidth * 2;
