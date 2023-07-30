@@ -15,6 +15,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <shellapi.h>
 #include <locale.h>
 #include <mbctype.h>
+#include <uxtheme.h>
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
@@ -442,6 +443,7 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 	adjustWindowSize();
 
+	// compatLevel = 0;
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
 		// ワーニングメッセージ in Win11 22H2
@@ -1935,8 +1937,11 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	if (compatLevel > 0) {
 		set11TitlePreset(&metrics);
 	}
+
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
+
+	// COLORREF ref = GetThemeSysColor(NULL, COLOR_ACTIVECAPTION);
 
 	return (INT_PTR)TRUE;
 }
