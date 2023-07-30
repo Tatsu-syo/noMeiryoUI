@@ -1160,7 +1160,7 @@ void setPreset(
 	// 枠線等のメトリックも元に戻す。その際、DPIを反映する必要がある。
 	metrics->iBorderWidth = round(windowMetric[BorderWidth] * ((double)dpiY / 96.0));
 	metrics->iCaptionWidth = round(windowMetric[TitleWidth] * ((double)dpiY / 96.0));
-	metrics->iCaptionWidth = round(windowMetric[TitleHeight] * ((double)dpiY / 96.0));
+	metrics->iCaptionHeight = round(windowMetric[TitleHeight] * ((double)dpiY / 96.0));
 	metrics->iScrollWidth = round(windowMetric[ScrollWidth] * ((double)dpiY / 96.0));
 	metrics->iScrollHeight = round(windowMetric[ScrollHeight] * ((double)dpiY / 96.0));
 	metrics->iSmCaptionWidth = round(windowMetric[PaletteWidth] * ((double)dpiY / 96.0));
