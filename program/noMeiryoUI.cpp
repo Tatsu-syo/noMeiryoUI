@@ -19,9 +19,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
-#include "resource.h"
-
-#define MAX_LOADSTRING 100
 
 //
 // ダイアログベースアプリケーションフレームワークと
@@ -1092,7 +1089,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			OnSet10();
 			return (INT_PTR)0;
 		case IDM_SET_11:
-			OnSet10();
+			OnSet11();
 			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
@@ -2003,56 +2000,24 @@ void NoMeiryoUI::OnSet8(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces8,
+		fontSizes8,
+		fontCharset8,
+		Win8PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces8[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes8[0],dpiY,72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset8[0];
-	metrics.lfCaptionFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces8,
+		fontSizes8,
+		fontCharset8,
+		Win8PresetWindowsMetric,
+		dpiY);
 
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces8[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes8[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset8[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces8[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes8[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset8[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces8[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes8[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset8[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces8[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes8[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset8[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces8[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes8[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset8[5];
-	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
@@ -2067,56 +2032,23 @@ void NoMeiryoUI::OnSet10(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces10,
+		fontSizes10,
+		fontCharset10,
+		Win10PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-	metrics.lfCaptionFont.lfQuality = 5;
-
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset10[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
-	metrics.lfMenuFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces10,
+		fontSizes10,
+		fontCharset10,
+		Win10PresetWindowsMetric,
+		dpiY);
 
 	// 表示を更新する。
 	updateDisplay();
@@ -2150,56 +2082,24 @@ void NoMeiryoUI::OnSet11(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces11,
+		fontSizes11,
+		fontCharset11,
+		Win11PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-	metrics.lfCaptionFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces11,
+		fontSizes11,
+		fontCharset11,
+		Win11PresetWindowsMetric,
+		dpiY);
 
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset10[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
-	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
