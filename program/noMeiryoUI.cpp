@@ -2067,10 +2067,10 @@ void NoMeiryoUI::set11TitlePreset(NONCLIENTMETRICS *metrics)
 	int dpiY = getDPI();
 
 	memset(&((*metrics).lfCaptionFont), 0, sizeof(LOGFONTW));
-	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces11[0].c_str());
+	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes11[0], dpiY, 72);
 	(*metrics).lfCaptionFont.lfWeight = 400;
-	(*metrics).lfCaptionFont.lfCharSet = fontCharset10[0];
+	(*metrics).lfCaptionFont.lfCharSet = fontCharset11[0];
 	(*metrics).lfCaptionFont.lfQuality = 5;
 }
 
@@ -2121,10 +2121,13 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 
 	memcpy(&realMetrics, fontMetrics, fontMetrics->cbSize);
 
+#if 0
 	// Adjust caption Height
+	// 高くしすぎないための配慮であるが、プリセットでの設定とバッティングするので没
 	int captionHeight =
 		0 - realMetrics.lfCaptionFont.lfHeight + 10;
 	realMetrics.iCaptionHeight = captionHeight;
+#endif
 
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
