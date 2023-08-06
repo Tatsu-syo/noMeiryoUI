@@ -36,6 +36,43 @@ std::vector<int> fontCharset11;
 int codePage = 0;
 bool isKorean = false;
 
+// 
+double Win8PresetWindowsMetric[] = {
+	1,
+	36,
+	22,
+	17,
+	17,
+	22,
+	22,
+	19,
+	19,
+	4 };
+
+double Win10PresetWindowsMetric[] = {
+	1,
+	36,
+	22,
+	17,
+	17,
+	22,
+	22,
+	19,
+	19,
+	4 };
+
+double Win11PresetWindowsMetric[] = {
+	1,
+	36,
+	22,
+	17,
+	17,
+	22,
+	22,
+	19,
+	19,
+	4 };
+
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
  *
@@ -726,68 +763,6 @@ int readFontResource11(TCHAR* file)
 }
 
 /**
- * 日本語版Windows 8のフォントプリセットリソースの設定を行う
- *
- * @return 1:設定成功
- */
-int setFontResourceJa8(void)
-{
-	fontFaces8.push_back(_T("Meiryo UI"));
-	fontFaces8.push_back(_T("Meiryo UI"));
-	fontFaces8.push_back(_T("Meiryo UI"));
-	fontFaces8.push_back(_T("Meiryo UI"));
-	fontFaces8.push_back(_T("Meiryo UI"));
-	fontFaces8.push_back(_T("Meiryo UI"));
-
-	fontSizes8.push_back(11);
-	fontSizes8.push_back(9);
-	fontSizes8.push_back(11);
-	fontSizes8.push_back(9);
-	fontSizes8.push_back(9);
-	fontSizes8.push_back(9);
-
-	fontCharset8.push_back(1);
-	fontCharset8.push_back(1);
-	fontCharset8.push_back(1);
-	fontCharset8.push_back(1);
-	fontCharset8.push_back(1);
-	fontCharset8.push_back(1);
-
-	return 1;
-}
-
-/**
- * 日本語版Windows 8のフォントプリセットリソースの設定を行う
- *
- * @return 1:設定成功
- */
-int setFontResourceJa10(void)
-{
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-	fontFaces10.push_back(_T("Yu Gothic UI"));
-
-	fontSizes10.push_back(9);
-	fontSizes10.push_back(9);
-	fontSizes10.push_back(9);
-	fontSizes10.push_back(9);
-	fontSizes10.push_back(9);
-	fontSizes10.push_back(9);
-
-	fontCharset10.push_back(1);
-	fontCharset10.push_back(1);
-	fontCharset10.push_back(1);
-	fontCharset10.push_back(1);
-	fontCharset10.push_back(1);
-	fontCharset10.push_back(1);
-
-	return 1;
-}
-
-/**
  * ウインドウを親ウインドウの中央に配置する。
  *
  * @param parentRect 中心に入れる対象の領域
@@ -1108,4 +1083,90 @@ int getSystemDPI(void)
 	int dpi = GetDeviceCaps(hDc, LOGPIXELSY);
 
 	return dpi;
+}
+
+/**
+ * プリセット設定
+ * 
+ * @brief プリセットを設定する
+ * @param metrics 設定対象NONCLIENTMETRICS
+ * @param iconFont 設定対象アイコンフォント
+ * @param fontFaces フォント名
+ * @param fontSizes フォントサイズ設定
+ * @param fontCharset フォント文字セット設定
+ * @param windowMetric フォント以外のWindowMetricの設定
+ * @param dpiY 現在のDPI
+ */
+void setPreset(
+	NONCLIENTMETRICS *metrics,
+	LOGFONTW *iconFont,
+	std::vector<tstring>& fontFaces,
+	std::vector<int>& fontSizes,
+	std::vector<int>& fontCharset,
+	double *windowMetric,
+	int dpiY)
+{
+	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
+	// NONCLIENTMETRICSの内容を取得しなおす。
+	FillMemory(metrics, sizeof(NONCLIENTMETRICS), 0x00);
+	metrics->cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
+
+	memset(&metrics->lfCaptionFont, 0, sizeof(LOGFONTW));
+	_tcscpy(metrics->lfCaptionFont.lfFaceName, fontFaces[0].c_str());
+	metrics->lfCaptionFont.lfHeight = -MulDiv(fontSizes[0], dpiY, 72);
+	metrics->lfCaptionFont.lfWeight = 400;
+	metrics->lfCaptionFont.lfCharSet = fontCharset[0];
+	metrics->lfCaptionFont.lfQuality = 5;
+
+	memset(iconFont, 0, sizeof(LOGFONTW));
+	_tcscpy(iconFont->lfFaceName, fontFaces[1].c_str());
+	iconFont->lfHeight = -MulDiv(fontSizes[1], dpiY, 72);
+	iconFont->lfWeight = 400;
+	iconFont->lfCharSet = fontCharset[1];
+	iconFont->lfQuality = 5;
+
+	memset(&(metrics->lfSmCaptionFont), 0, sizeof(LOGFONTW));
+	_tcscpy(metrics->lfSmCaptionFont.lfFaceName, fontFaces[2].c_str());
+	metrics->lfSmCaptionFont.lfHeight = -MulDiv(fontSizes[2], dpiY, 72);
+	metrics->lfSmCaptionFont.lfWeight = 400;
+	metrics->lfSmCaptionFont.lfCharSet = fontCharset[2];
+	metrics->lfSmCaptionFont.lfQuality = 5;
+
+	memset(&(metrics->lfStatusFont), 0, sizeof(LOGFONTW));
+	_tcscpy(metrics->lfStatusFont.lfFaceName, fontFaces[3].c_str());
+	metrics->lfStatusFont.lfHeight = -MulDiv(fontSizes[3], dpiY, 72);
+	metrics->lfStatusFont.lfWeight = 400;
+	metrics->lfStatusFont.lfCharSet = fontCharset[3];
+	metrics->lfStatusFont.lfQuality = 5;
+
+	memset(&(metrics->lfMessageFont), 0, sizeof(LOGFONTW));
+	_tcscpy(metrics->lfMessageFont.lfFaceName, fontFaces[4].c_str());
+	metrics->lfMessageFont.lfHeight = -MulDiv(fontSizes[4], dpiY, 72);
+	metrics->lfMessageFont.lfWeight = 400;
+	metrics->lfMessageFont.lfCharSet = fontCharset[4];
+	metrics->lfMessageFont.lfQuality = 5;
+
+	memset(&(metrics->lfMenuFont), 0, sizeof(LOGFONTW));
+	_tcscpy(metrics->lfMenuFont.lfFaceName, fontFaces[5].c_str());
+	metrics->lfMenuFont.lfHeight = -MulDiv(fontSizes[5], dpiY, 72);
+	metrics->lfMenuFont.lfWeight = 400;
+	metrics->lfMenuFont.lfCharSet = fontCharset[5];
+	metrics->lfMenuFont.lfQuality = 5;
+
+	// 枠線等のメトリックも元に戻す。その際、DPIを反映する必要がある。
+	metrics->iBorderWidth = round(windowMetric[BorderWidth] * ((double)dpiY / 96.0));
+	metrics->iCaptionWidth = round(windowMetric[TitleWidth] * ((double)dpiY / 96.0));
+	metrics->iCaptionHeight = round(windowMetric[TitleHeight] * ((double)dpiY / 96.0));
+	metrics->iScrollWidth = round(windowMetric[ScrollWidth] * ((double)dpiY / 96.0));
+	metrics->iScrollHeight = round(windowMetric[ScrollHeight] * ((double)dpiY / 96.0));
+	metrics->iSmCaptionWidth = round(windowMetric[PaletteWidth] * ((double)dpiY / 96.0));
+	metrics->iSmCaptionHeight = round(windowMetric[PaletteHeight] * ((double)dpiY / 96.0));
+	metrics->iMenuWidth = round(windowMetric[MenuWidth] * ((double)dpiY / 96.0));
+	metrics->iMenuHeight = round(windowMetric[MenuHeight] * ((double)dpiY / 96.0));
+	metrics->iPaddedBorderWidth = round(windowMetric[Padding] * ((double)dpiY / 96.0));
+
 }

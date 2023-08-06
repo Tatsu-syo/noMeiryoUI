@@ -12,15 +12,15 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 // 下で指定された定義の前に対象プラットフォームを指定しなければならない場合、以下の定義を変更してください。
 // 異なるプラットフォームに対応する値に関する最新情報については、MSDN を参照してください。
 #ifndef WINVER                          // 最低限必要なプラットフォームが Windows Vista であることを指定します。
-#define WINVER 0x0500           // これを Windows の他のバージョン向けに適切な値に変更してください。
+#define WINVER 0x0600           // これを Windows の他のバージョン向けに適切な値に変更してください。
 #endif
 
 #ifndef _WIN32_WINNT            // 最低限必要なプラットフォームが Windows Vista であることを指定します。
-#define _WIN32_WINNT 0x0500     // これを Windows の他のバージョン向けに適切な値に変更してください。
+#define _WIN32_WINNT 0x0600     // これを Windows の他のバージョン向けに適切な値に変更してください。
 #endif
 
 #ifndef _WIN32_WINDOWS          // 最低限必要なプラットフォームが Windows 98 であることを指定します。
-#define _WIN32_WINDOWS 0x0410 // これを Windows Me またはそれ以降のバージョン向けに適切な値に変更してください。
+#define _WIN32_WINDOWS 0x0600 // これを Windows Me またはそれ以降のバージョン向けに適切な値に変更してください。
 #endif
 
 #ifndef _WIN32_IE                       // 最低限必要なプラットフォームが Internet Explorer 7.0 であることを指定します。
