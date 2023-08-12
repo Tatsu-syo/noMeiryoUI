@@ -37,6 +37,7 @@ RECT myMonitorLect;
 bool firstMonitor = false;
 DWORD helpPid;
 bool helpMoved = false;
+bool usePreset = false;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -238,6 +239,8 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	hintFontTextBox = NULL;
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
+
+	usePreset = false;
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -531,6 +534,9 @@ int NoMeiryoUI::OnWindowShow()
 	return 0;
 }
 
+/**
+ * @brief ウインドウサイズを調整する
+ */
 void NoMeiryoUI::adjustWindowSize(void)
 {
 	RECT r;
@@ -1199,6 +1205,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
+
+	usePreset = false;
 
 	switch (type) {
 		case all:
@@ -2027,6 +2035,8 @@ void NoMeiryoUI::OnSet8(void)
 	// 表示を更新する。
 	updateDisplay();
 
+	usePreset = true;
+
 }
 
 /**
@@ -2057,6 +2067,8 @@ void NoMeiryoUI::OnSet10(void)
 
 	// 表示を更新する。
 	updateDisplay();
+
+	usePreset = true;
 
 }
 
@@ -2109,6 +2121,8 @@ void NoMeiryoUI::OnSet11(void)
 	// 表示を更新する。
 	updateDisplay();
 
+	usePreset = true;
+
 }
 
 // 設定するシステムフォントの情報格納用構造体
@@ -2126,13 +2140,13 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 
 	memcpy(&realMetrics, fontMetrics, fontMetrics->cbSize);
 
-#if 0
-	// Adjust caption Height
-	// 高くしすぎないための配慮であるが、プリセットでの設定とバッティングするので没
-	int captionHeight =
-		0 - realMetrics.lfCaptionFont.lfHeight + 10;
-	realMetrics.iCaptionHeight = captionHeight;
-#endif
+	if (!usePreset) {
+		// Adjust caption Height
+		// 高くしすぎないための配慮
+		int captionHeight =
+			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
+		realMetrics.iCaptionHeight = captionHeight;
+	}
 
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
