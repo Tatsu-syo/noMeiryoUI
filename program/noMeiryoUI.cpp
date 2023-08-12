@@ -102,12 +102,12 @@ void initializeLocale(void)
  * @param localeName ロケール名
  * @param iniPath iniファイルのパス
  */
-void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
+void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*systemlocaleName, TCHAR *iniPath)
 {
 	TCHAR findPath[MAX_PATH];
-	TCHAR langWork[64];
+	TCHAR langWork[LOCALE_NAME_MAX_LENGTH];
 
-	if (localeName == NULL) {
+	if (systemlocaleName == NULL) {
 		_tcscpy(langFileName, iniPath);
 		_tcscat(langFileName, _T("default.lng"));
 
@@ -117,21 +117,27 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 		return;
 	}
 
-	char* codePageDelim = strchr(localeName, '.');
+	wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+
+	LANGID langId = GetUserDefaultUILanguage();
+	LCIDToLocaleName(langId, localeName, LOCALE_NAME_MAX_LENGTH, 0);
+	wcscpy(langWork, localeName);
+
+
+	wchar_t *codePageDelim = wcschr(localeName, '.');
 	if (codePageDelim != NULL) {
-		_setmbcp(atoi(codePageDelim + 1));
-		codePage = atoi(codePageDelim + 1);
+		_setmbcp(_wtoi(codePageDelim + 1));
+		codePage = _wtoi(codePageDelim + 1);
 	}
 	else {
 		_setmbcp(_MB_CP_LOCALE);
 	}
-	mbstowcs(langWork, localeName, 64);
 
 	//localeName = "aaa";
 	int readResult;
 
 	// Language detection
-	if (strstr(localeName, "_Korea") != NULL) {
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
 		isKorean = true;
 	}
 
@@ -140,6 +146,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	if (p != NULL) {
 		*p = _T('\0');
 	}
+
 	_tcscat(findPath, langWork);
 	_tcscat(findPath, _T(".lng"));
 	WIN32_FIND_DATA fileInfo;
@@ -154,7 +161,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	}
 	else {
 		_tcscpy(findPath, iniPath);
-		p = _tcsrchr(langWork, _T('_'));
+		p = _tcsrchr(langWork, _T('-'));
 		if (p != NULL) {
 			*p = _T('\0');
 		}

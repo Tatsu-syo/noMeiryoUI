@@ -1,6 +1,3 @@
-// noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
-// The sources for noMeiryoUI are distributed under the MIT open source license
-
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -69,7 +66,7 @@ BEGIN
     LTEXT           "すべてのフォント",IDC_STATIC_ALL_FONT,11,47,89,12
     EDITTEXT        IDC_EDIT_ALL,135,47,110,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_ALL,246,46,50,14,WS_GROUP
-    PUSHBUTTON      "一括設定して終了",ID_SET_ALL,169,63,76,14,WS_GROUP
+    PUSHBUTTON      "一括設定して終了",ID_SET_ALL,151,63,94,14,WS_GROUP
     PUSHBUTTON      "適用",ID_APPLY_ALL,246,63,50,14,WS_GROUP
     GROUPBOX        "個別設定",IDC_GROUP_INDIVIDUAL,7,84,293,121
     LTEXT           "タイトルバー",IDC_STATIC_TITLE_BAR,11,95,119,12
@@ -90,8 +87,8 @@ BEGIN
     LTEXT           "メニュー/選択項目",IDC_STATIC_MENU,11,170,119,12
     EDITTEXT        IDC_EDIT_MENU,135,170,110,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_MENU,246,169,50,14,WS_GROUP
-    DEFPUSHBUTTON   "設定",IDOK,92,186,76,14,WS_GROUP
-    PUSHBUTTON      "終了",IDCANCEL,169,186,76,14,WS_GROUP
+    DEFPUSHBUTTON   "設定",IDOK,56,186,94,14,WS_GROUP
+    PUSHBUTTON      "終了",IDCANCEL,151,186,94,14,WS_GROUP
     PUSHBUTTON      "適用",ID_APPLY,246,186,50,14,WS_GROUP
 END
 
