@@ -38,6 +38,8 @@ bool firstMonitor = false;
 DWORD helpPid;
 bool helpMoved = false;
 bool usePreset = false;
+DWORD majorVersion;
+DWORD minorVersion;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -2153,6 +2155,11 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 		int captionHeight =
 			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
 		realMetrics.iCaptionHeight = captionHeight;
+	}
+	if (majorVersion > 10) {
+		if (realMetrics.iPaddedBorderWidth == 0) {
+			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
+		}
 	}
 
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
