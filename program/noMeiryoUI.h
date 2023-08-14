@@ -99,8 +99,6 @@ private:
 
 	TwrWnd* titleFontButton;
 
-	DWORD majorVersion;
-	DWORD minorVersion;
 	DWORD buildNumber;
 	int compatLevel;
 

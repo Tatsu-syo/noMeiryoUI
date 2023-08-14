@@ -37,6 +37,9 @@ RECT myMonitorLect;
 bool firstMonitor = false;
 DWORD helpPid;
 bool helpMoved = false;
+bool usePreset = false;
+DWORD majorVersion;
+DWORD minorVersion;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -101,12 +104,12 @@ void initializeLocale(void)
  * @param localeName ロケール名
  * @param iniPath iniファイルのパス
  */
-void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
+void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*systemlocaleName, TCHAR *iniPath)
 {
 	TCHAR findPath[MAX_PATH];
-	TCHAR langWork[64];
+	TCHAR langWork[LOCALE_NAME_MAX_LENGTH];
 
-	if (localeName == NULL) {
+	if (systemlocaleName == NULL) {
 		_tcscpy(langFileName, iniPath);
 		_tcscat(langFileName, _T("default.lng"));
 
@@ -116,21 +119,27 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 		return;
 	}
 
-	char* codePageDelim = strchr(localeName, '.');
+	wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+
+	LANGID langId = GetUserDefaultUILanguage();
+	LCIDToLocaleName(langId, localeName, LOCALE_NAME_MAX_LENGTH, 0);
+	wcscpy(langWork, localeName);
+
+
+	wchar_t *codePageDelim = wcschr(localeName, '.');
 	if (codePageDelim != NULL) {
-		_setmbcp(atoi(codePageDelim + 1));
-		codePage = atoi(codePageDelim + 1);
+		_setmbcp(_wtoi(codePageDelim + 1));
+		codePage = _wtoi(codePageDelim + 1);
 	}
 	else {
 		_setmbcp(_MB_CP_LOCALE);
 	}
-	mbstowcs(langWork, localeName, 64);
 
 	//localeName = "aaa";
 	int readResult;
 
 	// Language detection
-	if (strstr(localeName, "_Korea") != NULL) {
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
 		isKorean = true;
 	}
 
@@ -139,6 +148,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	if (p != NULL) {
 		*p = _T('\0');
 	}
+
 	_tcscat(findPath, langWork);
 	_tcscat(findPath, _T(".lng"));
 	WIN32_FIND_DATA fileInfo;
@@ -153,7 +163,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	}
 	else {
 		_tcscpy(findPath, iniPath);
-		p = _tcsrchr(langWork, _T('_'));
+		p = _tcsrchr(langWork, _T('-'));
 		if (p != NULL) {
 			*p = _T('\0');
 		}
@@ -238,6 +248,8 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	hintFontTextBox = NULL;
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
+
+	usePreset = false;
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -531,6 +543,9 @@ int NoMeiryoUI::OnWindowShow()
 	return 0;
 }
 
+/**
+ * @brief ウインドウサイズを調整する
+ */
 void NoMeiryoUI::adjustWindowSize(void)
 {
 	RECT r;
@@ -1199,6 +1214,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
+
+	usePreset = false;
 
 	switch (type) {
 		case all:
@@ -2027,6 +2044,8 @@ void NoMeiryoUI::OnSet8(void)
 	// 表示を更新する。
 	updateDisplay();
 
+	usePreset = true;
+
 }
 
 /**
@@ -2057,6 +2076,8 @@ void NoMeiryoUI::OnSet10(void)
 
 	// 表示を更新する。
 	updateDisplay();
+
+	usePreset = true;
 
 }
 
@@ -2109,6 +2130,8 @@ void NoMeiryoUI::OnSet11(void)
 	// 表示を更新する。
 	updateDisplay();
 
+	usePreset = true;
+
 }
 
 // 設定するシステムフォントの情報格納用構造体
@@ -2126,13 +2149,18 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 
 	memcpy(&realMetrics, fontMetrics, fontMetrics->cbSize);
 
-#if 0
-	// Adjust caption Height
-	// 高くしすぎないための配慮であるが、プリセットでの設定とバッティングするので没
-	int captionHeight =
-		0 - realMetrics.lfCaptionFont.lfHeight + 10;
-	realMetrics.iCaptionHeight = captionHeight;
-#endif
+	if (!usePreset) {
+		// Adjust caption Height
+		// 高くしすぎないための配慮
+		int captionHeight =
+			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
+		realMetrics.iCaptionHeight = captionHeight;
+	}
+	if (majorVersion > 10) {
+		if (realMetrics.iPaddedBorderWidth == 0) {
+			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
+		}
+	}
 
 	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
 		sizeof(NONCLIENTMETRICS),
