@@ -1,6 +1,6 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=Chinese (Simplified)_China.chm
+Compiled file=zh-CN.chm
 Contents file=ToC.hhc
 Default topic=contents\02.html
 Display compile progress=No
