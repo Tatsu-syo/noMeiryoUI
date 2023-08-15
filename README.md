@@ -12,10 +12,10 @@ No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions
 ## Installation
 
 > [!IMPORTANT]  
-> No!! MeiryoUI makes changes to registry key. It is recommanded to backup your registry before applying any changes
+> No!! MeiryoUI makes changes to registry. It is recommanded to backup your registry before applying any changes.
 > 
 > ```
-> REG SAVE "HKCU\Control Panel" %LOCALAPPDATA%\noMeiryoUI_HKCU.reg /y
+> reg save "HKCU\Control Panel" .\reset_font.reg /y
 > ```
 
 - Download zip archive from [GitHub Releases](https://github.com/Tatsu-syo/noMeiryoUI/releases/latest).
