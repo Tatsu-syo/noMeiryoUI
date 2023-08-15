@@ -42,14 +42,15 @@ Source files are distributed under the MIT open source license.
 
 If you change system font by this software you should take backup current registry by this command line.
 
-'''
+```
 REG SAVE "HKCU\Control Panel" %LOCALAPPDATA%\noMeiryoUI_HKCU.reg /y
-'''
+```
 
 Regestry backup file is created on LOCALAPPDATA folder.
 
 If some trouble occured after system font change, you restore registry by this command line. And sign off or reboot.
 
-'''
+```
 REG RESTORE "HKCU\Control Panel" %LOCALAPPDATA%\noMeiryoUI_HKCU.reg
-'''
+```
+
