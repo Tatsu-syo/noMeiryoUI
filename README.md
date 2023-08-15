@@ -2,7 +2,12 @@
 
 No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) reinstates the capability to customize the user interface font on Windows, a feature that was removed by Microsoft since Windows 8.1.
 
-No!! MeiryoUI is currently in the alpha stage on Windows 11 22H2, check discussions for support.
+No!! MeiryoUI is currently in the alpha stage on Windows 11 22H2, check [discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions) for support.
+
+## Requirements
+
+- Windows 8 or newer.
+- While No!! MeiryoUI might work on Windows Vista, it has not been actively tested for compatibility.
 
 ## Installation
 
@@ -13,18 +18,17 @@ No!! MeiryoUI is currently in the alpha stage on Windows 11 22H2, check discussi
 > REG SAVE "HKCU\Control Panel" %LOCALAPPDATA%\noMeiryoUI_HKCU.reg /y
 > ```
 
-## System requirement
-
-Windows 8/8.1/10/11  
-To check result of this software, No!! Meiryo UI can also run on Windows Vista and 7.
+- Download zip archive from [GitHub Releases](https://github.com/Tatsu-syo/noMeiryoUI/releases/latest).
+- Unzip the archive and run "noMeiryoUI.exe".
 
 ## Known Limitations
 
 - No!! MeiryoUI doesn't work on:
   - Windows taskbar
   - Preinstalled UWP Apps (e.g. Settings, Paint, etc.)
-  - Programs that ignore the system font settings
+  - Applications that ignore the system font settings
 
+- No!! MeiryoUI cannot modify the titlebar font on Windows 11.
 
 ## Documentations
 
@@ -32,12 +36,6 @@ Detailed information is witten in the wiki.
 
 [https://github.com/Tatsu-syo/noMeiryoUI/wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki)
 
-## Download
-
-[https://github.com/Tatsu-syo/noMeiryoUI/releases](https://github.com/Tatsu-syo/noMeiryoUI/releases)
-
 ## License
 
-Source files are distributed under the MIT open source license.  
-[http://opensource.org/licenses/mit-license.php](http://opensource.org/licenses/mit-license.php)
-
+Code released under the [MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE).
