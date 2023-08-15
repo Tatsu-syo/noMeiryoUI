@@ -19,11 +19,11 @@ No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions
 > ```
 
 - Download zip archive from [GitHub Releases](https://github.com/Tatsu-syo/noMeiryoUI/releases/latest).
-- Unzip the archive and run "noMeiryoUI.exe".
+- Extract the archive and run "noMeiryoUI.exe".
 
 ## Known Limitations
 
-- No!! MeiryoUI doesn't work on:
+- No!! MeiryoUI does not work with:
   - Windows taskbar.
   - Preinstalled UWP Apps (e.g. Settings, Paint, etc.).
   - Applications that ignore the system font settings.
