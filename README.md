@@ -1,13 +1,13 @@
 # No!! MeiryoUI
 
-No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) reinstates the capability to customize the user interface font on Windows, a feature that was removed by Microsoft since Windows 8.1.
+No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) brings back the capability to customize the user interface font on Windows, a feature that was removed since Windows 8.1.
 
-No!! MeiryoUI is currently in the alpha stage on Windows 11 22H2, check [discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions) for support.
+No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions) for support.
 
 ## Requirements
 
 - Windows 8 or newer.
-- While No!! MeiryoUI might work on Windows Vista, it has not been actively tested for compatibility.
+- While No!! MeiryoUI might work on Windows Vista, it is not actively tested for compatibility.
 
 ## Installation
 
@@ -38,4 +38,4 @@ Detailed information is witten in the wiki.
 
 ## License
 
-Code released under the [MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE).
+No!! MeiryoUI is released under [the MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE).
