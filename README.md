@@ -24,9 +24,9 @@ No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions
 ## Known Limitations
 
 - No!! MeiryoUI doesn't work on:
-  - Windows taskbar
-  - Preinstalled UWP Apps (e.g. Settings, Paint, etc.)
-  - Applications that ignore the system font settings
+  - Windows taskbar.
+  - Preinstalled UWP Apps (e.g. Settings, Paint, etc.).
+  - Applications that ignore the system font settings.
 
 - No!! MeiryoUI cannot modify the titlebar font on Windows 11.
 
