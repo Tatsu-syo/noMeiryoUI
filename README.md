@@ -32,10 +32,8 @@ No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions
 
 ## Documentations
 
-Detailed information is witten in the wiki.
-
-[https://github.com/Tatsu-syo/noMeiryoUI/wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki)
+You can find the documentation on the [wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki).
 
 ## License
 
-No!! MeiryoUI is released under [the MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE).
+Licensed under [the MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE).
