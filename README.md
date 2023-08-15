@@ -7,7 +7,7 @@ No!! MeiryoUI is currently in alpha stage on Windows 11 22H2, check [discussions
 ## Requirements
 
 - Windows 8 or newer.
-- While No!! MeiryoUI might work on Windows Vista, it is not actively tested for compatibility.
+- While No!! MeiryoUI should work on Windows Vista, it is not actively tested for compatibility.
 
 ## Installation
 
