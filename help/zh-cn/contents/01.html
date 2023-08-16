@@ -83,6 +83,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <tr>
 <td>default.chm</td><td>当您的系统语言并非简体中文或上述其他语言时调用的默认帮助文件。</td>
 </tr>
+<td>utils\SAVEreg.bat</td><td>用于备份noMeiryoUI涉及之注册表的批处理脚本。</td>
+</tr>
+<tr>
+<td>utils\RESTOREreg.bat</td><td>用于还原noMeiryoUI涉及之注册表的批处理脚本。</td>
 </tbody>
 </table>
 </div>
@@ -102,17 +106,15 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 </div>
 
 <div class="chapter">
-<h2>1.5 Trouble shooting</h2>
-<h3>Before change system fonts</h3>
+<h2>1.5 故障排除</h2>
+<h3>在更改系统字体前备份注册表</h3>
 <p>
-If you want to change system fonts by this program, I recommended to backup registry by utils\SAVEreg.bat (required Administrator privilege).<br>
-Backup file is created on C:\Users\(user name)\AppData\Local.<br>
+推荐在更改系统字体前使用软件目录中的"utils\SAVEreg.bat"来备份与字体设定有关的注册表（需要在管理员权限下执行）<br>备份将保存至"C:\Users\(user name)\AppData\Local"目录。<br>
 </p>
 
-<h3>If trouble occurred</h3>
+<h3>如运行后遇到故障</h3>
 <p>
-If trouble occurred and you took backup by utils\SAVEreg.bat, run utils\RESTOREreg.bat (required Administrator privilege).<br>
-You can restore registry data before changing system fonts.<br>
+如运行本程序后遭遇故障问题，可通过运行"utils\RESTOREreg.bat"来恢复事前备份的相关注册表以还原本程序对系统作出的更改（需要在管理员权限下执行）<br>
 </p>
 </div>
 
