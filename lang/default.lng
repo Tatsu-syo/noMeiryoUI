@@ -89,7 +89,7 @@ MSG_NO_FONT=Please select font.
 MSG_NO_STYLE=Please select style.
 MSG_NO_SIZE=Please select size.
 MSG_NO_CHARSET=Please select charset.
-MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
+MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu),mon-jai
 
 [PRESET]
 ; Preset menu setting.
