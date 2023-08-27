@@ -1,6 +1,6 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=Chinese (Traditional)_Taiwan.chm
+Compiled file=zh-TW.chm
 Contents file=ToC.hhc
 Default topic=contents\02.html
 Display compile progress=No

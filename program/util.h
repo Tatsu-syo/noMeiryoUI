@@ -35,6 +35,23 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define MSG_WARNING 84
 #define MSG_WIN11_22H2RESTRICTION 85
 
+/**
+ * @brief WindowMetric定数
+*/
+enum WindowMetricItem {
+	BorderWidth,
+	TitleWidth,
+	TitleHeight,
+	ScrollWidth,
+	ScrollHeight,
+	PaletteWidth,
+	PaletteHeight,
+	MenuWidth,
+	MenuHeight,
+	Padding,
+};
+
+
 /** 必要なクライアント領域幅(96DPI) */
 const int REQUIRED_CLIENT_WIDTH = 615;
 /** 必要なクライアント領域高さ(96DPI) */
@@ -49,6 +66,8 @@ extern std::vector<tstring> fontFaces8;
 extern std::vector<int> fontSizes8;
 /** フォント文字セット(Windows 8.x) */
 extern std::vector<int> fontCharset8;
+/** Windows 8のWindow Metricのプリセット */
+extern double Win8PresetWindowsMetric[];
 
 /** フォント名(Windows 10) */
 extern std::vector<tstring> fontFaces10;
@@ -56,6 +75,8 @@ extern std::vector<tstring> fontFaces10;
 extern std::vector<int> fontSizes10;
 /** フォント文字セット(Windows 10) */
 extern std::vector<int> fontCharset10;
+/** Windows 10のWindow Metricのプリセット */
+extern double Win10PresetWindowsMetric[];
 
 /** フォント名(Windows 11) */
 extern std::vector<tstring> fontFaces11;
@@ -63,6 +84,8 @@ extern std::vector<tstring> fontFaces11;
 extern std::vector<int> fontSizes11;
 /** フォント文字セット(Windows 11) */
 extern std::vector<int> fontCharset11;
+/** Windows 11のWindow Metricのプリセット */
+extern double Win11PresetWindowsMetric[];
 
 /** コードページ */
 extern int codePage;
@@ -75,8 +98,6 @@ void readResourceFile(TCHAR *file);
 int readFontResource8(TCHAR *file);
 int readFontResource10(TCHAR *file);
 int readFontResource11(TCHAR* file);
-int setFontResourceJa8(void);
-int setFontResourceJa10(void);
 void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
 void getKoreanFontName(TCHAR *dispBuf);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
@@ -85,5 +106,26 @@ DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion, DWORD& buildNum
 size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);
+
+/**
+ * プリセット設定
+ *
+ * @brief プリセットを設定する
+ * @param metrics 設定対象NONCLIENTMETRICS
+ * @param iconFont 設定対象アイコンフォント
+ * @param fontFaces フォント名
+ * @param fontSizes フォントサイズ設定
+ * @param fontCharset フォント文字セット設定
+ * @param windowMetric フォント以外のWindowMetricの設定
+ * @param dpiY 現在のDPI
+ */
+void setPreset(
+	NONCLIENTMETRICS *metrics,
+	LOGFONTW *iconFont,
+	std::vector<tstring> &fontFaces,
+	std::vector<int> &fontSizes,
+	std::vector<int> &fontCharset,
+	double *windowMetric,
+	int dpiY);
 
 #endif

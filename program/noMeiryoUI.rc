@@ -1,6 +1,5 @@
-// noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+// noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
 // The sources for noMeiryoUI are distributed under the MIT open source license
-
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -62,14 +61,14 @@ CAPTION "b"
 MENU IDR_MENU1
 FONT 11, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIも大っきらい!! Version 3.1.0",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
-    RTEXT           "Copyright (C) Tatsu 2005,2012-2022",IDC_STATIC_AUTHOR,137,7,161,14
+    LTEXT           "Meiryo UIも大っきらい!! Version 3.2.0",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
+    RTEXT           "Copyright (C) Tatsu 2005,2012-2023",IDC_STATIC_AUTHOR,137,7,161,14
     LTEXT           "",IDC_STATIC_VERNO,7,20,293,10
     GROUPBOX        "全体設定",IDC_GROUP_ALL,7,37,293,45
     LTEXT           "すべてのフォント",IDC_STATIC_ALL_FONT,11,47,89,12
     EDITTEXT        IDC_EDIT_ALL,135,47,110,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_ALL,246,46,50,14,WS_GROUP
-    PUSHBUTTON      "一括設定して終了",ID_SET_ALL,169,63,76,14,WS_GROUP
+    PUSHBUTTON      "一括設定して終了",ID_SET_ALL,151,63,94,14,WS_GROUP
     PUSHBUTTON      "適用",ID_APPLY_ALL,246,63,50,14,WS_GROUP
     GROUPBOX        "個別設定",IDC_GROUP_INDIVIDUAL,7,84,293,121
     LTEXT           "タイトルバー",IDC_STATIC_TITLE_BAR,11,95,119,12
@@ -90,8 +89,8 @@ BEGIN
     LTEXT           "メニュー/選択項目",IDC_STATIC_MENU,11,170,119,12
     EDITTEXT        IDC_EDIT_MENU,135,170,110,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "選択...",ID_SEL_MENU,246,169,50,14,WS_GROUP
-    DEFPUSHBUTTON   "設定",IDOK,92,186,76,14,WS_GROUP
-    PUSHBUTTON      "終了",IDCANCEL,169,186,76,14,WS_GROUP
+    DEFPUSHBUTTON   "設定",IDOK,56,186,94,14,WS_GROUP
+    PUSHBUTTON      "終了",IDCANCEL,151,186,94,14,WS_GROUP
     PUSHBUTTON      "適用",ID_APPLY,246,186,50,14,WS_GROUP
 END
 
@@ -181,8 +180,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,1,0,0
- PRODUCTVERSION 3,1,0,0
+ FILEVERSION 3,2,0,0
+ PRODUCTVERSION 3,2,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -199,12 +198,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.1.0.0"
+            VALUE "FileVersion", "3.2.0.0"
             VALUE "InternalName", "NoMeiryoUI"
-            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2022"
+            VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2023"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.1.0.0"
+            VALUE "ProductVersion", "3.2.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -264,7 +263,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UIも大っきらい!!"
-    IDS_VERSION             "%s Version 3.1.0.0"
+    IDS_VERSION             "%s Version 3.2.0.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 

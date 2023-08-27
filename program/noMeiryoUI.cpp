@@ -15,13 +15,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <shellapi.h>
 #include <locale.h>
 #include <mbctype.h>
+#include <uxtheme.h>
 #include "noMeiryoUI.h"
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
-#include "resource.h"
-
-#define MAX_LOADSTRING 100
 
 //
 // ダイアログベースアプリケーションフレームワークと
@@ -39,6 +37,9 @@ RECT myMonitorLect;
 bool firstMonitor = false;
 DWORD helpPid;
 bool helpMoved = false;
+bool usePreset = false;
+DWORD majorVersion;
+DWORD minorVersion;
 
 /**
  * アプリケーションオブジェクトを作成します。
@@ -103,12 +104,12 @@ void initializeLocale(void)
  * @param localeName ロケール名
  * @param iniPath iniファイルのパス
  */
-void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* localeName, TCHAR *iniPath)
+void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*systemlocaleName, TCHAR *iniPath)
 {
 	TCHAR findPath[MAX_PATH];
-	TCHAR langWork[64];
+	TCHAR langWork[LOCALE_NAME_MAX_LENGTH];
 
-	if (localeName == NULL) {
+	if (systemlocaleName == NULL) {
 		_tcscpy(langFileName, iniPath);
 		_tcscat(langFileName, _T("default.lng"));
 
@@ -118,21 +119,27 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 		return;
 	}
 
-	char* codePageDelim = strchr(localeName, '.');
+	wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
+
+	LANGID langId = GetUserDefaultUILanguage();
+	LCIDToLocaleName(langId, localeName, LOCALE_NAME_MAX_LENGTH, 0);
+	wcscpy(langWork, localeName);
+
+
+	wchar_t *codePageDelim = wcschr(localeName, '.');
 	if (codePageDelim != NULL) {
-		_setmbcp(atoi(codePageDelim + 1));
-		codePage = atoi(codePageDelim + 1);
+		_setmbcp(_wtoi(codePageDelim + 1));
+		codePage = _wtoi(codePageDelim + 1);
 	}
 	else {
 		_setmbcp(_MB_CP_LOCALE);
 	}
-	mbstowcs(langWork, localeName, 64);
 
 	//localeName = "aaa";
 	int readResult;
 
 	// Language detection
-	if (strstr(localeName, "_Korea") != NULL) {
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
 		isKorean = true;
 	}
 
@@ -141,6 +148,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	if (p != NULL) {
 		*p = _T('\0');
 	}
+
 	_tcscat(findPath, langWork);
 	_tcscat(findPath, _T(".lng"));
 	WIN32_FIND_DATA fileInfo;
@@ -155,7 +163,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char* local
 	}
 	else {
 		_tcscpy(findPath, iniPath);
-		p = _tcsrchr(langWork, _T('_'));
+		p = _tcsrchr(langWork, _T('-'));
 		if (p != NULL) {
 			*p = _T('\0');
 		}
@@ -240,6 +248,8 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	hintFontTextBox = NULL;
 	messageFontTextBox = NULL;
 	menuFontTextBox = NULL;
+
+	usePreset = false;
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -439,16 +449,19 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// フォント名表示を更新する。
 	updateDisplay();
 
-	if (compatLevel > 0) {
-		titleFontButton->EnableWindow(FALSE);
-		// TODO:ワーニングメッセージ in Win11 22H2
-		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
-			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
-	}
-
 	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
 
 	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+
+	adjustWindowSize();
+
+	// compatLevel = 0;
+	if (compatLevel > 0) {
+		titleFontButton->EnableWindow(FALSE);
+		// ワーニングメッセージ in Win11 22H2
+		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
+			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+	}
 
 	return (INT_PTR)FALSE;
 }
@@ -528,6 +541,51 @@ int NoMeiryoUI::OnWindowShow()
 	titleFontButton = GetDlgItem(ID_SEL_TITLE);
 
 	return 0;
+}
+
+/**
+ * @brief ウインドウサイズを調整する
+ */
+void NoMeiryoUI::adjustWindowSize(void)
+{
+	RECT r;
+
+	GetClientRect(getHwnd(), &r);
+
+	NONCLIENTMETRICS nowMetrics;
+
+	nowMetrics.cbSize = sizeof(NONCLIENTMETRICS);
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&nowMetrics,
+		0);
+
+	HDC dc = GetDC(getHwnd());
+
+	int logPixelY = GetDeviceCaps(dc, LOGPIXELSY);
+	double scale = (double)logPixelY / 96;
+
+	int width;
+	int height;
+
+	width = 614 * scale + nowMetrics.iBorderWidth * 2;
+	height = 398 * scale +
+		nowMetrics.iCaptionHeight +
+		nowMetrics.iMenuHeight +
+		nowMetrics.iBorderWidth * 2;
+
+	RECT nowRect;
+	GetWindowRect(getHwnd(), &nowRect);
+
+	RECT newRect;
+	SetWindowPos(
+		getHwnd(),
+		HWND_TOP,
+		nowRect.left,
+		nowRect.top,
+		width,
+		height,
+		SWP_SHOWWINDOW);
 }
 
 /**
@@ -1048,7 +1106,7 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			OnSet10();
 			return (INT_PTR)0;
 		case IDM_SET_11:
-			OnSet10();
+			OnSet11();
 			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
@@ -1156,6 +1214,8 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			MB_OK | MB_ICONEXCLAMATION);
 		return;
 	}
+
+	usePreset = false;
 
 	switch (type) {
 		case all:
@@ -1894,8 +1954,11 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	if (compatLevel > 0) {
 		set11TitlePreset(&metrics);
 	}
+
 	// フォント変更を実施する。
 	setFont(&metrics, &iconFont);
+
+	// COLORREF ref = GetThemeSysColor(NULL, COLOR_ACTIVECAPTION);
 
 	return (INT_PTR)TRUE;
 }
@@ -1959,59 +2022,29 @@ void NoMeiryoUI::OnSet8(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics,sizeof(NONCLIENTMETRICS),0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces8,
+		fontSizes8,
+		fontCharset8,
+		Win8PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces8[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes8[0],dpiY,72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset8[0];
-	metrics.lfCaptionFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces8,
+		fontSizes8,
+		fontCharset8,
+		Win8PresetWindowsMetric,
+		dpiY);
 
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces8[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes8[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset8[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces8[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes8[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset8[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces8[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes8[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset8[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces8[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes8[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset8[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces8[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes8[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset8[5];
-	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
+
+	usePreset = true;
 
 }
 
@@ -2023,59 +2056,28 @@ void NoMeiryoUI::OnSet10(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces10,
+		fontSizes10,
+		fontCharset10,
+		Win10PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-	metrics.lfCaptionFont.lfQuality = 5;
-
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset10[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
-	metrics.lfMenuFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces10,
+		fontSizes10,
+		fontCharset10,
+		Win10PresetWindowsMetric,
+		dpiY);
 
 	// 表示を更新する。
 	updateDisplay();
+
+	usePreset = true;
 
 }
 
@@ -2091,10 +2093,10 @@ void NoMeiryoUI::set11TitlePreset(NONCLIENTMETRICS *metrics)
 	int dpiY = getDPI();
 
 	memset(&((*metrics).lfCaptionFont), 0, sizeof(LOGFONTW));
-	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
+	_tcscpy((*metrics).lfCaptionFont.lfFaceName, fontFaces11[0].c_str());
+	(*metrics).lfCaptionFont.lfHeight = -MulDiv(fontSizes11[0], dpiY, 72);
 	(*metrics).lfCaptionFont.lfWeight = 400;
-	(*metrics).lfCaptionFont.lfCharSet = fontCharset10[0];
+	(*metrics).lfCaptionFont.lfCharSet = fontCharset11[0];
 	(*metrics).lfCaptionFont.lfQuality = 5;
 }
 
@@ -2106,65 +2108,65 @@ void NoMeiryoUI::OnSet11(void)
 	// DPIを取得する。
 	int dpiY = getDPI();
 
-	// フォント以外のNONCLIENTMETRICSの現在値を保持するため、
-	// NONCLIENTMETRICSの内容を取得しなおす。
-	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
-	metrics.cbSize = sizeof(NONCLIENTMETRICS);
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
+	setPreset(
 		&metrics,
-		0);
+		&iconFont,
+		fontFaces11,
+		fontSizes11,
+		fontCharset11,
+		Win11PresetWindowsMetric,
+		dpiY);
 
-	memset(&metrics.lfCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfCaptionFont.lfFaceName, fontFaces10[0].c_str());
-	metrics.lfCaptionFont.lfHeight = -MulDiv(fontSizes10[0], dpiY, 72);
-	metrics.lfCaptionFont.lfWeight = 400;
-	metrics.lfCaptionFont.lfCharSet = fontCharset10[0];
-	metrics.lfCaptionFont.lfQuality = 5;
+	setPreset(
+		&metricsAll,
+		&iconFontAll,
+		fontFaces11,
+		fontSizes11,
+		fontCharset11,
+		Win11PresetWindowsMetric,
+		dpiY);
 
-	memset(&iconFont, 0, sizeof(LOGFONTW));
-	_tcscpy(iconFont.lfFaceName, fontFaces10[1].c_str());
-	iconFont.lfHeight = -MulDiv(fontSizes10[1], dpiY, 72);
-	iconFont.lfWeight = 400;
-	iconFont.lfCharSet = fontCharset10[1];
-	iconFont.lfQuality = 5;
-
-	memset(&metrics.lfSmCaptionFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfSmCaptionFont.lfFaceName, fontFaces10[2].c_str());
-	metrics.lfSmCaptionFont.lfHeight = -MulDiv(fontSizes10[2], dpiY, 72);
-	metrics.lfSmCaptionFont.lfWeight = 400;
-	metrics.lfSmCaptionFont.lfCharSet = fontCharset10[2];
-	metrics.lfSmCaptionFont.lfQuality = 5;
-
-	memset(&metrics.lfStatusFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfStatusFont.lfFaceName, fontFaces10[3].c_str());
-	metrics.lfStatusFont.lfHeight = -MulDiv(fontSizes10[3], dpiY, 72);
-	metrics.lfStatusFont.lfWeight = 400;
-	metrics.lfStatusFont.lfCharSet = fontCharset10[3];
-	metrics.lfStatusFont.lfQuality = 5;
-
-	memset(&metrics.lfMessageFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMessageFont.lfFaceName, fontFaces10[4].c_str());
-	metrics.lfMessageFont.lfHeight = -MulDiv(fontSizes10[4], dpiY, 72);
-	metrics.lfMessageFont.lfWeight = 400;
-	metrics.lfMessageFont.lfCharSet = fontCharset10[4];
-	metrics.lfMessageFont.lfQuality = 5;
-
-	memset(&metrics.lfMenuFont, 0, sizeof(LOGFONTW));
-	_tcscpy(metrics.lfMenuFont.lfFaceName, fontFaces10[5].c_str());
-	metrics.lfMenuFont.lfHeight = -MulDiv(fontSizes10[5], dpiY, 72);
-	metrics.lfMenuFont.lfWeight = 400;
-	metrics.lfMenuFont.lfCharSet = fontCharset10[5];
-	metrics.lfMenuFont.lfQuality = 5;
 
 	// 表示を更新する。
 	updateDisplay();
+
+	usePreset = true;
 
 }
 
 // 設定するシステムフォントの情報格納用構造体
 // システムフォント設定スレッドで使用する。
 NONCLIENTMETRICS *s_fontMetrics;
+
+/**
+ * フォントの設定を行う。
+ * 
+ * @param fontMetrics 設定するフォント設定
+ */
+void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
+{
+	NONCLIENTMETRICS realMetrics;
+
+	memcpy(&realMetrics, fontMetrics, fontMetrics->cbSize);
+
+	if (!usePreset) {
+		// Adjust caption Height
+		// 高くしすぎないための配慮
+		int captionHeight =
+			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
+		realMetrics.iCaptionHeight = captionHeight;
+	}
+	if (majorVersion > 10) {
+		if (realMetrics.iPaddedBorderWidth == 0) {
+			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
+		}
+	}
+
+	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&realMetrics,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+}
 
 /**
  * スレッドでアイコン以外のフォントを設定する。
@@ -2174,14 +2176,10 @@ NONCLIENTMETRICS *s_fontMetrics;
  */
 unsigned _stdcall setOnThread(void *p)
 {
-	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		s_fontMetrics,
-		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+	setFontAdjusted(s_fontMetrics);
 
 	return 0;
 }
-
 
 /**
  * 画面各部のフォントを設定する。
@@ -2244,10 +2242,7 @@ void NoMeiryoUI::setFont(
 	} else {
 		// UIと同じスレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
-		SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-			sizeof(NONCLIENTMETRICS),
-			fontMetrics,
-			SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
+		setFontAdjusted(fontMetrics);
 	}
 
 	messageResult = SendMessageTimeout(
@@ -2281,6 +2276,7 @@ void NoMeiryoUI::setFont(
 	SetSysColors(1,colorItems,colors);
 #endif
 
+	adjustWindowSize();
 }
 
 /**
@@ -2652,7 +2648,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2022\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2023\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,

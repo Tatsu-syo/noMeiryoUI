@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html>
@@ -53,40 +53,49 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <td>noMeiryoUI.exe</td><td>本ソフトの実行ファイルです。</td>
 </tr>
 <tr>
-<td>Chinese (Simplified)_China.lng</td><td>簡体字中国語で動作させるときのメッセージを記述したファイルです。</td>
+<td>ja-JP.chm</td><td>日本語で動作させるときのメッセージを記述したファイルです。</td>
 </tr>
 <tr>
-<td>Chinese (Traditional)_Taiwan.lng</td><td>繁体字中国語で動作させるときのメッセージを記述したファイルです。</td>
+<td>zh-CN.lang</td><td>簡体字中国語で動作させるときのメッセージを記述したファイルです。</td>
 </tr>
 <tr>
-<td>English.lng</td><td>英語で動作させるときのメッセージを記述したファイルです。</td>
+<td>zh-CN.lng</td><td>繁体字中国語で動作させるときのメッセージを記述したファイルです。</td>
 </tr>
 <tr>
-<td>Korean.lng</td><td>韓国語で動作させるときのメッセージを記述したファイルです。</td>
+<td>en.lng</td><td>英語で動作させるときのメッセージを記述したファイルです。</td>
 </tr>
 <tr>
-<td>Portuguese_Brazil.lng</td><td>ポルトガル語(ブラジル)で動作させるときのメッセージを記述したファイルです。</td>
+<td>ko-KR.lng</td><td>韓国語で動作させるときのメッセージを記述したファイルです。</td>
+</tr>
+<tr>
+<td>pt-BR.lng</td><td>ポルトガル語(ブラジル)で動作させるときのメッセージを記述したファイルです。</td>
 </tr>
 <tr>
 <td>default.lng</td><td>日本語および上記以外の言語で動作させるときのメッセージを英語で記述したファイルです。</td>
 </tr>
 <tr>
-<td>Japanese.chm</td><td>日本語版ヘルプファイルです。</td>
+<td>ja-JP.chm</td><td>日本語版ヘルプファイルです。</td>
 </tr>
 <tr>
-<td>Chinese (Simplified)_China.chm</td><td>簡体字中国語版ヘルプファイルです。</td>
+<td>zh-CN.chm</td><td>簡体字中国語版ヘルプファイルです。</td>
 </tr>
 <tr>
-<td>Chinese (Traditional)_Taiwan.chm</td><td>繁体字中国語版ヘルプファイルです。</td>
+<td>zh-TW.chm</td><td>繁体字中国語版ヘルプファイルです。</td>
 </tr>
 <tr>
-<td>English.chm</td><td>英語版ヘルプファイルです。</td>
+<td>en.chm</td><td>英語版ヘルプファイルです。</td>
 </tr>
 <tr>
-<td>Korean.chm</td><td>韓国語版ヘルプファイルです。</td>
+<td>ko-KR.chm</td><td>韓国語版ヘルプファイルです。</td>
 </tr>
 <tr>
 <td>default.chm</td><td>日本語および上記以外の言語で動作させるときのヘルプファイルです。</td>
+</tr>
+<tr>
+<td>utils\SAVEreg.bat</td><td>Meiryo UIも大っきらい!!が関連するレジストリをバックアップするファイルです。</td>
+</tr>
+<tr>
+<td>utils\RESTOREreg.bat</td><td>Meiryo UIも大っきらい!!が関連するレジストリをリストアするバッチファイルです。</td>
 </tr>
 </tbody>
 </table>
@@ -103,6 +112,20 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <h3>アンインストール</h3>
 <p>
 　アンインストールを行う場合は本ソフトを展開したディレクトリごと消してください。<br>
+</p>
+</div>
+
+<div class="chapter">
+<h2>1.5 トラブル対策</h2>
+<h3>実行前のレジストリバックアップ</h3>
+<p>
+　本プログラムを実行する前にutils\SAVEreg.batを実行してフォント等に関連するレジストリをバックアップしておくことを推奨します(管理者権限が必要です)。<br>
+　バックアップファイルはC:\Users\(ユーザー)\AppData\Localの下に格納されます。<br>
+</p>
+
+<h3>トラブルが起きた際の対処</h3>
+<p>
+　本プログラムを実行してトラブルが起きた場合にレジストリバックアップを行っていた場合はutils\RESTOREreg.batを実行する事で元の状態に戻すことができます(管理者権限が必要です)。<br>
 </p>
 </div>
 

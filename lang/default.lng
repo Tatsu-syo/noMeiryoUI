@@ -33,9 +33,9 @@ DLG_HINT=Hint
 DLG_MESSAGE=Message box
 DLG_MENU=Menu
 DLG_SELECT=Select...
-DLG_SET_ALL=Set all and exit
-DLG_SET=Set and exit
-DLG_EXIT=Exit without set
+DLG_SET_ALL=Apply all and exit
+DLG_SET=Apply and exit
+DLG_EXIT=Exit without apply
 DLG_APPLY=Apply
 DLG_FONT_SEL=Font Selection
 DLG_FONT_NAME=&Font name
@@ -89,7 +89,7 @@ MSG_NO_FONT=Please select font.
 MSG_NO_STYLE=Please select style.
 MSG_NO_SIZE=Please select size.
 MSG_NO_CHARSET=Please select charset.
-MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
+MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu),mon-jai
 
 [PRESET]
 ; Preset menu setting.

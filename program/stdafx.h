@@ -21,6 +21,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
+#include "resource.h"
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください。
