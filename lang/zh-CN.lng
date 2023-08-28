@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo
+; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -13,6 +13,7 @@ MENU_FILE_QUIT=退出(&X)
 MENU_PRESET=恢复系统默认字体(&P)
 MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
+MENU_PRESET_11=Windows 11
 MENU_TOOLS=工具(&T)
 MENU_TOOLS_THREAD=在分开的线程中更改系统字体
 MENU_TOOLS_SEVEN=采用与 Windows 7 中相同的方法计算文字大小
@@ -47,11 +48,11 @@ DLG_CANCEL=取消
 DLG_CHARSET_ANSI=西欧语言
 DLG_CHARSET_BALTIC=波罗的语
 DLG_CHARSET_BIG5=繁体中文
-DLG_CHARSET_DEFAULT=缺省
+DLG_CHARSET_DEFAULT=默认
 DLG_CHARSET_EASTEUROPE=东欧语言
 DLG_CHARSET_GB2312=简体中文
 DLG_CHARSET_GREEK=希腊语
-DLG_CHARSET_HANGUL=韩文
+DLG_CHARSET_HANGUL=朝鲜文
 DLG_CHARSET_MAC=MAC
 DLG_CHARSET_OEM=OEM
 DLG_CHARSET_RUSSIAN=西里尔文
@@ -85,17 +86,19 @@ MSG_NO_FONT=请选择字体。
 MSG_NO_STYLE=请选择字形。
 MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
-MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo
+MSG_WARNING=提示
+MSG_WIN11_22H2RESTRICTION=在Windows 11 2022 Update(22H2)版本下 由于Windows方面的改动 导致标题栏字体不再允许进行更改。
+MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSadBoy
 
 [PRESET]
 ; For Windows 8.x
 ; Font face
-CAPTION_FACE_8=Microsoft YaHei UI
-ICON_FACE_8=Microsoft YaHei UI
-SMALLCAPTION_FACE_8=Microsoft YaHei UI
-STATUS_FACE_8=Microsoft YaHei UI
-MESSAGE_FACE_8=Microsoft YaHei UI
-MENU_FACE_8=Microsoft YaHei UI
+CAPTION_FACE_8=微软雅黑UI
+ICON_FACE_8=微软雅黑UI
+SMALLCAPTION_FACE_8=微软雅黑UI
+STATUS_FACE_8=微软雅黑UI
+MESSAGE_FACE_8=微软雅黑UI
+MENU_FACE_8=微软雅黑UI
 
 ; Font size
 CAPTION_SIZE_8=11
@@ -115,12 +118,12 @@ MENU_CHARSET_8=1
 
 ; For Windows 10
 ; Font face
-CAPTION_FACE_10=Microsoft YaHei UI
-ICON_FACE_10=Microsoft YaHei UI
-SMALLCAPTION_FACE_10=Microsoft YaHei UI
-STATUS_FACE_10=Microsoft YaHei UI
-MESSAGE_FACE_10=Microsoft YaHei UI
-MENU_FACE_10=Microsoft YaHei UI
+CAPTION_FACE_10=微软雅黑UI
+ICON_FACE_10=微软雅黑UI
+SMALLCAPTION_FACE_10=微软雅黑UI
+STATUS_FACE_10=微软雅黑UI
+MESSAGE_FACE_10=微软雅黑UI
+MENU_FACE_10=微软雅黑UI
 
 ; Font size
 CAPTION_SIZE_10=9
@@ -140,12 +143,12 @@ MENU_CHARSET_10=1
 
 ; For Windows 11
 ; Font face
-CAPTION_FACE_11=Microsoft YaHei UI
-ICON_FACE_11=Microsoft YaHei UI
-SMALLCAPTION_FACE_11=Microsoft YaHei UI
-STATUS_FACE_11=Microsoft YaHei UI
-MESSAGE_FACE_11=Microsoft YaHei UI
-MENU_FACE_11=Microsoft YaHei UI
+CAPTION_FACE_11=微软雅黑UI
+ICON_FACE_11=微软雅黑UI
+SMALLCAPTION_FACE_11=微软雅黑UI
+STATUS_FACE_11=微软雅黑UI
+MESSAGE_FACE_11=微软雅黑UI
+MENU_FACE_11=微软雅黑UI
 
 ; Font size
 CAPTION_SIZE_11=9
