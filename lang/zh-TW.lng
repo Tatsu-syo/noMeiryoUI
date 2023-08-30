@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang
+; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -86,10 +86,15 @@ MSG_NO_FONT=請選取字型。
 MSG_NO_STYLE=請選取字型樣式。
 MSG_NO_SIZE=請選取字型大小。
 MSG_NO_CHARSET=請選取字集。
-MSG_ WARNING=注意
-MSG_ WIN11_ 22H2RESTRICTION=在Windows 11 2022 Update（22H2）版本下由於Windows方面的改動導致標題列字型不再允許進行更改。
+MSG_WARNING=注意
+MSG_WIN11_22H2RESTRICTION=在Windows 11 2022 Update（22H2）版本下由於Windows方面的改動導致標題列字型不再允許進行更改。
 MSG_TRANSLATE=Austin Chang,HSSadBoy
 
+[PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+;
 ; For Windows 8.x
 ; Font face
 CAPTION_FACE_8=Microsoft JhengHei UI

@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo
+; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSadboy
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -91,6 +91,10 @@ MSG_WIN11_22H2RESTRICTION=在Windows 11 2022 Update(22H2)版本下 由于Windows
 MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSadBoy
 
 [PRESET]
+; Preset menu setting.
+; Write OS's initial font name and font size.
+; And un comment KEY=VALUE .
+
 ; For Windows 8.x
 ; Font face
 CAPTION_FACE_8=Microsoft YaHei UI
