@@ -61,7 +61,7 @@ CAPTION "b"
 MENU IDR_MENU1
 FONT 11, "ÇlÇr ÇoÉSÉVÉbÉN", 400, 0, 0x80
 BEGIN
-    LTEXT           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! Version 3.2.0",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
+    LTEXT           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! Version 3.2.1",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2023",IDC_STATIC_AUTHOR,137,7,161,14
     LTEXT           "",IDC_STATIC_VERNO,7,20,293,10
     GROUPBOX        "ëSëÃê›íË",IDC_GROUP_ALL,7,37,293,45
@@ -180,8 +180,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,2,0,0
- PRODUCTVERSION 3,2,0,0
+ FILEVERSION 3,2,1,0
+ PRODUCTVERSION 3,2,1,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -198,12 +198,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.2.0.0"
+            VALUE "FileVersion", "3.2.1.0"
             VALUE "InternalName", "NoMeiryoUI"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2023"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.2.0.0"
+            VALUE "ProductVersion", "3.2.1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -263,7 +263,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UIÇ‡ëÂÇ¡Ç´ÇÁÇ¢!!"
-    IDS_VERSION             "%s Version 3.2.0.0"
+    IDS_VERSION             "%s Version 3.2.1.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
