@@ -62,8 +62,6 @@ void initializeLocale(void)
 {
 	TCHAR iniPath[MAX_PATH];
 	TCHAR *p;
-	TCHAR langWork[64];
-	TCHAR findPath[MAX_PATH];
 	TCHAR langFileName[MAX_PATH];
 
 	::GetModuleFileName(NULL, iniPath, _MAX_PATH);
@@ -134,9 +132,6 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 	else {
 		_setmbcp(_MB_CP_LOCALE);
 	}
-
-	//localeName = "aaa";
-	int readResult;
 
 	// Language detection
 	if (wcsstr(langWork, L"ko-KR") != NULL) {

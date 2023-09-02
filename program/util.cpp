@@ -4,6 +4,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma warning(disable : 4996)
 
+#include <math.h>
 #include "util.h"
 #include "iniReader.h"
 

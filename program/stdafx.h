@@ -20,6 +20,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
+#include <math.h>
 #include <tchar.h>
 #include "resource.h"
 
