@@ -21,6 +21,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "NCFileDialog.h"
 #include "util.h"
 
+#include "country\korea.h"
+
 //
 // ダイアログベースアプリケーションフレームワークと
 // ユーザー実装のブリッジルーチン
@@ -563,8 +565,8 @@ void NoMeiryoUI::adjustWindowSize(void)
 	int width;
 	int height;
 
-	width = 614 * scale + nowMetrics.iBorderWidth * 2;
-	height = 398 * scale +
+	width = 740 * scale + nowMetrics.iBorderWidth * 2;
+	height = 410 * scale +
 		nowMetrics.iCaptionHeight +
 		nowMetrics.iMenuHeight +
 		nowMetrics.iBorderWidth * 2;
@@ -918,7 +920,7 @@ void NoMeiryoUI::updateDisplay(void)
 	allFontName = metricsAll.lfMenuFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, allFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		allFontName = dispName;
 	}
 	point = getFontPointInt(&(metricsAll.lfMenuFont), this->getHwnd());
@@ -928,7 +930,7 @@ void NoMeiryoUI::updateDisplay(void)
 	titleFontName = metrics.lfCaptionFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, titleFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		titleFontName = dispName;
 	}
 	point = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
@@ -938,7 +940,7 @@ void NoMeiryoUI::updateDisplay(void)
 	iconFontName = iconFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, iconFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		iconFontName = dispName;
 	}
 	point = getFontPointInt(&iconFont, this->getHwnd());
@@ -948,7 +950,7 @@ void NoMeiryoUI::updateDisplay(void)
 	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, paletteFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		paletteFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfSmCaptionFont, this->getHwnd());
@@ -958,7 +960,7 @@ void NoMeiryoUI::updateDisplay(void)
 	hintFontName = metrics.lfStatusFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, hintFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		hintFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfStatusFont, this->getHwnd());
@@ -968,7 +970,7 @@ void NoMeiryoUI::updateDisplay(void)
 	messageFontName = metrics.lfMessageFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, messageFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		messageFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfMessageFont, this->getHwnd());
@@ -979,7 +981,7 @@ void NoMeiryoUI::updateDisplay(void)
 	menuFontName = metrics.lfMenuFont.lfFaceName;
 	if (isKorean) {
 		_tcscpy(dispName, menuFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		menuFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfMenuFont, this->getHwnd());

@@ -8,6 +8,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <algorithm>
 #include <functional>
 
+#include "country/korea.h"
+
 /** フォントのリスト */
 std::vector<struct FontInfo> fontList;
 /** 文字セットと対応するスタイルのリスト */
@@ -216,7 +218,7 @@ int CALLBACK EnumFontFamExProc(
 
 	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
 	if (isKorean) {
-		getKoreanFontName(dispBuf);
+		korea::getKoreanFontName(dispBuf);
 	}
 	_tcscpy(fontInfo.dispName, dispBuf);
 	fontList.push_back(fontInfo);
