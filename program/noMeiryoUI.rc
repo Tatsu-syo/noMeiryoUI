@@ -1,3 +1,7 @@
+//
+// noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+// The sources for noMeiryoUI are distributed under the MIT open source license
+//
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -196,12 +200,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.2.1.1"
+            VALUE "FileVersion", "3.2.2.0"
             VALUE "InternalName", "NoMeiryoUI"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2023"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.2.1.1"
+            VALUE "ProductVersion", "3.2.2.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -261,7 +265,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UI‚à‘å‚Á‚«‚ç‚¢!!"
-    IDS_VERSION             "%s Version 3.2.1.1"
+    IDS_VERSION             "%s Version 3.2.2.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
