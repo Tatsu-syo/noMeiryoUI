@@ -563,8 +563,8 @@ void NoMeiryoUI::adjustWindowSize(void)
 	int width;
 	int height;
 
-	width = 614 * scale + nowMetrics.iBorderWidth * 2;
-	height = 398 * scale +
+	width = 740 * scale + nowMetrics.iBorderWidth * 2;
+	height = 410 * scale +
 		nowMetrics.iCaptionHeight +
 		nowMetrics.iMenuHeight +
 		nowMetrics.iBorderWidth * 2;
