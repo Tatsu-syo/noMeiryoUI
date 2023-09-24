@@ -4,7 +4,7 @@ No!! MeiryoUI重新启用了自定义Windows用户界面字体的功能，该功
 
 No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 
-如果您有一些想法或问题，请点击参discussions](https://github.com/tatsu-syo/nomeiryoui/discussions)。
+如果您有一些想法或问题，请点击参[discussions](https://github.com/tatsu-syo/nomeiryoui/discussions)。
 
 ## 使用需求
 
