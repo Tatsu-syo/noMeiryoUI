@@ -35,7 +35,7 @@ std::vector<int> fontSizes11;
 std::vector<int> fontCharset11;
 
 int codePage = 0;
-bool isKorean = false;
+Country runningCountry = NoCountry;
 
 // 
 double Win8PresetWindowsMetric[] = {

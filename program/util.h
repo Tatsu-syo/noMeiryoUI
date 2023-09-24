@@ -51,6 +51,11 @@ enum WindowMetricItem {
 	Padding,
 };
 
+enum Country {
+	NoCountry,
+	Japan,
+	Korea
+};
 
 /** 必要なクライアント領域幅(96DPI) */
 const int REQUIRED_CLIENT_WIDTH = 615;
@@ -59,6 +64,10 @@ const int REQUIRED_CLIENT_HEIGHT = 400;
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
+/**
+ * @brief 動作中の国
+ */
+extern Country runningCountry;
 
 /** フォント名(Windows 8.x) */
 extern std::vector<tstring> fontFaces8;
@@ -89,8 +98,6 @@ extern double Win11PresetWindowsMetric[];
 
 /** コードページ */
 extern int codePage;
-/** 韓国語環境かどうか */
-extern bool isKorean;
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);
