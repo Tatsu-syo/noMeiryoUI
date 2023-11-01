@@ -88,7 +88,7 @@ MSG_NO_STYLE=Please select style.
 MSG_NO_SIZE=Please select size.
 MSG_NO_CHARSET=Please select charset.
 MSG_WARNING=Warning
-MSG_WIN11_22H2RESTRICTION=On Windows 11 2022 Update(22H2) due to Windows reason title bar font can't change.
+MSG_WIN11_22H2RESTRICTION=On Windows 11 2022 Update(22H2) and later due to Windows reason title bar font can't change.
 MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu),mon-jai
 
 
