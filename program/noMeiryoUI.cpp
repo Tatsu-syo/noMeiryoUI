@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -21,7 +21,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "NCFileDialog.h"
 #include "util.h"
 
-#include "country\japan.h"
+// #include "country\japan.h"
 #include "country\korea.h"
 
 //
@@ -818,9 +818,12 @@ void NoMeiryoUI::applyResource()
 
 	tstring font = langResource[0];
 
+#if 0
+	// Under construction
 	if (runningCountry == Japan) {
 		font = japan::getJapaneseFontFallback(langResource[0]);
 	}
+#endif
 
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
