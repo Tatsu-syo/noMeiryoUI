@@ -82,12 +82,6 @@ namespace default {
 			return settingString;
 		}
 
-		_neededString = _T("MS Shell Dlg");
-		result = findCharsetFont();
-		if (result == 0) {
-			return _neededString;
-		}
-
 		_neededString = _T("Arial");
 
 		return _neededString;
