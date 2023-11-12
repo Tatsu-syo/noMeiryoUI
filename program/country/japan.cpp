@@ -59,23 +59,40 @@ namespace japan {
 		return found;
 	}
 
+	/**
+	 * @brief 日本語版の使用するフォールバックフォントを取得する。
+	 * @param settingString 言語ファイルのフォント名
+	 * @return 選択されたフォント名
+	*/
 	tstring getJapaneseFontFallback(tstring &settingString)
 	{
 		int result = 1;
 
 		_neededString = settingString;
 
+		// Font in language file is found in your Windows?
 		result = findCharsetFont();
 		if (result == 0) {
 			return settingString;
 		}
 
+		// In early Windows 10
+		_neededString = _T("游ゴシック Medium");
+		result = findCharsetFont();
+		if (result == 0) {
+			return _neededString;
+		}
+
+		// In Windows 8.1
 		_neededString = _T("游ゴシック");
 		result = findCharsetFont();
 		if (result == 0) {
 			return _neededString;
 		}
 
+		// なければオーソドックスなMS UI Gothic
+		// メイリオは誤解を生むのであえて使わない。
+		// メイリオとMeiryo UIはいろいろな意味で別物なのに混同されることがあるので。
 		_neededString = _T("MS UI Gothic");
 
 		return _neededString;
