@@ -41,6 +41,7 @@ namespace default {
 	{
 		LOGFONT lf;
 
+		memset(&lf, 0, sizeof(LOGFONT));
 		lf.lfPitchAndFamily = 0;
 		lf.lfCharSet = DEFAULT_CHARSET;
 
