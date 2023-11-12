@@ -24,6 +24,8 @@ BOOL CALLBACK MonitorNearWindowCallback(
 BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
 void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeName, TCHAR *iniPath);
 
+void setLocationInternalCode(TCHAR  langWork[85]);
+
 /** フォントのポイント数を保存する構造体 */
 struct FontPoints {
 	/** タイトルバーフォントサイズ(Point) */
@@ -134,6 +136,7 @@ private:
 	void getOption(TCHAR *lpCmdLine);
 	void parseOption(TCHAR *param, int argCount);
 	void applyResource();
+	tstring getLanguageFallbackForCountry(tstring &settingString);
 	void showVersion(void);
 	void adjustWindowSize(void);
 

@@ -21,7 +21,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "NCFileDialog.h"
 #include "util.h"
 
-// #include "country\japan.h"
+#include "country\default.h"
+#include "country\japan.h"
 #include "country\korea.h"
 
 //
@@ -95,6 +96,7 @@ void initializeLocale(void)
 	if (!readResult) {
 		has11Preset = false;
 	}
+
 }
 
 /**
@@ -137,12 +139,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 	}
 
 	// Language detection
-	if (wcsstr(langWork, L"ja-JP") != NULL) {
-		runningCountry = Japan;
-	}
-	if (wcsstr(langWork, L"ko-KR") != NULL) {
-		runningCountry = Korea;
-	}
+	setLocationInternalCode(langWork);
 
 	_tcscpy(findPath, iniPath);
 	TCHAR *p = _tcsrchr(langWork, _T('.'));
@@ -186,6 +183,23 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 			_tcscpy(helpFileName, _T("default.chm"));
 		}
 	}
+}
+
+/**
+ * @brief Set internal lanuguage enumeration
+ * @param langWork Locale name
+*/
+void setLocationInternalCode(TCHAR  langWork[85])
+{
+	if (wcsstr(langWork, L"ja-JP") != NULL) {
+		runningCountry = Japan;
+		return;
+	}
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
+		runningCountry = Korea;
+		return;
+	}
+	runningCountry = NoCountry;
 }
 
 /**
@@ -818,12 +832,9 @@ void NoMeiryoUI::applyResource()
 
 	tstring font = langResource[0];
 
-#if 0
-	// Under construction
-	if (runningCountry == Japan) {
-		font = japan::getJapaneseFontFallback(langResource[0]);
-	}
-#endif
+	// Get fallback font
+	font = getLanguageFallbackForCountry(langResource[0]);
+
 
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
@@ -919,6 +930,26 @@ void NoMeiryoUI::applyResource()
 	//DeleteObject(newFont);
 }
 
+/**
+ * @brief Get fallback font when font settings in language file didn't exist in Windows(For example older Windows)
+ * @param settingString Application display font name in language file.
+ * @return Font name adjusted by font installed in Windows.
+*/
+tstring NoMeiryoUI::getLanguageFallbackForCountry(tstring &settingString)
+{
+	tstring font;
+
+	switch (runningCountry) {
+		case Japan:
+			font = japan::getJapaneseFontFallback(langResource[0]);
+			break;
+		default:
+			font = default::getDefaultFontFallback(langResource[0]);
+			break;
+	}
+
+	return font;
+}
 
 /**
  * フォント表示を更新する。
