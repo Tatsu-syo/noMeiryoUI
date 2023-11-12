@@ -88,7 +88,7 @@ MSG_NO_STYLE=スタイルを選択してください。
 MSG_NO_SIZE=文字サイズを選択してください。
 MSG_NO_CHARSET=文字セットを選択してください。
 MSG_WARNING=警告
-MSG_WIN11_22H2RESTRICTION=Windows 11 2022 Update(22H2)ではWindows側の事情によりタイトルバーのフォントを変更できません。
+MSG_WIN11_22H2RESTRICTION=Windows 11 2022 Update(22H2)以降ではWindows側の事情によりタイトルバーのフォントを変更できません。
 MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
 
 [PRESET]
