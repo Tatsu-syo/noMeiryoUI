@@ -19,6 +19,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\country">
+      <UniqueIdentifier>{f245276e-3848-4761-bc5e-7ede926228e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\country">
+      <UniqueIdentifier>{a1d85430-7ac7-479c-8d4e-46cb142989eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FontSel.cpp">
@@ -62,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="iniReader.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="country\korea.cpp">
+      <Filter>ソース ファイル\country</Filter>
+    </ClCompile>
+    <ClCompile Include="country\japan.cpp">
+      <Filter>ソース ファイル\country</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="iniReader.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="country\korea.h">
+      <Filter>ヘッダー ファイル\country</Filter>
+    </ClInclude>
+    <ClInclude Include="country\japan.h">
+      <Filter>ヘッダー ファイル\country</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

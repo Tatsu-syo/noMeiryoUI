@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -20,6 +20,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+
+// #include "country\japan.h"
+#include "country\korea.h"
 
 //
 // ダイアログベースアプリケーションフレームワークと
@@ -134,8 +137,11 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 	}
 
 	// Language detection
+	if (wcsstr(langWork, L"ja-JP") != NULL) {
+		runningCountry = Japan;
+	}
 	if (wcsstr(langWork, L"ko-KR") != NULL) {
-		isKorean = true;
+		runningCountry = Korea;
 	}
 
 	_tcscpy(findPath, iniPath);
@@ -563,8 +569,8 @@ void NoMeiryoUI::adjustWindowSize(void)
 	int width;
 	int height;
 
-	width = 614 * scale + nowMetrics.iBorderWidth * 2;
-	height = 398 * scale +
+	width = 740 * scale + nowMetrics.iBorderWidth * 2;
+	height = 410 * scale +
 		nowMetrics.iCaptionHeight +
 		nowMetrics.iMenuHeight +
 		nowMetrics.iBorderWidth * 2;
@@ -810,6 +816,15 @@ void NoMeiryoUI::applyResource()
 {
 	HDC hDC = GetDC(this->hWnd);
 
+	tstring font = langResource[0];
+
+#if 0
+	// Under construction
+	if (runningCountry == Japan) {
+		font = japan::getJapaneseFontFallback(langResource[0]);
+	}
+#endif
+
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
@@ -824,7 +839,7 @@ void NoMeiryoUI::applyResource()
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,
 		FIXED_PITCH | FF_MODERN,
-		langResource[0].c_str());
+		font.c_str());
 
 	ReleaseDC(this->hWnd, hDC);
 
@@ -916,9 +931,9 @@ void NoMeiryoUI::updateDisplay(void)
 	TCHAR dispName[32];
 
 	allFontName = metricsAll.lfMenuFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, allFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		allFontName = dispName;
 	}
 	point = getFontPointInt(&(metricsAll.lfMenuFont), this->getHwnd());
@@ -926,9 +941,9 @@ void NoMeiryoUI::updateDisplay(void)
 	allFontName = allFontName + buf;
 
 	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, titleFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		titleFontName = dispName;
 	}
 	point = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
@@ -936,9 +951,9 @@ void NoMeiryoUI::updateDisplay(void)
 	titleFontName = titleFontName + buf;
 
 	iconFontName = iconFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, iconFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		iconFontName = dispName;
 	}
 	point = getFontPointInt(&iconFont, this->getHwnd());
@@ -946,9 +961,9 @@ void NoMeiryoUI::updateDisplay(void)
 	iconFontName = iconFontName + buf;
 
 	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, paletteFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		paletteFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfSmCaptionFont, this->getHwnd());
@@ -956,9 +971,9 @@ void NoMeiryoUI::updateDisplay(void)
 	paletteFontName = paletteFontName + buf;
 
 	hintFontName = metrics.lfStatusFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, hintFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		hintFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfStatusFont, this->getHwnd());
@@ -966,9 +981,9 @@ void NoMeiryoUI::updateDisplay(void)
 	hintFontName = hintFontName + buf;
 
 	messageFontName = metrics.lfMessageFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, messageFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		messageFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfMessageFont, this->getHwnd());
@@ -977,9 +992,9 @@ void NoMeiryoUI::updateDisplay(void)
 
 	// メニューと選択項目
 	menuFontName = metrics.lfMenuFont.lfFaceName;
-	if (isKorean) {
+	if (runningCountry == Korea) {
 		_tcscpy(dispName, menuFontName.c_str());
-		getKoreanFontName(dispName);
+		korea::getKoreanFontName(dispName);
 		menuFontName = dispName;
 	}
 	point = getFontPointInt(&metrics.lfMenuFont, this->getHwnd());
@@ -2483,7 +2498,11 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber >= 22621) {
+			if (buildNumber > 22631) {
+				_tcscat_s(calledVer, _T(" Insider"));
+			} else if (buildNumber == 22631) {
+				_tcscat_s(calledVer, _T(" 2023 Update"));
+			} else if (buildNumber >= 22621) {
 				_tcscat_s(calledVer, _T(" 2022 Update"));
 			}
 			break;

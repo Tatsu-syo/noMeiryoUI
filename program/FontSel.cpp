@@ -8,6 +8,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <algorithm>
 #include <functional>
 
+#include "country/Japan.h"
+#include "country/korea.h"
+
 /** フォントのリスト */
 std::vector<struct FontInfo> fontList;
 /** 文字セットと対応するスタイルのリスト */
@@ -215,8 +218,8 @@ int CALLBACK EnumFontFamExProc(
 	// fontInfo.charsetList.clear();
 
 	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
-	if (isKorean) {
-		getKoreanFontName(dispBuf);
+	if (runningCountry == Korea) {
+		korea::getKoreanFontName(dispBuf);
 	}
 	_tcscpy(fontInfo.dispName, dispBuf);
 	fontList.push_back(fontInfo);
@@ -460,6 +463,11 @@ INT_PTR FontSel::OnCommand(WPARAM wParam)
 void FontSel::applyResource()
 {
 	HDC hDC = GetDC(this->hWnd);
+	tstring font = langResource[0];
+
+	if (runningCountry == Japan) {
+		font = japan::getJapaneseFontFallback(langResource[0]);
+	}
 
 	displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
@@ -475,7 +483,7 @@ void FontSel::applyResource()
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,
 		FIXED_PITCH | FF_MODERN,
-		langResource[0].c_str());
+		font.c_str());
 
 	ReleaseDC(this->hWnd, hDC);
 
