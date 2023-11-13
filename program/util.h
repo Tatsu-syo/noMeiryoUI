@@ -18,23 +18,6 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define PRESET_SECTION "PRESET"
 #define APP_FONTSIZE 11
 
-#define DLG_STYLE_NORMAL 55
-#define DLG_STYLE_ITALIC 56
-#define DLG_STYLE_BOLD 57
-#define DLG_STYLE_BOLD_ITALIC 58
-#define DLG_STYLE_MEDIUM 74
-#define DLG_STYLE_SEMI_BOLD 75
-#define DLG_STYLE_BOOK 76
-#define DLG_STYLE_OBLIQUE 77
-#define DLG_STYLE_LIGHT 78
-#define DLG_STYLE_EXTRA_LIGHT 79
-#define DLG_STYLE_SEMI_LIGHT 80
-#define DLG_STYLE_SLANTED 81
-#define DLG_CHECK_BOLD 82
-#define DLG_CHECK_ITALIC 83
-#define MSG_WARNING 84
-#define MSG_WIN11_22H2RESTRICTION 85
-
 /**
  * @brief WindowMetricíËêî
 */
@@ -101,7 +84,7 @@ extern int codePage;
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
 double getFontPoint(LOGFONT *font, HWND hWnd);
-void readResourceFile(TCHAR *file);
+void readResourceItem(TCHAR *file, TCHAR *key, TCHAR *fallback);
 int readFontResource8(TCHAR *file);
 int readFontResource10(TCHAR *file);
 int readFontResource11(TCHAR* file);

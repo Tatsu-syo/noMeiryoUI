@@ -20,6 +20,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+#include "langresource.h"
 
 #include "country\default.h"
 #include "country\japan.h"
