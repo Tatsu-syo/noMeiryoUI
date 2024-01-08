@@ -267,6 +267,8 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 
 	usePreset = false;
 
+	loadConfig();
+
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
 	// If Windows 11 Build 22621 Switch onにしようと思ったけど
@@ -2777,11 +2779,14 @@ void NoMeiryoUI::showVersion(void)
 		MB_OK | MB_ICONINFORMATION);
 }
 
+/**
+ * @brief 設定ファイルを保存する
+ */
 void NoMeiryoUI::saveConfig(void)
 {
 	DWORD result;
 	TCHAR pathname[MAX_PATH];
-	TCHAR IniFile[_MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
 	TCHAR drive[_MAX_DRIVE + 1];
 	TCHAR cDir[_MAX_DIR + 1];
 	HMODULE hModule;
@@ -2795,9 +2800,43 @@ void NoMeiryoUI::saveConfig(void)
 	result = GetModuleFileName(hModule, pathname, MAX_PATH);
 
 	_tsplitpath(pathname, drive, cDir, NULL, NULL);
-	_stprintf(IniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
 
-	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), IniFile);
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
+
+}
+
+/**
+ * @brief 設定ファイルを保存する
+ */
+void NoMeiryoUI::loadConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	TCHAR fontName[33];
+	HMODULE hModule;
+	int read;
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, iniFile);
+
+	if (fontName[0] != _T('\0')) {
+		langResource[0] = fontName;
+	}
+	
 
 }
 

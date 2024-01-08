@@ -148,6 +148,7 @@ private:
 	void showVersion(void);
 	void adjustWindowSize(void);
 	void saveConfig(void);
+	void loadConfig(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
