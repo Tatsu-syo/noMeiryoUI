@@ -1,7 +1,6 @@
-//
-// noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+// noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
 // The sources for noMeiryoUI are distributed under the MIT open source license
-//
+
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -182,8 +181,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,2,1,1
- PRODUCTVERSION 3,2,1,1
+ FILEVERSION 3,3,0,0
+ PRODUCTVERSION 3,3,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -200,12 +199,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.2.2.0"
+            VALUE "FileVersion", "3.3.3.0"
             VALUE "InternalName", "NoMeiryoUI"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2023"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.2.2.0"
+            VALUE "ProductVersion", "3.3.3.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -246,6 +245,8 @@ BEGIN
     END
     POPUP "ツール(&T)"
     BEGIN
+        MENUITEM "Meiryo UIも大っきらい!! のフォントを選択する(&F)", IDM_CHOICE_APP_FONT
+        MENUITEM SEPARATOR
         MENUITEM "別スレッドでフォントを変更する(&A)",         IDM_ANOTHER
         MENUITEM "フォントサイズをWindows 7と同様に扱う(&7)", IDM_COMPAT7
     END
@@ -265,7 +266,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UIも大っきらい!!"
-    IDS_VERSION             "%s Version 3.2.2.0"
+    IDS_VERSION             "%s Version 3.3.0.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 

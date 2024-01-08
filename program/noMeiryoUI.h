@@ -136,6 +136,8 @@ private:
 	void getOption(TCHAR *lpCmdLine);
 	void parseOption(TCHAR *param, int argCount);
 	void applyResource();
+	void applyDisplayText();
+	void applyDisplayFont();
 	tstring getLanguageFallbackForCountry(tstring &settingString);
 	void showVersion(void);
 	void adjustWindowSize(void);
