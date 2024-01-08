@@ -121,6 +121,7 @@ private:
 	void OnSet8();
 	void OnSet10(void);
 	void OnSet11(void);
+	void OnChoiceAppFont();
 	void set11TitlePreset(NONCLIENTMETRICS *metrics);
 	void SetWinVer(void);
 	void getWin10Ver(TCHAR *buf, DWORD major, DWORD minor);

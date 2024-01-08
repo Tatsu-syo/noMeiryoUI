@@ -1166,6 +1166,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 		case IDM_SET_11:
 			OnSet11();
 			return (INT_PTR)0;
+		case IDM_CHOICE_APP_FONT:
+			OnChoiceAppFont();
+			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
 				appMenu->CheckMenuItem(IDM_ANOTHER, false);
@@ -2191,6 +2194,60 @@ void NoMeiryoUI::OnSet11(void)
 	usePreset = true;
 
 }
+
+/**
+ * アプリケーションフォントを選択する。
+ */
+void NoMeiryoUI::OnChoiceAppFont()
+{
+
+	INT_PTR result;
+	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
+
+	FillMemory(&logfont, sizeof(LOGFONT), 0x00);
+
+	try {
+
+		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL, FALSE);
+		if (noMeiryoUI) {
+			selector->setNoMeiryoUI();
+		}
+		if (noTahoma) {
+			selector->setNoTahoma();
+		}
+		// 選択していたフォントをフォント選択ダイアログに設定する。
+		selector->setPreviousFont(&logfont);
+
+		result = selector->showModal();
+		if (result != IDOK) {
+			delete[]selector;
+			return;
+		}
+		logfont = selector->getSelectedFont();
+		if (logfont.lfFaceName[0] == _T('\0')) {
+			delete[]selector;
+			return;
+		}
+
+		delete[]selector;
+	}
+	catch (...) {
+		MessageBox(this->hWnd,
+			_T("Internal error in font selection dialog."),
+			_T("Error"),
+			MB_OK | MB_ICONEXCLAMATION);
+		return;
+	}
+
+	langResource[0] = logfont.lfFaceName;
+	applyDisplayFont();
+
+	// 表示を更新する。
+	updateDisplay();
+}
+
+
+
 
 // 設定するシステムフォントの情報格納用構造体
 // システムフォント設定スレッドで使用する。
