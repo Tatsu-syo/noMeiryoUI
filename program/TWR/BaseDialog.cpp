@@ -316,3 +316,18 @@ void BaseDialog::setChildFont(int id, HFONT font)
 	target = ::GetDlgItem(hWnd, id);
 	SendMessage(target, WM_SETFONT, (WPARAM)font, MAKELPARAM(TRUE, 0));
 }
+
+/**
+ * 子項目が有効かどうか設定する
+ *
+ * @param id 子項目のID
+ * @param enabled TRUE:有効 FALSE:無効
+ */
+void BaseDialog::setChildEnabled(int id, BOOL enabled)
+{
+	HWND target;
+
+	target = ::GetDlgItem(hWnd, id);
+	::EnableWindow(target, enabled);
+}
+
