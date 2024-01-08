@@ -8,6 +8,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
 
+#define EXE_NAME _T("noMeiryoUI.exe")
+#define INI_FILE _T("noMeiryoUI.ini")
+#define CONFIG_SECTION _T("Settings")
+#define UIFONT_KEY _T("UIFontName")
+
 void initializeLocale(void);
 BOOL CALLBACK MonitorNearMouseCallback(
 	HMONITOR hMonitor,
@@ -142,6 +147,7 @@ private:
 	tstring getLanguageFallbackForCountry(tstring &settingString);
 	void showVersion(void);
 	void adjustWindowSize(void);
+	void saveConfig(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

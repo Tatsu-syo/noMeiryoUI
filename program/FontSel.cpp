@@ -489,10 +489,6 @@ void FontSel::applyResource()
 	HDC hDC = GetDC(this->hWnd);
 	tstring font = langResource[0];
 
-	if (runningCountry == Japan) {
-		font = japan::getJapaneseFontFallback(langResource[0]);
-	}
-
 	displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
@@ -502,7 +498,7 @@ void FontSel::applyResource()
 		FALSE,
 		FALSE,
 		FALSE,
-		_tstoi(langResource[70].c_str()),
+		_tstoi(langResource[0].c_str()),
 		OUT_DEFAULT_PRECIS,
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,

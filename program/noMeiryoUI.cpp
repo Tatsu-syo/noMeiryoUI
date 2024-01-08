@@ -829,6 +829,11 @@ void NoMeiryoUI::UpdateData(bool toObj)
  */
 void NoMeiryoUI::applyResource()
 {
+	tstring font = langResource[0];
+
+	// Get fallback font
+	font = getLanguageFallbackForCountry(langResource[0]);
+
 	applyDisplayText();
 
 	applyDisplayFont();
@@ -891,10 +896,6 @@ void NoMeiryoUI::applyDisplayFont()
 	HDC hDC = GetDC(this->hWnd);
 
 	tstring font = langResource[0];
-
-	// Get fallback font
-	font = getLanguageFallbackForCountry(langResource[0]);
-
 
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
@@ -2208,7 +2209,7 @@ void NoMeiryoUI::OnChoiceAppFont()
 
 	try {
 
-		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL, FALSE);
+		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL, TRUE);
 		if (noMeiryoUI) {
 			selector->setNoMeiryoUI();
 		}
@@ -2244,10 +2245,10 @@ void NoMeiryoUI::OnChoiceAppFont()
 
 	// 表示を更新する。
 	updateDisplay();
+
+	// 設定を保存する。
+	saveConfig();
 }
-
-
-
 
 // 設定するシステムフォントの情報格納用構造体
 // システムフォント設定スレッドで使用する。
@@ -2774,5 +2775,29 @@ void NoMeiryoUI::showVersion(void)
 		aboutContent,
 		title,
 		MB_OK | MB_ICONINFORMATION);
+}
+
+void NoMeiryoUI::saveConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR IniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	HMODULE hModule;
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(IniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), IniFile);
+
 }
 
