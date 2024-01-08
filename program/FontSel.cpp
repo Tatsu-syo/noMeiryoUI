@@ -4,6 +4,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
 #include "util.h"
+#include "langresource.h"
 
 #include <algorithm>
 #include <functional>
