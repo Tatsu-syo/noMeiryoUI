@@ -37,6 +37,8 @@ static bool use7Compat = true;
 bool has8Preset = true;
 bool has10Preset = true;
 bool has11Preset = true;
+// 複数起動を許すか
+bool multiRun = true;
 TCHAR helpFileName[MAX_PATH];
 RECT myMonitorLect;
 bool firstMonitor = false;
@@ -861,6 +863,7 @@ void NoMeiryoUI::applyDisplayText()
 	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
 	appMenu->setText(2, langResource[10].c_str(), TRUE);
 	appMenu->setText(IDM_CHOICE_APP_FONT, langResource[MENU_CHOICE_APP_FONT].c_str(), FALSE);
+	appMenu->setText(IDM_NO_MULTI_RUN, langResource[MENU_DONT_RUN_MULTIPLY].c_str(), FALSE);
 	appMenu->setText(IDM_ANOTHER, langResource[MENU_TOOLS_THREAD].c_str(), FALSE);
 	appMenu->setText(IDM_COMPAT7, langResource[MENU_TOOLS_SEVEN].c_str(), FALSE);
 	appMenu->setText(3, langResource[13].c_str(), TRUE);
@@ -1180,14 +1183,11 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			}
 			return (INT_PTR)0;
 		case IDM_COMPAT7:
-			if (appMenu->isChecked(IDM_COMPAT7)) {
-				appMenu->CheckMenuItem(IDM_COMPAT7, false);
-				WIN8_SIZE = true;
-			} else {
-				appMenu->CheckMenuItem(IDM_COMPAT7, true);
-				WIN8_SIZE = false;
-			}
-			updateDisplay();
+			toggleWin7aliculate();
+
+			return (INT_PTR)0;
+		case IDM_NO_MULTI_RUN:
+			toggleMultiRun();
 
 			return (INT_PTR)0;
 		case IDM_HELPTOPIC:
@@ -1199,6 +1199,39 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 	}
 	return BaseDialog::OnCommand(wParam);
 
+}
+
+/**
+ * @brief Windows 7式計算のトグル処理
+ */
+void NoMeiryoUI::toggleWin7aliculate()
+{
+	if (appMenu->isChecked(IDM_COMPAT7)) {
+		appMenu->CheckMenuItem(IDM_COMPAT7, false);
+		WIN8_SIZE = true;
+	}
+	else {
+		appMenu->CheckMenuItem(IDM_COMPAT7, true);
+		WIN8_SIZE = false;
+	}
+	updateDisplay();
+}
+
+/**
+ * @brief 複数起動フラグ切り替え
+ */
+void NoMeiryoUI::toggleMultiRun()
+{
+	if (appMenu->isChecked(IDM_NO_MULTI_RUN)) {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, false);
+		multiRun = true;
+	}
+	else {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+		multiRun = false;
+		saveConfig();
+	}
+	saveConfig();
 }
 
 /**
@@ -2790,6 +2823,8 @@ void NoMeiryoUI::saveConfig(void)
 	TCHAR drive[_MAX_DRIVE + 1];
 	TCHAR cDir[_MAX_DIR + 1];
 	HMODULE hModule;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
 
 	// 実行ファイルのディレクトリを得る。
 	hModule = GetModuleHandle(EXE_NAME);
@@ -2804,10 +2839,18 @@ void NoMeiryoUI::saveConfig(void)
 
 	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
 
+	if (multiRun) {
+		multiRunValue = 1;
+	} else {
+		multiRunValue = 0;
+	}
+	_stprintf(multiRunString, _T("%d"), multiRunValue);
+	WritePrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, multiRunString, iniFile);
+
 }
 
 /**
- * @brief 設定ファイルを保存する
+ * @brief 設定ファイルを読み込む
  */
 void NoMeiryoUI::loadConfig(void)
 {
@@ -2819,6 +2862,8 @@ void NoMeiryoUI::loadConfig(void)
 	TCHAR fontName[33];
 	HMODULE hModule;
 	int read;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
 
 	// 実行ファイルのディレクトリを得る。
 	hModule = GetModuleHandle(EXE_NAME);
@@ -2837,6 +2882,13 @@ void NoMeiryoUI::loadConfig(void)
 		langResource[0] = fontName;
 	}
 	
+	GetPrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, _T("1"), multiRunString, 8, iniFile);
+	multiRunValue = _ttoi(multiRunString);
+	if (multiRunValue != 0) {
+		multiRun = true;
+	} else {
+		multiRun = true;
+	}
 
 }
 

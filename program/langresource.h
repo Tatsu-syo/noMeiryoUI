@@ -95,6 +95,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define MSG_WARNING 84
 #define MSG_WIN11_22H2RESTRICTION 85
 #define MENU_CHOICE_APP_FONT 86
+#define MENU_DONT_RUN_MULTIPLY 87
 
 extern void readResourceFile(TCHAR *file);
 

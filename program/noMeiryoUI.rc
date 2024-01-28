@@ -249,7 +249,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "別スレッドでフォントを変更する(&A)",         IDM_ANOTHER
         MENUITEM "フォントサイズをWindows 7と同様に扱う(&7)", IDM_COMPAT7
-        MENUITEM "二重起動をしない(&D)",                ID_32793
+        MENUITEM "二重起動をしない(&D)", IDM_NO_MULTI_RUN
     END
     POPUP "ヘルプ(&H)"
     BEGIN
