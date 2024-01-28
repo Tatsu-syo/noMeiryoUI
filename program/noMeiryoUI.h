@@ -150,13 +150,13 @@ private:
 	void adjustWindowSize(void);
 	void saveConfig(void);
 	void loadConfig(void);
+	void toggleWin7aliculate();
+	void toggleMultiRun();
+	void handleMultipleRun(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
 
-	void toggleWin7aliculate();
-
-	void toggleMultiRun();
 
 public:
 	BaseDialog *createBaseDialog();

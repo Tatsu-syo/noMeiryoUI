@@ -270,6 +270,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	usePreset = false;
 
 	loadConfig();
+	handleMultipleRun();
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -2892,3 +2893,12 @@ void NoMeiryoUI::loadConfig(void)
 
 }
 
+/**
+ * @brief 複数起動関連処理
+ */
+void NoMeiryoUI::handleMultipleRun(void)
+{
+	if (multiRun) {
+		return;
+	}
+}
