@@ -49,19 +49,21 @@ private:
 	LOGFONT selectedFont;
 	LOGFONT *previousFont;
 	double m_point;
+	bool m_fontonly;
 
 	void adjustPosition(void);
 	void applyResource();
 	void setCharset(void);
 	void setStyle();
 	INT_PTR onOK(void);
+	void disableWithoutFontselect(void);
 
 protected:
 	INT_PTR OnInitDialog();
 	INT_PTR OnCommand(WPARAM wParam);
 
 public:
-	FontSel(HWND parent, int resource);
+	FontSel(HWND parent, int resource, bool fontOnly = false);
 	virtual ~FontSel(void);
 
 	LOGFONT getSelectedFont() {

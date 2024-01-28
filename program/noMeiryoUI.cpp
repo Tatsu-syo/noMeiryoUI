@@ -20,8 +20,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+#include "langresource.h"
 
-// #include "country\japan.h"
+#include "country\default.h"
+#include "country\japan.h"
 #include "country\korea.h"
 
 //
@@ -95,6 +97,7 @@ void initializeLocale(void)
 	if (!readResult) {
 		has11Preset = false;
 	}
+
 }
 
 /**
@@ -137,12 +140,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 	}
 
 	// Language detection
-	if (wcsstr(langWork, L"ja-JP") != NULL) {
-		runningCountry = Japan;
-	}
-	if (wcsstr(langWork, L"ko-KR") != NULL) {
-		runningCountry = Korea;
-	}
+	setLocationInternalCode(langWork);
 
 	_tcscpy(findPath, iniPath);
 	TCHAR *p = _tcsrchr(langWork, _T('.'));
@@ -186,6 +184,23 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 			_tcscpy(helpFileName, _T("default.chm"));
 		}
 	}
+}
+
+/**
+ * @brief Set internal lanuguage enumeration
+ * @param langWork Locale name
+*/
+void setLocationInternalCode(TCHAR  langWork[85])
+{
+	if (wcsstr(langWork, L"ja-JP") != NULL) {
+		runningCountry = Japan;
+		return;
+	}
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
+		runningCountry = Korea;
+		return;
+	}
+	runningCountry = NoCountry;
 }
 
 /**
@@ -251,6 +266,8 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	menuFontTextBox = NULL;
 
 	usePreset = false;
+
+	loadConfig();
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -814,16 +831,73 @@ void NoMeiryoUI::UpdateData(bool toObj)
  */
 void NoMeiryoUI::applyResource()
 {
+	tstring font = langResource[0];
+
+	// Get fallback font
+	font = getLanguageFallbackForCountry(langResource[0]);
+
+	applyDisplayText();
+
+	applyDisplayFont();
+}
+
+
+/**
+ * リソースを各項目に設定する(文字列)。
+ */
+void NoMeiryoUI::applyDisplayText()
+{
+	// アプリタイトル
+	setText(langResource[1].c_str());
+
+	// メニュー文字列変更
+	appMenu->setText(0, langResource[2].c_str(), TRUE);
+	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
+	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
+	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
+	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
+	appMenu->setText(1, langResource[7].c_str(), TRUE);
+	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
+	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
+	appMenu->setText(2, langResource[10].c_str(), TRUE);
+	appMenu->setText(IDM_CHOICE_APP_FONT, langResource[MENU_CHOICE_APP_FONT].c_str(), FALSE);
+	appMenu->setText(IDM_ANOTHER, langResource[MENU_TOOLS_THREAD].c_str(), FALSE);
+	appMenu->setText(IDM_COMPAT7, langResource[MENU_TOOLS_SEVEN].c_str(), FALSE);
+	appMenu->setText(3, langResource[13].c_str(), TRUE);
+	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
+	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
+
+	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
+	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
+	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
+	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
+	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
+	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
+	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
+	setChildText(ID_SEL_ALL, langResource[23].c_str());
+	setChildText(ID_SEL_TITLE, langResource[23].c_str());
+	setChildText(ID_SEL_ICON, langResource[23].c_str());
+	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
+	setChildText(ID_SEL_HINT, langResource[23].c_str());
+	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
+	setChildText(ID_SEL_MENU, langResource[23].c_str());
+	setChildText(ID_SET_ALL, langResource[24].c_str());
+	setChildText(IDOK, langResource[25].c_str());
+	setChildText(IDCANCEL, langResource[26].c_str());
+	setChildText(ID_APPLY, langResource[71].c_str());
+	setChildText(ID_APPLY_ALL, langResource[71].c_str());
+	setChildText(IDC_GROUP_ALL, langResource[72].c_str());
+	setChildText(IDC_GROUP_INDIVIDUAL, langResource[73].c_str());
+}
+
+/**
+ * リソースを各項目に設定する(フォント)。
+ */
+void NoMeiryoUI::applyDisplayFont()
+{
 	HDC hDC = GetDC(this->hWnd);
 
 	tstring font = langResource[0];
-
-#if 0
-	// Under construction
-	if (runningCountry == Japan) {
-		font = japan::getJapaneseFontFallback(langResource[0]);
-	}
-#endif
 
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
@@ -843,71 +917,30 @@ void NoMeiryoUI::applyResource()
 
 	ReleaseDC(this->hWnd, hDC);
 
-
-	// アプリタイトル
-	setText(langResource[1].c_str());
-
-	// メニュー文字列変更
-	appMenu->setText(0, langResource[2].c_str(), TRUE);
-	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
-	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
-	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
-	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
-	appMenu->setText(1, langResource[7].c_str(), TRUE);
-	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
-	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
-	appMenu->setText(2, langResource[10].c_str(), TRUE);
-	appMenu->setText(IDM_ANOTHER, langResource[11].c_str(), FALSE);
-	appMenu->setText(IDM_COMPAT7, langResource[12].c_str(), FALSE);
-	appMenu->setText(3, langResource[13].c_str(), TRUE);
-	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
-	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
-
-	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
 	setChildFont(IDC_STATIC_ALL_FONT, displayFont);
-	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
 	setChildFont(IDC_STATIC_TITLE_BAR, displayFont);
-	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
 	setChildFont(IDC_STATIC_ICON, displayFont);
-	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
 	setChildFont(IDC_STATIC_PALETTE_TITLE, displayFont);
-	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
 	setChildFont(IDC_STATIC_HINT, displayFont);
-	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
 	setChildFont(IDC_STATIC_MESSAGE, displayFont);
-	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
 	setChildFont(IDC_STATIC_MENU, displayFont);
 
-	setChildText(ID_SEL_ALL, langResource[23].c_str());
 	setChildFont(ID_SEL_ALL, displayFont);
-	setChildText(ID_SEL_TITLE, langResource[23].c_str());
 	setChildFont(ID_SEL_TITLE, displayFont);
-	setChildText(ID_SEL_ICON, langResource[23].c_str());
 	setChildFont(ID_SEL_ICON, displayFont);
-	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
 	setChildFont(ID_SEL_PALETTE, displayFont);
-	setChildText(ID_SEL_HINT, langResource[23].c_str());
 	setChildFont(ID_SEL_HINT, displayFont);
-	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
 	setChildFont(ID_SEL_MESSAGE, displayFont);
-	setChildText(ID_SEL_MENU, langResource[23].c_str());
 	setChildFont(ID_SEL_MENU, displayFont);
-	setChildText(ID_SET_ALL, langResource[24].c_str());
 	setChildFont(ID_SET_ALL, displayFont);
-	setChildText(IDOK, langResource[25].c_str());
 	setChildFont(IDOK, displayFont);
-	setChildText(IDCANCEL, langResource[26].c_str());
 	setChildFont(IDCANCEL, displayFont);
 
-	setChildText(ID_APPLY, langResource[71].c_str());
 	setChildFont(ID_APPLY, displayFont);
-	setChildText(ID_APPLY_ALL, langResource[71].c_str());
 	setChildFont(ID_APPLY_ALL, displayFont);
 
-	setChildText(IDC_GROUP_ALL, langResource[72].c_str());
 	setChildFont(IDC_GROUP_ALL, displayFont);
 
-	setChildText(IDC_GROUP_INDIVIDUAL, langResource[73].c_str());
 	setChildFont(IDC_GROUP_INDIVIDUAL, displayFont);
 
 	setChildFont(IDC_STATIC_APP_TITLE, displayFont);
@@ -915,10 +948,28 @@ void NoMeiryoUI::applyResource()
 	setChildFont(IDC_STATIC_VERNO, displayFont);
 	setChildFont(IDC_STATIC_AUTHOR, displayFont);
 
-
-	//DeleteObject(newFont);
 }
 
+/**
+ * @brief Get fallback font when font settings in language file didn't exist in Windows(For example older Windows)
+ * @param settingString Application display font name in language file.
+ * @return Font name adjusted by font installed in Windows.
+*/
+tstring NoMeiryoUI::getLanguageFallbackForCountry(tstring &settingString)
+{
+	tstring font;
+
+	switch (runningCountry) {
+		case Japan:
+			font = japan::getJapaneseFontFallback(langResource[0]);
+			break;
+		default:
+			font = default::getDefaultFontFallback(langResource[0]);
+			break;
+	}
+
+	return font;
+}
 
 /**
  * フォント表示を更新する。
@@ -1117,6 +1168,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			return (INT_PTR)0;
 		case IDM_SET_11:
 			OnSet11();
+			return (INT_PTR)0;
+		case IDM_CHOICE_APP_FONT:
+			OnChoiceAppFont();
 			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
@@ -2144,6 +2198,60 @@ void NoMeiryoUI::OnSet11(void)
 
 }
 
+/**
+ * アプリケーションフォントを選択する。
+ */
+void NoMeiryoUI::OnChoiceAppFont()
+{
+
+	INT_PTR result;
+	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
+
+	FillMemory(&logfont, sizeof(LOGFONT), 0x00);
+
+	try {
+
+		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL, TRUE);
+		if (noMeiryoUI) {
+			selector->setNoMeiryoUI();
+		}
+		if (noTahoma) {
+			selector->setNoTahoma();
+		}
+		// 選択していたフォントをフォント選択ダイアログに設定する。
+		selector->setPreviousFont(&logfont);
+
+		result = selector->showModal();
+		if (result != IDOK) {
+			delete[]selector;
+			return;
+		}
+		logfont = selector->getSelectedFont();
+		if (logfont.lfFaceName[0] == _T('\0')) {
+			delete[]selector;
+			return;
+		}
+
+		delete[]selector;
+	}
+	catch (...) {
+		MessageBox(this->hWnd,
+			_T("Internal error in font selection dialog."),
+			_T("Error"),
+			MB_OK | MB_ICONEXCLAMATION);
+		return;
+	}
+
+	langResource[0] = logfont.lfFaceName;
+	applyDisplayFont();
+
+	// 表示を更新する。
+	updateDisplay();
+
+	// 設定を保存する。
+	saveConfig();
+}
+
 // 設定するシステムフォントの情報格納用構造体
 // システムフォント設定スレッドで使用する。
 NONCLIENTMETRICS *s_fontMetrics;
@@ -2669,5 +2777,66 @@ void NoMeiryoUI::showVersion(void)
 		aboutContent,
 		title,
 		MB_OK | MB_ICONINFORMATION);
+}
+
+/**
+ * @brief 設定ファイルを保存する
+ */
+void NoMeiryoUI::saveConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	HMODULE hModule;
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
+
+}
+
+/**
+ * @brief 設定ファイルを保存する
+ */
+void NoMeiryoUI::loadConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	TCHAR fontName[33];
+	HMODULE hModule;
+	int read;
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, iniFile);
+
+	if (fontName[0] != _T('\0')) {
+		langResource[0] = fontName;
+	}
+	
+
 }
 

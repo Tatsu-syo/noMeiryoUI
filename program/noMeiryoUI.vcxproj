@@ -183,10 +183,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="country\default.cpp" />
     <ClCompile Include="country\japan.cpp" />
     <ClCompile Include="country\korea.cpp" />
     <ClCompile Include="FontSel.cpp" />
     <ClCompile Include="iniReader.cpp" />
+    <ClCompile Include="langresource.cpp" />
     <ClCompile Include="noMeiryoUI.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_2008|Win32'">Create</PrecompiledHeader>
@@ -206,10 +208,12 @@
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="country\default.h" />
     <ClInclude Include="country\japan.h" />
     <ClInclude Include="country\korea.h" />
     <ClInclude Include="FontSel.h" />
     <ClInclude Include="iniReader.h" />
+    <ClInclude Include="langresource.h" />
     <ClInclude Include="noMeiryoUI.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
