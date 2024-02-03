@@ -41,6 +41,7 @@ public:
 	HWND GetDlgItemRaw(int item);
 	void setChildText(int id, const TCHAR *message);
 	void setChildFont(int id, HFONT font);
+	void setChildEnabled(int id, BOOL enabled);
 
 	virtual void UpdateData(bool toObj);
 
