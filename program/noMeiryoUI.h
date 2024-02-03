@@ -8,6 +8,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
 
+#define EXE_NAME _T("noMeiryoUI.exe")
+#define INI_FILE _T("noMeiryoUI.ini")
+#define CONFIG_SECTION _T("Settings")
+#define UIFONT_KEY _T("UIFontName")
+
 void initializeLocale(void);
 BOOL CALLBACK MonitorNearMouseCallback(
 	HMONITOR hMonitor,
@@ -23,6 +28,8 @@ BOOL CALLBACK MonitorNearWindowCallback(
 );
 BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
 void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeName, TCHAR *iniPath);
+
+void setLocationInternalCode(TCHAR  langWork[85]);
 
 /** フォントのポイント数を保存する構造体 */
 struct FontPoints {
@@ -119,6 +126,7 @@ private:
 	void OnSet8();
 	void OnSet10(void);
 	void OnSet11(void);
+	void OnChoiceAppFont();
 	void set11TitlePreset(NONCLIENTMETRICS *metrics);
 	void SetWinVer(void);
 	void getWin10Ver(TCHAR *buf, DWORD major, DWORD minor);
@@ -134,8 +142,13 @@ private:
 	void getOption(TCHAR *lpCmdLine);
 	void parseOption(TCHAR *param, int argCount);
 	void applyResource();
+	void applyDisplayText();
+	void applyDisplayFont();
+	tstring getLanguageFallbackForCountry(tstring &settingString);
 	void showVersion(void);
 	void adjustWindowSize(void);
+	void saveConfig(void);
+	void loadConfig(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);

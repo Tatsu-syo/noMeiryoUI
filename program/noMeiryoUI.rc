@@ -1,7 +1,6 @@
-//
-// noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+// noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
 // The sources for noMeiryoUI are distributed under the MIT open source license
-//
+
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
@@ -65,7 +64,7 @@ FONT 11, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
     LTEXT           "Meiryo UIも大っきらい!! Version 3.2.1",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
     RTEXT           "Copyright (C) Tatsu 2005,2012-2023",IDC_STATIC_AUTHOR,194,7,161,14
-    LTEXT           "",IDC_STATIC_VERNO,7,20,348,10
+    LTEXT           "",IDC_STATIC_VERNO,7,21,348,10
     GROUPBOX        "全体設定",IDC_GROUP_ALL,7,37,348,45
     LTEXT           "すべてのフォント",IDC_STATIC_ALL_FONT,11,47,132,12
     EDITTEXT        IDC_EDIT_ALL,153,47,149,12,ES_AUTOHSCROLL | ES_READONLY
@@ -107,10 +106,10 @@ BEGIN
     COMBOBOX        IDC_COMBO_STYLE,150,23,95,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
     LTEXT           "サイズ(&S)：",IDC_STATIC_SIZE,252,10,47,12
     COMBOBOX        IDC_COMBO_SIZE,252,23,47,85,CBS_SIMPLE | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "太字(&B)",IDC_CHECK_BOLD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,107,125,11
-    CONTROL         "斜体(&I)",IDC_CHECK_ITALIC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,119,125,11
-    CONTROL         "下線(&U)",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,131,125,11
-    CONTROL         "取り消し線(&T)",IDC_CHECK_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,143,126,11
+    CONTROL         "太字(&B)",IDC_CHECK_BOLD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,108,125,11
+    CONTROL         "斜体(&I)",IDC_CHECK_ITALIC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,120,125,11
+    CONTROL         "下線(&U)",IDC_CHECK_UNDERLINE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,132,125,11
+    CONTROL         "取り消し線(&T)",IDC_CHECK_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,144,126,11
     LTEXT           "文字セット(&C)：",IDC_STATIC_CHARSET,150,110,127,11
     COMBOBOX        IDC_COMBO_CHARSET,150,122,149,14,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     DEFPUSHBUTTON   "OK",IDOK,193,144,50,14
@@ -182,8 +181,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,2,1,1
- PRODUCTVERSION 3,2,1,1
+ FILEVERSION 3,3,0,0
+ PRODUCTVERSION 3,3,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -200,12 +199,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Tatsuhiko Syoji a individual developer"
             VALUE "FileDescription", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "FileVersion", "3.2.2.0"
+            VALUE "FileVersion", "3.3.3.0"
             VALUE "InternalName", "NoMeiryoUI"
             VALUE "LegalCopyright", "Copyright (C) Tatsuhiko Syoji 2005,2012-2023"
             VALUE "OriginalFilename", "noMeiryoUI.exe"
             VALUE "ProductName", "Meiryo UIも大っきらい!! (No!! Meiryo UI)"
-            VALUE "ProductVersion", "3.2.2.0"
+            VALUE "ProductVersion", "3.3.3.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -246,6 +245,8 @@ BEGIN
     END
     POPUP "ツール(&T)"
     BEGIN
+        MENUITEM "Meiryo UIも大っきらい!! のフォントを選択する(&F)", IDM_CHOICE_APP_FONT
+        MENUITEM SEPARATOR
         MENUITEM "別スレッドでフォントを変更する(&A)",         IDM_ANOTHER
         MENUITEM "フォントサイズをWindows 7と同様に扱う(&7)", IDM_COMPAT7
     END
@@ -265,7 +266,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_APP_TITLE           "Meiryo UIも大っきらい!!"
-    IDS_VERSION             "%s Version 3.2.2.0"
+    IDS_VERSION             "%s Version 3.3.0.0"
     IDC_NOMEIRYOUI          "NOMEIRYOUI"
 END
 
