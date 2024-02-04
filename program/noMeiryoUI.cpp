@@ -408,6 +408,9 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	appMenu->setEnabled(IDM_SET_8, has8Preset);
 	appMenu->setEnabled(IDM_SET_10, has10Preset);
 	appMenu->setEnabled(IDM_SET_11, has11Preset);
+	if (!multiRun) {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+	}
 
 	// 先発のOSではフォントがない場合があるので
 	// 後発OS用のプリセットを使用不可とする。
@@ -2888,7 +2891,7 @@ void NoMeiryoUI::loadConfig(void)
 	if (multiRunValue != 0) {
 		multiRun = true;
 	} else {
-		multiRun = true;
+		multiRun = false;
 	}
 
 }
@@ -2900,5 +2903,10 @@ void NoMeiryoUI::handleMultipleRun(void)
 {
 	if (multiRun) {
 		return;
+	}
+	HWND hWnd = FindWindow(NULL, langResource[TITLE].c_str());
+	if (hWnd != NULL) {
+		// Already running
+		ExitProcess(0);
 	}
 }
