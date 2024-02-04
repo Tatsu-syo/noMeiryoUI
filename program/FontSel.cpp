@@ -259,7 +259,7 @@ int getFont()
 /**
  * コンストラクタ
  */
-FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
+FontSel::FontSel(HWND parent, int resource, bool fontOnly) : BaseDialog(parent, resource)
 {
 	displayFont = NULL;
 	m_fontNameList = NULL;
@@ -272,6 +272,7 @@ FontSel::FontSel(HWND parent, int resource) : BaseDialog(parent, resource)
 	m_strike = NULL;
 	previousFont = NULL;
 	m_point = 0;
+	m_fontonly = fontOnly;
 }
 
 /**
@@ -408,10 +409,32 @@ INT_PTR FontSel::OnInitDialog()
 		}
 	}
 
+	if (m_fontonly) {
+		disableWithoutFontselect();
+	}
+
 	applyResource();
 	adjustPosition();
 
 	return (INT_PTR)FALSE;
+}
+
+/**
+ * @brief フォント選択以外を無効化する。
+ *
+ */
+void FontSel::disableWithoutFontselect(void)
+{
+	m_fontSizeList->EnableWindow(FALSE);
+	m_ChersetList->EnableWindow(FALSE);
+	m_styleList->EnableWindow(FALSE);
+	m_bold->EnableWindow(FALSE);
+	m_italic->EnableWindow(FALSE);
+	m_underline->EnableWindow(FALSE);
+	m_strike->EnableWindow(FALSE);
+	setChildEnabled(IDC_STATIC_STYLE, FALSE);
+	setChildEnabled(IDC_STATIC_SIZE, FALSE);
+	setChildEnabled(IDC_STATIC_CHARSET, FALSE);
 }
 
 /**
@@ -466,10 +489,6 @@ void FontSel::applyResource()
 	HDC hDC = GetDC(this->hWnd);
 	tstring font = langResource[0];
 
-	if (runningCountry == Japan) {
-		font = japan::getJapaneseFontFallback(langResource[0]);
-	}
-
 	displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
 		0,
@@ -479,7 +498,7 @@ void FontSel::applyResource()
 		FALSE,
 		FALSE,
 		FALSE,
-		_tstoi(langResource[70].c_str()),
+		_tstoi(langResource[0].c_str()),
 		OUT_DEFAULT_PRECIS,
 		CLIP_DEFAULT_PRECIS,
 		PROOF_QUALITY, // CLEARTYPE_QUALITY,
@@ -492,27 +511,27 @@ void FontSel::applyResource()
 	// アプリタイトル
 	setText(langResource[27].c_str());
 
-	setChildText(IDC_STATIC_NAME, langResource[28].c_str());
+	setChildText(IDC_STATIC_NAME, langResource[DLG_FONT_NAME].c_str());
 	setChildFont(IDC_STATIC_NAME, displayFont);
-	setChildText(IDC_STATIC_STYLE, langResource[29].c_str());
+	setChildText(IDC_STATIC_STYLE, langResource[DLG_STYLE].c_str());
 	setChildFont(IDC_STATIC_STYLE, displayFont);
-	setChildText(IDC_STATIC_SIZE, langResource[30].c_str());
+	setChildText(IDC_STATIC_SIZE, langResource[DLG_SIZE].c_str());
 	setChildFont(IDC_STATIC_SIZE, displayFont);
 
 	setChildText(IDC_CHECK_BOLD, langResource[DLG_CHECK_BOLD].c_str());
 	setChildFont(IDC_CHECK_BOLD, displayFont);
 	setChildText(IDC_CHECK_ITALIC, langResource[DLG_CHECK_ITALIC].c_str());
 	setChildFont(IDC_CHECK_ITALIC, displayFont);
-	setChildText(IDC_CHECK_UNDERLINE, langResource[31].c_str());
+	setChildText(IDC_CHECK_UNDERLINE, langResource[DLG_UNDERLINE].c_str());
 	setChildFont(IDC_CHECK_UNDERLINE, displayFont);
-	setChildText(IDC_CHECK_STRIKE, langResource[32].c_str());
+	setChildText(IDC_CHECK_STRIKE, langResource[DLG_STRIKE].c_str());
 	setChildFont(IDC_CHECK_STRIKE, displayFont);
-	setChildText(IDC_STATIC_CHARSET, langResource[33].c_str());
+	setChildText(IDC_STATIC_CHARSET, langResource[DLG_CHARSET].c_str());
 	setChildFont(IDC_STATIC_CHARSET, displayFont);
 
-	setChildText(IDOK, langResource[34].c_str());
+	setChildText(IDOK, langResource[DLG_OK].c_str());
 	setChildFont(IDOK, displayFont);
-	setChildText(IDCANCEL, langResource[35].c_str());
+	setChildText(IDCANCEL, langResource[DLG_CANCEL].c_str());
 	setChildFont(IDCANCEL, displayFont);
 
 	setChildFont(IDC_COMBO_NAME, displayFont);

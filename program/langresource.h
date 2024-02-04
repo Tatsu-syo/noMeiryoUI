@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
@@ -94,6 +94,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define DLG_CHECK_ITALIC 83
 #define MSG_WARNING 84
 #define MSG_WIN11_22H2RESTRICTION 85
+#define MENU_CHOICE_APP_FONT 86
 
 extern void readResourceFile(TCHAR *file);
 
