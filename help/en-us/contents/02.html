@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,mon-jai
+noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,mon-jai
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html>
@@ -28,7 +28,7 @@ This icon(<img src="icon.png" width="32" height="32">).<br>
 
 <p>
 And, below window is displayed.<br>
-<img src="noMeiryoUI.PNG" width="602" height="434"><br>
+<img src="noMeiryoUI.PNG" width="728" height="446"><br>
 Push select... button to set user interface element.<br>
 </p>
 
@@ -50,7 +50,34 @@ Push Apply button, you can set user interface font.<br>
 </p>
 
 </div>
+
 <hr>
+
+<div class="chapter">
+    <h2><a id="Options">Options menu</a></h2>
+    <ul>
+        <li>Choice No!! Meiryo UI application font<br>
+            Users can choice application font by font dialog.<br>
+        </li>
+        <li>Set system fonts in separated thread<br>
+            Some programs cause system freeze when system fonts changed.<br>
+            To avoid system freeze check this item.<br>
+            Initially, this option is checked.<br>
+            If you don't select this item, you can reduce time when you changed system fonts.<br>
+        </li>
+        <li>Calculate font size same as Windows 7<br>
+            In Windows 8, font size caliculate algorithm is different from other version of Windows.<br>
+            When you check this option, font size caliculate algorithm in Windows 8 is same as other version of Windows.<br>
+        </li>
+        <li>Don't run multiply<br>
+            When you check this option, No!! Meiryo UI don't run multiply.<br>
+            This option is useful to avoid contamination.<br>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
 <div class="chapter">
 <h2><a id="CommandLine">Command line option.</a></h2>
 <p>
@@ -63,6 +90,10 @@ If you specify font setting file, font setting file is loaded when this program 
 <p>
 If you choice -set option, system fonts are setted automatically.<br>
 </p>
+
+</div>
+
+<div>
 
 </div>
 
