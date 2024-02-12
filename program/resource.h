@@ -82,7 +82,7 @@
 #define ID_AAA_BBB                      32790
 #define ID_32791                        32791
 #define IDM_SET_11                      32792
-#define ID_Menu32793                    32793
+#define IDM_NO_MULTI_RUN                32793
 #define IDM_CHOICE_APP_FONT             32794
 #define IDC_STATIC                      -1
 #define IDC_STATIC_CHARSET              -1
