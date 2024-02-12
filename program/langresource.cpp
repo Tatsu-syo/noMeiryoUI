@@ -280,5 +280,8 @@ void readResourceFile(TCHAR *file)
 	readResourceItem(file, _T("MENU_TOOLS_CHOICE_APP_FONT"),
 		_T("Choice No!! Meiryo UI application &font")
 	);
+	readResourceItem(file, _T("MENU_TOOLS_NO_MULTI_RUN"),
+		_T("&Don't run multiply")
+	);
 }
 

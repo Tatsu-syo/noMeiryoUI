@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001 
+; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001 
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -15,8 +15,10 @@ MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_PRESET_11=Windows 11
 MENU_TOOLS=工具(&T)
+MENU_TOOLS_CHOICE_APP_FONT=Choice No!! Meiryo UI application &font
 MENU_TOOLS_THREAD=在另一執行緒中變更字型(&A)
 MENU_TOOLS_SEVEN=將字型大小視為與 Windows 7 相同(&7)
+MENU_TOOLS_NO_MULTI_RUN=&Don't run multiply
 MENU_HELP=說明(&H)
 MENU_HELP_HELP=檢視說明(&C)
 MENU_HELP_ABOUT=關於 No!! Meiryo UI (&A)

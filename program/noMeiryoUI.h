@@ -12,6 +12,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define INI_FILE _T("noMeiryoUI.ini")
 #define CONFIG_SECTION _T("Settings")
 #define UIFONT_KEY _T("UIFontName")
+#define MULTI_RUN_KEY _T("RunMultiple")
 
 void initializeLocale(void);
 BOOL CALLBACK MonitorNearMouseCallback(
@@ -149,9 +150,13 @@ private:
 	void adjustWindowSize(void);
 	void saveConfig(void);
 	void loadConfig(void);
+	void toggleWin7aliculate();
+	void toggleMultiRun();
+	void handleMultipleRun(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
+
 
 public:
 	BaseDialog *createBaseDialog();
