@@ -2606,8 +2606,10 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber > 22631) {
+			if (buildNumber > 26999) {
 				_tcscat_s(calledVer, _T(" Insider"));
+			} else if (buildNumber > 26000) {
+				_tcscat_s(calledVer, _T(" 2024 Update"));
 			} else if (buildNumber == 22631) {
 				_tcscat_s(calledVer, _T(" 2023 Update"));
 			} else if (buildNumber >= 22621) {
@@ -2770,7 +2772,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2023\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2024\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
