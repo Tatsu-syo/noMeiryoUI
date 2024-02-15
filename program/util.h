@@ -97,6 +97,12 @@ size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);
 
+#if _MSC_VER < 1600
+
+double round(double x);
+
+#endif
+
 /**
  * プリセット設定
  *
