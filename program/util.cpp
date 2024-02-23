@@ -74,6 +74,18 @@ double Win11PresetWindowsMetric[] = {
 	19,
 	4 };
 
+#if _MSC_VER < 1600
+
+double round(double x)
+{
+	if (x > 0.0){
+		return floor(x + 0.5);
+	} else {
+		return ceil(x - 0.5);
+	}
+}
+#endif
+
 /**
  * フォントのピクセル数に対応するポイント数を整数で算出する。(Windows 8)
  *
