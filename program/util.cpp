@@ -74,7 +74,7 @@ double Win11PresetWindowsMetric[] = {
 	19,
 	4 };
 
-#if _MSC_VER < 1600
+#if _MSC_VER < 1800
 
 double round(double x)
 {
