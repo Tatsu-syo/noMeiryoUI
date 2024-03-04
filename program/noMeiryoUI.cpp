@@ -845,6 +845,7 @@ void NoMeiryoUI::applyResource()
 	applyDisplayText();
 
 	applyDisplayFont();
+	adjustWindowSize();
 }
 
 
@@ -2281,6 +2282,7 @@ void NoMeiryoUI::OnChoiceAppFont()
 
 	langResource[0] = logfont.lfFaceName;
 	applyDisplayFont();
+	adjustWindowSize();
 
 	// 表示を更新する。
 	updateDisplay();
