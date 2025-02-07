@@ -12,6 +12,10 @@ BaseDialog *BaseDialog::modalCallback;
 static BaseDialog *modelessCallback[10];
 static int modelessCallbacks = 0;
 
+// カスタムメッセージ定義
+#define WM_DIALOG_SHOWN (WM_USER + 1)
+#define WM_DIALOG_CREATED (WM_USER + 2)
+
 /**
  * モードレスダイアログのコールバックを初期化する。
  *
@@ -175,16 +179,27 @@ INT_PTR CALLBACK BaseDialog::dialogProc(HWND hDlg, UINT message, WPARAM wParam, 
 {
 	INT_PTR result;
 
-	hWnd = hDlg;
 	switch (message)
 	{
 		case WM_INITDIALOG:
+			this->hWnd = hDlg;
             result = OnInitDialog();
-			return result;
+			return TRUE;
 
 		case WM_SHOWWINDOW:
-			result = OnShowWindow(wParam, lParam);
-			return 0;
+			if (wParam == TRUE) {
+				PostMessage(this->hWnd, WM_DIALOG_SHOWN, 0, 0);
+			}
+			return TRUE;
+
+		case WM_DIALOG_SHOWN:
+			result = OnWindowShown(wParam, lParam);
+			PostMessage(this->hWnd, WM_DIALOG_CREATED, 0, 0);
+			return TRUE;
+
+		case WM_DIALOG_CREATED:
+			result = OnWindowCreated(wParam, lParam);
+			return TRUE;
 
 		case WM_COMMAND:
 			result = OnCommand(wParam);
@@ -223,16 +238,27 @@ INT_PTR BaseDialog::OnInitDialog()
 }
 
 /**
+ * ダイアログ生成完了時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR BaseDialog::OnWindowShown(WPARAM wParam, LPARAM lParam)
+{
+	return (INT_PTR)TRUE;
+}
+
+/**
  * WM_SHOWWINDOWメッセージによる表示状態変更時の処理
  *
  * @param wParam WPARAM
  * @param lParam lParam
  * @return 0:処理した 非0:処理しない
  */
-INT_PTR BaseDialog::OnShowWindow(WPARAM wParam, LPARAM lParam)
+INT_PTR BaseDialog::OnWindowCreated(WPARAM wParam, LPARAM lParam)
 {
-	::DefWindowProc(this->hWnd, WM_SHOWWINDOW, wParam, lParam);
-	return (INT_PTR)0;
+	return (INT_PTR)TRUE;
 }
 
 /**
@@ -246,6 +272,7 @@ INT_PTR BaseDialog::OnCommand(WPARAM wParam)
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
 			EndDialog(hWnd, LOWORD(wParam));
+			DWORD error = GetLastError();
 			return (INT_PTR)0;
 		}
 	}

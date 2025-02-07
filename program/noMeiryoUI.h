@@ -112,6 +112,7 @@ private:
 
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;
+	bool firstShow;
 
 	void OnLoad();
 	BOOL loadFontInfo(TCHAR *filename);
@@ -135,7 +136,8 @@ private:
 
 	void setFont(
 		NONCLIENTMETRICS *fontMetrics,
-		LOGFONT *iconLogFont
+		LOGFONT *iconLogFont,
+		bool fromGui
 	);
 	void showHelp(void);
 	HFONT createFont(LOGFONT *font);
@@ -162,6 +164,8 @@ public:
 	BaseDialog *createBaseDialog();
 	int OnAppliStart(TCHAR *lpCmdLine);
 	int OnWindowShow();
+	INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
+	INT_PTR OnWindowCreated(WPARAM wParam, LPARAM lParam);
 	int OnAppliEnd();
 	INT_PTR OnInitDialog();
 	void UpdateData(bool toObj);

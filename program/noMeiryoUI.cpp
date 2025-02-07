@@ -232,6 +232,8 @@ INT_PTR CALLBACK MainDialogProc(
  */
 BaseDialog *NoMeiryoUI::createBaseDialog()
 {
+	firstShow = true;
+
 	return appObj;
 }
 
@@ -389,38 +391,6 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// 親クラスのダイアログ初期化処理を呼ぶ。
 	DialogAppliBase::OnInitDialog();
 
-	// アプリケーションアイコンの設定
-	HICON hIcon;
-
-    hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
-    SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-
-	appMenu = new TwrMenu(this->hWnd);
-
-	if (!use7Compat) {
-		// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
-		appMenu->setEnabled(IDM_COMPAT7, false);
-	}
-	appMenu->CheckMenuItem(IDM_ANOTHER, true);
-
-	// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
-	// ある場合のみプリセットを有効にする。
-	appMenu->setEnabled(IDM_SET_8, has8Preset);
-	appMenu->setEnabled(IDM_SET_10, has10Preset);
-	appMenu->setEnabled(IDM_SET_11, has11Preset);
-	if (!multiRun) {
-		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
-	}
-
-	// 先発のOSではフォントがない場合があるので
-	// 後発OS用のプリセットを使用不可とする。
-	if (majorVersion < 10) {
-		appMenu->setEnabled(IDM_SET_10, false);
-	}
-	if (majorVersion < 11) {
-		appMenu->setEnabled(IDM_SET_11, false);
-	}
-
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
 	FillMemory(&metricsAll, sizeof(NONCLIENTMETRICS), 0x00);
@@ -437,7 +407,14 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		if (loadResult) {
 			if (setOnStart) {
 				// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
-				OnBnClickedOk();
+				if (compatLevel > 0) {
+					// Windows 11 22H2以降の場合、タイトルを元の物に変更する
+					set11TitlePreset(&metrics);
+				}
+
+				// フォント変更を実施する。
+				setFont(&metrics, &iconFont, false);
+
 				EndDialog(hWnd, 0);
 
 				return (INT_PTR)FALSE;
@@ -457,38 +434,122 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 		}
 	}
 
-	// UI文字列をリソースに合わせて変更する。
-	applyResource();
+	return (INT_PTR)FALSE;
+}
 
-	// メインダイアログのバージョン表記設定
-	TCHAR buf[64];
-	TCHAR verString[32];
-	const TCHAR *appName;
-	LoadString(hInst, IDS_VERSION, verString, 32);
-	appName = langResource[1].c_str();
-	_stprintf(buf, verString, appName);
-	setChildText(IDC_STATIC_APP_TITLE, buf);
+/**
+ * ウインドウ生成完了時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
+{
+	DialogAppliBase::OnWindowShown(wParam, lParam);
 
+	if (firstShow) {
 
-	// フォント名表示を更新する。
-	updateDisplay();
+		// アプリケーションアイコンの設定
+		HICON hIcon;
 
-	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
+		hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
+		SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
-	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+		appMenu = new TwrMenu(this->hWnd);
 
-	adjustWindowSize();
+		if (!use7Compat) {
+			// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
+			appMenu->setEnabled(IDM_COMPAT7, false);
+		}
+		appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
-	// compatLevel = 0;
+		// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
+		// ある場合のみプリセットを有効にする。
+		appMenu->setEnabled(IDM_SET_8, has8Preset);
+		appMenu->setEnabled(IDM_SET_10, has10Preset);
+		appMenu->setEnabled(IDM_SET_11, has11Preset);
+		if (!multiRun) {
+			appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+		}
+
+		// 先発のOSではフォントがない場合があるので
+		// 後発OS用のプリセットを使用不可とする。
+		if (majorVersion < 10) {
+			appMenu->setEnabled(IDM_SET_10, false);
+		}
+		if (majorVersion < 11) {
+			appMenu->setEnabled(IDM_SET_11, false);
+		}
+
+		// UI文字列をリソースに合わせて変更する。
+		applyResource();
+
+		// メインダイアログのバージョン表記設定
+		TCHAR buf[64];
+		TCHAR verString[32];
+		const TCHAR *appName;
+		LoadString(hInst, IDS_VERSION, verString, 32);
+		appName = langResource[1].c_str();
+		_stprintf(buf, verString, appName);
+		setChildText(IDC_STATIC_APP_TITLE, buf);
+
+		// フォント名表示を更新する。
+		updateDisplay();
+
+		EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
+
+		adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+
+		adjustWindowSize();
+
+		// compatLevel = 0;
+#if 0
+		if (compatLevel > 0) {
+			titleFontButton->EnableWindow(FALSE);
+
+			// ワーニングメッセージ in Win11 22H2
+			//MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
+			//	langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+			MessageBox(this->getHwnd(), _T("Windows 11のバカヤロー"),
+				_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
+
+		}
+#endif
+
+		firstShow = false;
+	}
+
+	return (INT_PTR)0;
+}
+
+/**
+ * WM_SHOWWINDOWメッセージによる表示状態変更時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR NoMeiryoUI::OnWindowCreated(WPARAM wParam, LPARAM lParam)
+{
+	DialogAppliBase::OnWindowCreated(wParam, lParam);
+
+#if 1
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
+
 		// ワーニングメッセージ in Win11 22H2
 		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
 			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
-	}
+		//MessageBox(this->getHwnd(), _T("Windows 11のバカヤロー"),
+		//	_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
 
-	return (INT_PTR)FALSE;
+	}
+#endif
+
+	return (INT_PTR)0;
 }
+
 
 /**
  * カーソルのいるモニターを判定するためのEnumDisplayMonitorsのコールバック
@@ -845,7 +906,6 @@ void NoMeiryoUI::applyResource()
 	applyDisplayText();
 
 	applyDisplayFont();
-	adjustWindowSize();
 }
 
 
@@ -2054,11 +2114,12 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	}
 #endif
 	if (compatLevel > 0) {
+		// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 		set11TitlePreset(&metrics);
 	}
 
 	// フォント変更を実施する。
-	setFont(&metrics, &iconFont);
+	setFont(&metrics, &iconFont, true);
 
 	// COLORREF ref = GetThemeSysColor(NULL, COLOR_ACTIVECAPTION);
 
@@ -2088,7 +2149,7 @@ void NoMeiryoUI::OnBnClickedAll()
 	}
 
 	// フォント変更を実施する。
-	setFont(&metricsAll, &iconFontAll);
+	setFont(&metricsAll, &iconFontAll, true);
 
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
 	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
@@ -2346,7 +2407,8 @@ unsigned _stdcall setOnThread(void *p)
  */
 void NoMeiryoUI::setFont(
 	NONCLIENTMETRICS *fontMetrics,
-	LOGFONT *iconLogFont
+	LOGFONT *iconLogFont,
+	bool fromGui
 ) {
 
 	DWORD_PTR ptr;
@@ -2433,7 +2495,9 @@ void NoMeiryoUI::setFont(
 	SetSysColors(1,colorItems,colors);
 #endif
 
-	adjustWindowSize();
+	if (fromGui) {
+		adjustWindowSize();
+	}
 }
 
 /**
