@@ -5,6 +5,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #ifndef NOMEIRYOUI_H
 #define NOMEIRYOUI_H
 
+#include <vector>
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
 
@@ -114,6 +115,8 @@ private:
 	bool setOnStart;
 	bool firstShow;
 
+	int autosetDelay;
+
 	void OnLoad();
 	BOOL loadFontInfo(TCHAR *filename);
 	BOOL loadFont(TCHAR *filename, TCHAR *section, LOGFONT *font);
@@ -142,8 +145,8 @@ private:
 	void showHelp(void);
 	HFONT createFont(LOGFONT *font);
 	void getActualFont(void);
-	void getOption(TCHAR *lpCmdLine);
-	void parseOption(TCHAR *param, int argCount);
+	void getOption();
+	void parseOption(std::vector<tstring *> *param);
 	void applyResource();
 	void applyDisplayText();
 	void applyDisplayFont();

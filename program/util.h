@@ -96,6 +96,8 @@ DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion, DWORD& buildNum
 size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);
+std::vector<tstring *> *extractArguments();
+void deleteArguments(std::vector<tstring *> *arguments);
 
 #if _MSC_VER < 1800
 

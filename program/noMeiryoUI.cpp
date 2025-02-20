@@ -59,6 +59,7 @@ DialogAppliBase *createAppli()
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
 	appObj = new NoMeiryoUI();
+
 	return appObj;
 }
 
@@ -270,6 +271,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	menuFontTextBox = NULL;
 
 	usePreset = false;
+	autosetDelay = 0;
 
 	loadConfig();
 	handleMultipleRun();
@@ -305,7 +307,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	}
 
 	// オプションを取得する。
-	getOption(lpCmdLine);
+	getOption();
 
 	return 0;
 }
@@ -405,35 +407,19 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 		BOOL loadResult = loadFontInfo(settingFile);
 		if (loadResult) {
-			if (setOnStart) {
-				// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
-				if (compatLevel > 0) {
-					// Windows 11 22H2以降の場合、タイトルを元の物に変更する
-					set11TitlePreset(&metrics);
-				}
-
-				// フォント変更を実施する。
-				setFont(&metrics, &iconFont, false);
-
-				EndDialog(hWnd, 0);
-
-				return (INT_PTR)FALSE;
-			} else {
-				// メニューフォントの情報をすべてのフォントの各フォントの情報にあてる。
-				metricsAll.lfMenuFont = metrics.lfMenuFont;
-				metricsAll.lfStatusFont = metricsAll.lfMenuFont;
-				metricsAll.lfMessageFont = metricsAll.lfMenuFont;
-				metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
-				metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
-				iconFontAll = metricsAll.lfMenuFont;
-			}
+			// メニューフォントの情報をすべてのフォントの各フォントの情報にあてる。
+			metricsAll.lfMenuFont = metrics.lfMenuFont;
+			metricsAll.lfStatusFont = metricsAll.lfMenuFont;
+			metricsAll.lfMessageFont = metricsAll.lfMenuFont;
+			metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
+			metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
+			iconFontAll = metricsAll.lfMenuFont;
 		} else {
 			// 読み込み失敗時は念のため再度現在のフォント等の情報を
 			// 取得しておく。
 			getActualFont();
 		}
 	}
-
 	return (INT_PTR)FALSE;
 }
 
@@ -485,6 +471,26 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 		// UI文字列をリソースに合わせて変更する。
 		applyResource();
 
+		if (setOnStart) {
+
+			if (autosetDelay > 0) {
+				Sleep(autosetDelay * 1000);
+			}
+
+			// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
+			if (compatLevel > 0) {
+				// Windows 11 22H2以降の場合、タイトルを元の物に変更する
+				set11TitlePreset(&metrics);
+			}
+
+			// フォント変更を実施する。
+			setFont(&metrics, &iconFont, false);
+
+			ExitProcess(0);
+
+			return (INT_PTR)TRUE;
+		}
+
 		// メインダイアログのバージョン表記設定
 		TCHAR buf[64];
 		TCHAR verString[32];
@@ -503,20 +509,6 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 
 		adjustWindowSize();
 
-		// compatLevel = 0;
-#if 0
-		if (compatLevel > 0) {
-			titleFontButton->EnableWindow(FALSE);
-
-			// ワーニングメッセージ in Win11 22H2
-			//MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
-			//	langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
-			MessageBox(this->getHwnd(), _T("Windows 11のバカヤロー"),
-				_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
-
-		}
-#endif
-
 		firstShow = false;
 	}
 
@@ -534,7 +526,6 @@ INT_PTR NoMeiryoUI::OnWindowCreated(WPARAM wParam, LPARAM lParam)
 {
 	DialogAppliBase::OnWindowCreated(wParam, lParam);
 
-#if 1
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
 
@@ -545,7 +536,6 @@ INT_PTR NoMeiryoUI::OnWindowCreated(WPARAM wParam, LPARAM lParam)
 		//	_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
 
 	}
-#endif
 
 	return (INT_PTR)0;
 }
@@ -675,67 +665,15 @@ void NoMeiryoUI::adjustWindowSize(void)
 
 /**
  * コマンドラインオプションを取得する。
- *
- * @param lpCmdLine コマンドライン
  */
-void NoMeiryoUI::getOption(TCHAR *lpCmdLine)
+void NoMeiryoUI::getOption()
 {
-	TCHAR *p;
-	TCHAR *paramStart;
-	bool firstCommand = false;
-	bool capturing = false;
-	TCHAR delimiter;
-	int argCount = 0;
 
-	p = lpCmdLine;
-	while (*p != _T('\0')) {
-		if (*p == _T('\"')) {
-			if (!capturing) {
-				capturing = true;
-				delimiter = _T('\"');
-				// 次の文字からパラメータ開始
-				paramStart = p + 1;
-			} else {
-				if (delimiter == _T('\"')) {
-					// 解析中で区切り文字がダブルクォーテーションの場合
-					// パラメータ終了とする。
-					capturing = false;
-					*p = _T('\0');
-					argCount++;
-					// ここでパラメータの個数に応じた処理を行う。
-					parseOption(paramStart, argCount);
-				}
-			}
-		} else if (_istspace(*p)) {
-			// 空白の場合
-			if (capturing) {
-				if (delimiter != _T('\"')) {
-					// 解析中で区切り文字がダブルクォーテーションでない場合
-					// パラメータ終了とする。
-					capturing = false;
-					*p = _T('\0');
-					argCount++;
-					// ここでパラメータの個数に応じた処理を行う。
-					parseOption(paramStart, argCount);
-				}
-			}
-		} else {
-			if (!capturing) {
-				// パラメータ開始
-				capturing = true;
-				paramStart = p;
-				delimiter = _T(' ');
-			}
-		}
-		p++;
-	}
-	if (capturing) {
-		// まだコマンドライン解析が続いていたらここまでをコマンドラインとする。
-		argCount++;
-		// ここでパラメータの個数に応じた処理を行う。
-		parseOption(paramStart, argCount);
-	}
+	std::vector<tstring *> *argv = extractArguments();
 
+	parseOption(argv);
+
+	deleteArguments(argv);
 }
 
 /**
@@ -744,31 +682,41 @@ void NoMeiryoUI::getOption(TCHAR *lpCmdLine)
  * @param param パラメータ
  * @param argCount オプションの個数
  */
-void NoMeiryoUI::parseOption(TCHAR *param, int argCount)
+void NoMeiryoUI::parseOption(std::vector<tstring *> *param)
 {
-	switch (argCount) {
-		case 1:
-			// 設定ファイル名
-			if (_tcscmp(_T("--"), param)) {
-				if ((_tcschr(param, '\\') == NULL) && (_tcschr(param, '/') == NULL)) {
-					GetCurrentDirectory(MAX_PATH, settingFile);
-					_tcscat(settingFile, _T("\\"));
-				} else {
-					settingFile[0] = _T('\0');
-				}
-				_tcscat(settingFile, param);
-			}
-			break;
-		default:
-			if (!_tcscmp(param, _T("-set"))) {
-				setOnStart = true;
-			} else if (!_tcscmp(param, _T("noMeiryoUI"))) {
-				noMeiryoUI = true;
-			} else if (!_tcscmp(param, _T("noTahoma"))) {
-				noTahoma = true;
-			}
+	if (param->size() < 2) {
+		return;
+	}
 
-			break;
+	if (_tcscmp(_T("--"), (*param)[1]->c_str())) {
+		if ((_tcschr((*param)[1]->c_str(), _T('\\')) == NULL) && (_tcschr((*param)[1]->c_str(), _T('/')) == NULL)) {
+			GetCurrentDirectory(MAX_PATH, settingFile);
+			_tcscat(settingFile, _T("\\"));
+		}
+		else {
+			settingFile[0] = _T('\0');
+		}
+		_tcscat(settingFile, (*param)[1]->c_str());
+	}
+
+	if (param->size() < 3) {
+		return;
+	}
+
+	for (int i = 2; i < param->size(); i++) {
+		if (!_tcscmp((*param)[i]->c_str(), _T("-set"))) {
+			setOnStart = true;
+		} else if (!_tcscmp((*param)[i]->c_str(), _T("noMeiryoUI"))) {
+			noMeiryoUI = true;
+		} else if (!_tcscmp((*param)[i]->c_str(), _T("noTahoma"))) {
+			noTahoma = true;
+		} else if ((*param)[i]->compare(_T("delay"))) {
+			if ((i + 1) < param->size()) {
+				autosetDelay = _ttoi((*param)[i + 1]->c_str());
+				i++;
+			}
+		}
+
 	}
 }
 

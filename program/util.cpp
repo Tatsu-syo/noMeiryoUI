@@ -865,3 +865,93 @@ void setPreset(
 	metrics->iPaddedBorderWidth = round(windowMetric[Padding] * ((double)dpiY / 96.0));
 
 }
+
+/**
+ * @brief コマンドライン引数を展開する
+ * @return コマンドライン引数配列
+ */
+std::vector<tstring *> *extractArguments()
+{
+	TCHAR *argument = GetCommandLine();
+	std::vector<tstring *> *argv = new std::vector<tstring *>();
+
+	TCHAR delim = _T('\0');
+	tstring *splitted = nullptr;
+
+	while (*argument) {
+		if (delim == _T('\0')) {
+			// Quote not started
+			if (_istspace(*argument)) {
+				if (splitted != nullptr) {
+					// Argument end
+					argv->push_back(splitted);
+					splitted = nullptr;
+				}
+			}
+			else {
+				switch (*argument) {
+					case _T('\''):
+						// Quote start
+						if (splitted == nullptr) {
+							delim = *argument;
+						} else {
+							splitted->push_back(*argument);
+						}
+						break;
+					case _T('\"'):
+						// Quote start
+						if (splitted == nullptr) {
+							delim = *argument;
+						} else {
+							splitted->push_back(*argument);
+						}
+						break;
+					default:
+						if (splitted == nullptr) {
+							// argument start
+							splitted = new tstring();
+						}
+						splitted->push_back(*argument);
+						break;
+				}
+			}
+		} else {
+			if (*argument == delim) {
+				if (splitted == nullptr) {
+					// argument start
+					splitted = new tstring();
+				}
+				argv->push_back(splitted);
+				splitted = nullptr;
+				delim = _T('\0');
+			} else {
+				if (splitted == nullptr) {
+					// argument start
+					splitted = new tstring();
+				}
+				splitted->push_back(*argument);
+			}
+		}
+		argument++;
+	}
+	if (splitted != nullptr) {
+		argv->push_back(splitted);
+	}
+
+	return argv;
+}
+
+/**
+ * @brief 引数vectorを解放する
+ * @param arguments 引数vector
+ */
+void deleteArguments(std::vector<tstring *> *arguments)
+{
+	for (size_t i = 0; i < arguments->size(); i++) {
+		if ((*arguments)[i] != nullptr) {
+			delete (*arguments)[i];
+		}
+	}
+
+	delete arguments;
+}
