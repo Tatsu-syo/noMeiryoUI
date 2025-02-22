@@ -877,6 +877,7 @@ void NoMeiryoUI::applyDisplayText()
 	appMenu->setText(2, langResource[10].c_str(), TRUE);
 	appMenu->setText(IDM_CHOICE_APP_FONT, langResource[MENU_CHOICE_APP_FONT].c_str(), FALSE);
 	appMenu->setText(IDM_NO_MULTI_RUN, langResource[MENU_DONT_RUN_MULTIPLY].c_str(), FALSE);
+	appMenu->setText(IDM_FORCE_TITLE_SET, langResource[MENU_FORCE_TITLE_SET].c_str(), FALSE);
 	appMenu->setText(IDM_ANOTHER, langResource[MENU_TOOLS_THREAD].c_str(), FALSE);
 	appMenu->setText(IDM_COMPAT7, langResource[MENU_TOOLS_SEVEN].c_str(), FALSE);
 	appMenu->setText(3, langResource[13].c_str(), TRUE);
