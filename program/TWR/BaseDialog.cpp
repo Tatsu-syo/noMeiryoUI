@@ -184,22 +184,22 @@ INT_PTR CALLBACK BaseDialog::dialogProc(HWND hDlg, UINT message, WPARAM wParam, 
 		case WM_INITDIALOG:
 			this->hWnd = hDlg;
             result = OnInitDialog();
-			return TRUE;
+			return (INT_PTR)TRUE;
 
 		case WM_SHOWWINDOW:
 			if (wParam == TRUE) {
 				PostMessage(this->hWnd, WM_DIALOG_SHOWN, 0, 0);
 			}
-			return TRUE;
+			return (INT_PTR)TRUE;
 
 		case WM_DIALOG_SHOWN:
 			result = OnWindowShown(wParam, lParam);
 			PostMessage(this->hWnd, WM_DIALOG_CREATED, 0, 0);
-			return TRUE;
+			return (INT_PTR)TRUE;
 
 		case WM_DIALOG_CREATED:
 			result = OnWindowCreated(wParam, lParam);
-			return TRUE;
+			return (INT_PTR)TRUE;
 
 		case WM_COMMAND:
 			result = OnCommand(wParam);

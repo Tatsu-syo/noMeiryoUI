@@ -272,6 +272,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 
 	usePreset = false;
 	autosetDelay = 0;
+	forceTitleFontSet = false;
 
 	loadConfig();
 	handleMultipleRun();
@@ -455,6 +456,8 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 		appMenu->setEnabled(IDM_SET_8, has8Preset);
 		appMenu->setEnabled(IDM_SET_10, has10Preset);
 		appMenu->setEnabled(IDM_SET_11, has11Preset);
+
+		// 複数起動設定
 		if (!multiRun) {
 			appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
 		}
@@ -516,7 +519,7 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 }
 
 /**
- * WM_SHOWWINDOWメッセージによる表示状態変更時の処理
+ * ダイアログが表示された後に行う処理
  *
  * @param wParam WPARAM
  * @param lParam lParam
@@ -528,13 +531,15 @@ INT_PTR NoMeiryoUI::OnWindowCreated(WPARAM wParam, LPARAM lParam)
 
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
+		appMenu->setEnabled(IDM_FORCE_TITLE_SET, true);
 
 		// ワーニングメッセージ in Win11 22H2
 		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
 			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
 		//MessageBox(this->getHwnd(), _T("Windows 11のバカヤロー"),
 		//	_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
-
+	} else {
+		appMenu->setEnabled(IDM_FORCE_TITLE_SET, false);
 	}
 
 	return (INT_PTR)0;
@@ -877,6 +882,7 @@ void NoMeiryoUI::applyDisplayText()
 	appMenu->setText(2, langResource[10].c_str(), TRUE);
 	appMenu->setText(IDM_CHOICE_APP_FONT, langResource[MENU_CHOICE_APP_FONT].c_str(), FALSE);
 	appMenu->setText(IDM_NO_MULTI_RUN, langResource[MENU_DONT_RUN_MULTIPLY].c_str(), FALSE);
+	appMenu->setText(IDM_FORCE_TITLE_SET, langResource[MENU_FORCE_TITLE_SET].c_str(), FALSE);
 	appMenu->setText(IDM_ANOTHER, langResource[MENU_TOOLS_THREAD].c_str(), FALSE);
 	appMenu->setText(IDM_COMPAT7, langResource[MENU_TOOLS_SEVEN].c_str(), FALSE);
 	appMenu->setText(3, langResource[13].c_str(), TRUE);
@@ -1203,6 +1209,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			toggleMultiRun();
 
 			return (INT_PTR)0;
+		case IDM_FORCE_TITLE_SET:
+			toggleForceTitleSet();
+			return (INT_PTR)0;
 		case IDM_HELPTOPIC:
 			showHelp();
 			return (INT_PTR)0;
@@ -1246,6 +1255,30 @@ void NoMeiryoUI::toggleMultiRun()
 	}
 	saveConfig();
 }
+
+/**
+ *  @brief Windows 11 22H2以降での強制フォント設定切り替え
+ */
+void NoMeiryoUI::toggleForceTitleSet()
+{
+	if (appMenu->isChecked(IDM_FORCE_TITLE_SET)) {
+		appMenu->CheckMenuItem(IDM_FORCE_TITLE_SET, false);
+		forceTitleFontSet = false;
+		if (compatLevel > 0) {
+			titleFontButton->EnableWindow(FALSE);
+		}
+	} else {
+		appMenu->CheckMenuItem(IDM_FORCE_TITLE_SET, true);
+		forceTitleFontSet = true;
+		if (compatLevel > 0) {
+			titleFontButton->EnableWindow(TRUE);
+			MessageBox(this->getHwnd(), langResource[MSG_FORCE_TITLE_SET].c_str(),
+				langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+		}
+	}
+}
+
+
 
 /**
  * フォントを選択する。
@@ -1361,7 +1394,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 
 		case title:
 			// Silently ignore on Win11 22H2
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				metrics.lfCaptionFont = logfont;
 				titleFontName = logfont.lfFaceName;
 
