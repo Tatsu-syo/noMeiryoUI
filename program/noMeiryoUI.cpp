@@ -2480,11 +2480,6 @@ void NoMeiryoUI::setFont(
 	SetSysColors(1,colorItems,colors);
 #endif
 
-	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		&metrics,
-		0);
-
 }
 
 /**
