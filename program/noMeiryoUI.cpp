@@ -2360,6 +2360,11 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
 		}
 	}
+
+	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&realMetrics,
+		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
 }
 
 /**
