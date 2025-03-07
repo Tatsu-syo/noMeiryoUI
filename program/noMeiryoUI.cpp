@@ -487,7 +487,7 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 			}
 
 			// フォント変更を実施する。
-			setFont(&metrics, &iconFont, false);
+			setFont(&metrics, &iconFont, true);
 
 			ExitProcess(0);
 
@@ -2100,8 +2100,9 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	}
 
 	// フォント変更を実施する。
-	setFont(&metrics, &iconFont, true);
+	setFont(&metrics, &iconFont, appMenu->isChecked(IDM_ANOTHER));
 
+	adjustWindowSize();
 	// COLORREF ref = GetThemeSysColor(NULL, COLOR_ACTIVECAPTION);
 
 	return (INT_PTR)TRUE;
@@ -2130,7 +2131,9 @@ void NoMeiryoUI::OnBnClickedAll()
 	}
 
 	// フォント変更を実施する。
-	setFont(&metricsAll, &iconFontAll, true);
+	setFont(&metricsAll, &iconFontAll, appMenu->isChecked(IDM_ANOTHER));
+
+	adjustWindowSize();
 
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
 	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
@@ -2385,11 +2388,12 @@ unsigned _stdcall setOnThread(void *p)
  *
  * @param fontMetrics アイコン以外のフォント指定用NONCLIENTMETRICS
  * @param iconLogFont アイコンのフォント
+ * @param anotherThread 別スレッドで実行するか
  */
 void NoMeiryoUI::setFont(
 	NONCLIENTMETRICS *fontMetrics,
 	LOGFONT *iconLogFont,
-	bool fromGui
+	bool anotherThread
 ) {
 
 	DWORD_PTR ptr;
@@ -2419,7 +2423,7 @@ void NoMeiryoUI::setFont(
 	}
 
 	// アイコン以外のフォント設定
-	if (fromGui && appMenu->isChecked(IDM_ANOTHER)) {
+	if (anotherThread) {
 		// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
 		s_fontMetrics = fontMetrics;
@@ -2481,9 +2485,6 @@ void NoMeiryoUI::setFont(
 		&metrics,
 		0);
 
-	if (fromGui) {
-		adjustWindowSize();
-	}
 }
 
 /**
