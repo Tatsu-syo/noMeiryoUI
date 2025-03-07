@@ -2404,8 +2404,8 @@ void NoMeiryoUI::setFont(
 	messageResult = SendMessageTimeout(
 		HWND_BROADCAST,
 		WM_SETTINGCHANGE,
-		SPI_SETICONTITLELOGFONT,
-		0, // (LPARAM)_T("Environment"),
+		0,
+		(LPARAM)_T("Environment"),
 		SMTO_ABORTIFHUNG,
 		5000,
 		&ptr);
@@ -2448,7 +2448,7 @@ void NoMeiryoUI::setFont(
 	messageResult = SendMessageTimeout(
 		HWND_BROADCAST,
 		WM_SETTINGCHANGE,
-		SPI_SETNONCLIENTMETRICS,
+		0,
 		(LPARAM)_T("WindowMetrics"),
 		SMTO_ABORTIFHUNG,
 		5000,
