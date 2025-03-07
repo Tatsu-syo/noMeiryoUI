@@ -2358,6 +2358,8 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
 		realMetrics.iCaptionHeight = captionHeight;
 	}
+
+	// Windows 11‚Ì˜gü—p’²®
 	if (majorVersion > 10) {
 		if (realMetrics.iPaddedBorderWidth == 0) {
 			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
