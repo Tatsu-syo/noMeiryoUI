@@ -2094,7 +2094,7 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		}
 	}
 #endif
-	if (compatLevel > 0) {
+	if ((compatLevel > 0) && (forceTitleFontSet == false)){
 		// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 		set11TitlePreset(&metrics);
 	}
@@ -2125,7 +2125,7 @@ void NoMeiryoUI::OnBnClickedAll()
 		}
 	}
 #endif
-	if (compatLevel > 0) {
+	if ((compatLevel > 0) && (forceTitleFontSet == false)) {
 		set11TitlePreset(&metricsAll);
 	}
 
