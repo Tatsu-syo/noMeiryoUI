@@ -1366,7 +1366,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			metricsAll.lfStatusFont = logfont;
 			metricsAll.lfMessageFont = logfont;
 			// Silently ignore on Win11 22H2
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				metricsAll.lfCaptionFont = logfont;
 			} else {
 				set11TitlePreset(&metricsAll);
@@ -2360,11 +2360,6 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
 		}
 	}
-
-	SystemParametersInfo(SPI_SETNONCLIENTMETRICS,
-		sizeof(NONCLIENTMETRICS),
-		&realMetrics,
-		SPIF_UPDATEINIFILE); // | SPIF_SENDCHANGE);
 }
 
 /**
@@ -2419,7 +2414,7 @@ void NoMeiryoUI::setFont(
 	}
 
 	// アイコン以外のフォント設定
-	if (appMenu->isChecked(IDM_ANOTHER)) {
+	if (fromGui && appMenu->isChecked(IDM_ANOTHER)) {
 		// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
 		s_fontMetrics = fontMetrics;
@@ -2475,6 +2470,11 @@ void NoMeiryoUI::setFont(
 	colors[0] = btnColor;
 	SetSysColors(1,colorItems,colors);
 #endif
+
+	SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
+		sizeof(NONCLIENTMETRICS),
+		&metrics,
+		0);
 
 	if (fromGui) {
 		adjustWindowSize();
