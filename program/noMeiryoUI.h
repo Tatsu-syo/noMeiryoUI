@@ -116,6 +116,7 @@ private:
 	bool firstShow;
 
 	int autosetDelay;
+	bool forceTitleFontSet;
 
 	void OnLoad();
 	BOOL loadFontInfo(TCHAR *filename);
@@ -161,6 +162,8 @@ private:
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
+
+	void toggleForceTitleSet();
 
 
 public:
