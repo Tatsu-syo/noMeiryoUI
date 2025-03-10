@@ -60,7 +60,7 @@ MENU IDR_MENU1
 FONT 11, "ＭＳ Ｐゴシック", 400, 0, 0x80
 BEGIN
     LTEXT           "Meiryo UIも大っきらい!! Version 3.3.1",IDC_STATIC_APP_TITLE,7,7,168,14,SS_NOPREFIX
-    RTEXT           "Copyright (C) Tatsu 2005,2012-2024",IDC_STATIC_AUTHOR,194,7,161,14
+    RTEXT           "Copyright (C) Tatsu 2005,2012-2025",IDC_STATIC_AUTHOR,194,7,161,14
     LTEXT           "",IDC_STATIC_VERNO,7,21,348,10
     GROUPBOX        "全体設定",IDC_GROUP_ALL,7,37,348,45
     LTEXT           "すべてのフォント",IDC_STATIC_ALL_FONT,11,47,132,12
