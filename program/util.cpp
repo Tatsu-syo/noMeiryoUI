@@ -876,23 +876,23 @@ std::vector<tstring *> *extractArguments()
 	std::vector<tstring *> *argv = new std::vector<tstring *>();
 
 	TCHAR delim = _T('\0');
-	tstring *splitted = nullptr;
+	tstring *splitted = NULL;
 
 	while (*argument) {
 		if (delim == _T('\0')) {
 			// Quote not started
 			if (_istspace(*argument)) {
-				if (splitted != nullptr) {
+				if (splitted != NULL) {
 					// Argument end
 					argv->push_back(splitted);
-					splitted = nullptr;
+					splitted = NULL;
 				}
 			}
 			else {
 				switch (*argument) {
 					case _T('\''):
 						// Quote start
-						if (splitted == nullptr) {
+						if (splitted == NULL) {
 							delim = *argument;
 						} else {
 							splitted->push_back(*argument);
@@ -900,14 +900,14 @@ std::vector<tstring *> *extractArguments()
 						break;
 					case _T('\"'):
 						// Quote start
-						if (splitted == nullptr) {
+						if (splitted == NULL) {
 							delim = *argument;
 						} else {
 							splitted->push_back(*argument);
 						}
 						break;
 					default:
-						if (splitted == nullptr) {
+						if (splitted == NULL) {
 							// argument start
 							splitted = new tstring();
 						}
@@ -917,15 +917,15 @@ std::vector<tstring *> *extractArguments()
 			}
 		} else {
 			if (*argument == delim) {
-				if (splitted == nullptr) {
+				if (splitted == NULL) {
 					// argument start
 					splitted = new tstring();
 				}
 				argv->push_back(splitted);
-				splitted = nullptr;
+				splitted = NULL;
 				delim = _T('\0');
 			} else {
-				if (splitted == nullptr) {
+				if (splitted == NULL) {
 					// argument start
 					splitted = new tstring();
 				}
@@ -934,7 +934,7 @@ std::vector<tstring *> *extractArguments()
 		}
 		argument++;
 	}
-	if (splitted != nullptr) {
+	if (splitted != NULL) {
 		argv->push_back(splitted);
 	}
 
@@ -948,7 +948,7 @@ std::vector<tstring *> *extractArguments()
 void deleteArguments(std::vector<tstring *> *arguments)
 {
 	for (size_t i = 0; i < arguments->size(); i++) {
-		if ((*arguments)[i] != nullptr) {
+		if ((*arguments)[i] != NULL) {
 			delete (*arguments)[i];
 		}
 	}
