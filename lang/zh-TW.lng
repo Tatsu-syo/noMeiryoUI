@@ -90,6 +90,7 @@ MSG_NO_SIZE=請選擇字型大小。
 MSG_NO_CHARSET=請選擇字元集。
 MSG_WARNING=警告
 MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 中，由於 Windows 方面的限制，無法變更標題列的字型。
+MSG_FORCE_TITLE_SET=Changeing titlebar font may cause some troubles.
 MSG_TRANSLATE=Austin Chang,HSSadBoy
 
 [PRESET]
