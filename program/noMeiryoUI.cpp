@@ -476,6 +476,8 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 
 		if (setOnStart) {
 
+			this->ShowWindow(SW_HIDE);
+
 			if (autosetDelay > 0) {
 				Sleep(autosetDelay * 1000);
 			}
@@ -715,11 +717,13 @@ void NoMeiryoUI::parseOption(std::vector<tstring *> *param)
 			noMeiryoUI = true;
 		} else if (!_tcscmp((*param)[i]->c_str(), _T("noTahoma"))) {
 			noTahoma = true;
-		} else if ((*param)[i]->compare(_T("delay"))) {
+		} else if (!(*param)[i]->compare(_T("-delay"))) {
 			if ((i + 1) < param->size()) {
 				autosetDelay = _ttoi((*param)[i + 1]->c_str());
 				i++;
 			}
+		} else if (!(*param)[i]->compare(_T("-force"))) {
+			forceTitleFontSet = true;
 		}
 
 	}
@@ -1381,7 +1385,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			allFont = createFont(&metricsAll.lfMenuFont);
 			allFontTextBox->setFont(allFont);
 
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				fontPoints.title = points;
 			}
 			fontPoints.palette = points;
@@ -1585,7 +1589,7 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 	LOGFONT messageFont;
 	LOGFONT menuFont;
 
-	if (compatLevel < 1) {
+	if ((compatLevel < 1) || (forceTitleFontSet == true)) {
 		loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
 		if (!loadResult) {
 			return FALSE;
@@ -2410,8 +2414,8 @@ void NoMeiryoUI::setFont(
 	messageResult = SendMessageTimeout(
 		HWND_BROADCAST,
 		WM_SETTINGCHANGE,
-		0,
-		(LPARAM)_T("Environment"),
+		SPI_SETICONTITLELOGFONT,
+		0, // (LPARAM)_T("Environment"),
 		SMTO_ABORTIFHUNG,
 		5000,
 		&ptr);
@@ -2454,7 +2458,7 @@ void NoMeiryoUI::setFont(
 	messageResult = SendMessageTimeout(
 		HWND_BROADCAST,
 		WM_SETTINGCHANGE,
-		0,
+		SPI_SETNONCLIENTMETRICS,
 		(LPARAM)_T("WindowMetrics"),
 		SMTO_ABORTIFHUNG,
 		5000,
