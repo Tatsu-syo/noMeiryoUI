@@ -73,6 +73,11 @@ Push Apply button, you can set user interface font.<br>
             When you check this option, No!! Meiryo UI don't run multiply.<br>
             This option is useful to avoid contamination.<br>
         </li>
+        <li>Force title bar font change enabled (no warranty)<br>
+            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
+            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+            This is why, this option is no warranty.<br>
+        </li>
     </ul>
 </div>
 
@@ -82,14 +87,33 @@ Push Apply button, you can set user interface font.<br>
 <h2><a id="CommandLine">Command line option.</a></h2>
 <p>
 Command line format is below.<br>
-<kbd>noMeiryoUI [font_setting_file] [-set]</kbd><br>
+<kbd>noMeiryoUI [font_setting_file] [options...]</kbd><br>
 </p>
 <p>
 If you specify font setting file, font setting file is loaded when this program started.
 </p>
+
+<h3>Options</h3>
 <p>
-If you choice -set option, system fonts are setted automatically.<br>
+	In [options...], you can use these options.<br>
+    If you use multiple options you must separate option name by space.<br>
 </p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
+		This option is useful for startup shortcut, launcher setting, batch file.<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
+        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
+		You can use this option to prevent system changes system fonts in some reasons<br>
+	</li>
+	<li>-force (no warranty)<br>
+		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
+        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+        This is why, this option is no warranty.<br>
+</li>
+</ul>
 
 </div>
 
