@@ -19,6 +19,7 @@ MENU_TOOLS_CHOICE_APP_FONT=選擇 No!! Meiryo UI 應用程式字型(&f)
 MENU_TOOLS_THREAD=在另一執行緒中變更字型(&A)
 MENU_TOOLS_SEVEN=將字型大小視為與 Windows 7 相同(&7)
 MENU_TOOLS_NO_MULTI_RUN=不要重複執行(&D)
+MENU_FORCE_TITLE_SET=F&orce title bar font change enabled
 MENU_HELP=說明(&H)
 MENU_HELP_HELP=檢視說明(&C)
 MENU_HELP_ABOUT=關於 No!! Meiryo UI (&A)

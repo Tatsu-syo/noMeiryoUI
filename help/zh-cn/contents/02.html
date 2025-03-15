@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,icebeam030,LucidLoli
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,icebeam030,LucidLoli
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html lang="zh-cn">
@@ -163,6 +163,15 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 			此选项仅对选项生效后设定的字体有效。<br>
 			如在Windows 7及之前系统，以及Windows 10的环境下运行本软件，则此选项为灰色且不可选。此时的文字大小计算标准为Windows 7及之前系统的标准。<br>
 			</li>
+        <li>Don't run multiply<br>
+            When you check this option, No!! Meiryo UI don't run multiply.<br>
+            This option is useful to avoid contamination.<br>
+        </li>
+        <li>Force title bar font change enabled (no warranty)<br>
+            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
+            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+            This is why, this option is no warranty.<br>
+        </li>
 		</ul>
 	</li>
 	<li>帮助(H)
@@ -189,10 +198,32 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <br>
 　请将使用本软件保存的字体设定配置ini文件名填入命令行中对应的位置。<br>
 　如字体设定配置文件的文件名或全体路径中包含空格，请用""（半角双括号）将其包括在内。<br>
-<br>
-　可通过在字体设定配置文件后空一格并加入<kbd>-set</kbd>，让程序自动应用字体设定到系统中并自行退出。<br>
-也可将命令写入批处理文件内，以达到快速应用系统字体配置的效果。<br>
+  If you use multiple options you must separate option name by space.<br>
 </p>
+
+<h3>Options</h3>
+<p>
+	In [options...], you can use these options.<br>
+    If you use multiple options you must separate option name by space.<br>
+</p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
+		This option is useful for startup shortcut, launcher setting, batch file.<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
+        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
+		You can use this option to prevent system changes system fonts in some reasons<br>
+	</li>
+	<li>-force (no warranty)<br>
+		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
+        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+        This is why, this option is no warranty.<br>
+</li>
+</ul>
+
+</div>
 
 <h3>例1. 在启动软件时载入配置文件MySet.ini内的配置。</h3>
 <p>
