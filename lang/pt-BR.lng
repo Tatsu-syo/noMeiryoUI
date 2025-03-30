@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,Claudio Mantovani Vieira
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Claudio Mantovani Vieira
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;In RESOURCE section,
@@ -20,6 +20,7 @@ MENU_TOOLS_CHOICE_APP_FONT=Escolha &fonte do aplicativo da UI No!! Meiryo
 MENU_TOOLS_THREAD=Definir as fontes do sistema em encadeamentos separados
 MENU_TOOLS_SEVEN=Calcular o tamanho das fontes igual ao Windows 7
 MENU_TOOLS_NO_MULTI_RUN=&Não executar multiplicar
+MENU_FORCE_TITLE_SET=F&orce title bar font change enabled
 MENU_HELP=Aju&da
 MENU_HELP_HELP=Aju&da
 MENU_HELP_ABOUT=&Sobre o No!! Meiryo UI
@@ -89,6 +90,9 @@ MSG_NO_FONT=Por favor, selecione a fonte.
 MSG_NO_STYLE=Por favor, selecione o estilo.
 MSG_NO_SIZE=Por favor, selecione o tamanho.
 MSG_NO_CHARSET=Por favor, selecione o conjunto de caracteres.
+MSG_WARNING=Warning
+MSG_WIN11_22H2RESTRICTION=On Windows 11 2022 Update(22H2) and later due to Windows reason title bar font can't change.
+MSG_FORCE_TITLE_SET=Changeing titlebar font may cause some troubles.
 MSG_TRANSLATE=Claudio Mantovani Vieira
 
 [PRESET]

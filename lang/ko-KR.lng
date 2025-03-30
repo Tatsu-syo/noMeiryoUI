@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;In RESOURCE section,
@@ -20,6 +20,7 @@ MENU_TOOLS_CHOICE_APP_FONT=Choice No!! Meiryo UI application &font
 MENU_TOOLS_THREAD=개별 스레드에서 시스템 글꼴 설정(&A)
 MENU_TOOLS_SEVEN=Windows 7 방식의 글꼴 크기 계산(&7)
 MENU_TOOLS_NO_MULTI_RUN=&Don't run multiply
+MENU_FORCE_TITLE_SET=F&orce title bar font change enabled
 MENU_HELP=도움말(&H)
 MENU_HELP_HELP=도움말(&H)
 MENU_HELP_ABOUT=No!! Meiryo UI에 대하여(&A)...
@@ -89,6 +90,9 @@ MSG_NO_FONT=글꼴을 선택하세요.
 MSG_NO_STYLE=스타일을 선택하세요.
 MSG_NO_SIZE=크기를 선택하세요.
 MSG_NO_CHARSET=문자 집합을 선택하세요.
+MSG_WARNING=Warning
+MSG_WIN11_22H2RESTRICTION=On Windows 11 2022 Update(22H2) and later due to Windows reason title bar font can't change.
+MSG_FORCE_TITLE_SET=Changeing titlebar font may cause some troubles.
 MSG_TRANSLATE=deVbug,창윤
 
 [PRESET]

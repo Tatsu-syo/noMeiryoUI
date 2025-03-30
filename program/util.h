@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef UTIL_H
@@ -96,6 +96,8 @@ DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion, DWORD& buildNum
 size_t utf8toUtf16(tstring& dst, const char* src);
 int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);
+std::vector<tstring *> *extractArguments();
+void deleteArguments(std::vector<tstring *> *arguments);
 
 #if _MSC_VER < 1800
 

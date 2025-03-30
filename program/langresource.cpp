@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
@@ -282,6 +282,12 @@ void readResourceFile(TCHAR *file)
 	);
 	readResourceItem(file, _T("MENU_TOOLS_NO_MULTI_RUN"),
 		_T("&Don't run multiply")
+	);
+	readResourceItem(file, _T("MENU_FORCE_TITLE_SET"),
+		_T("F&orce title bar font change enabled")
+	);
+	readResourceItem(file, _T("MSG_FORCE_TITLE_SET"),
+		_T("Changeing titlebar font may cause some troubles.")
 	);
 }
 

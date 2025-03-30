@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,deVbug,창윤
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,deVbug,창윤
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html>
@@ -145,6 +145,15 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 			이 옵션을 사용하여 글꼴 크기를 지정하는 것은 이 옵션을 설정한 후에 선택한 글꼴 설정에만 유효합니다.<br>
 			Windows 7 이전의 OS와 Windows 10에서 이 옵션은 비활성화되고, 선택 불가능하게 됩니다. 글꼴 크기 계산은 Windows 7 이전 OS에 준합니다.<br>
 			</li>
+	        <li>Don't run multiply<br>
+	            When you check this option, No!! Meiryo UI don't run multiply.<br>
+	            This option is useful to avoid contamination.<br>
+	        </li>
+	        <li>Force title bar font change enabled (no warranty)<br>
+	            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
+	            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+	            This is why, this option is no warranty.<br>
+	        </li>
 		</ul>
 	</li>
 	<li>도움말(H)
@@ -167,7 +176,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 </p>
 <p>
 　명령줄은 다음과 같은 형식을 따릅니다.<br>
-<kbd>noMeiryoUI 글꼴 설정 파일 이름 [-set]</kbd><br>
+<kbd>noMeiryoUI 글꼴 설정 파일 이름 [options...]</kbd><br>
 <br>
 　글꼴 설정 파일은 이 프로그램에서 글꼴 설정을 저장한 ini 파일을 의미합니다.<br>
 　글꼴 설정 파일 이름에 공백이 있을 경우 파일 이름을 &quot;(쌍따옴표)를 이용해 묶어주세요.<br>
@@ -175,6 +184,28 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 　글꼴 설정 파일 이름 뒤에 공백을 넣고 <kbd>-set</kbd>라고 입력하면 지정한 글꼴 설정 파일의 내용으로 시스템 글꼴을 설정하고 프로그램을 종료합니다.<br>
 배치 파일 등에 사용하면 미리 준비한 글꼴 설정 파일의 내용으로 시스템 글꼴을 한번에 설정하는 것이 가능해 편리합니다.
 </p>
+
+<h3>Options</h3>
+<p>
+	In [options...], you can use these options.<br>
+    If you use multiple options you must separate option name by space.<br>
+</p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
+		This option is useful for startup shortcut, launcher setting, batch file.<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
+        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
+		You can use this option to prevent system changes system fonts in some reasons<br>
+	</li>
+	<li>-force (no warranty)<br>
+		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
+        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+        This is why, this option is no warranty.<br>
+</li>
+</ul>
 
 <h3>예1. MySet.ini라는 글꼴 설정 파일을 실행 시 읽는 경우</h3>
 <p>
