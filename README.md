@@ -33,6 +33,7 @@ If you have some ideas check [discussions](https://github.com/Tatsu-syo/noMeiryo
   - Applications that ignore the system font settings.
 
 - No!! MeiryoUI cannot modify the titlebar font on Windows 11.
+- No!! MeiryoUI might be detected as Trojan/virus software by some antivirus software because No!! MeiryoUI changes system font settings.
 
 ## Documentations
 
