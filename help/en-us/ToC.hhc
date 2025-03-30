@@ -1,32 +1,29 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!DOCTYPE HTML>
 <!--
-Re-Metrics (C) 2012-2020 Tatsuhiko Shoji
-The sources for Re-Metrics are distributed under the MIT open source license
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,mon-jai
+The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <HTML>
 <HEAD>
 <meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
 <!-- Sitemap 1.0 -->
 </HEAD><BODY>
-<OBJECT type="text/site properties">
-	<param name="ImageType" value="Folder">
-</OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Getting started">
-		<param name="Local" value="contents\01.html">
+		<param name="Local" value="contents/01.html">/
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="How to use">
-		<param name="Local" value="contents\02.html">
+		<param name="Local" value="contents/02.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="History">
-		<param name="Local" value="contents\03.html">
+		<param name="Local" value="contents/03.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="License">
-		<param name="Local" value="contents\04.html">
+		<param name="Local" value="contents/04.html">
 		</OBJECT>
 </UL>
 </BODY></HTML>
