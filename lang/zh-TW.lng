@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001 
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001 
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -19,6 +19,7 @@ MENU_TOOLS_CHOICE_APP_FONT=選擇 No!! Meiryo UI 應用程式字型(&f)
 MENU_TOOLS_THREAD=在另一執行緒中變更字型(&A)
 MENU_TOOLS_SEVEN=將字型大小視為與 Windows 7 相同(&7)
 MENU_TOOLS_NO_MULTI_RUN=不要重複執行(&D)
+MENU_FORCE_TITLE_SET=F&orce title bar font change enabled
 MENU_HELP=說明(&H)
 MENU_HELP_HELP=檢視說明(&C)
 MENU_HELP_ABOUT=關於 No!! Meiryo UI (&A)
@@ -90,6 +91,7 @@ MSG_NO_SIZE=請選擇字型大小。
 MSG_NO_CHARSET=請選擇字元集。
 MSG_WARNING=警告
 MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 中，由於 Windows 方面的限制，無法變更標題列的字型。
+MSG_FORCE_TITLE_SET=Changeing titlebar font may cause some troubles.
 MSG_TRANSLATE=Austin Chang,HSSadBoy
 
 [PRESET]

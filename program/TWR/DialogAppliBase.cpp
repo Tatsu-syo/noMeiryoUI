@@ -134,3 +134,17 @@ INT_PTR DialogAppliBase::OnInitDialog()
 	return (INT_PTR)FALSE;
 }
 
+/**
+ * WM_SHOWWINDOWメッセージによる表示状態変更時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR DialogAppliBase::OnWindowShown(WPARAM wParam, LPARAM lParam)
+{
+	BaseDialog::OnWindowShown(wParam, lParam);
+
+	return (INT_PTR)TRUE;
+}
+

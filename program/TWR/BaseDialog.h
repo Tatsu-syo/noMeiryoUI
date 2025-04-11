@@ -15,7 +15,8 @@ private:
 protected:
 	static BaseDialog *modalCallback;
 	virtual INT_PTR OnInitDialog();
-	virtual INT_PTR OnShowWindow(WPARAM wParam, LPARAM lParam);
+	virtual INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
+	virtual INT_PTR OnWindowCreated(WPARAM wParam, LPARAM lParam);
 	virtual INT_PTR OnCommand(WPARAM wParam);
 	TCHAR ddx_buf[512];
 public:

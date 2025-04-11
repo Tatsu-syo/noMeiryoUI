@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html>
@@ -172,6 +172,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 				チェックすると本ソフトを複数起動しないようにします。<br>
 				本ソフトを複数起動して混乱するのを避ける場合などにご利用ください。<br>
 			</li>
+			<li>タイトルバーのフォントを変更可能にする(O)&nbsp;非推奨<br>
+				チェックするとWindows 11 22H2以降にて、タイトルバーのフォントを変更可能にします。<br>
+				ただし、タイトルバーのフォントを変更したときは正しく反映されなかったり見た目に影響があることがあるので本設定の使用によるWindows 11 22H2以降でのタイトルバーフォントの変更結果については作者は責任を取りません。<br>
+			</li>
 		</ul>
 	</li>
 	<li>ヘルプ(H)
@@ -194,14 +198,33 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 </p>
 <p>
 　コマンドラインの書式は以下の通りです。<br>
-<kbd>noMeiryoUI フォント設定ファイル名 [-set]</kbd><br>
+<kbd>noMeiryoUI フォント設定ファイル名 [options...]</kbd><br>
 <br>
 　フォント設定ファイルには本プログラムでフォント設定を保存したiniファイルを指定します。<br>
 　フォント設定ファイル名に空白を含む場合はファイル名を&quot;(ダブルクォーテーション)で囲ってください。<br>
 <br>
-　フォント設定ファイル名の後に空白を入れて<kbd>-set</kbd>と入力すると指定したフォント設定ファイルの内容でシステムフォントを設定してプログラムを終了します。<br>
-バッチファイルなどで使用するとあらかじめ用意したフォント設定ファイルの内容にシステムフォントを一発で設定することができて便利です。<br>
 </p>
+
+<h3>オプション</h3>
+<p>
+	[options...]とある部分にはスペース区切りで次のオプションを指定することができます。
+</p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd>オプションは指定したフォント設定ファイルの内容でシステムフォントを設定してプログラムを終了します。<br>
+		バッチファイルなどで使用するとあらかじめ用意したフォント設定ファイルの内容にシステムフォントを一発で設定することができて便利です。<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd>オプションは-setオプションでシステムフォントを設定するとき、本ソフトが起動してから指定した秒数が経過した後でフォントを設定することができます。<br>
+		オプション名の後スペース区切りで遅延させる秒数を書いてください。<br>
+		何らかの理由でシステム起動時にシステムフォントの設定が戻る場合に使用します。<br>
+		<kbd>-delay 60</kbd>という形で使用します。
+	</li>
+	<li>-force<br>
+		　<kbd>-force</kbd>オプションはWindows 11 22H2以降にて、タイトルバーのフォントを変更可能にします。<br>
+		ただし、タイトルバーのフォントを変更したときは正しく反映されなかったり見た目に影響があることがあるので本設定の使用によるWindows 11 22H2以降でのタイトルバーフォントの変更結果については作者は責任を取りません。<br>
+	</li>
+</ul>
 
 <h3>例1. MySet.iniというフォント設定ファイルを起動時に読み込む場合</h3>
 <p>
@@ -209,10 +232,16 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <kbd>noMeiryoUI MySet.ini</kbd>
 </p>
 
-<h3>例2. Your Settings.iniというフォント設定ファイルの内容にシステムフォントを設定する場合</h3>
+<h3>例2. Your Settings.iniというフォント設定ファイルの内容でシステムフォントを設定する場合</h3>
 <p>
-　Your Settings.iniというフォント設定ファイルにシステムフォントを設定する場合はコマンドプロンプトなどから以下のように入力します。<br>
+　Your Settings.iniというフォント設定ファイルの内容でシステムフォントを設定する場合はコマンドプロンプトなどから以下のように入力します。<br>
 <kbd>noMeiryoUI "Your Settings.ini" -set</kbd>
+</p>
+
+<h3>例3. 起動後1分後にrestore Settings.iniというフォント設定ファイルの内容でシステムフォントを設定する場合</h3>
+<p>
+　起動後1分後にrestore Settings.iniというフォント設定ファイルにシステムフォントを設定する場合はコマンドプロンプトなどから以下のように入力します。<br>
+<kbd>noMeiryoUI "Your Settings.ini" -set -delay 60</kbd>
 </p>
 
 </div>

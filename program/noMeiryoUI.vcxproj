@@ -120,6 +120,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:Windows,6.0 %(AdditionalOptions)</AdditionalOptions>
@@ -168,6 +169,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /SAFESEH  %(AdditionalOptions)</AdditionalOptions>

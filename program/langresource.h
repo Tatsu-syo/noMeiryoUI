@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 
@@ -96,6 +96,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define MSG_WIN11_22H2RESTRICTION 85
 #define MENU_CHOICE_APP_FONT 86
 #define MENU_DONT_RUN_MULTIPLY 87
+#define MENU_FORCE_TITLE_SET 88
+#define MSG_FORCE_TITLE_SET 89
 
 extern void readResourceFile(TCHAR *file);
 
