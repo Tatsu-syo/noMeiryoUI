@@ -2101,6 +2101,15 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 	if ((compatLevel > 0) && (forceTitleFontSet == false)){
 		// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 		set11TitlePreset(&metrics);
+
+		DeleteObject(titleFont);
+		titleFont = createFont(&metrics.lfCaptionFont);
+		titleFontTextBox->setFont(titleFont);
+		double points;
+		fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
+
+		updateDisplay();
+
 	}
 
 	// フォント変更を実施する。
@@ -2132,6 +2141,12 @@ void NoMeiryoUI::OnBnClickedAll()
 #endif
 	if ((compatLevel > 0) && (forceTitleFontSet == false)) {
 		set11TitlePreset(&metricsAll);
+
+		DeleteObject(titleFont);
+		titleFont = createFont(&metrics.lfCaptionFont);
+		titleFontTextBox->setFont(titleFont);
+		double points;
+		fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
 	}
 
 	// フォント変更を実施する。
