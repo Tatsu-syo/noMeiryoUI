@@ -163,14 +163,12 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 			此选项仅对选项生效后设定的字体有效。<br>
 			如在Windows 7及之前系统，以及Windows 10的环境下运行本软件，则此选项为灰色且不可选。此时的文字大小计算标准为Windows 7及之前系统的标准。<br>
 			</li>
-        <li>Don't run multiply<br>
-            When you check this option, No!! Meiryo UI don't run multiply.<br>
-            This option is useful to avoid contamination.<br>
+        <li>禁止多开<br>
+            打开此选项可禁止重复打开本软件<br>
+            若想要避免重复打开而带来不必要的混乱，可启用该选项<br>
         </li>
-        <li>Force title bar font change enabled (no warranty)<br>
-            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
-            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
-            This is why, this option is no warranty.<br>
+        <li>强制修改标题栏字体(O)&nbsp;不推荐<br>
+            启用该选项以在 Windows 11 22H2 以后的系统中强制修改标题栏所用字体<br>但在Windows 11 22H2以后的系统中打开该选项，可能会造成诸如字体不能正确更改、显示不正常、对界面造成破坏等副作用，因此作者对此功能的效果不作任何保证。<br>
         </li>
 		</ul>
 	</li>
@@ -198,28 +196,27 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <br>
 　请将使用本软件保存的字体设定配置ini文件名填入命令行中对应的位置。<br>
 　如字体设定配置文件的文件名或全体路径中包含空格，请用""（半角双括号）将其包括在内。<br>
-  If you use multiple options you must separate option name by space.<br>
+&nbsp; &nbsp;若一次使用多个选项，必须用空格分隔每一个选项。<br>
 </p>
 
-<h3>Options</h3>
+<h3>选项</h3>
 <p>
-	In [options...], you can use these options.<br>
-    If you use multiple options you must separate option name by space.<br>
+	在[options...]中，可选择使用下列选项。<br>
+    若需使用多个选项，必须用空格分隔每一个选项。<br>
 </p>
 <ul>
 	<li>-set<br>
-		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
-		This option is useful for startup shortcut, launcher setting, batch file.<br>
+		　<kbd>-set</kbd> 选项可应用指定的字体配置并在其生效后退出程序<br>
+		可通过批处理等方法一键设置事先保存好的字体配置，方便快捷。<br>
 	</li>
 	<li>-delay<br>
-		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
-        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
-		You can use this option to prevent system changes system fonts in some reasons<br>
+		　<kbd>-delay</kbd> 选项可以秒单位指定软件启动后对系统字体进行更改操作的延迟时间。<br>
+        必须在参数后加上想要延迟的秒数，例如： <kbd>-delay 60</kbd>.<br>
+		可使用该参数以应对某些情况下系统会自动对系统字体进行更改的情形<br>
 	</li>
-	<li>-force (no warranty)<br>
-		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
-        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
-        This is why, this option is no warranty.<br>
+	<li>-force (实验性)<br>
+		　<kbd>-force</kbd> 选项可在Windows 11 22H2以后的系统中更改标题栏字体<br>
+        但在Windows 11 22H2以后的系统中打开该选项，可能会造成诸如字体不能正确更改、显示不正常、对界面造成破坏等副作用，因此作者对此功能的效果不作任何保证。<br>
 </li>
 </ul>
 
@@ -231,13 +228,18 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <kbd>noMeiryoUI MySet.ini</kbd>
 </p>
 
-<h3>例2. 直接将系统字体设定为 Your Settings.ini文件内保存的配置。</h3>
+<h3>例2. 直接将系统字体设定为 Your Settings.ini 文件内保存的配置。</h3>
 <p>
-　例如您想直接将系统字体按 Your Settings.ini文件内保存的配置进行设定，可在命令提示符等工具内输入如下命令行：<br>
+　例如您想直接将系统字体按 Your Settings.ini 文件内保存的配置进行设定，可在命令提示符等工具内输入如下命令行：<br>
 <kbd>noMeiryoUI "Your Settings.ini" -set</kbd>
+<h3>例3. 在软件启动一分钟后将系统字体设定为 restore Settings.ini 文件内保存的配置。</h3>
+<p>
+	　例如您想在软件启动一分钟后将系统字体按 restore Settings.ini 文件内保存的配置进行设定，可在命令提示符等工具内输入如下命令行：<br>
+<kbd>noMeiryoUI "Your Settings.ini" -set -delay 60</kbd>
 </p>
 
 </div>
 
 </body>
 </html>
+
