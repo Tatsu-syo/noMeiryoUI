@@ -1,5 +1,5 @@
 /*
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -20,8 +20,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "FontSel.h"
 #include "NCFileDialog.h"
 #include "util.h"
+#include "langresource.h"
 
-// #include "country\japan.h"
+#include "country\default.h"
+#include "country\japan.h"
 #include "country\korea.h"
 
 //
@@ -35,6 +37,8 @@ static bool use7Compat = true;
 bool has8Preset = true;
 bool has10Preset = true;
 bool has11Preset = true;
+// 複数起動を許すか
+bool multiRun = true;
 TCHAR helpFileName[MAX_PATH];
 RECT myMonitorLect;
 bool firstMonitor = false;
@@ -55,6 +59,7 @@ DialogAppliBase *createAppli()
 
 	// ここでユーザーのアプリケーションオブジェクトを作成します。
 	appObj = new NoMeiryoUI();
+
 	return appObj;
 }
 
@@ -95,6 +100,7 @@ void initializeLocale(void)
 	if (!readResult) {
 		has11Preset = false;
 	}
+
 }
 
 /**
@@ -137,12 +143,7 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 	}
 
 	// Language detection
-	if (wcsstr(langWork, L"ja-JP") != NULL) {
-		runningCountry = Japan;
-	}
-	if (wcsstr(langWork, L"ko-KR") != NULL) {
-		runningCountry = Korea;
-	}
+	setLocationInternalCode(langWork);
 
 	_tcscpy(findPath, iniPath);
 	TCHAR *p = _tcsrchr(langWork, _T('.'));
@@ -189,6 +190,23 @@ void setResourceFileName(TCHAR * langFileName, TCHAR * helpFileName, char*system
 }
 
 /**
+ * @brief Set internal lanuguage enumeration
+ * @param langWork Locale name
+*/
+void setLocationInternalCode(TCHAR  langWork[85])
+{
+	if (wcsstr(langWork, L"ja-JP") != NULL) {
+		runningCountry = Japan;
+		return;
+	}
+	if (wcsstr(langWork, L"ko-KR") != NULL) {
+		runningCountry = Korea;
+		return;
+	}
+	runningCountry = NoCountry;
+}
+
+/**
  * ダイアログプローシジャ
  *
  * @return TRUE:処理した FALSE:処理しない
@@ -215,6 +233,8 @@ INT_PTR CALLBACK MainDialogProc(
  */
 BaseDialog *NoMeiryoUI::createBaseDialog()
 {
+	firstShow = true;
+
 	return appObj;
 }
 
@@ -251,6 +271,11 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	menuFontTextBox = NULL;
 
 	usePreset = false;
+	autosetDelay = 0;
+	forceTitleFontSet = false;
+
+	loadConfig();
+	handleMultipleRun();
 
 	// メジャーバージョンを取得する
 	DWORD dwVersion = GetVersionForApp(majorVersion, minorVersion, buildNumber);
@@ -283,7 +308,7 @@ int NoMeiryoUI::OnAppliStart(TCHAR *lpCmdLine)
 	}
 
 	// オプションを取得する。
-	getOption(lpCmdLine);
+	getOption();
 
 	return 0;
 }
@@ -369,35 +394,6 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 	// 親クラスのダイアログ初期化処理を呼ぶ。
 	DialogAppliBase::OnInitDialog();
 
-	// アプリケーションアイコンの設定
-	HICON hIcon;
-
-    hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
-    SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-
-	appMenu = new TwrMenu(this->hWnd);
-
-	if (!use7Compat) {
-		// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
-		appMenu->setEnabled(IDM_COMPAT7, false);
-	}
-	appMenu->CheckMenuItem(IDM_ANOTHER, true);
-
-	// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
-	// ある場合のみプリセットを有効にする。
-	appMenu->setEnabled(IDM_SET_8, has8Preset);
-	appMenu->setEnabled(IDM_SET_10, has10Preset);
-	appMenu->setEnabled(IDM_SET_11, has11Preset);
-
-	// 先発のOSではフォントがない場合があるので
-	// 後発OS用のプリセットを使用不可とする。
-	if (majorVersion < 10) {
-		appMenu->setEnabled(IDM_SET_10, false);
-	}
-	if (majorVersion < 11) {
-		appMenu->setEnabled(IDM_SET_11, false);
-	}
-
 	// フォント情報取得用構造体の初期化
 	FillMemory(&metrics, sizeof(NONCLIENTMETRICS), 0x00);
 	FillMemory(&metricsAll, sizeof(NONCLIENTMETRICS), 0x00);
@@ -412,60 +408,145 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 
 		BOOL loadResult = loadFontInfo(settingFile);
 		if (loadResult) {
-			if (setOnStart) {
-				// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
-				OnBnClickedOk();
-				EndDialog(hWnd, 0);
-
-				return (INT_PTR)FALSE;
-			} else {
-				// メニューフォントの情報をすべてのフォントの各フォントの情報にあてる。
-				metricsAll.lfMenuFont = metrics.lfMenuFont;
-				metricsAll.lfStatusFont = metricsAll.lfMenuFont;
-				metricsAll.lfMessageFont = metricsAll.lfMenuFont;
-				metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
-				metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
-				iconFontAll = metricsAll.lfMenuFont;
-			}
+			// メニューフォントの情報をすべてのフォントの各フォントの情報にあてる。
+			metricsAll.lfMenuFont = metrics.lfMenuFont;
+			metricsAll.lfStatusFont = metricsAll.lfMenuFont;
+			metricsAll.lfMessageFont = metricsAll.lfMenuFont;
+			metricsAll.lfCaptionFont = metricsAll.lfMenuFont;
+			metricsAll.lfSmCaptionFont = metricsAll.lfMenuFont;
+			iconFontAll = metricsAll.lfMenuFont;
 		} else {
 			// 読み込み失敗時は念のため再度現在のフォント等の情報を
 			// 取得しておく。
 			getActualFont();
 		}
 	}
+	return (INT_PTR)FALSE;
+}
 
-	// UI文字列をリソースに合わせて変更する。
-	applyResource();
+/**
+ * ウインドウ生成完了時の処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
+{
+	DialogAppliBase::OnWindowShown(wParam, lParam);
 
-	// メインダイアログのバージョン表記設定
-	TCHAR buf[64];
-	TCHAR verString[32];
-	const TCHAR *appName;
-	LoadString(hInst, IDS_VERSION, verString, 32);
-	appName = langResource[1].c_str();
-	_stprintf(buf, verString, appName);
-	setChildText(IDC_STATIC_APP_TITLE, buf);
+	if (firstShow) {
 
+		// アプリケーションアイコンの設定
+		HICON hIcon;
 
-	// フォント名表示を更新する。
-	updateDisplay();
+		hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
+		SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
 
-	EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
+		appMenu = new TwrMenu(this->hWnd);
 
-	adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+		if (!use7Compat) {
+			// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
+			appMenu->setEnabled(IDM_COMPAT7, false);
+		}
+		appMenu->CheckMenuItem(IDM_ANOTHER, true);
 
-	adjustWindowSize();
+		// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
+		// ある場合のみプリセットを有効にする。
+		appMenu->setEnabled(IDM_SET_8, has8Preset);
+		appMenu->setEnabled(IDM_SET_10, has10Preset);
+		appMenu->setEnabled(IDM_SET_11, has11Preset);
 
-	// compatLevel = 0;
+		// 複数起動設定
+		if (!multiRun) {
+			appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+		}
+
+		// 先発のOSではフォントがない場合があるので
+		// 後発OS用のプリセットを使用不可とする。
+		if (majorVersion < 10) {
+			appMenu->setEnabled(IDM_SET_10, false);
+		}
+		if (majorVersion < 11) {
+			appMenu->setEnabled(IDM_SET_11, false);
+		}
+
+		// UI文字列をリソースに合わせて変更する。
+		applyResource();
+
+		if (setOnStart) {
+
+			this->ShowWindow(SW_HIDE);
+
+			if (autosetDelay > 0) {
+				Sleep(autosetDelay * 1000);
+			}
+
+			// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
+			if (compatLevel > 0) {
+				// Windows 11 22H2以降の場合、タイトルを元の物に変更する
+				set11TitlePreset(&metrics);
+			}
+
+			// フォント変更を実施する。
+			setFont(&metrics, &iconFont, true);
+
+			ExitProcess(0);
+
+			return (INT_PTR)TRUE;
+		}
+
+		// メインダイアログのバージョン表記設定
+		TCHAR buf[64];
+		TCHAR verString[32];
+		const TCHAR *appName;
+		LoadString(hInst, IDS_VERSION, verString, 32);
+		appName = langResource[1].c_str();
+		_stprintf(buf, verString, appName);
+		setChildText(IDC_STATIC_APP_TITLE, buf);
+
+		// フォント名表示を更新する。
+		updateDisplay();
+
+		EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
+
+		adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
+
+		adjustWindowSize();
+
+		firstShow = false;
+	}
+
+	return (INT_PTR)0;
+}
+
+/**
+ * ダイアログが表示された後に行う処理
+ *
+ * @param wParam WPARAM
+ * @param lParam lParam
+ * @return 0:処理した 非0:処理しない
+ */
+INT_PTR NoMeiryoUI::OnWindowCreated(WPARAM wParam, LPARAM lParam)
+{
+	DialogAppliBase::OnWindowCreated(wParam, lParam);
+
 	if (compatLevel > 0) {
 		titleFontButton->EnableWindow(FALSE);
+		appMenu->setEnabled(IDM_FORCE_TITLE_SET, true);
+
 		// ワーニングメッセージ in Win11 22H2
 		MessageBox(this->getHwnd(), langResource[MSG_WIN11_22H2RESTRICTION].c_str(),
 			langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+		//MessageBox(this->getHwnd(), _T("Windows 11のバカヤロー"),
+		//	_T("何じゃぁこりゃぁ"), MB_OK | MB_ICONWARNING);
+	} else {
+		appMenu->setEnabled(IDM_FORCE_TITLE_SET, false);
 	}
 
-	return (INT_PTR)FALSE;
+	return (INT_PTR)0;
 }
+
 
 /**
  * カーソルのいるモニターを判定するためのEnumDisplayMonitorsのコールバック
@@ -591,67 +672,15 @@ void NoMeiryoUI::adjustWindowSize(void)
 
 /**
  * コマンドラインオプションを取得する。
- *
- * @param lpCmdLine コマンドライン
  */
-void NoMeiryoUI::getOption(TCHAR *lpCmdLine)
+void NoMeiryoUI::getOption()
 {
-	TCHAR *p;
-	TCHAR *paramStart;
-	bool firstCommand = false;
-	bool capturing = false;
-	TCHAR delimiter;
-	int argCount = 0;
 
-	p = lpCmdLine;
-	while (*p != _T('\0')) {
-		if (*p == _T('\"')) {
-			if (!capturing) {
-				capturing = true;
-				delimiter = _T('\"');
-				// 次の文字からパラメータ開始
-				paramStart = p + 1;
-			} else {
-				if (delimiter == _T('\"')) {
-					// 解析中で区切り文字がダブルクォーテーションの場合
-					// パラメータ終了とする。
-					capturing = false;
-					*p = _T('\0');
-					argCount++;
-					// ここでパラメータの個数に応じた処理を行う。
-					parseOption(paramStart, argCount);
-				}
-			}
-		} else if (_istspace(*p)) {
-			// 空白の場合
-			if (capturing) {
-				if (delimiter != _T('\"')) {
-					// 解析中で区切り文字がダブルクォーテーションでない場合
-					// パラメータ終了とする。
-					capturing = false;
-					*p = _T('\0');
-					argCount++;
-					// ここでパラメータの個数に応じた処理を行う。
-					parseOption(paramStart, argCount);
-				}
-			}
-		} else {
-			if (!capturing) {
-				// パラメータ開始
-				capturing = true;
-				paramStart = p;
-				delimiter = _T(' ');
-			}
-		}
-		p++;
-	}
-	if (capturing) {
-		// まだコマンドライン解析が続いていたらここまでをコマンドラインとする。
-		argCount++;
-		// ここでパラメータの個数に応じた処理を行う。
-		parseOption(paramStart, argCount);
-	}
+	std::vector<tstring *> *argv = extractArguments();
 
+	parseOption(argv);
+
+	deleteArguments(argv);
 }
 
 /**
@@ -660,31 +689,43 @@ void NoMeiryoUI::getOption(TCHAR *lpCmdLine)
  * @param param パラメータ
  * @param argCount オプションの個数
  */
-void NoMeiryoUI::parseOption(TCHAR *param, int argCount)
+void NoMeiryoUI::parseOption(std::vector<tstring *> *param)
 {
-	switch (argCount) {
-		case 1:
-			// 設定ファイル名
-			if (_tcscmp(_T("--"), param)) {
-				if ((_tcschr(param, '\\') == NULL) && (_tcschr(param, '/') == NULL)) {
-					GetCurrentDirectory(MAX_PATH, settingFile);
-					_tcscat(settingFile, _T("\\"));
-				} else {
-					settingFile[0] = _T('\0');
-				}
-				_tcscat(settingFile, param);
-			}
-			break;
-		default:
-			if (!_tcscmp(param, _T("-set"))) {
-				setOnStart = true;
-			} else if (!_tcscmp(param, _T("noMeiryoUI"))) {
-				noMeiryoUI = true;
-			} else if (!_tcscmp(param, _T("noTahoma"))) {
-				noTahoma = true;
-			}
+	if (param->size() < 2) {
+		return;
+	}
 
-			break;
+	if (_tcscmp(_T("--"), (*param)[1]->c_str())) {
+		if ((_tcschr((*param)[1]->c_str(), _T('\\')) == NULL) && (_tcschr((*param)[1]->c_str(), _T('/')) == NULL)) {
+			GetCurrentDirectory(MAX_PATH, settingFile);
+			_tcscat(settingFile, _T("\\"));
+		}
+		else {
+			settingFile[0] = _T('\0');
+		}
+		_tcscat(settingFile, (*param)[1]->c_str());
+	}
+
+	if (param->size() < 3) {
+		return;
+	}
+
+	for (int i = 2; i < param->size(); i++) {
+		if (!_tcscmp((*param)[i]->c_str(), _T("-set"))) {
+			setOnStart = true;
+		} else if (!_tcscmp((*param)[i]->c_str(), _T("noMeiryoUI"))) {
+			noMeiryoUI = true;
+		} else if (!_tcscmp((*param)[i]->c_str(), _T("noTahoma"))) {
+			noTahoma = true;
+		} else if (!(*param)[i]->compare(_T("-delay"))) {
+			if ((i + 1) < param->size()) {
+				autosetDelay = _ttoi((*param)[i + 1]->c_str());
+				i++;
+			}
+		} else if (!(*param)[i]->compare(_T("-force"))) {
+			forceTitleFontSet = true;
+		}
+
 	}
 }
 
@@ -814,16 +855,75 @@ void NoMeiryoUI::UpdateData(bool toObj)
  */
 void NoMeiryoUI::applyResource()
 {
+	tstring font = langResource[0];
+
+	// Get fallback font
+	font = getLanguageFallbackForCountry(langResource[0]);
+
+	applyDisplayText();
+
+	applyDisplayFont();
+}
+
+
+/**
+ * リソースを各項目に設定する(文字列)。
+ */
+void NoMeiryoUI::applyDisplayText()
+{
+	// アプリタイトル
+	setText(langResource[1].c_str());
+
+	// メニュー文字列変更
+	appMenu->setText(0, langResource[2].c_str(), TRUE);
+	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
+	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
+	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
+	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
+	appMenu->setText(1, langResource[7].c_str(), TRUE);
+	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
+	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
+	appMenu->setText(2, langResource[10].c_str(), TRUE);
+	appMenu->setText(IDM_CHOICE_APP_FONT, langResource[MENU_CHOICE_APP_FONT].c_str(), FALSE);
+	appMenu->setText(IDM_NO_MULTI_RUN, langResource[MENU_DONT_RUN_MULTIPLY].c_str(), FALSE);
+	appMenu->setText(IDM_FORCE_TITLE_SET, langResource[MENU_FORCE_TITLE_SET].c_str(), FALSE);
+	appMenu->setText(IDM_ANOTHER, langResource[MENU_TOOLS_THREAD].c_str(), FALSE);
+	appMenu->setText(IDM_COMPAT7, langResource[MENU_TOOLS_SEVEN].c_str(), FALSE);
+	appMenu->setText(3, langResource[13].c_str(), TRUE);
+	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
+	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
+
+	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
+	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
+	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
+	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
+	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
+	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
+	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
+	setChildText(ID_SEL_ALL, langResource[23].c_str());
+	setChildText(ID_SEL_TITLE, langResource[23].c_str());
+	setChildText(ID_SEL_ICON, langResource[23].c_str());
+	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
+	setChildText(ID_SEL_HINT, langResource[23].c_str());
+	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
+	setChildText(ID_SEL_MENU, langResource[23].c_str());
+	setChildText(ID_SET_ALL, langResource[24].c_str());
+	setChildText(IDOK, langResource[25].c_str());
+	setChildText(IDCANCEL, langResource[26].c_str());
+	setChildText(ID_APPLY, langResource[71].c_str());
+	setChildText(ID_APPLY_ALL, langResource[71].c_str());
+	setChildText(IDC_GROUP_ALL, langResource[72].c_str());
+	setChildText(IDC_GROUP_INDIVIDUAL, langResource[73].c_str());
+}
+
+/**
+ * リソースを各項目に設定する(フォント)。
+ */
+void NoMeiryoUI::applyDisplayFont()
+{
 	HDC hDC = GetDC(this->hWnd);
 
 	tstring font = langResource[0];
-
-#if 0
-	// Under construction
-	if (runningCountry == Japan) {
-		font = japan::getJapaneseFontFallback(langResource[0]);
-	}
-#endif
 
 	HFONT displayFont = CreateFont(
 		-MulDiv(APP_FONTSIZE, GetDeviceCaps(hDC, LOGPIXELSY), 72),
@@ -843,71 +943,30 @@ void NoMeiryoUI::applyResource()
 
 	ReleaseDC(this->hWnd, hDC);
 
-
-	// アプリタイトル
-	setText(langResource[1].c_str());
-
-	// メニュー文字列変更
-	appMenu->setText(0, langResource[2].c_str(), TRUE);
-	appMenu->setText(IDM_OPEN, langResource[3].c_str(), FALSE);
-	appMenu->setText(IDM_SAVE, langResource[4].c_str(), FALSE);
-	appMenu->setText(IDOK, langResource[5].c_str(), FALSE);
-	appMenu->setText(IDM_EXIT, langResource[6].c_str(), FALSE);
-	appMenu->setText(1, langResource[7].c_str(), TRUE);
-	appMenu->setText(IDM_SET_8, langResource[8].c_str(), FALSE);
-	appMenu->setText(IDM_SET_10, langResource[9].c_str(), FALSE);
-	appMenu->setText(2, langResource[10].c_str(), TRUE);
-	appMenu->setText(IDM_ANOTHER, langResource[11].c_str(), FALSE);
-	appMenu->setText(IDM_COMPAT7, langResource[12].c_str(), FALSE);
-	appMenu->setText(3, langResource[13].c_str(), TRUE);
-	appMenu->setText(IDM_HELPTOPIC, langResource[14].c_str(), FALSE);
-	appMenu->setText(IDM_ABOUT, langResource[15].c_str(), FALSE);
-
-	setChildText(IDC_STATIC_ALL_FONT, langResource[16].c_str());
 	setChildFont(IDC_STATIC_ALL_FONT, displayFont);
-	setChildText(IDC_STATIC_TITLE_BAR, langResource[17].c_str());
 	setChildFont(IDC_STATIC_TITLE_BAR, displayFont);
-	setChildText(IDC_STATIC_ICON, langResource[18].c_str());
 	setChildFont(IDC_STATIC_ICON, displayFont);
-	setChildText(IDC_STATIC_PALETTE_TITLE, langResource[19].c_str());
 	setChildFont(IDC_STATIC_PALETTE_TITLE, displayFont);
-	setChildText(IDC_STATIC_HINT, langResource[20].c_str());
 	setChildFont(IDC_STATIC_HINT, displayFont);
-	setChildText(IDC_STATIC_MESSAGE, langResource[21].c_str());
 	setChildFont(IDC_STATIC_MESSAGE, displayFont);
-	setChildText(IDC_STATIC_MENU, langResource[22].c_str());
 	setChildFont(IDC_STATIC_MENU, displayFont);
 
-	setChildText(ID_SEL_ALL, langResource[23].c_str());
 	setChildFont(ID_SEL_ALL, displayFont);
-	setChildText(ID_SEL_TITLE, langResource[23].c_str());
 	setChildFont(ID_SEL_TITLE, displayFont);
-	setChildText(ID_SEL_ICON, langResource[23].c_str());
 	setChildFont(ID_SEL_ICON, displayFont);
-	setChildText(ID_SEL_PALETTE, langResource[23].c_str());
 	setChildFont(ID_SEL_PALETTE, displayFont);
-	setChildText(ID_SEL_HINT, langResource[23].c_str());
 	setChildFont(ID_SEL_HINT, displayFont);
-	setChildText(ID_SEL_MESSAGE, langResource[23].c_str());
 	setChildFont(ID_SEL_MESSAGE, displayFont);
-	setChildText(ID_SEL_MENU, langResource[23].c_str());
 	setChildFont(ID_SEL_MENU, displayFont);
-	setChildText(ID_SET_ALL, langResource[24].c_str());
 	setChildFont(ID_SET_ALL, displayFont);
-	setChildText(IDOK, langResource[25].c_str());
 	setChildFont(IDOK, displayFont);
-	setChildText(IDCANCEL, langResource[26].c_str());
 	setChildFont(IDCANCEL, displayFont);
 
-	setChildText(ID_APPLY, langResource[71].c_str());
 	setChildFont(ID_APPLY, displayFont);
-	setChildText(ID_APPLY_ALL, langResource[71].c_str());
 	setChildFont(ID_APPLY_ALL, displayFont);
 
-	setChildText(IDC_GROUP_ALL, langResource[72].c_str());
 	setChildFont(IDC_GROUP_ALL, displayFont);
 
-	setChildText(IDC_GROUP_INDIVIDUAL, langResource[73].c_str());
 	setChildFont(IDC_GROUP_INDIVIDUAL, displayFont);
 
 	setChildFont(IDC_STATIC_APP_TITLE, displayFont);
@@ -915,10 +974,28 @@ void NoMeiryoUI::applyResource()
 	setChildFont(IDC_STATIC_VERNO, displayFont);
 	setChildFont(IDC_STATIC_AUTHOR, displayFont);
 
-
-	//DeleteObject(newFont);
 }
 
+/**
+ * @brief Get fallback font when font settings in language file didn't exist in Windows(For example older Windows)
+ * @param settingString Application display font name in language file.
+ * @return Font name adjusted by font installed in Windows.
+*/
+tstring NoMeiryoUI::getLanguageFallbackForCountry(tstring &settingString)
+{
+	tstring font;
+
+	switch (runningCountry) {
+		case Japan:
+			font = japan::getJapaneseFontFallback(langResource[0]);
+			break;
+		default:
+			font = default::getDefaultFontFallback(langResource[0]);
+			break;
+	}
+
+	return font;
+}
 
 /**
  * フォント表示を更新する。
@@ -1118,6 +1195,9 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 		case IDM_SET_11:
 			OnSet11();
 			return (INT_PTR)0;
+		case IDM_CHOICE_APP_FONT:
+			OnChoiceAppFont();
+			return (INT_PTR)0;
 		case IDM_ANOTHER:
 			if (appMenu->isChecked(IDM_ANOTHER)) {
 				appMenu->CheckMenuItem(IDM_ANOTHER, false);
@@ -1126,15 +1206,15 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 			}
 			return (INT_PTR)0;
 		case IDM_COMPAT7:
-			if (appMenu->isChecked(IDM_COMPAT7)) {
-				appMenu->CheckMenuItem(IDM_COMPAT7, false);
-				WIN8_SIZE = true;
-			} else {
-				appMenu->CheckMenuItem(IDM_COMPAT7, true);
-				WIN8_SIZE = false;
-			}
-			updateDisplay();
+			toggleWin7aliculate();
 
+			return (INT_PTR)0;
+		case IDM_NO_MULTI_RUN:
+			toggleMultiRun();
+
+			return (INT_PTR)0;
+		case IDM_FORCE_TITLE_SET:
+			toggleForceTitleSet();
 			return (INT_PTR)0;
 		case IDM_HELPTOPIC:
 			showHelp();
@@ -1146,6 +1226,63 @@ INT_PTR NoMeiryoUI::OnCommand(WPARAM wParam)
 	return BaseDialog::OnCommand(wParam);
 
 }
+
+/**
+ * @brief Windows 7式計算のトグル処理
+ */
+void NoMeiryoUI::toggleWin7aliculate()
+{
+	if (appMenu->isChecked(IDM_COMPAT7)) {
+		appMenu->CheckMenuItem(IDM_COMPAT7, false);
+		WIN8_SIZE = true;
+	}
+	else {
+		appMenu->CheckMenuItem(IDM_COMPAT7, true);
+		WIN8_SIZE = false;
+	}
+	updateDisplay();
+}
+
+/**
+ * @brief 複数起動フラグ切り替え
+ */
+void NoMeiryoUI::toggleMultiRun()
+{
+	if (appMenu->isChecked(IDM_NO_MULTI_RUN)) {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, false);
+		multiRun = true;
+	}
+	else {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+		multiRun = false;
+		saveConfig();
+	}
+	saveConfig();
+}
+
+/**
+ *  @brief Windows 11 22H2以降での強制フォント設定切り替え
+ */
+void NoMeiryoUI::toggleForceTitleSet()
+{
+	if (appMenu->isChecked(IDM_FORCE_TITLE_SET)) {
+		appMenu->CheckMenuItem(IDM_FORCE_TITLE_SET, false);
+		forceTitleFontSet = false;
+		if (compatLevel > 0) {
+			titleFontButton->EnableWindow(FALSE);
+		}
+	} else {
+		appMenu->CheckMenuItem(IDM_FORCE_TITLE_SET, true);
+		forceTitleFontSet = true;
+		if (compatLevel > 0) {
+			titleFontButton->EnableWindow(TRUE);
+			MessageBox(this->getHwnd(), langResource[MSG_FORCE_TITLE_SET].c_str(),
+				langResource[MSG_WARNING].c_str(), MB_OK | MB_ICONWARNING);
+		}
+	}
+}
+
+
 
 /**
  * フォントを選択する。
@@ -1233,7 +1370,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			metricsAll.lfStatusFont = logfont;
 			metricsAll.lfMessageFont = logfont;
 			// Silently ignore on Win11 22H2
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				metricsAll.lfCaptionFont = logfont;
 			} else {
 				set11TitlePreset(&metricsAll);
@@ -1248,7 +1385,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 			allFont = createFont(&metricsAll.lfMenuFont);
 			allFontTextBox->setFont(allFont);
 
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				fontPoints.title = points;
 			}
 			fontPoints.palette = points;
@@ -1261,7 +1398,7 @@ void NoMeiryoUI::selectFont(enum fontType type)
 
 		case title:
 			// Silently ignore on Win11 22H2
-			if (compatLevel < 1) {
+			if ((compatLevel < 1) || (forceTitleFontSet)) {
 				metrics.lfCaptionFont = logfont;
 				titleFontName = logfont.lfFaceName;
 
@@ -1452,7 +1589,7 @@ BOOL NoMeiryoUI::loadFontInfo(TCHAR *filename)
 	LOGFONT messageFont;
 	LOGFONT menuFont;
 
-	if (compatLevel < 1) {
+	if ((compatLevel < 1) || (forceTitleFontSet == true)) {
 		loadResult = loadFont(filename, _T("TitleFont"), &captionFont);
 		if (!loadResult) {
 			return FALSE;
@@ -1961,13 +2098,24 @@ INT_PTR NoMeiryoUI::OnBnClickedOk()
 		}
 	}
 #endif
-	if (compatLevel > 0) {
+	if ((compatLevel > 0) && (forceTitleFontSet == false)){
+		// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 		set11TitlePreset(&metrics);
+
+		DeleteObject(titleFont);
+		titleFont = createFont(&metrics.lfCaptionFont);
+		titleFontTextBox->setFont(titleFont);
+		double points;
+		fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
+
+		updateDisplay();
+
 	}
 
 	// フォント変更を実施する。
-	setFont(&metrics, &iconFont);
+	setFont(&metrics, &iconFont, appMenu->isChecked(IDM_ANOTHER));
 
+	adjustWindowSize();
 	// COLORREF ref = GetThemeSysColor(NULL, COLOR_ACTIVECAPTION);
 
 	return (INT_PTR)TRUE;
@@ -1991,12 +2139,20 @@ void NoMeiryoUI::OnBnClickedAll()
 		}
 	}
 #endif
-	if (compatLevel > 0) {
+	if ((compatLevel > 0) && (forceTitleFontSet == false)) {
 		set11TitlePreset(&metricsAll);
+
+		DeleteObject(titleFont);
+		titleFont = createFont(&metrics.lfCaptionFont);
+		titleFontTextBox->setFont(titleFont);
+		double points;
+		fontPoints.title = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
 	}
 
 	// フォント変更を実施する。
-	setFont(&metricsAll, &iconFontAll);
+	setFont(&metricsAll, &iconFontAll, appMenu->isChecked(IDM_ANOTHER));
+
+	adjustWindowSize();
 
 	memcpy(&metrics, &metricsAll,sizeof(NONCLIENTMETRICS));
 	memcpy(&iconFont, &iconFontAll,sizeof(LOGFONT));
@@ -2144,6 +2300,61 @@ void NoMeiryoUI::OnSet11(void)
 
 }
 
+/**
+ * アプリケーションフォントを選択する。
+ */
+void NoMeiryoUI::OnChoiceAppFont()
+{
+
+	INT_PTR result;
+	LOGFONT logfont;	// 取得したフォントの情報を入れる構造体
+
+	FillMemory(&logfont, sizeof(LOGFONT), 0x00);
+
+	try {
+
+		FontSel *selector = new FontSel(this->hWnd, IDD_DIALOG_FONTSEL, TRUE);
+		if (noMeiryoUI) {
+			selector->setNoMeiryoUI();
+		}
+		if (noTahoma) {
+			selector->setNoTahoma();
+		}
+		// 選択していたフォントをフォント選択ダイアログに設定する。
+		selector->setPreviousFont(&logfont);
+
+		result = selector->showModal();
+		if (result != IDOK) {
+			delete[]selector;
+			return;
+		}
+		logfont = selector->getSelectedFont();
+		if (logfont.lfFaceName[0] == _T('\0')) {
+			delete[]selector;
+			return;
+		}
+
+		delete[]selector;
+	}
+	catch (...) {
+		MessageBox(this->hWnd,
+			_T("Internal error in font selection dialog."),
+			_T("Error"),
+			MB_OK | MB_ICONEXCLAMATION);
+		return;
+	}
+
+	langResource[0] = logfont.lfFaceName;
+	applyDisplayFont();
+	adjustWindowSize();
+
+	// 表示を更新する。
+	updateDisplay();
+
+	// 設定を保存する。
+	saveConfig();
+}
+
 // 設定するシステムフォントの情報格納用構造体
 // システムフォント設定スレッドで使用する。
 NONCLIENTMETRICS *s_fontMetrics;
@@ -2166,6 +2377,8 @@ void setFontAdjusted(NONCLIENTMETRICS* fontMetrics)
 			0 - realMetrics.lfCaptionFont.lfHeight + (10 * round(getSystemDPI() / 96));
 		realMetrics.iCaptionHeight = captionHeight;
 	}
+
+	// Windows 11の枠線用調整
 	if (majorVersion > 10) {
 		if (realMetrics.iPaddedBorderWidth == 0) {
 			realMetrics.iPaddedBorderWidth = 1 + round((double)getSystemDPI() / 96);
@@ -2196,10 +2409,12 @@ unsigned _stdcall setOnThread(void *p)
  *
  * @param fontMetrics アイコン以外のフォント指定用NONCLIENTMETRICS
  * @param iconLogFont アイコンのフォント
+ * @param anotherThread 別スレッドで実行するか
  */
 void NoMeiryoUI::setFont(
 	NONCLIENTMETRICS *fontMetrics,
-	LOGFONT *iconLogFont
+	LOGFONT *iconLogFont,
+	bool anotherThread
 ) {
 
 	DWORD_PTR ptr;
@@ -2229,7 +2444,7 @@ void NoMeiryoUI::setFont(
 	}
 
 	// アイコン以外のフォント設定
-	if (appMenu->isChecked(IDM_ANOTHER)) {
+	if (anotherThread) {
 		// UIと別スレッドでSystemParametersInfo(SPI_SETNONCLIENTMETRICSを
 		// 実行する。
 		s_fontMetrics = fontMetrics;
@@ -2286,7 +2501,6 @@ void NoMeiryoUI::setFont(
 	SetSysColors(1,colorItems,colors);
 #endif
 
-	adjustWindowSize();
 }
 
 /**
@@ -2498,8 +2712,12 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber > 22631) {
+			if (buildNumber > 27000) {
 				_tcscat_s(calledVer, _T(" Insider"));
+			} else if (buildNumber >= 26200) {
+				_tcscat_s(calledVer, _T(" 2025 Update"));
+			} else if (buildNumber >= 26000) {
+				_tcscat_s(calledVer, _T(" 2024 Update"));
 			} else if (buildNumber == 22631) {
 				_tcscat_s(calledVer, _T(" 2023 Update"));
 			} else if (buildNumber >= 22621) {
@@ -2662,7 +2880,7 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2023\nTranslated by %s"),
+		_T("%s\n\nProgrammed By Tatsuhiko Syoji(Tatsu) 2005,2012-2025\nTranslated by %s"),
 		version, transAuthor);
 
 	MessageBox(hWnd,
@@ -2671,3 +2889,97 @@ void NoMeiryoUI::showVersion(void)
 		MB_OK | MB_ICONINFORMATION);
 }
 
+/**
+ * @brief 設定ファイルを保存する
+ */
+void NoMeiryoUI::saveConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	HMODULE hModule;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
+
+	if (multiRun) {
+		multiRunValue = 1;
+	} else {
+		multiRunValue = 0;
+	}
+	_stprintf(multiRunString, _T("%d"), multiRunValue);
+	WritePrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, multiRunString, iniFile);
+
+}
+
+/**
+ * @brief 設定ファイルを読み込む
+ */
+void NoMeiryoUI::loadConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	TCHAR fontName[33];
+	HMODULE hModule;
+	int read;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, iniFile);
+
+	if (fontName[0] != _T('\0')) {
+		langResource[0] = fontName;
+	}
+	
+	GetPrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, _T("1"), multiRunString, 8, iniFile);
+	multiRunValue = _ttoi(multiRunString);
+	if (multiRunValue != 0) {
+		multiRun = true;
+	} else {
+		multiRun = false;
+	}
+
+}
+
+/**
+ * @brief 複数起動関連処理
+ */
+void NoMeiryoUI::handleMultipleRun(void)
+{
+	if (multiRun) {
+		return;
+	}
+	HWND hWnd = FindWindow(NULL, langResource[TITLE].c_str());
+	if (hWnd != NULL) {
+		// Already running
+		ExitProcess(0);
+	}
+}

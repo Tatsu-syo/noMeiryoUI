@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>noMeiryoUI_2012</ProjectName>
+    <ProjectGuid>{5FBD6B6B-056A-402B-9168-CF72C05FDA0E}</ProjectGuid>
+    <RootNamespace>noMeiryoUI</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.61030.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)_2012\</OutDir>
+    <IntDir>$(Configuration)_2012\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>noMeiryoUI</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)_2012\</OutDir>
+    <IntDir>$(Configuration)_2012\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>noMeiryoUI</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>TWR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/SAFESEH %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>TWR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/SAFESEH  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="country\default.cpp" />
+    <ClCompile Include="country\japan.cpp" />
+    <ClCompile Include="country\korea.cpp" />
+    <ClCompile Include="FontSel.cpp" />
+    <ClCompile Include="iniReader.cpp" />
+    <ClCompile Include="langresource.cpp" />
+    <ClCompile Include="noMeiryoUI.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="util.cpp" />
+    <ClCompile Include="TWR\BaseDialog.cpp" />
+    <ClCompile Include="TWR\DialogAppliBase.cpp" />
+    <ClCompile Include="TWR\ModelessDialog.cpp" />
+    <ClCompile Include="TWR\NCFileDialog.cpp" />
+    <ClCompile Include="TWR\TwrCheckbox.cpp" />
+    <ClCompile Include="TWR\TwrCombobox.cpp" />
+    <ClCompile Include="TWR\TwrCore.cpp" />
+    <ClCompile Include="TWR\TwrMenu.cpp" />
+    <ClCompile Include="TWR\TwrWnd.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="country\default.h" />
+    <ClInclude Include="country\japan.h" />
+    <ClInclude Include="country\korea.h" />
+    <ClInclude Include="FontSel.h" />
+    <ClInclude Include="iniReader.h" />
+    <ClInclude Include="langresource.h" />
+    <ClInclude Include="noMeiryoUI.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="TWR\AppliBase.h" />
+    <ClInclude Include="TWR\BaseDialog.h" />
+    <ClInclude Include="TWR\DialogAppliBase.h" />
+    <ClInclude Include="TWR\ModelessDialog.h" />
+    <ClInclude Include="TWR\NCFileDialog.h" />
+    <ClInclude Include="TWR\stdafx.h" />
+    <ClInclude Include="TWR\tstring.h" />
+    <ClInclude Include="TWR\TwrCheckbox.h" />
+    <ClInclude Include="TWR\TwrCombobox.h" />
+    <ClInclude Include="TWR\TwrCore.h" />
+    <ClInclude Include="TWR\TwrMenu.h" />
+    <ClInclude Include="TWR\TwrWnd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="noMeiryoUI.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="noMeiryoUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="noMeiryoUI.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

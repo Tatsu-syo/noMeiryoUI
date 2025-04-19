@@ -9,8 +9,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include <tchar.h>
 #include <tstring.h>
 
-namespace japan {
+namespace default {
 
-	extern tstring getJapaneseFontFallback(tstring &settingString);
+	extern tstring getDefaultFontFallback(tstring &settingString);
 
 };

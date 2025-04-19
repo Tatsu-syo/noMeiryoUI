@@ -1,7 +1,7 @@
 ﻿#include <windows.h>
-#include "japan.h"
+#include "default.h"
 
-namespace japan {
+namespace default {
 
 	/**
 	 * @brief 必要とされる文字列
@@ -61,40 +61,28 @@ namespace japan {
 	}
 
 	/**
-	 * @brief 日本語版の使用するフォールバックフォントを取得する。
-	 * @param settingString 言語ファイルのフォント名
-	 * @return 選択されたフォント名
+	 * Write fallback font when font specified in language file is not found.
+	 * For example in Japanese, use Yu Gothic -> MS UI Gothic
+	 * Use this routine, unfortunately system font selection is too ugly such as Japan.
+	 * If you want to use language and Windows version specific fallback, copy this source for your country
+	 * and modify font name in language specific font name which is installed all Windows in your country.
+	 * 
+	 * @brief Determine exist font for default languages.
+	 * @param settingString Preferred font name
+	 * @return Choiced font name
 	*/
-	tstring getJapaneseFontFallback(tstring &settingString)
+	tstring getDefaultFontFallback(tstring &settingString)
 	{
 		int result = 1;
 
 		_neededString = settingString;
 
-		// Font in language file is found in your Windows?
 		result = findCharsetFont();
 		if (result == 0) {
 			return settingString;
 		}
 
-		// In early Windows 10
-		_neededString = _T("游ゴシック Medium");
-		result = findCharsetFont();
-		if (result == 0) {
-			return _neededString;
-		}
-
-		// In Windows 8.1
-		_neededString = _T("游ゴシック");
-		result = findCharsetFont();
-		if (result == 0) {
-			return _neededString;
-		}
-
-		// なければオーソドックスなMS UI Gothic
-		// メイリオは誤解を生むのであえて使わない。
-		// メイリオとMeiryo UIはいろいろな意味で別物なのに混同されることがあるので。
-		_neededString = _T("MS UI Gothic");
+		_neededString = _T("Arial");
 
 		return _neededString;
 

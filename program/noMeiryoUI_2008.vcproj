@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\langresource.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\noMeiryoUI.cpp"
 				>
 			</File>
@@ -255,6 +259,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="country"
+				>
+				<File
+					RelativePath=".\country\default.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\country\japan.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\country\korea.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ヘッダー ファイル"
@@ -267,6 +287,10 @@
 			</File>
 			<File
 				RelativePath=".\iniReader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\langresource.h"
 				>
 			</File>
 			<File
@@ -338,6 +362,22 @@
 				</File>
 				<File
 					RelativePath=".\TWR\TwrWnd.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="country"
+				>
+				<File
+					RelativePath=".\country\default.h"
+					>
+				</File>
+				<File
+					RelativePath=".\country\japan.h"
+					>
+				</File>
+				<File
+					RelativePath=".\country\korea.h"
 					>
 				</File>
 			</Filter>

@@ -75,6 +75,12 @@
     <ClCompile Include="country\japan.cpp">
       <Filter>ソース ファイル\country</Filter>
     </ClCompile>
+    <ClCompile Include="country\default.cpp">
+      <Filter>ソース ファイル\country</Filter>
+    </ClCompile>
+    <ClCompile Include="langresource.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontSel.h">
@@ -139,6 +145,12 @@
     </ClInclude>
     <ClInclude Include="country\japan.h">
       <Filter>ヘッダー ファイル\country</Filter>
+    </ClInclude>
+    <ClInclude Include="country\default.h">
+      <Filter>ヘッダー ファイル\country</Filter>
+    </ClInclude>
+    <ClInclude Include="langresource.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

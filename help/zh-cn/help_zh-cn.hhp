@@ -4,7 +4,7 @@ Compiled file=zh-CN.chm
 Contents file=ToC.hhc
 Default topic=contents\02.html
 Display compile progress=No
-Language=0x804 中文(简体，中国)
+Language=0x804
 Title=No!! Meiryo UI使用方法
 
 
@@ -13,6 +13,4 @@ contents\01.html
 contents\02.html
 contents\03.html
 contents\04.html
-
-[INFOTYPES]
 

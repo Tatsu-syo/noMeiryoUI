@@ -15,7 +15,8 @@ private:
 protected:
 	static BaseDialog *modalCallback;
 	virtual INT_PTR OnInitDialog();
-	virtual INT_PTR OnShowWindow(WPARAM wParam, LPARAM lParam);
+	virtual INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
+	virtual INT_PTR OnWindowCreated(WPARAM wParam, LPARAM lParam);
 	virtual INT_PTR OnCommand(WPARAM wParam);
 	TCHAR ddx_buf[512];
 public:
@@ -41,6 +42,7 @@ public:
 	HWND GetDlgItemRaw(int item);
 	void setChildText(int id, const TCHAR *message);
 	void setChildFont(int id, HFONT font);
+	void setChildEnabled(int id, BOOL enabled);
 
 	virtual void UpdateData(bool toObj);
 

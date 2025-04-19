@@ -1,12 +1,19 @@
 /*
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #ifndef NOMEIRYOUI_H
 #define NOMEIRYOUI_H
 
+#include <vector>
 #include "DialogAppliBase.h"
 #include "TwrMenu.h"
+
+#define EXE_NAME _T("noMeiryoUI.exe")
+#define INI_FILE _T("noMeiryoUI.ini")
+#define CONFIG_SECTION _T("Settings")
+#define UIFONT_KEY _T("UIFontName")
+#define MULTI_RUN_KEY _T("RunMultiple")
 
 void initializeLocale(void);
 BOOL CALLBACK MonitorNearMouseCallback(
@@ -23,6 +30,8 @@ BOOL CALLBACK MonitorNearWindowCallback(
 );
 BOOL CALLBACK setWindowSize(HWND hWnd, LPARAM lparam);
 void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeName, TCHAR *iniPath);
+
+void setLocationInternalCode(TCHAR  langWork[85]);
 
 /** フォントのポイント数を保存する構造体 */
 struct FontPoints {
@@ -104,6 +113,10 @@ private:
 
 	TCHAR settingFile[MAX_PATH];
 	bool setOnStart;
+	bool firstShow;
+
+	int autosetDelay;
+	bool forceTitleFontSet;
 
 	void OnLoad();
 	BOOL loadFontInfo(TCHAR *filename);
@@ -119,6 +132,7 @@ private:
 	void OnSet8();
 	void OnSet10(void);
 	void OnSet11(void);
+	void OnChoiceAppFont();
 	void set11TitlePreset(NONCLIENTMETRICS *metrics);
 	void SetWinVer(void);
 	void getWin10Ver(TCHAR *buf, DWORD major, DWORD minor);
@@ -126,24 +140,38 @@ private:
 
 	void setFont(
 		NONCLIENTMETRICS *fontMetrics,
-		LOGFONT *iconLogFont
+		LOGFONT *iconLogFont,
+		bool fromGui
 	);
 	void showHelp(void);
 	HFONT createFont(LOGFONT *font);
 	void getActualFont(void);
-	void getOption(TCHAR *lpCmdLine);
-	void parseOption(TCHAR *param, int argCount);
+	void getOption();
+	void parseOption(std::vector<tstring *> *param);
 	void applyResource();
+	void applyDisplayText();
+	void applyDisplayFont();
+	tstring getLanguageFallbackForCountry(tstring &settingString);
 	void showVersion(void);
 	void adjustWindowSize(void);
+	void saveConfig(void);
+	void loadConfig(void);
+	void toggleWin7aliculate();
+	void toggleMultiRun();
+	void handleMultipleRun(void);
 
 protected:
 	INT_PTR OnCommand(WPARAM wParam);
+
+	void toggleForceTitleSet();
+
 
 public:
 	BaseDialog *createBaseDialog();
 	int OnAppliStart(TCHAR *lpCmdLine);
 	int OnWindowShow();
+	INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
+	INT_PTR OnWindowCreated(WPARAM wParam, LPARAM lParam);
 	int OnAppliEnd();
 	INT_PTR OnInitDialog();
 	void UpdateData(bool toObj);

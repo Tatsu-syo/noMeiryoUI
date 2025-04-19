@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001 
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001,hensuu
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -9,16 +9,19 @@ MENU_FILE=檔案(&F)
 MENU_FILE_LOAD=載入字型設定檔(&O)
 MENU_FILE_SAVE=儲存字型設定檔(&A)
 MENU_FILE_SET_QUIT=設定系統字型並退出(&S)
-MENU_FILE_QUIT=退出(&X)
+MENU_FILE_QUIT=結束(&X)
 MENU_PRESET=重設為預設設定(&P)
 MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_PRESET_11=Windows 11
 MENU_TOOLS=工具(&T)
+MENU_TOOLS_CHOICE_APP_FONT=選擇 No!! Meiryo UI 應用程式字型(&f)
 MENU_TOOLS_THREAD=在另一執行緒中變更字型(&A)
 MENU_TOOLS_SEVEN=將字型大小視為與 Windows 7 相同(&7)
-MENU_HELP=幫助(&H)
-MENU_HELP_HELP=顯示幫助(&C)
+MENU_TOOLS_NO_MULTI_RUN=不要重複執行(&D)
+MENU_FORCE_TITLE_SET=允許變更標題列字型(&O)
+MENU_HELP=說明(&H)
+MENU_HELP_HELP=檢視說明(&C)
 MENU_HELP_ABOUT=關於 No!! Meiryo UI (&A)
 DLG_ALL_GROUP=全部字型設定
 DLG_INDIVIDUAL_GROUP=個別字型設定
@@ -30,9 +33,9 @@ DLG_HINT=提示
 DLG_MESSAGE=訊息方塊
 DLG_MENU=選單
 DLG_SELECT=選取
-DLG_SET_ALL=套用全部並退出
-DLG_SET=套用並退出
-DLG_EXIT=退出而不套用
+DLG_SET_ALL=套用全部並結束
+DLG_SET=套用並結束
+DLG_EXIT=結束而不套用
 DLG_APPLY=套用
 DLG_FONT_SEL=字型選取
 DLG_FONT_NAME=字型名稱(&F)
@@ -88,7 +91,8 @@ MSG_NO_SIZE=請選擇字型大小。
 MSG_NO_CHARSET=請選擇字元集。
 MSG_WARNING=警告
 MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 中，由於 Windows 方面的限制，無法變更標題列的字型。
-MSG_TRANSLATE=Austin Chang,HSSadBoy
+MSG_FORCE_TITLE_SET=變更標題列字型可能會導致一些問題。
+MSG_TRANSLATE=Austin Chang,HSSadBoy,hensuu
 
 [PRESET]
 ; Preset menu setting.
