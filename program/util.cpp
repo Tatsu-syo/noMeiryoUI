@@ -1,5 +1,5 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #pragma warning(disable : 4996)
@@ -864,4 +864,94 @@ void setPreset(
 	metrics->iMenuHeight = round(windowMetric[MenuHeight] * ((double)dpiY / 96.0));
 	metrics->iPaddedBorderWidth = round(windowMetric[Padding] * ((double)dpiY / 96.0));
 
+}
+
+/**
+ * @brief コマンドライン引数を展開する
+ * @return コマンドライン引数配列
+ */
+std::vector<tstring *> *extractArguments()
+{
+	TCHAR *argument = GetCommandLine();
+	std::vector<tstring *> *argv = new std::vector<tstring *>();
+
+	TCHAR delim = _T('\0');
+	tstring *splitted = NULL;
+
+	while (*argument) {
+		if (delim == _T('\0')) {
+			// Quote not started
+			if (_istspace(*argument)) {
+				if (splitted != NULL) {
+					// Argument end
+					argv->push_back(splitted);
+					splitted = NULL;
+				}
+			}
+			else {
+				switch (*argument) {
+					case _T('\''):
+						// Quote start
+						if (splitted == NULL) {
+							delim = *argument;
+						} else {
+							splitted->push_back(*argument);
+						}
+						break;
+					case _T('\"'):
+						// Quote start
+						if (splitted == NULL) {
+							delim = *argument;
+						} else {
+							splitted->push_back(*argument);
+						}
+						break;
+					default:
+						if (splitted == NULL) {
+							// argument start
+							splitted = new tstring();
+						}
+						splitted->push_back(*argument);
+						break;
+				}
+			}
+		} else {
+			if (*argument == delim) {
+				if (splitted == NULL) {
+					// argument start
+					splitted = new tstring();
+				}
+				argv->push_back(splitted);
+				splitted = NULL;
+				delim = _T('\0');
+			} else {
+				if (splitted == NULL) {
+					// argument start
+					splitted = new tstring();
+				}
+				splitted->push_back(*argument);
+			}
+		}
+		argument++;
+	}
+	if (splitted != NULL) {
+		argv->push_back(splitted);
+	}
+
+	return argv;
+}
+
+/**
+ * @brief 引数vectorを解放する
+ * @param arguments 引数vector
+ */
+void deleteArguments(std::vector<tstring *> *arguments)
+{
+	for (size_t i = 0; i < arguments->size(); i++) {
+		if ((*arguments)[i] != NULL) {
+			delete (*arguments)[i];
+		}
+	}
+
+	delete arguments;
 }

@@ -18,3 +18,7 @@
 /program/*.ncb
 /program/*.user
 /util/*.obj
+/program/noMeiryoUI.opensdf
+/program/noMeiryoUI.sdf
+/program/UpgradeLog.htm
+/files

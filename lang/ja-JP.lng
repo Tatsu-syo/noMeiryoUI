@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 ;In RESOURCE section,
@@ -20,6 +20,7 @@ MENU_TOOLS_CHOICE_APP_FONT=Meiryo UIも大っきらい!! のフォントを選�
 MENU_TOOLS_THREAD=別スレッドでフォントを変更する(&A)
 MENU_TOOLS_SEVEN=フォントサイズをWindows 7と同様に扱う(&7)
 MENU_TOOLS_NO_MULTI_RUN=二重起動をしない(&D)
+MENU_FORCE_TITLE_SET=タイトルバーのフォントを変更可能にする(&O)
 MENU_HELP=ヘルプ(&H)
 MENU_HELP_HELP=ヘルプの表示(&C)
 MENU_HELP_ABOUT=バージョン情報(&A)...
@@ -91,6 +92,7 @@ MSG_NO_SIZE=文字サイズを選択してください。
 MSG_NO_CHARSET=文字セットを選択してください。
 MSG_WARNING=警告
 MSG_WIN11_22H2RESTRICTION=Windows 11 2022 Update(22H2)以降ではWindows側の事情によりタイトルバーのフォントを変更できません。
+MSG_FORCE_TITLE_SET=タイトルバーのフォントを変更するとトラブルが発生する可能性があります。
 MSG_TRANSLATE=Tatsuhiko Shoji(Tatsu)
 
 [PRESET]

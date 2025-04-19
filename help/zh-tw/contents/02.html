@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Austin Chang
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Austin Chang
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html lang="zh-tw">
@@ -44,19 +44,73 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 </p>
 
 </div>
+
+<hr>
+
+<div class="chapter">
+    <h2><a id="Options">Options menu</a></h2>
+    <ul>
+        <li>Choice No!! Meiryo UI application font<br>
+            Users can choice application font by font dialog.<br>
+        </li>
+        <li>Set system fonts in separated thread<br>
+            Some programs cause system freeze when system fonts changed.<br>
+            To avoid system freeze check this item.<br>
+            Initially, this option is checked.<br>
+            If you don't select this item, you can reduce time when you changed system fonts.<br>
+        </li>
+        <li>Calculate font size same as Windows 7<br>
+            In Windows 8, font size caliculate algorithm is different from other version of Windows.<br>
+            When you check this option, font size caliculate algorithm in Windows 8 is same as other version of Windows.<br>
+        </li>
+        <li>Don't run multiply<br>
+            When you check this option, No!! Meiryo UI don't run multiply.<br>
+            This option is useful to avoid contamination.<br>
+        </li>
+        <li>Force title bar font change enabled (no warranty)<br>
+            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
+            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+            This is why, this option is no warranty.<br>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+</div>
 <hr>
 <div class="chapter">
-<h2><a id="CommandLine">命令列選項。</a></h2>
+2<h2><a id="CommandLine">命令列選項。</a></h2>
 <p>
 命令列格式如下：<br>
-<kbd>noMeiryoUI [font_setting_file] [-set]</kbd><br>
+<kbd>noMeiryoUI [font_setting_file] [options...]</kbd><br>
+If you use multiple options you must separate option name by space.<br>
 </p>
 <p>
 如果你指定了「font setting file」，字型設定檔將會在程式啟動時載入。
 </p>
+
+<h3>Options</h3>
 <p>
-如果你選擇了「-set」選項，系統字型將會被自動設定。<br>
+	In [options...], you can use these options.<br>
+    If you use multiple options you must separate option name by space.<br>
 </p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
+		This option is useful for startup shortcut, launcher setting, batch file.<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
+        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
+		You can use this option to prevent system changes system fonts in some reasons<br>
+	</li>
+	<li>-force (no warranty)<br>
+		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
+        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+        This is why, this option is no warranty.<br>
+</li>
+</ul>
 
 </div>
 

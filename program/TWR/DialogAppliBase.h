@@ -24,6 +24,7 @@ public:
 	virtual int OnAppliStart(TCHAR *lpCmdLine);
 	virtual int OnWindowShow();
 	virtual int OnAppliEnd();
+	virtual INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
 
 };
 

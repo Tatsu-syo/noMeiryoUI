@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2024 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSadboy
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSadboy
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -19,6 +19,7 @@ MENU_TOOLS_CHOICE_APP_FONT=修改 No!! Meiryo UI 的字体
 MENU_TOOLS_THREAD=在独立线程中更改系统字体
 MENU_TOOLS_SEVEN=采用与 Windows 7 中相同的方法计算文字大小
 MENU_TOOLS_NO_MULTI_RUN=只允许运行一个实例(&D)
+MENU_FORCE_TITLE_SET=强制修改标题栏字体
 MENU_HELP=帮助(&H)
 MENU_HELP_HELP=显示帮助(&H)
 MENU_HELP_ABOUT=关于 No!! Meiryo UI(&A)
@@ -90,6 +91,7 @@ MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
 MSG_WARNING=提示
 MSG_WIN11_22H2RESTRICTION=在Windows 11 2022 Update(22H2)版本下 由于Windows方面的改动 导致标题栏字体不再允许进行更改。
+MSG_FORCE_TITLE_SET=更改标题栏字体可能会导致系统发生问题。
 MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSadBoy
 
 [PRESET]

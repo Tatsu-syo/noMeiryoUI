@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Claudio Mantovani Vieira
+noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Claudio Mantovani Vieira
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html>
@@ -49,7 +49,39 @@ Pressione o botão&nbsp;Configurar e&nbsp;você poderá definir a fonte da inter
 </p>
 
 </div>
+
 <hr>
+
+<div class="chapter">
+    <h2><a id="Options">Options menu</a></h2>
+    <ul>
+        <li>Choice No!! Meiryo UI application font<br>
+            Users can choice application font by font dialog.<br>
+        </li>
+        <li>Set system fonts in separated thread<br>
+            Some programs cause system freeze when system fonts changed.<br>
+            To avoid system freeze check this item.<br>
+            Initially, this option is checked.<br>
+            If you don't select this item, you can reduce time when you changed system fonts.<br>
+        </li>
+        <li>Calculate font size same as Windows 7<br>
+            In Windows 8, font size caliculate algorithm is different from other version of Windows.<br>
+            When you check this option, font size caliculate algorithm in Windows 8 is same as other version of Windows.<br>
+        </li>
+        <li>Don't run multiply<br>
+            When you check this option, No!! Meiryo UI don't run multiply.<br>
+            This option is useful to avoid contamination.<br>
+        </li>
+        <li>Force title bar font change enabled (no warranty)<br>
+            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
+            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+            This is why, this option is no warranty.<br>
+        </li>
+    </ul>
+</div>
+
+<hr>
+
 <div class="chapter">
 <h2>Opção linha de comando<a id="CommandLine">  .</a></h2>
 <p>
@@ -61,8 +93,31 @@ linha de comando está abaixo.<br>
 Se você especificar o arquivo de configuração da fonte, ele será carregado quando este programa for iniciado.
 </p>
 <p>
-Se você escolher a opção -configurar, as fontes do sistema serão&nbsp;configuradas automaticamente.<br>
+If you use multiple options you must separate option name by space.<br>
 </p>
+
+<h3>Options</h3>
+<p>
+	In [options...], you can use these options.<br>
+    If you use multiple options you must separate option name by space.<br>
+</p>
+<ul>
+	<li>-set<br>
+		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
+		This option is useful for startup shortcut, launcher setting, batch file.<br>
+	</li>
+	<li>-delay<br>
+		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
+        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
+		You can use this option to prevent system changes system fonts in some reasons<br>
+	</li>
+	<li>-force (no warranty)<br>
+		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
+        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
+        This is why, this option is no warranty.<br>
+</li>
+</ul>
+
 
 </div>
 
