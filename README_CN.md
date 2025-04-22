@@ -9,7 +9,7 @@ No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 ## 使用需求
 
  - Windows 8 或以上。
- - 虽然NoMeiryoUI能在Windows Vista上工作，但并不会积极测试Bug并确保兼容性，建议使用系统设置。
+ - 虽然No!! MeiryoUI 能在Windows Vista上工作，但并不会积极测试Bug并确保兼容性，建议使用系统设置。
 
 ## 使用注意
 
@@ -25,11 +25,12 @@ No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 
 ## 已知问题
 
-- No!! MeiryoUI 无法工作在：
+- No!! MeiryoUI 无法对以下内容生效：
     - Windows 任务栏。
     - 系统自带的 UWP 应用（例如“设置”、“画图”）。
     - 忽略系统字体设置的应用程序。
 - No!! MeiryoUI 无法修改Windows 11的窗口标题字体。
+- No!! MeiryoUI 可能会由于修改系统字体设置被杀毒软件误报。
 
 ## 说明文档
 
