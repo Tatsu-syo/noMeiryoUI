@@ -5,6 +5,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #pragma warning(disable : 4996)
 
 #include <math.h>
+#include <Shlobj.h>
 #include "util.h"
 #include "iniReader.h"
 
@@ -954,4 +955,24 @@ void deleteArguments(std::vector<tstring *> *arguments)
 	}
 
 	delete arguments;
+}
+
+void getApplicationSettingFolder(tstring& folder)
+{
+	TCHAR* folderStore;
+
+	folderStore = new TCHAR[MAX_PATH];
+
+	HRESULT result = SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, folderStore);
+
+	if (FAILED(result)) {
+		folderStore = _T("");
+
+		delete[]folderStore;
+	}
+
+	folder = folderStore;
+
+	delete[]folderStore;
+
 }

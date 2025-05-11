@@ -98,6 +98,7 @@ int getSystemDPI(void);
 double getFontPointDouble(LOGFONT* font, HWND hWnd);
 std::vector<tstring *> *extractArguments();
 void deleteArguments(std::vector<tstring *> *arguments);
+void getApplicationSettingFolder(tstring& folder);
 
 #if _MSC_VER < 1800
 

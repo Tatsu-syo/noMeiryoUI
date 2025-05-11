@@ -2894,27 +2894,51 @@ void NoMeiryoUI::showVersion(void)
  */
 void NoMeiryoUI::saveConfig(void)
 {
-	DWORD result;
-	TCHAR pathname[MAX_PATH];
-	TCHAR iniFile[_MAX_PATH];
-	TCHAR drive[_MAX_DRIVE + 1];
-	TCHAR cDir[_MAX_DIR + 1];
-	HMODULE hModule;
 	int multiRunValue = 1;
 	TCHAR multiRunString[8];
 
-	// 実行ファイルのディレクトリを得る。
-	hModule = GetModuleHandle(EXE_NAME);
-	if (hModule == NULL) {
-		return;
+	WIN32_FIND_DATA targetInfo;
+	tstring settingsFile;
+
+	getApplicationSettingFolder(settingsFile);
+
+	settingsFile += _T("\\Tatsu_syo");
+
+	memset(&targetInfo, 0, sizeof(targetInfo));
+
+	HANDLE findHandle = FindFirstFile(settingsFile.c_str(), &targetInfo);
+	if (findHandle == INVALID_HANDLE_VALUE) {
+		BOOL createResult = CreateDirectory(settingsFile.c_str(), NULL);
+		if (createResult == 0) {
+			return;
+		}
+	} else {
+		FindClose(findHandle);
+		if ((targetInfo.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+			return;
+		}
 	}
 
-	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+	settingsFile += _T("\\NoMeiryoUI");
+	memset(&targetInfo, 0, sizeof(targetInfo));
+	_tcscpy_s(targetInfo.cFileName, settingsFile.c_str());
+	findHandle = FindFirstFile(settingsFile.c_str(), &targetInfo);
+	if (findHandle == INVALID_HANDLE_VALUE) {
+		BOOL createResult = CreateDirectory(settingsFile.c_str(), NULL);
+		if (createResult == 0) {
+			return;
+		}
+	} else {
+		FindClose(findHandle);
+		if ((targetInfo.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0) {
+			return;
+		}
+	}
 
-	_tsplitpath(pathname, drive, cDir, NULL, NULL);
-	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+	settingsFile += _T("\\");
+	settingsFile += INI_FILE;
 
-	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), settingsFile.c_str());
 
 	if (multiRun) {
 		multiRunValue = 1;
@@ -2922,7 +2946,7 @@ void NoMeiryoUI::saveConfig(void)
 		multiRunValue = 0;
 	}
 	_stprintf(multiRunString, _T("%d"), multiRunValue);
-	WritePrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, multiRunString, iniFile);
+	WritePrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, multiRunString, settingsFile.c_str());
 
 }
 
@@ -2931,35 +2955,22 @@ void NoMeiryoUI::saveConfig(void)
  */
 void NoMeiryoUI::loadConfig(void)
 {
-	DWORD result;
-	TCHAR pathname[MAX_PATH];
-	TCHAR iniFile[_MAX_PATH];
-	TCHAR drive[_MAX_DRIVE + 1];
-	TCHAR cDir[_MAX_DIR + 1];
 	TCHAR fontName[33];
-	HMODULE hModule;
-	int read;
 	int multiRunValue = 1;
 	TCHAR multiRunString[8];
+	tstring settingsFile;
 
-	// 実行ファイルのディレクトリを得る。
-	hModule = GetModuleHandle(EXE_NAME);
-	if (hModule == NULL) {
-		return;
-	}
+	getApplicationSettingFolder(settingsFile);
+	settingsFile += _T("\\Tatsu_syo\\NoMeiryoUI\\");
+	settingsFile += INI_FILE;
 
-	result = GetModuleFileName(hModule, pathname, MAX_PATH);
-
-	_tsplitpath(pathname, drive, cDir, NULL, NULL);
-	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
-
-	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, iniFile);
+	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, settingsFile.c_str());
 
 	if (fontName[0] != _T('\0')) {
 		langResource[0] = fontName;
 	}
 	
-	GetPrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, _T("1"), multiRunString, 8, iniFile);
+	GetPrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, _T("1"), multiRunString, 8, settingsFile.c_str());
 	multiRunValue = _ttoi(multiRunString);
 	if (multiRunValue != 0) {
 		multiRun = true;
