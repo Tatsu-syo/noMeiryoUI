@@ -957,6 +957,12 @@ void deleteArguments(std::vector<tstring *> *arguments)
 	delete arguments;
 }
 
+#ifndef PORTABLE
+
+/**
+ * @brief アプリケーション設定フォルダを取得する
+ * @param folder 設定フォルダ格納先
+ */
 void getApplicationSettingFolder(tstring& folder)
 {
 	TCHAR* folderStore;
@@ -976,3 +982,5 @@ void getApplicationSettingFolder(tstring& folder)
 	delete[]folderStore;
 
 }
+
+#endif // PORTABLE

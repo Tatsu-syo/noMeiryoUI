@@ -2889,6 +2889,90 @@ void NoMeiryoUI::showVersion(void)
 		MB_OK | MB_ICONINFORMATION);
 }
 
+#ifdef PORTABLE
+
+/**
+ * @brief 設定ファイルを保存する
+ */
+void NoMeiryoUI::saveConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	HMODULE hModule;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	WritePrivateProfileString(CONFIG_SECTION, UIFONT_KEY, (LPCTSTR)(langResource[0].c_str()), iniFile);
+
+	if (multiRun) {
+		multiRunValue = 1;
+	} else {
+		multiRunValue = 0;
+	}
+	_stprintf(multiRunString, _T("%d"), multiRunValue);
+	WritePrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, multiRunString, iniFile);
+
+}
+
+/**
+ * @brief 設定ファイルを読み込む
+ */
+void NoMeiryoUI::loadConfig(void)
+{
+	DWORD result;
+	TCHAR pathname[MAX_PATH];
+	TCHAR iniFile[_MAX_PATH];
+	TCHAR drive[_MAX_DRIVE + 1];
+	TCHAR cDir[_MAX_DIR + 1];
+	TCHAR fontName[33];
+	HMODULE hModule;
+	int read;
+	int multiRunValue = 1;
+	TCHAR multiRunString[8];
+
+	// 実行ファイルのディレクトリを得る。
+	hModule = GetModuleHandle(EXE_NAME);
+	if (hModule == NULL) {
+		return;
+	}
+
+	result = GetModuleFileName(hModule, pathname, MAX_PATH);
+
+	_tsplitpath(pathname, drive, cDir, NULL, NULL);
+	_stprintf(iniFile, _T("%s%s%s"), drive, cDir, INI_FILE);
+
+	GetPrivateProfileString(CONFIG_SECTION, UIFONT_KEY, _T(""), fontName, 33, iniFile);
+
+	if (fontName[0] != _T('\0')) {
+		langResource[0] = fontName;
+	}
+
+	GetPrivateProfileString(CONFIG_SECTION, MULTI_RUN_KEY, _T("1"), multiRunString, 8, iniFile);
+	multiRunValue = _ttoi(multiRunString);
+	if (multiRunValue != 0) {
+		multiRun = true;
+	} else {
+		multiRun = false;
+	}
+
+}
+
+#else
+
 /**
  * @brief 設定ファイルを保存する
  */
@@ -2979,6 +3063,8 @@ void NoMeiryoUI::loadConfig(void)
 	}
 
 }
+
+#endif
 
 /**
  * @brief 複数起動関連処理
