@@ -1,5 +1,6 @@
-中文版请查看[README_CN.md](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/README_CN.md)
+#### 简中说明请查看[README_CN.md](README_CN.md)
 
+---
 # No!! MeiryoUI
 
 No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) brings back the capability to customize the user interface font on Windows, a feature that was removed since Windows 8.1.
