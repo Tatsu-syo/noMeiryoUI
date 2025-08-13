@@ -90,7 +90,7 @@ MSG_NO_STYLE=请选择字形。
 MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
 MSG_WARNING=提示
-MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 版本后，由于 Windows方 面的改动，标题栏字体不再被允许进行更改。
+MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 版本后，由于 Windows 方面的改动，标题栏字体不再被允许进行更改。
 MSG_FORCE_TITLE_SET=更改标题栏字体可能会导致系统发生问题。
 MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSkyBoy
 
