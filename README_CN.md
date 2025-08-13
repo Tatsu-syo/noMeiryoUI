@@ -4,12 +4,12 @@ No!! MeiryoUI 重新启用了自定义Windows用户界面字体的功能，该�
 
 No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 
-如果有任何想法或问题，请在[discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions)寻求支持。
+如果有任何想法或问题，请在 [discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions) 寻求支持。
 
 ## 使用需求
 
 - Windows 8 或更新版本。
- - 虽然 No!! MeiryoUI 能在Windows Vista上工作，但并未积极测试其兼容性。
+ - 虽然 No!! MeiryoUI 能在 Windows Vista 上工作，但并未积极测试其兼容性。
 
 ## 使用注意
 
@@ -20,7 +20,7 @@ No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 > reg save "HKCU\Control Panel" .\reset_font.reg /y
 > ```
 
- - 从[GitHub Releases](https://github.com/tatsu-syo/nomeiryoui/releases/latest)下载zip文件。
+ - 从 [GitHub Releases](https://github.com/tatsu-syo/nomeiryoui/releases/latest) 下载zip文件。
  - 解压并运行"nomeiryoui.exe".。
 
 ## 已知问题
@@ -35,7 +35,7 @@ No!! MeiryoUI 在Windows 11 22H2上有一些局限性，
 
 ## 说明文档
 
-您可以在[Wiki](https://github.com/tatsu-syo/nomeiryoui/wiki)上找到详细的说明文档。
+您可以在 [Wiki](https://github.com/tatsu-syo/nomeiryoui/wiki) 上找到详细的说明文档。
 
 ## 许可证书s
 
