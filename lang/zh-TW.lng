@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSadBoy,abc0922001,hensuu
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,Austin Chang,HSSkyBoy,abc0922001,hensuu
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -92,7 +92,7 @@ MSG_NO_CHARSET=請選擇字元集。
 MSG_WARNING=警告
 MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 中，由於 Windows 方面的限制，無法變更標題列的字型。
 MSG_FORCE_TITLE_SET=變更標題列字型可能會導致一些問題。
-MSG_TRANSLATE=Austin Chang,HSSadBoy,hensuu
+MSG_TRANSLATE=Austin Chang,HSSkyBoy,hensuu
 
 [PRESET]
 ; Preset menu setting.
