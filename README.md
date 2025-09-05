@@ -1,4 +1,4 @@
-中文版请查看[README_CN.md](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/README_CN.md)
+En | [Cn](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/README_CN.md) | [Jp](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/README_JA.md)
 
 # No!! MeiryoUI
 
