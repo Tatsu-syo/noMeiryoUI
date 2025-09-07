@@ -1,3 +1,6 @@
+[English](README.md) | 简体中文 | [日本語](README_JA.md)
+
+---
 # No!! MeiryoUI 
 
 No!! MeiryoUI 重新启用了自定义 Windows 用户界面字体的功能，该功能自 Windows 8.1 以来已被删除。
