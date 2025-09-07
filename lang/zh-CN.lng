@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSadboy
+; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSkyboy
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -8,7 +8,7 @@ TITLE=No!! Meiryo UI
 MENU_FILE=文件(&F)
 MENU_FILE_LOAD=加载字体配置文件(&O)...
 MENU_FILE_SAVE=保存字体配置文件(&A)...
-MENU_FILE_SET_QUIT=设定系统字体并退出(&S)
+MENU_FILE_SET_QUIT=设置系统字体并退出(&S)
 MENU_FILE_QUIT=退出(&X)
 MENU_PRESET=恢复系统默认字体(&P)
 MENU_PRESET_8=Windows 8/8.1
@@ -23,8 +23,8 @@ MENU_FORCE_TITLE_SET=强制修改标题栏字体
 MENU_HELP=帮助(&H)
 MENU_HELP_HELP=显示帮助(&H)
 MENU_HELP_ABOUT=关于 No!! Meiryo UI(&A)
-DLG_ALL_GROUP=全局设定
-DLG_INDIVIDUAL_GROUP=单项设定
+DLG_ALL_GROUP=全局设置
+DLG_INDIVIDUAL_GROUP=单项设置
 DLG_ALL_FONT=所有字体
 DLG_TITLE_BAR=标题栏
 DLG_ICON=追随图标的文字
@@ -79,7 +79,7 @@ DLG_STYLE_LIGHT=细体
 DLG_STYLE_EXTRA_LIGHT=极细体
 DLG_STYLE_SEMI_LIGHT=准细体
 DLG_STYLE_SLANTED=斜体
-MSG_SETTING_FILE=字体设定文件(*.ini)
+MSG_SETTING_FILE=字体配置文件(*.ini)
 MSG_ALL_FILE=所有文件(*.*)
 MSG_LOAD_FAIL=字体配置文件加载失败。
 MSG_SAVE_FAIL=字体配置文件保存失败。
@@ -90,9 +90,9 @@ MSG_NO_STYLE=请选择字形。
 MSG_NO_SIZE=请选择字体大小。
 MSG_NO_CHARSET=请选择字符集。
 MSG_WARNING=提示
-MSG_WIN11_22H2RESTRICTION=在Windows 11 2022 Update(22H2)版本下 由于Windows方面的改动 导致标题栏字体不再允许进行更改。
+MSG_WIN11_22H2RESTRICTION=在 Windows 11 2022 Update(22H2) 版本后，由于 Windows 方面的改动，标题栏字体不再被允许进行更改。
 MSG_FORCE_TITLE_SET=更改标题栏字体可能会导致系统发生问题。
-MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSadBoy
+MSG_TRANSLATE=立花 月下,kingofotaku,icebeam030,LucidLoli,Luke Luo,HSSkyBoy
 
 [PRESET]
 ; Preset menu setting.
