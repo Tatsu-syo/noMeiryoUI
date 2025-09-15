@@ -44,4 +44,4 @@ Windows 11 22H2以降ではMeiryo UIも大っきらい!!の動作に一部制限
 
 ## ライセンス
 
-Meiryo UIも大っきらい!!は[the MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE)でライセンススしております.
+Meiryo UIも大っきらい!!は[the MIT License](https://github.com/Tatsu-syo/noMeiryoUI/blob/master/LICENSE)でライセンスしております.
