@@ -13,6 +13,10 @@
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl";
+Name: "brazilian"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl";
+Name: "ChineseSimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl";
+Name: "ChineseTraditional"; MessagesFile: "compiler:Languages\ChineseTraditional.isl";
+Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl";
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -44,22 +48,22 @@ SolidCompression=yes
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\files\noMeiryoUI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\default.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\default.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\en.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\en.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\ja-JP.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\ja-JP.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\ko-KR.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\ko-KR.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\noMeiryoUI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\pt-BR.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\pt-BR.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\zh-CN.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\zh-CN.lng"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\zh-TW.chm"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\files\zh-TW.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\noMeiryoUI.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\default.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\default.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\en.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\en.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\ja-JP.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\ja-JP.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\ko-KR.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\ko-KR.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\noMeiryoUI.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\pt-BR.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\pt-BR.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\zh-CN.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\zh-CN.lng"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\zh-TW.chm"; DestDir: "{app}"; Flags: ignoreversion
+Source: "installable\zh-TW.lng"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -93,3 +97,7 @@ english.CopyrightFontName=Arial
 english.CopyrightFontSize=8
 english.RightToLeft=no
 
+ChineseSimplified.ThisAppName=No!! Meiryo UI
+brazilian.ThisAppName=No!! Meiryo UI
+ChineseTraditional.ThisAppName=No!! Meiryo UI
+korean.ThisAppName=No!! Meiryo UI
