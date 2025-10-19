@@ -5,6 +5,6 @@ REM Copy portable version of noMeiryoUI.exe into files directory.
 REM run batchfile
 
 nmake
-cd files
-7z a -mx9 ..\noMeiryoUI.zip @filelist.txt
+cd portable
+7z a -mx9 ..\noMeiryoUI.zip @..\filelist.txt
 cd ..
