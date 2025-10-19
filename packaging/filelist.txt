@@ -9,7 +9,6 @@ ko-KR.chm
 ko-KR.lng
 pt-BR.chm
 pt-BR.lng
-utils
 zh-CN.chm
 zh-CN.lng
 zh-TW.chm
