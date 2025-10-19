@@ -6,5 +6,5 @@ REM run batchfile
 
 nmake
 cd portable
-7z a -mx9 ..\noMeiryoUI.zip @..\filelist.txt
+7z a -mx9 ..\Output\noMeiryoUI.zip @..\filelist.txt
 cd ..
