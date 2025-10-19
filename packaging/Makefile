@@ -95,9 +95,15 @@ composition : \
  files\zh-CN.lng \
  files\zh-TW.lng \
  files\utils\RESTOREreg.bat
+	mkdir installable
+	mkdir portable
+	xcopy /Y /E files\* installable
+	xcopy /Y /E files\* portable
 
 .PHONY: clean
 clean:
+	rmdir /q /S installable
+	rmdir /q /S portable
 	del /q files\*.chm
 	del /q files\*.lng
 	del /q files\noMeiryoUI.exe
