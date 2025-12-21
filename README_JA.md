@@ -1,4 +1,4 @@
-[English](README.md) | [简体中文](README_CN.md) | 日本語
+﻿[English](README.md) | [简体中文](README_CN.md) | 日本語
 
 ---
 # Meiryo UIも大っきらい!!
