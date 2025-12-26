@@ -2712,8 +2712,10 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber > 27000) {
+			if (buildNumber > 29000) {
 				_tcscat_s(calledVer, _T(" Insider"));
+			} else if (buildNumber >= 28020) {
+				_tcscat_s(calledVer, _T(" 2026 Update"));
 			} else if (buildNumber >= 26200) {
 				_tcscat_s(calledVer, _T(" 2025 Update"));
 			} else if (buildNumber >= 26000) {
