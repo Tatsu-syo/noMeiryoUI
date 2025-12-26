@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -11,19 +11,19 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "TwrCombobox.h"
 #include "TwrCheckbox.h"
 
-/** ƒXƒ^ƒCƒ‹‚Ìî•ñ */
+/** ã‚¹ã‚¿ã‚¤ãƒ«ã®æƒ…å ± */
 struct TypeInfo {
 	TCHAR typeName[128];
 	LOGFONT logFont;
 };
 
-/** •¶šƒZƒbƒg‚Æ‘Î‰‚·‚éƒXƒ^ƒCƒ‹‚Ìî•ñ */
+/** æ–‡å­—ã‚»ãƒƒãƒˆã¨å¯¾å¿œã™ã‚‹ã‚¹ã‚¿ã‚¤ãƒ«ã®æƒ…å ± */
 struct CharsetInfo {
 	int charset;
 	std::vector<struct TypeInfo> fonts;
 };
 
-/** ƒtƒHƒ“ƒg‚Ìî•ñ */
+/** ãƒ•ã‚©ãƒ³ãƒˆã®æƒ…å ± */
 struct FontInfo {
 	LOGFONT logFont;
 	// std::vector<struct CharsetInfo> charsetList;
@@ -76,18 +76,18 @@ public:
 	void setNoTahoma();
 
 	/**
-	 * ƒ|ƒCƒ“ƒg”‚ğæ“¾‚·‚éB
+	 * ãƒã‚¤ãƒ³ãƒˆæ•°ã‚’å–å¾—ã™ã‚‹ã€‚
 	 * 
-	 * @return ‘I‘ğ‚³‚ê‚½ƒ|ƒCƒ“ƒg”
+	 * @return é¸æŠã•ã‚ŒãŸãƒã‚¤ãƒ³ãƒˆæ•°
 	 */
 	double getPoint(void) {
 		return m_point;
 	}
 
 	/**
-	 * ƒ|ƒCƒ“ƒg”‚ğİ’è‚·‚éB(‰Šú•\¦—p)
+	 * ãƒã‚¤ãƒ³ãƒˆæ•°ã‚’è¨­å®šã™ã‚‹ã€‚(åˆæœŸè¡¨ç¤ºç”¨)
 	 * 
-	 * @param point ƒ|ƒCƒ“ƒg”
+	 * @param point ãƒã‚¤ãƒ³ãƒˆæ•°
 	 */
 	void setPoint(double point) {
 		m_point = point;

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -19,7 +19,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #define APP_FONTSIZE 11
 
 /**
- * @brief WindowMetric’è”
+ * @brief WindowMetricå®šæ•°
 */
 enum WindowMetricItem {
 	BorderWidth,
@@ -40,46 +40,46 @@ enum Country {
 	Korea
 };
 
-/** •K—v‚ÈƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ•(96DPI) */
+/** å¿…è¦ãªã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸå¹…(96DPI) */
 const int REQUIRED_CLIENT_WIDTH = 615;
-/** •K—v‚ÈƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚‚³(96DPI) */
+/** å¿…è¦ãªã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸé«˜ã•(96DPI) */
 const int REQUIRED_CLIENT_HEIGHT = 400;
 
 extern bool WIN8_SIZE;
 extern std::vector<tstring> langResource;
 /**
- * @brief “®ì’†‚Ì‘
+ * @brief å‹•ä½œä¸­ã®å›½
  */
 extern Country runningCountry;
 
-/** ƒtƒHƒ“ƒg–¼(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆå(Windows 8.x) */
 extern std::vector<tstring> fontFaces8;
-/** ƒtƒHƒ“ƒgƒTƒCƒY(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Windows 8.x) */
 extern std::vector<int> fontSizes8;
-/** ƒtƒHƒ“ƒg•¶šƒZƒbƒg(Windows 8.x) */
+/** ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆ(Windows 8.x) */
 extern std::vector<int> fontCharset8;
-/** Windows 8‚ÌWindow Metric‚ÌƒvƒŠƒZƒbƒg */
+/** Windows 8ã®Window Metricã®ãƒ—ãƒªã‚»ãƒƒãƒˆ */
 extern double Win8PresetWindowsMetric[];
 
-/** ƒtƒHƒ“ƒg–¼(Windows 10) */
+/** ãƒ•ã‚©ãƒ³ãƒˆå(Windows 10) */
 extern std::vector<tstring> fontFaces10;
-/** ƒtƒHƒ“ƒgƒTƒCƒY(Windows 10) */
+/** ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Windows 10) */
 extern std::vector<int> fontSizes10;
-/** ƒtƒHƒ“ƒg•¶šƒZƒbƒg(Windows 10) */
+/** ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆ(Windows 10) */
 extern std::vector<int> fontCharset10;
-/** Windows 10‚ÌWindow Metric‚ÌƒvƒŠƒZƒbƒg */
+/** Windows 10ã®Window Metricã®ãƒ—ãƒªã‚»ãƒƒãƒˆ */
 extern double Win10PresetWindowsMetric[];
 
-/** ƒtƒHƒ“ƒg–¼(Windows 11) */
+/** ãƒ•ã‚©ãƒ³ãƒˆå(Windows 11) */
 extern std::vector<tstring> fontFaces11;
-/** ƒtƒHƒ“ƒgƒTƒCƒY(Windows 11) */
+/** ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Windows 11) */
 extern std::vector<int> fontSizes11;
-/** ƒtƒHƒ“ƒg•¶šƒZƒbƒg(Windows 11) */
+/** ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆ(Windows 11) */
 extern std::vector<int> fontCharset11;
-/** Windows 11‚ÌWindow Metric‚ÌƒvƒŠƒZƒbƒg */
+/** Windows 11ã®Window Metricã®ãƒ—ãƒªã‚»ãƒƒãƒˆ */
 extern double Win11PresetWindowsMetric[];
 
-/** ƒR[ƒhƒy[ƒW */
+/** ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ */
 extern int codePage;
 
 int getFontPointInt(LOGFONT *font, HWND hWnd);
@@ -106,16 +106,16 @@ double round(double x);
 #endif
 
 /**
- * ƒvƒŠƒZƒbƒgİ’è
+ * ãƒ—ãƒªã‚»ãƒƒãƒˆè¨­å®š
  *
- * @brief ƒvƒŠƒZƒbƒg‚ğİ’è‚·‚é
- * @param metrics İ’è‘ÎÛNONCLIENTMETRICS
- * @param iconFont İ’è‘ÎÛƒAƒCƒRƒ“ƒtƒHƒ“ƒg
- * @param fontFaces ƒtƒHƒ“ƒg–¼
- * @param fontSizes ƒtƒHƒ“ƒgƒTƒCƒYİ’è
- * @param fontCharset ƒtƒHƒ“ƒg•¶šƒZƒbƒgİ’è
- * @param windowMetric ƒtƒHƒ“ƒgˆÈŠO‚ÌWindowMetric‚Ìİ’è
- * @param dpiY Œ»İ‚ÌDPI
+ * @brief ãƒ—ãƒªã‚»ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹
+ * @param metrics è¨­å®šå¯¾è±¡NONCLIENTMETRICS
+ * @param iconFont è¨­å®šå¯¾è±¡ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚©ãƒ³ãƒˆ
+ * @param fontFaces ãƒ•ã‚©ãƒ³ãƒˆå
+ * @param fontSizes ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºè¨­å®š
+ * @param fontCharset ãƒ•ã‚©ãƒ³ãƒˆæ–‡å­—ã‚»ãƒƒãƒˆè¨­å®š
+ * @param windowMetric ãƒ•ã‚©ãƒ³ãƒˆä»¥å¤–ã®WindowMetricã®è¨­å®š
+ * @param dpiY ç¾åœ¨ã®DPI
  */
 void setPreset(
 	NONCLIENTMETRICS *metrics,
