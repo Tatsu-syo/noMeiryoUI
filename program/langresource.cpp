@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -7,9 +7,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "langresource.h"
 
 /**
- * ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ‚ğŠJn‚·‚éB
+ * ãƒªã‚½ãƒ¼ã‚¹ã®èª­ã¿è¾¼ã¿ã‚’é–‹å§‹ã™ã‚‹ã€‚
  *
- * @param file ƒŠƒ\[ƒXƒtƒ@ƒCƒ‹–¼
+ * @param file ãƒªã‚½ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«å
  */
 void readResourceFile(TCHAR *file)
 {

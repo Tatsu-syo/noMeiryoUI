@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2021 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -15,13 +15,13 @@ static char currentSection[128];
 static char valueBuf[256];
 
 /**
- * ƒ}ƒ‹ƒ`ƒoƒCƒg•¶š—ñ‚©‚çƒR[ƒhƒy[ƒW‚É‡’v‚µ‚½ƒƒCƒh•¶š—ñ‚ğæ“¾‚·‚éB
+ * ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—åˆ—ã‹ã‚‰ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã«åˆè‡´ã—ãŸãƒ¯ã‚¤ãƒ‰æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
  *
- * @param returnString •¶š—ñŠi”[æƒoƒbƒtƒ@
- * @param readString “Ç‚İæ‚Á‚½•¶š—ñ
- * @param returnSize •¶š—ñŠi”[æƒoƒbƒtƒ@‚ÌƒTƒCƒY
- * @param codePage •ÏŠ·æ‚ÌƒR[ƒhƒy[ƒW
- * @return ƒoƒbƒtƒ@‚ÉŠi”[‚³‚ê‚½•¶š”
+ * @param returnString æ–‡å­—åˆ—æ ¼ç´å…ˆãƒãƒƒãƒ•ã‚¡
+ * @param readString èª­ã¿å–ã£ãŸæ–‡å­—åˆ—
+ * @param returnSize æ–‡å­—åˆ—æ ¼ç´å…ˆãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+ * @param codePage å¤‰æ›å…ˆã®ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸
+ * @return ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´ã•ã‚ŒãŸæ–‡å­—æ•°
  */
 DWORD getWideString(
 	TCHAR *returnString,
@@ -43,11 +43,11 @@ DWORD getWideString(
 }
 
 /**
- * ‹æØ‚è•¶š‚ğ’T‚µ‚Ä‹æØ‚é
+ * åŒºåˆ‡ã‚Šæ–‡å­—ã‚’æ¢ã—ã¦åŒºåˆ‡ã‚‹
  *
- * @param start ŒŸõŠJnˆÊ’u
- * @param delimiter ‹æØ‚è•¶š
- * @return ”ñNULL:‹æØ‚è•¶š‚Ì‚ ‚Á‚½êŠ NULL:‹æØ‚è•¶š‚ª‘¶İ‚µ‚È‚¢
+ * @param start æ¤œç´¢é–‹å§‹ä½ç½®
+ * @param delimiter åŒºåˆ‡ã‚Šæ–‡å­—
+ * @return éNULL:åŒºåˆ‡ã‚Šæ–‡å­—ã®ã‚ã£ãŸå ´æ‰€ NULL:åŒºåˆ‡ã‚Šæ–‡å­—ãŒå­˜åœ¨ã—ãªã„
  */
 char *searchAndDelimit(char *start, char delimiter)
 {
@@ -65,15 +65,15 @@ char *searchAndDelimit(char *start, char delimiter)
 
 
 /**
- * •ÏŠ·æ‚ÌƒR[ƒhƒy[ƒW‚ğl—¶‚µ‚½iniƒtƒ@ƒCƒ‹“Ç‚İæ‚è
+ * å¤‰æ›å…ˆã®ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’è€ƒæ…®ã—ãŸiniãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿å–ã‚Š
  *
- * @param sectionName ƒZƒNƒVƒ‡ƒ“–¼(ƒ}ƒ‹ƒ`ƒoƒCƒg–¼•s‰Â)
- * @param keyName ƒL[–¼
- * @param defaultValue Šù’è‚Ì•¶š—ñ
- * @param returnString •¶š—ñŠi”[æƒoƒbƒtƒ@
- * @param returnSize •¶š—ñŠi”[æƒoƒbƒtƒ@‚ÌƒTƒCƒY
- * @param iniFileName iniƒtƒ@ƒCƒ‹–¼
- * @return ƒoƒbƒtƒ@‚ÉŠi”[‚³‚ê‚½•¶š”
+ * @param sectionName ã‚»ã‚¯ã‚·ãƒ§ãƒ³å(ãƒãƒ«ãƒãƒã‚¤ãƒˆåä¸å¯)
+ * @param keyName ã‚­ãƒ¼å
+ * @param defaultValue æ—¢å®šã®æ–‡å­—åˆ—
+ * @param returnString æ–‡å­—åˆ—æ ¼ç´å…ˆãƒãƒƒãƒ•ã‚¡
+ * @param returnSize æ–‡å­—åˆ—æ ¼ç´å…ˆãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+ * @param iniFileName iniãƒ•ã‚¡ã‚¤ãƒ«å
+ * @return ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´ã•ã‚ŒãŸæ–‡å­—æ•°
  */
 DWORD GetPrivateProfileStringExT(
 	char *sectionName,
@@ -130,7 +130,7 @@ DWORD GetPrivateProfileStringExT(
 		searchAndDelimit(firstChar, '\n');
 
 		if (inSection) {
-			/* ƒZƒNƒVƒ‡ƒ“‚ªŒˆ‚Ü‚Á‚Ä‚¢‚é‚Æ‚«‚Ìˆ— */
+			/* ã‚»ã‚¯ã‚·ãƒ§ãƒ³ãŒæ±ºã¾ã£ã¦ã„ã‚‹ã¨ãã®å‡¦ç† */
 			if (strcmp(sectionName, currentSection)) {
 				continue;
 			} else {
@@ -170,7 +170,7 @@ DWORD GetPrivateProfileStringExT(
 	}
 	fclose(fp);
 
-	/* ƒL[‚Æ’l‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ */
+	/* ã‚­ãƒ¼ã¨å€¤ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ */
 	returnString = defaultValue;
 
 	return returnString.length();

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -12,9 +12,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "country/Japan.h"
 #include "country/korea.h"
 
-/** ƒtƒHƒ“ƒg‚ÌƒŠƒXƒg */
+/** ãƒ•ã‚©ãƒ³ãƒˆã®ãƒªã‚¹ãƒˆ */
 std::vector<struct FontInfo> fontList;
-/** •¶šƒZƒbƒg‚Æ‘Î‰‚·‚éƒXƒ^ƒCƒ‹‚ÌƒŠƒXƒg */
+/** æ–‡å­—ã‚»ãƒƒãƒˆã¨å¯¾å¿œã™ã‚‹ã‚¹ã‚¿ã‚¤ãƒ«ã®ãƒªã‚¹ãƒˆ */
 std::vector<struct CharsetInfo> charsetList;
 
 static bool noMeiryoUI = false;
@@ -31,10 +31,10 @@ bool operator>(const FontInfo& left, const FontInfo& right)
 }
 
 /**
- * TypeInfo‚ÉENUMLOGFONTEX‚©‚çî•ñ‚ğƒRƒs[‚·‚éB 
+ * TypeInfoã«ENUMLOGFONTEXã‹ã‚‰æƒ…å ±ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚ 
  * 
- * @param typeInfo ƒRƒs[æƒtƒHƒ“ƒgî•ñ
- * @param lpelfe ƒRƒs[Œ³ENUMLOGFONTEX
+ * @param typeInfo ã‚³ãƒ”ãƒ¼å…ˆãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±
+ * @param lpelfe ã‚³ãƒ”ãƒ¼å…ƒENUMLOGFONTEX
  */
 void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 {
@@ -47,7 +47,7 @@ void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 		_tcscpy(oldStyle, _T("Regular"));
 	}
 
-	// •¶šƒXƒ^ƒCƒ‹‚ÌŠe‘Œê‚Ö‚Ì’u‚«Š·‚¦
+	// æ–‡å­—ã‚¹ã‚¿ã‚¤ãƒ«ã®å„å›½èªã¸ã®ç½®ãæ›ãˆ
 	strreplace(newStyle, oldStyle, _T("Regular"), langResource[DLG_STYLE_NORMAL].c_str(), 128);
 	_tcscpy(oldStyle, newStyle);
 
@@ -95,19 +95,19 @@ void copyTypeInfo(TypeInfo& typeInfo, ENUMLOGFONTEX* lpelfe)
 }
 
 /**
- * Charset‚É‘Î‚·‚éEnumFontFamiliesEx‚ÌƒR[ƒ‹ƒoƒbƒN
+ * Charsetã«å¯¾ã™ã‚‹EnumFontFamiliesExã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
  *
- * @param lpelfe ˜_—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
- * @param lpntme •¨—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
- * @param FontType ƒtƒHƒ“ƒg‚Ìí—Ş
- * @param lParam ƒAƒvƒŠƒP[ƒVƒ‡ƒ“’è‹`‚Ìƒf[ƒ^
- * @return 0:—ñ‹“‚ğ’†~‚·‚é 1:Ÿ‚ÌƒtƒHƒ“ƒg‚ğ—ñ‹“‚·‚éB
+ * @param lpelfe è«–ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+ * @param lpntme ç‰©ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+ * @param FontType ãƒ•ã‚©ãƒ³ãƒˆã®ç¨®é¡
+ * @param lParam ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®šç¾©ã®ãƒ‡ãƒ¼ã‚¿
+ * @return 0:åˆ—æŒ™ã‚’ä¸­æ­¢ã™ã‚‹ 1:æ¬¡ã®ãƒ•ã‚©ãƒ³ãƒˆã‚’åˆ—æŒ™ã™ã‚‹ã€‚
  */
 int CALLBACK EnumFontCharsetProc(
-	ENUMLOGFONTEX* lpelfe,    // ˜_—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
-	NEWTEXTMETRICEX* lpntme,  // •¨—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
-	DWORD FontType,           // ƒtƒHƒ“ƒg‚Ìí—Ş
-	LPARAM lParam             // ƒAƒvƒŠƒP[ƒVƒ‡ƒ“’è‹`‚Ìƒf[ƒ^
+	ENUMLOGFONTEX* lpelfe,    // è«–ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+	NEWTEXTMETRICEX* lpntme,  // ç‰©ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+	DWORD FontType,           // ãƒ•ã‚©ãƒ³ãƒˆã®ç¨®é¡
+	LPARAM lParam             // ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®šç¾©ã®ãƒ‡ãƒ¼ã‚¿
 )
 {
 	struct TypeInfo fontInfo;
@@ -115,9 +115,9 @@ int CALLBACK EnumFontCharsetProc(
 
 	for (size_t i = 0; i < charsetList.size(); i++) {
 
-		// “¯‚¶•¶šƒZƒbƒg‚©?
+		// åŒã˜æ–‡å­—ã‚»ãƒƒãƒˆã‹?
 		if (charsetList[i].charset == lpelfe->elfLogFont.lfCharSet) {
-			// “¯‚¶•¶šƒZƒbƒg‚Å•¶šƒXƒ^ƒCƒ‹‚Ì‚İˆá‚¤
+			// åŒã˜æ–‡å­—ã‚»ãƒƒãƒˆã§æ–‡å­—ã‚¹ã‚¿ã‚¤ãƒ«ã®ã¿é•ã†
 			bool found = false;
 			for (size_t j = 0; j < charsetList[i].fonts.size(); j++) {
 				if (!_tcscmp(charsetList[i].fonts[j].typeName, fontInfo.typeName)) {
@@ -131,7 +131,7 @@ int CALLBACK EnumFontCharsetProc(
 		}
 	}
 
-	// •¶šƒZƒbƒg‚àˆÙ‚È‚é
+	// æ–‡å­—ã‚»ãƒƒãƒˆã‚‚ç•°ãªã‚‹
 	struct CharsetInfo charset;
 	charset.charset = lpelfe->elfLogFont.lfCharSet;
 	charset.fonts.push_back(fontInfo);
@@ -142,9 +142,9 @@ int CALLBACK EnumFontCharsetProc(
 }
 
 /**
- * Charset‚É‘Î‚·‚éƒtƒHƒ“ƒg‚ğæ“¾‚·‚é
+ * Charsetã«å¯¾ã™ã‚‹ãƒ•ã‚©ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
  * 
- * @param lf ƒtƒHƒ“ƒg–¼‚ÆCharset‚Ì“ü‚Á‚½ƒtƒHƒ“ƒgî•ñ
+ * @param lf ãƒ•ã‚©ãƒ³ãƒˆåã¨Charsetã®å…¥ã£ãŸãƒ•ã‚©ãƒ³ãƒˆæƒ…å ±
  */
 int getCharsetFont(LOGFONT *lf)
 {
@@ -168,19 +168,19 @@ int getCharsetFont(LOGFONT *lf)
 }
 
 /**
- * EnumFontFamiliesEx‚ÌƒR[ƒ‹ƒoƒbƒN
+ * EnumFontFamiliesExã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
  *
- * @param lpelfe ˜_—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
- * @param lpntme •¨—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
- * @param FontType ƒtƒHƒ“ƒg‚Ìí—Ş
- * @param lParam ƒAƒvƒŠƒP[ƒVƒ‡ƒ“’è‹`‚Ìƒf[ƒ^
- * @return 0:—ñ‹“‚ğ’†~‚·‚é 1:Ÿ‚ÌƒtƒHƒ“ƒg‚ğ—ñ‹“‚·‚éB
+ * @param lpelfe è«–ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+ * @param lpntme ç‰©ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+ * @param FontType ãƒ•ã‚©ãƒ³ãƒˆã®ç¨®é¡
+ * @param lParam ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®šç¾©ã®ãƒ‡ãƒ¼ã‚¿
+ * @return 0:åˆ—æŒ™ã‚’ä¸­æ­¢ã™ã‚‹ 1:æ¬¡ã®ãƒ•ã‚©ãƒ³ãƒˆã‚’åˆ—æŒ™ã™ã‚‹ã€‚
  */
 int CALLBACK EnumFontFamExProc(
-  ENUMLOGFONTEX *lpelfe,    // ˜_—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
-  NEWTEXTMETRICEX *lpntme,  // •¨—“I‚ÈƒtƒHƒ“ƒgƒf[ƒ^
-  DWORD FontType,           // ƒtƒHƒ“ƒg‚Ìí—Ş
-  LPARAM lParam             // ƒAƒvƒŠƒP[ƒVƒ‡ƒ“’è‹`‚Ìƒf[ƒ^
+  ENUMLOGFONTEX *lpelfe,    // è«–ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+  NEWTEXTMETRICEX *lpntme,  // ç‰©ç†çš„ãªãƒ•ã‚©ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
+  DWORD FontType,           // ãƒ•ã‚©ãƒ³ãƒˆã®ç¨®é¡
+  LPARAM lParam             // ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³å®šç¾©ã®ãƒ‡ãƒ¼ã‚¿
 )
 {
 	std::vector<int> charset;
@@ -189,7 +189,7 @@ int CALLBACK EnumFontFamExProc(
 	TCHAR dispBuf[32];
 
 	if (lpelfe->elfLogFont.lfFaceName[0] == _T('@')) {
-		// c‘‚«ƒtƒHƒ“ƒg‚Í”ò‚Î‚·B
+		// ç¸¦æ›¸ããƒ•ã‚©ãƒ³ãƒˆã¯é£›ã°ã™ã€‚
 		return 1;
 	}
 	if (noMeiryoUI) {
@@ -207,13 +207,13 @@ int CALLBACK EnumFontFamExProc(
 	fonts = fontList.size();
 
 	for (int i = 0; i < fonts; i++) {
-		// “¯‚¶–¼‘O‚©?
+		// åŒã˜åå‰ã‹?
 		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
 			return 1;
 		}
 	}
 
-	// Œ©‚Â‚©‚ç‚È‚¢ê‡‚Í’Ç‰Á‚·‚éB
+	// è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯è¿½åŠ ã™ã‚‹ã€‚
 	fontInfo.logFont = lpelfe->elfLogFont;
 	_tcscpy(fontInfo.fullName, lpelfe->elfFullName);
 	// fontInfo.charsetList.clear();
@@ -229,7 +229,7 @@ int CALLBACK EnumFontFamExProc(
 }
 
 /**
- * ƒtƒHƒ“ƒg‚ğæ“¾‚·‚éB
+ * ãƒ•ã‚©ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹ã€‚
  */
 int getFont()
 {
@@ -257,7 +257,7 @@ int getFont()
 }
 
 /**
- * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+ * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
 FontSel::FontSel(HWND parent, int resource, bool fontOnly) : BaseDialog(parent, resource)
 {
@@ -276,7 +276,7 @@ FontSel::FontSel(HWND parent, int resource, bool fontOnly) : BaseDialog(parent, 
 }
 
 /**
- * ƒfƒXƒgƒ‰ƒNƒ^
+ * ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
  */
 FontSel::~FontSel(void)
 {
@@ -310,7 +310,7 @@ FontSel::~FontSel(void)
 }
 
 /**
- * ƒ_ƒCƒAƒƒO‰Šú‰»ˆ—
+ * ãƒ€ã‚¤ã‚¢ãƒ­ã‚°åˆæœŸåŒ–å‡¦ç†
  */
 INT_PTR FontSel::OnInitDialog()
 {
@@ -356,9 +356,9 @@ INT_PTR FontSel::OnInitDialog()
 	m_fontSizeList->addItem(_T("48"));
 	m_fontSizeList->addItem(_T("72"));
 
-	// ‘I‘ğ‚·‚éB
+	// é¸æŠã™ã‚‹ã€‚
 	if (previousFont != NULL) {
-		// ƒtƒHƒ“ƒgƒTƒCƒY
+		// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º
 		int count = m_fontSizeList->getCount();
 		int point = getFontPointInt(previousFont, this->getHwnd());
 		int selection = 0;
@@ -372,12 +372,12 @@ INT_PTR FontSel::OnInitDialog()
 			m_fontSizeList->setSelectedIndex(selection);
 		}
 
-		// ƒtƒHƒ“ƒgƒtƒFƒCƒX
+		// ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚§ã‚¤ã‚¹
 		for (int i = 0; i < fonts; i++) {
 			if (!_tcscmp(fontList[i].dispName, previousFont->lfFaceName)) {
 				m_fontNameList->setSelectedIndex(i);
 
-				// ƒtƒHƒ“ƒg‚É‡‚Á‚½•¶šƒR[ƒhƒZƒbƒg‚ğİ’è‚·‚éB
+				// ãƒ•ã‚©ãƒ³ãƒˆã«åˆã£ãŸæ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚»ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹ã€‚
 				setCharset();
 				int charsetCount = charsetList.size();
 				int charset = 0;
@@ -388,18 +388,18 @@ INT_PTR FontSel::OnInitDialog()
 					}
 				}
 
-				// ƒtƒHƒ“ƒg‚É‡‚Á‚½ƒXƒ^ƒCƒ‹‚ğİ’è‚·‚éB
+				// ãƒ•ã‚©ãƒ³ãƒˆã«åˆã£ãŸã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®šã™ã‚‹ã€‚
 				setStyle();
 
-				// ƒCƒ^ƒŠƒbƒN
+				// ã‚¤ã‚¿ãƒªãƒƒã‚¯
 				if (previousFont->lfItalic) {
 					m_italic->setChecked(true);
 				}
-				// ‰ºü
+				// ä¸‹ç·š
 				if (previousFont->lfUnderline) {
 					m_underline->setChecked(true);
 				}
-				// æ‚èÁ‚µü
+				// å–ã‚Šæ¶ˆã—ç·š
 				if (previousFont->lfStrikeOut) {
 					m_strike->setChecked(true);
 				}
@@ -420,7 +420,7 @@ INT_PTR FontSel::OnInitDialog()
 }
 
 /**
- * @brief ƒtƒHƒ“ƒg‘I‘ğˆÈŠO‚ğ–³Œø‰»‚·‚éB
+ * @brief ãƒ•ã‚©ãƒ³ãƒˆé¸æŠä»¥å¤–ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚
  *
  */
 void FontSel::disableWithoutFontselect(void)
@@ -438,7 +438,7 @@ void FontSel::disableWithoutFontselect(void)
 }
 
 /**
- * ƒEƒCƒ“ƒhƒEˆÊ’u‚ğeƒEƒCƒ“ƒhƒE‚Ì’†‰›‚É’²®‚·‚éB
+ * ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½ç½®ã‚’è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä¸­å¤®ã«èª¿æ•´ã™ã‚‹ã€‚
  */
 void FontSel::adjustPosition(void)
 {
@@ -450,10 +450,10 @@ void FontSel::adjustPosition(void)
 }
 
 /**
- * Še‘€ì‚É‘Î‚·‚éˆ—‚Ì•ªŠò
+ * å„æ“ä½œã«å¯¾ã™ã‚‹å‡¦ç†ã®åˆ†å²
  *
  * @param wParam WPARAM
- * @return 0:ƒƒbƒZ[ƒW‚ğˆ—‚µ‚½B 0ˆÈŠO:ƒƒbƒZ[ƒW‚ğˆ—‚µ‚È‚©‚Á‚½B
+ * @return 0:ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã—ãŸã€‚ 0ä»¥å¤–:ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã—ãªã‹ã£ãŸã€‚
  */
 INT_PTR FontSel::OnCommand(WPARAM wParam)
 {
@@ -482,7 +482,7 @@ INT_PTR FontSel::OnCommand(WPARAM wParam)
 }
 
 /**
- * ƒŠƒ\[ƒX‚ğŠe€–Ú‚Éİ’è‚·‚éB
+ * ãƒªã‚½ãƒ¼ã‚¹ã‚’å„é …ç›®ã«è¨­å®šã™ã‚‹ã€‚
  */
 void FontSel::applyResource()
 {
@@ -508,7 +508,7 @@ void FontSel::applyResource()
 	ReleaseDC(this->hWnd, hDC);
 
 
-	// ƒAƒvƒŠƒ^ƒCƒgƒ‹
+	// ã‚¢ãƒ—ãƒªã‚¿ã‚¤ãƒˆãƒ«
 	setText(langResource[27].c_str());
 
 	setChildText(IDC_STATIC_NAME, langResource[DLG_FONT_NAME].c_str());
@@ -542,15 +542,15 @@ void FontSel::applyResource()
 }
 
 /**
- * ‘I‘ğ‚µ‚½ƒtƒHƒ“ƒg‚É‡‚Á‚½•¶šƒZƒbƒg‚Ì‘I‘ğˆ‚ğİ’è‚µ‚Ü‚·B
+ * é¸æŠã—ãŸãƒ•ã‚©ãƒ³ãƒˆã«åˆã£ãŸæ–‡å­—ã‚»ãƒƒãƒˆã®é¸æŠè‚¢ã‚’è¨­å®šã—ã¾ã™ã€‚
  */
 void FontSel::setCharset(void)
 {
 	int selected = m_fontNameList->getSelectedIndex();
-	int initialIndex = 0;	// ‰Šú‘I‘ğ
+	int initialIndex = 0;	// åˆæœŸé¸æŠ
 
 	if (selected > -1) {
-		// ‘I‘ğ‚µ‚½ƒtƒHƒ“ƒg‚É‘Î‰‚µ‚½•¶šƒZƒbƒg‚ÆƒXƒ^ƒCƒ‹‚ğæ“¾‚·‚é
+		// é¸æŠã—ãŸãƒ•ã‚©ãƒ³ãƒˆã«å¯¾å¿œã—ãŸæ–‡å­—ã‚»ãƒƒãƒˆã¨ã‚¹ã‚¿ã‚¤ãƒ«ã‚’å–å¾—ã™ã‚‹
 		getCharsetFont(&fontList[selected].logFont);
 
 		m_ChersetList->clear();
@@ -621,12 +621,12 @@ void FontSel::setCharset(void)
 			}
 		}
 	}
-	// •¶šƒZƒbƒg‚ğ‘I‘ğó‘Ô‚É‚·‚éB
+	// æ–‡å­—ã‚»ãƒƒãƒˆã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹ã€‚
 	m_ChersetList->setSelectedIndex(initialIndex);
 }
 
 /**
- * ‘I‘ğ‚µ‚½ƒtƒHƒ“ƒg‚É‡‚Á‚½ƒXƒ^ƒCƒ‹‚Ì‘I‘ğˆ‚ğİ’è‚µ‚Ü‚·B
+ * é¸æŠã—ãŸãƒ•ã‚©ãƒ³ãƒˆã«åˆã£ãŸã‚¹ã‚¿ã‚¤ãƒ«ã®é¸æŠè‚¢ã‚’è¨­å®šã—ã¾ã™ã€‚
  */
 void FontSel::setStyle()
 {
@@ -643,9 +643,9 @@ void FontSel::setStyle()
 }
 
 /**
- * OKƒ{ƒ^ƒ“‚ğ‰Ÿ‰º‚µ‚½‚Ì“®ì
+ * OKãƒœã‚¿ãƒ³ã‚’æŠ¼ä¸‹ã—ãŸæ™‚ã®å‹•ä½œ
  * 
- * @return 0:“ü—ÍˆÙí‚ ‚è 1:“ü—Í‚Í³í
+ * @return 0:å…¥åŠ›ç•°å¸¸ã‚ã‚Š 1:å…¥åŠ›ã¯æ­£å¸¸
  */
 INT_PTR FontSel::onOK(void)
 {
@@ -715,17 +715,17 @@ INT_PTR FontSel::onOK(void)
 	int point = _tstoi(size.c_str());
 	m_point = (double)point;
 
-	// ƒTƒCƒY‚Ìİ’è
+	// ã‚µã‚¤ã‚ºã®è¨­å®š
 	HDC hDC = GetDC(this->hWnd);
 	selectedFont.lfHeight = -MulDiv(point, GetDeviceCaps(hDC, LOGPIXELSY), 72);
 	selectedFont.lfWidth = 0;
 	ReleaseDC(this->hWnd, hDC);
 
-	// Windows 8ŒİŠ·‚Ìê‡‚ÍƒsƒNƒZƒ‹”‚©‚çŒvZ‚µ‚½ƒ|ƒCƒ“ƒg‚ªw’è‚µ‚½ƒ|ƒCƒ“ƒg‚æ‚è¬‚³‚¢ê‡A
-	// ƒtƒHƒ“ƒg‚Ì‚‚³‚ÌƒsƒNƒZƒ‹”‚Ìâ‘Î’l‚ğ‘‚â‚·B
+	// Windows 8äº’æ›ã®å ´åˆã¯ãƒ”ã‚¯ã‚»ãƒ«æ•°ã‹ã‚‰è¨ˆç®—ã—ãŸãƒã‚¤ãƒ³ãƒˆãŒæŒ‡å®šã—ãŸãƒã‚¤ãƒ³ãƒˆã‚ˆã‚Šå°ã•ã„å ´åˆã€
+	// ãƒ•ã‚©ãƒ³ãƒˆã®é«˜ã•ã®ãƒ”ã‚¯ã‚»ãƒ«æ•°ã®çµ¶å¯¾å€¤ã‚’å¢—ã‚„ã™ã€‚
 	if (WIN8_SIZE) {
 		if (abs(getFontPointInt(&selectedFont, this->getHwnd())) < point) {
-			// ƒsƒNƒZƒ‹”‚Íƒ}ƒCƒiƒX‚Åw’è‚·‚é‚Ì‚Å1Œ¸‚ç‚µ‚Äâ‘Î’l‚ğ‘‚â‚·B
+			// ãƒ”ã‚¯ã‚»ãƒ«æ•°ã¯ãƒã‚¤ãƒŠã‚¹ã§æŒ‡å®šã™ã‚‹ã®ã§1æ¸›ã‚‰ã—ã¦çµ¶å¯¾å€¤ã‚’å¢—ã‚„ã™ã€‚
 			selectedFont.lfHeight--;
 		}
 	}

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
@@ -33,24 +33,24 @@ void setResourceFileName(TCHAR* langFileName, TCHAR* helpFileName, char* localeN
 
 void setLocationInternalCode(TCHAR  langWork[85]);
 
-/** ƒtƒHƒ“ƒg‚Ìƒ|ƒCƒ“ƒg”‚ğ•Û‘¶‚·‚é\‘¢‘Ì */
+/** ãƒ•ã‚©ãƒ³ãƒˆã®ãƒã‚¤ãƒ³ãƒˆæ•°ã‚’ä¿å­˜ã™ã‚‹æ§‹é€ ä½“ */
 struct FontPoints {
-	/** ƒ^ƒCƒgƒ‹ƒo[ƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double title;
 
-	/** ƒAƒCƒRƒ“ƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ã‚¢ã‚¤ã‚³ãƒ³ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double icon;
 
-	/** ƒpƒŒƒbƒgƒ^ƒCƒgƒ‹ƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ãƒ‘ãƒ¬ãƒƒãƒˆã‚¿ã‚¤ãƒˆãƒ«ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double palette;
 
-	/** ƒc[ƒ‹ƒ`ƒbƒvƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double hint;
 
-	/** ƒƒbƒZ[ƒWƒ{ƒbƒNƒXƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒƒã‚¯ã‚¹ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double message;
 
-	/** ƒƒjƒ…[ƒtƒHƒ“ƒgƒTƒCƒY(Point) */
+	/** ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚º(Point) */
 	double menu;
 };
 

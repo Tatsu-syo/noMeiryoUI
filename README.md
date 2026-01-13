@@ -1,4 +1,4 @@
-English | [简体中文](README_CN.md) | [日本語](README_JA.md)
+﻿English | [简体中文](README_CN.md) | [日本語](README_JA.md)
 
 ---
 # No!! MeiryoUI
