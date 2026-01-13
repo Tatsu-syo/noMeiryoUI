@@ -1,5 +1,5 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 // noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
@@ -483,7 +483,7 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 			}
 
 			// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
-			if (compatLevel > 0) {
+			if ((compatLevel > 0) && (!forceTitleFontSet)) {
 				// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 				set11TitlePreset(&metrics);
 			}
@@ -2945,7 +2945,7 @@ void NoMeiryoUI::loadConfig(void)
 #else
 
 /**
- * @brief �ݒ�t�@�C����ۑ�����
+ * @brief �ݒ�t�@�C����ۑ�����
  */
 void NoMeiryoUI::saveConfig(void)
 {
@@ -3006,7 +3006,7 @@ void NoMeiryoUI::saveConfig(void)
 }
 
 /**
- * @brief �ݒ�t�@�C����ǂݍ���
+ * @brief �ݒ�t�@�C����ǂݍ���
  */
 void NoMeiryoUI::loadConfig(void)
 {
