@@ -483,7 +483,7 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 			}
 
 			// -setオプションが指定された場合はフォントを設定してダイアログを閉じる。
-			if (compatLevel > 0) {
+			if ((compatLevel > 0) && (!forceTitleFontSet)) {
 				// Windows 11 22H2以降の場合、タイトルを元の物に変更する
 				set11TitlePreset(&metrics);
 			}
