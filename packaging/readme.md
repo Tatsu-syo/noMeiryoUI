@@ -16,11 +16,17 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 ## 1.Prerequisites
 
 - [7-Zip](https://www.7-zip.org/)
+- [Inno setup 6](https://jrsoftware.org/isinfo.php) with language files below
+  - Japanese
+  - Korean
+  - Portuguese (Brazil)
+  - Chinese (Simplified)
 
 ## 2. Preparation
 
-1. Install 7-Zip.
-2. Add 7-Zip binary folder into path.
+1. Install Inno Setup with language files.
+2. Install 7-Zip.
+3. Add 7-Zip binary folder into path.
 
 ## 3. Common first process
 
@@ -35,3 +41,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 3. Copy portable version of noMeiryoUI.exe into files directory.
 4. Type `makeportable.bat`.
 5. Then, noMeiryoUI.zip is generated in packaging directory.
+
+## 5. Make installer
+
+1. Open developer Command prompt.
+2. Move packaging directory.
+3. Type `nmake clean`
+4. Type `nmake all`
+5. Run Inno setup with setup.iss .
