@@ -7,7 +7,7 @@ REM run batchfile
 nmake clean
 del /Q ..\Output\noMeiryoUI.zip
 REM Please choice virus checker safe execute file.
-copy /y ..\program\Release_2012\noMeiryoUI.exe files
+copy /y ..\program\bin_2012\Release_Portable\noMeiryoUI.exe files
 nmake all
 cd files
 7z a -mx9 ..\..\Output\noMeiryoUI.zip @filelist.txt
