@@ -1,0 +1,17 @@
+noMeiryoUI.exe
+default.chm
+default.lng
+en.chm
+en.lng
+ja-JP.chm
+ja-JP.lng
+ko-KR.chm
+ko-KR.lng
+pt-BR.chm
+pt-BR.lng
+zh-CN.chm
+zh-CN.lng
+zh-TW.chm
+zh-TW.lng
+utils\RESTOREreg.bat
+utils\SAVEreg.bat
