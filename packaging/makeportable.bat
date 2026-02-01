@@ -6,6 +6,7 @@ REM run batchfile
 
 nmake clean
 del /Q ..\Output\noMeiryoUI.zip
+REM Please choice virus checker safe execute file.
 copy /y ..\program\Release_2012\noMeiryoUI.exe files
 nmake all
 cd files
