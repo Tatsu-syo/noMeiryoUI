@@ -5,7 +5,7 @@
 /program/ipch
 /program/noMeiryoUI.aps
 /program/noMeiryoUI.VC.db
-/.vs
+.vs
 /help/*/*.chm
 /program/*.aps
 /program/*.suo
@@ -21,3 +21,15 @@
 /program/noMeiryoUI_2012.sdf
 /files
 /.idea
+*.obj
+*.exe
+*.dep
+*.sdf
+*.chm
+BuildLog.htm
+*.idb
+*.pdb
+*.ilk
+*.tlog
+*.log
+*.pch
