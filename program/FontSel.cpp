@@ -1,5 +1,5 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2022 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
 #include "FontSel.h"
@@ -8,6 +8,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 #include <algorithm>
 #include <functional>
+#include <map>
+#include <string>
 
 #include "country/Japan.h"
 #include "country/korea.h"
@@ -193,24 +195,24 @@ int CALLBACK EnumFontFamExProc(
 		return 1;
 	}
 	if (noMeiryoUI) {
-		if (!_tcscmp(_T("Meiryo UI"), lpelfe->elfLogFont.lfFaceName)) {
-			return 1;
-		}
+	if (!_tcscmp(_T("Meiryo UI"), lpelfe->elfLogFont.lfFaceName)) {
+		return 1;
+	}
 	}
 
 	if (noTahoma) {
-		if (!_tcscmp(_T("Tahoma"), lpelfe->elfLogFont.lfFaceName)) {
-			return 1;
-		}
+	if (!_tcscmp(_T("Tahoma"), lpelfe->elfLogFont.lfFaceName)) {
+		return 1;
+	}
 	}
 
 	fonts = fontList.size();
 
 	for (int i = 0; i < fonts; i++) {
-		// 同じ名前か?
-		if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
-			return 1;
-		}
+	// 同じ名前か?
+	if (!_tcscmp(fontList[i].logFont.lfFaceName, lpelfe->elfLogFont.lfFaceName)) {
+		return 1;
+	}
 	}
 
 	// 見つからない場合は追加する。
@@ -220,7 +222,7 @@ int CALLBACK EnumFontFamExProc(
 
 	_tcscpy(dispBuf, lpelfe->elfLogFont.lfFaceName);
 	if (runningCountry == Korea) {
-		korea::getKoreanFontName(dispBuf);
+	korea::getKoreanFontName(dispBuf);
 	}
 	_tcscpy(fontInfo.dispName, dispBuf);
 	fontList.push_back(fontInfo);
@@ -246,10 +248,10 @@ int getFont()
 	lf.lfPitchAndFamily = 0;
 
 	EnumFontFamiliesEx(hDC,
-		&lf,
-		(FONTENUMPROC)EnumFontFamExProc,
-		(LPARAM)0,
-		0);
+	&lf,
+	(FONTENUMPROC)EnumFontFamExProc,
+	(LPARAM)0,
+	0);
 
 	std::sort(fontList.begin(), fontList.end(), std::greater<FontInfo>());
 
@@ -324,89 +326,26 @@ INT_PTR FontSel::OnInitDialog()
 	m_underline = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_UNDERLINE));
 	m_strike = new TwrCheckbox(::GetDlgItem(hWnd, IDC_CHECK_STRIKE));
 
-	int fonts;
+	::SendMessage(hWnd, WM_SETREDRAW, FALSE, 0);
 
-	fonts = fontList.size();
-	for (int i = 0; i < fonts; i++) {
-		m_fontNameList->addItem(fontList[i].dispName);
+	// 填充字体名称
+	for (const auto& font : fontList) {
+		m_fontNameList->addItem(font.dispName);
 	}
 
-	m_fontSizeList->addItem(_T("6"));
-	m_fontSizeList->addItem(_T("7"));
-	m_fontSizeList->addItem(_T("8"));
-	m_fontSizeList->addItem(_T("9"));
-	m_fontSizeList->addItem(_T("10"));
-	m_fontSizeList->addItem(_T("11"));
-	m_fontSizeList->addItem(_T("12"));
-	m_fontSizeList->addItem(_T("13"));
-	m_fontSizeList->addItem(_T("14"));
-	m_fontSizeList->addItem(_T("15"));
-	m_fontSizeList->addItem(_T("16"));
-	m_fontSizeList->addItem(_T("17"));
-	m_fontSizeList->addItem(_T("18"));
-	m_fontSizeList->addItem(_T("19"));
-	m_fontSizeList->addItem(_T("20"));
-	m_fontSizeList->addItem(_T("21"));
-	m_fontSizeList->addItem(_T("22"));
-	m_fontSizeList->addItem(_T("23"));
-	m_fontSizeList->addItem(_T("24"));
-	m_fontSizeList->addItem(_T("26"));
-	m_fontSizeList->addItem(_T("28"));
-	m_fontSizeList->addItem(_T("36"));
-	m_fontSizeList->addItem(_T("48"));
-	m_fontSizeList->addItem(_T("72"));
+	static const int fontSizes[] = { 
+		6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 
+		21, 22, 23, 24, 26, 28, 36, 48, 72, 91 
+	};
 
-	// 選択する。
-	if (previousFont != NULL) {
-		// フォントサイズ
-		int count = m_fontSizeList->getCount();
-		int point = getFontPointInt(previousFont, this->getHwnd());
-		int selection = 0;
-		for (int i = 0; i < count; i++) {
-			int itemSize = _tstoi(m_fontSizeList->getItem(i).c_str());
-			if (point >= itemSize) {
-				selection = i;
-			}
-		}
-		if (selection > -1) {
-			m_fontSizeList->setSelectedIndex(selection);
-		}
+	TCHAR szSize[8];
+	for (int size : fontSizes) {
+		_itot_s(size, szSize, 10);
+		m_fontSizeList->addItem(szSize);
+	}
 
-		// フォントフェイス
-		for (int i = 0; i < fonts; i++) {
-			if (!_tcscmp(fontList[i].dispName, previousFont->lfFaceName)) {
-				m_fontNameList->setSelectedIndex(i);
-
-				// フォントに合った文字コードセットを設定する。
-				setCharset();
-				int charsetCount = charsetList.size();
-				int charset = 0;
-				for (int j = 0; j < charsetCount; j++) {
-					if (charsetList[j].charset == previousFont->lfCharSet) {
-						m_ChersetList->setSelectedIndex(j);
-						charset = j;
-					}
-				}
-
-				// フォントに合ったスタイルを設定する。
-				setStyle();
-
-				// イタリック
-				if (previousFont->lfItalic) {
-					m_italic->setChecked(true);
-				}
-				// 下線
-				if (previousFont->lfUnderline) {
-					m_underline->setChecked(true);
-				}
-				// 取り消し線
-				if (previousFont->lfStrikeOut) {
-					m_strike->setChecked(true);
-				}
-
-				break;
-			}
-		}
+	if (previousFont != nullptr) {
+		restorePreviousSettings();
 	}
 
 	if (m_fontonly) {
@@ -416,7 +355,58 @@ INT_PTR FontSel::OnInitDialog()
 	applyResource();
 	adjustPosition();
 
+	// 恢复重绘并刷新窗口
+	::SendMessage(hWnd, WM_SETREDRAW, TRUE, 0);
+	::RedrawWindow(hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+
 	return (INT_PTR)FALSE;
+}
+
+void FontSel::restorePreviousSettings()
+{
+    if (!previousFont) return;
+
+    int targetPoint = getFontPointInt(previousFont, this->getHwnd());
+    int bestSelection = -1;
+    int count = m_fontSizeList->getCount();
+
+    for (int i = 0; i < count; i++) {
+        int itemSize = _tstoi(m_fontSizeList->getItem(i).c_str());
+        if (targetPoint >= itemSize) {
+            bestSelection = i;
+        } else {
+            break; 
+        }
+    }
+    if (bestSelection > -1) {
+        m_fontSizeList->setSelectedIndex(bestSelection);
+    }
+
+    // 恢复字体名称及属性
+    for (size_t i = 0; i < fontList.size(); i++) {
+        if (_tcscmp(fontList[i].dispName, previousFont->lfFaceName) == 0) {
+            m_fontNameList->setSelectedIndex(static_cast<int>(i));
+
+            // 更新字符集和样式列表
+            setCharset(); 
+
+            for (size_t j = 0; j < charsetList.size(); j++) {
+                if (charsetList[j].charset == previousFont->lfCharSet) {
+                    m_ChersetList->setSelectedIndex(static_cast<int>(j));
+                    break;
+                }
+            }
+
+            setStyle();
+
+            // 恢复复选框状态
+            m_italic->setChecked(previousFont->lfItalic != 0);
+            m_underline->setChecked(previousFont->lfUnderline != 0);
+            m_strike->setChecked(previousFont->lfStrikeOut != 0);
+
+            break;
+        }
+    }
 }
 
 /**
