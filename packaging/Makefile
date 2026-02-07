@@ -94,10 +94,10 @@ composition : \
  files\zh-CN.lng \
  files\zh-TW.lng \
  files\utils\RESTOREreg.bat
-	mkdir installable
-	mkdir portable
-	xcopy /Y /E files\* installable
-	xcopy /Y /E files\* portable
+#	mkdir installable
+#	mkdir portable
+#	xcopy /Y /E files\* installable
+#	xcopy /Y /E files\* portable
 
 .PHONY: clean
 clean:
