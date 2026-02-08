@@ -2684,6 +2684,8 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			if (buildNumber > 29000) {
 				_tcscat_s(calledVer, _T(" Insider"));
 			} else if (buildNumber >= 28020) {
+				_tcscat_s(calledVer, _T(" 2026 for Copilot+PC"));
+			} else if (buildNumber >= 26300) {
 				_tcscat_s(calledVer, _T(" 2026 Update"));
 			} else if (buildNumber >= 26200) {
 				_tcscat_s(calledVer, _T(" 2025 Update"));
