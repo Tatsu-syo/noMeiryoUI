@@ -1,4 +1,4 @@
-# noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
+# noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji
 # The sources for noMeiryoUI are distributed under the MIT open source license
 
 ROOT_DIR = ..
@@ -15,12 +15,11 @@ files\en.chm : ..\help\en-us\contents\* files\utils\SAVEreg.bat
 	cd ..\help\en-us
 	hhc help_en.hhp
 	cd ..\..\packaging
-	cd
 	copy /y ..\help\en-us\en.chm .\files
 
 files\ja-JP.chm : ..\help\ja-jp\contents\* files\utils\SAVEreg.bat
 	cd ..\help\ja-jp
-	hhc ..\help_ja-jp.hhp
+	hhc help_ja-jp.hhp
 	cd ..\..\packaging
 	copy /y ..\help\ja-JP\ja-JP.chm .\files
 
@@ -95,10 +94,10 @@ composition : \
  files\zh-CN.lng \
  files\zh-TW.lng \
  files\utils\RESTOREreg.bat
-	mkdir installable
-	mkdir portable
-	xcopy /Y /E files\* installable
-	xcopy /Y /E files\* portable
+#	mkdir installable
+#	mkdir portable
+#	xcopy /Y /E files\* installable
+#	xcopy /Y /E files\* portable
 
 .PHONY: clean
 clean:
