@@ -2,11 +2,6 @@
 # The sources for noMeiryoUI are distributed under the MIT open source license
 
 /program/.vs
-<<<<<<< HEAD
-=======
-/program/bin_2008
-/program/bin_2012
->>>>>>> master
 /program/ipch
 /program/noMeiryoUI.aps
 /program/noMeiryoUI.VC.db
