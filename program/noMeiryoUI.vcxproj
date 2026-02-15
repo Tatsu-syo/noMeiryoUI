@@ -101,7 +101,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
-      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /guard:cf /CETCOMPAT %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>uxtheme.lib;comctl32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -129,7 +129,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
-      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /guard:cf /CETCOMPAT %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>uxtheme.lib;comctl32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -157,7 +157,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
-      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /SAFESEH  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /SAFESEH  /guard:cf /CETCOMPAT %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>comctl32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
@@ -186,7 +186,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
     </ClCompile>
     <Link>
-      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /SAFESEH  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SUBSYSTEM:Windows,6.0 /SAFESEH  /guard:cf /CETCOMPAT %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>comctl32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
