@@ -2,7 +2,7 @@
 noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
-// noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
+// noMeiryoUI.cpp : application implementation file
 //
 
 #include "stdafx.h"
@@ -27,8 +27,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "country\korea.h"
 
 //
-// ダイアログベースアプリケーションフレームワークと
-// ユーザー実装のブリッジルーチン
+// Application implementation
 //
 
 // アプリケーションオブジェクト
@@ -57,14 +56,14 @@ DialogAppliBase *createAppli()
 
 	initializeLocale();
 
-	// ここでユーザーのアプリケーションオブジェクトを作成します。
+	// Create user application object.
 	appObj = new NoMeiryoUI();
 
 	return appObj;
 }
 
 /**
- * 各国語の判定と各国語に合わせた初期化を行います。
+ * Detect display language and initializing.
  */
 void initializeLocale(void)
 {
@@ -78,7 +77,7 @@ void initializeLocale(void)
 		*(p + 1) = '\0';
 	}
 
-	// ロケールの初期化
+	// Initialize locale
 	char *localeName = setlocale(LC_ALL, "");
 
 	setResourceFileName(langFileName, helpFileName, localeName, iniPath);
@@ -104,7 +103,7 @@ void initializeLocale(void)
 }
 
 /**
- * リソースファイル名を設定する
+ * Set language specific file names.
  * 
  * @param langFileName 言語ファイル名
  * @param helpFileName ヘルプファイル名
