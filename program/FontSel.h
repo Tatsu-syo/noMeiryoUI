@@ -57,6 +57,7 @@ private:
 	void setStyle();
 	INT_PTR onOK(void);
 	void disableWithoutFontselect(void);
+	void restorePreviousSettings();
 
 protected:
 	INT_PTR OnInitDialog();
