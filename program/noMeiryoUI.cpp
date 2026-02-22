@@ -2680,10 +2680,10 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber > 29000) {
+			if (buildNumber >= 28020) {
 				_tcscat_s(calledVer, _T(" Insider"));
-			} else if (buildNumber >= 28020) {
-				_tcscat_s(calledVer, _T(" 2026 for Copilot+PC"));
+			} else if (buildNumber >= 28000) {
+				_tcscat_s(calledVer, _T(""));
 			} else if (buildNumber >= 26300) {
 				_tcscat_s(calledVer, _T(" 2026 Update"));
 			} else if (buildNumber >= 26200) {
@@ -2946,7 +2946,7 @@ void NoMeiryoUI::loadConfig(void)
 #else
 
 /**
- * @brief �ݒ�t�@�C����ۑ�����
+ * @brief Save the configulation file to ApplicationSettingFolder
  */
 void NoMeiryoUI::saveConfig(void)
 {
@@ -3007,7 +3007,7 @@ void NoMeiryoUI::saveConfig(void)
 }
 
 /**
- * @brief �ݒ�t�@�C����ǂݍ���
+ * @brief Load the configulation file to ApplicationSettingFolder
  */
 void NoMeiryoUI::loadConfig(void)
 {
@@ -3039,7 +3039,7 @@ void NoMeiryoUI::loadConfig(void)
 #endif
 
 /**
- * @brief 複数起動関連処理
+ * @brief Handle multiple running
  */
 void NoMeiryoUI::handleMultipleRun(void)
 {
