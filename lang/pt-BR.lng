@@ -1,5 +1,5 @@
 ; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Claudio Mantovani Vieira
-; The sources for noMeiryoUI are distributed under the MIT open source license
+; As orígens do noMeiryoUI são distribuídas sob a licença de código aberto do MIT
 
 ;In RESOURCE section,
 ;FONT_FACE key is dialog font name, other key is message.
@@ -8,25 +8,25 @@ FONT_FACE=Sistema
 FONT_CHARSET=0
 TITLE=No!! Meiryo UI
 MENU_FILE=&Arquivo
-MENU_FILE_LOAD=Carr&egar as definições de fonte...
-MENU_FILE_SAVE=Sa&lvar as definições de fonte...
-MENU_FILE_SET_QUIT=&Definir as fontes do sistema e sair
+MENU_FILE_LOAD=Carr&egar definições de fonte...
+MENU_FILE_SAVE=Sa&lvar definições de fonte...
+MENU_FILE_SET_QUIT=&Definir fontes do sistema e sair
 MENU_FILE_QUIT=Sa&ir
 MENU_PRESET=&Pré-Definição
 MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_TOOLS=&Ferramentas
-MENU_TOOLS_CHOICE_APP_FONT=Escolha &fonte do aplicativo da UI No!! Meiryo
-MENU_TOOLS_THREAD=Definir as fontes do sistema em encadeamentos separados
+MENU_TOOLS_CHOICE_APP_FONT=Escolha a &fonte do aplicativo da UI No!! Meiryo
+MENU_TOOLS_THREAD=Definir fontes do sistema em encadeamentos separados
 MENU_TOOLS_SEVEN=Calcular o tamanho das fontes igual ao Windows 7
 MENU_TOOLS_NO_MULTI_RUN=&Não executar multiplicar
-MENU_FORCE_TITLE_SET=F&orce title bar font change enabled
+MENU_FORCE_TITLE_SET=F&orçar alteração da fonte da barra de título ativada
 MENU_HELP=Aju&da
 MENU_HELP_HELP=Aju&da
 MENU_HELP_ABOUT=&Sobre o No!! Meiryo UI
-DLG_ALL_GROUP=Definir Todas as Fontes
-DLG_INDIVIDUAL_GROUP=Definir a Fonte Individual
-DLG_ALL_FONT=Todas as Fontes
+DLG_ALL_GROUP=Definir Todas Fontes
+DLG_INDIVIDUAL_GROUP=Definir Fonte Individual
+DLG_ALL_FONT=Todas Fontes
 DLG_TITLE_BAR=Barra de Título
 DLG_ICON=Ícone
 DLG_PALETTE=Título da Paleta
@@ -38,7 +38,7 @@ DLG_SET_ALL=Def. Tudo e Sair
 DLG_SET=Definir e Sair
 DLG_EXIT=Sair Sem Definir
 DLG_APPLY=Aplicar
-DLG_FONT_SEL=Selecionar a Fonte
+DLG_FONT_SEL=Selecionar Fonte
 DLG_FONT_NAME=Nome da &Fonte
 DLG_STYLE=&Estilo
 DLG_SIZE=&Tamanho
@@ -72,14 +72,14 @@ DLG_STYLE_NORMAL=Normal
 DLG_STYLE_ITALIC=Itálico
 DLG_STYLE_BOLD=Negrito
 DLG_STYLE_BOLD_ITALIC=Negrito Itálico
-DLG_STYLE_MEDIUM=Medium
+DLG_STYLE_MEDIUM=Médio
 DLG_STYLE_SEMI_BOLD=Semibold
-DLG_STYLE_BOOK=Book
-DLG_STYLE_OBLIQUE=Oblique
-DLG_STYLE_LIGHT=Light
-DLG_STYLE_EXTRA_LIGHT=ExtraLight
-DLG_STYLE_SEMI_LIGHT=SemiLight
-DLG_STYLE_SLANTED=Slanted
+DLG_STYLE_BOOK=Livro
+DLG_STYLE_OBLIQUE=Oblíquo
+DLG_STYLE_LIGHT=Leve
+DLG_STYLE_EXTRA_LIGHT=ExtraLeve
+DLG_STYLE_SEMI_LIGHT=SemiLeve
+DLG_STYLE_SLANTED=Inclinado
 MSG_SETTING_FILE=Arquivo de Configurações de Fontes (*.ini)
 MSG_ALL_FILE=Todos Arquivos (*.*)
 MSG_LOAD_FAIL=Falha ao carregar o arquivo das configurações de fontes.
@@ -90,9 +90,9 @@ MSG_NO_FONT=Por favor, selecione a fonte.
 MSG_NO_STYLE=Por favor, selecione o estilo.
 MSG_NO_SIZE=Por favor, selecione o tamanho.
 MSG_NO_CHARSET=Por favor, selecione o conjunto de caracteres.
-MSG_WARNING=Warning
-MSG_WIN11_22H2RESTRICTION=On Windows 11 2022 Update(22H2) and later due to Windows reason title bar font can't change.
-MSG_FORCE_TITLE_SET=Changeing titlebar font may cause some troubles.
+MSG_WARNING=Aviso
+MSG_WIN11_22H2RESTRICTION=No Windows 11 2022 Atualização (22H2) e posterior, devido ao motivo do Windows, a fonte da barra de título não pode ser alterada.
+MSG_FORCE_TITLE_SET=Alterar a fonte da barra de título pode causar alguns problemas.
 MSG_TRANSLATE=Claudio Mantovani Vieira
 
 [PRESET]
