@@ -1,8 +1,8 @@
 ﻿/*
-noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji
 The sources for noMeiryoUI are distributed under the MIT open source license
 */
-// noMeiryoUI.cpp : アプリケーションのエントリ ポイントを定義します。
+// noMeiryoUI.cpp : application implementation file
 //
 
 #include "stdafx.h"
@@ -27,8 +27,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 #include "country\korea.h"
 
 //
-// ダイアログベースアプリケーションフレームワークと
-// ユーザー実装のブリッジルーチン
+// Application implementation
 //
 
 // アプリケーションオブジェクト
@@ -57,14 +56,14 @@ DialogAppliBase *createAppli()
 
 	initializeLocale();
 
-	// ここでユーザーのアプリケーションオブジェクトを作成します。
+	// Create user application object.
 	appObj = new NoMeiryoUI();
 
 	return appObj;
 }
 
 /**
- * 各国語の判定と各国語に合わせた初期化を行います。
+ * Detect display language and initializing.
  */
 void initializeLocale(void)
 {
@@ -78,7 +77,7 @@ void initializeLocale(void)
 		*(p + 1) = '\0';
 	}
 
-	// ロケールの初期化
+	// Initialize locale
 	char *localeName = setlocale(LC_ALL, "");
 
 	setResourceFileName(langFileName, helpFileName, localeName, iniPath);
@@ -104,7 +103,7 @@ void initializeLocale(void)
 }
 
 /**
- * リソースファイル名を設定する
+ * Set language specific file names.
  * 
  * @param langFileName 言語ファイル名
  * @param helpFileName ヘルプファイル名
@@ -2681,8 +2680,12 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 			break;
 		case 11:
 			_tcscpy_s(calledVer, _T("11"));
-			if (buildNumber > 27000) {
+			if (buildNumber >= 28020) {
 				_tcscat_s(calledVer, _T(" Insider"));
+			} else if (buildNumber >= 28000) {
+				_tcscat_s(calledVer, _T(""));
+			} else if (buildNumber >= 26300) {
+				_tcscat_s(calledVer, _T(" 2026 Update"));
 			} else if (buildNumber >= 26200) {
 				_tcscat_s(calledVer, _T(" 2025 Update"));
 			} else if (buildNumber >= 26000) {
@@ -2939,7 +2942,7 @@ void NoMeiryoUI::loadConfig(void)
 }
 
 /**
- * @brief 複数起動関連処理
+ * @brief Handle multiple running
  */
 void NoMeiryoUI::handleMultipleRun(void)
 {
