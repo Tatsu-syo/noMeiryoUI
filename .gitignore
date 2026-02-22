@@ -31,3 +31,4 @@ BuildLog.htm
 *.tlog
 *.log
 *.pch
+/program/bin
