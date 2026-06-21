@@ -2684,13 +2684,13 @@ void NoMeiryoUI::getWin10Ver(TCHAR *buf, DWORD major, DWORD minor)
 				_tcscat_s(calledVer, _T(" Insider"));
 			} else if (buildNumber >= 28000) {
 				_tcscat_s(calledVer, _T(""));
-			} else if (buildNumber >= 26300) {
+			} else if (buildNumber >= 26220) {
 				_tcscat_s(calledVer, _T(" 2026 Update"));
 			} else if (buildNumber >= 26200) {
 				_tcscat_s(calledVer, _T(" 2025 Update"));
 			} else if (buildNumber >= 26000) {
 				_tcscat_s(calledVer, _T(" 2024 Update"));
-			} else if (buildNumber == 22631) {
+			} else if (buildNumber >= 22631) {
 				_tcscat_s(calledVer, _T(" 2023 Update"));
 			} else if (buildNumber >= 22621) {
 				_tcscat_s(calledVer, _T(" 2022 Update"));
