@@ -50,9 +50,8 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 1. Open developer Command prompt.
 2. Move packaging directory.
 3. Type `nmake all -f get-inno-setup-language`
-4. Type `nmake clean`
-5. Type `nmake all`
-6. Copy virus safer version release file to files directory.
+4. Write virus safer version installer version release file to `copy` command on makeinstallable.bat.
+5. Type `makeinstallable.bat`.
 7. Run Inno setup with setup.iss.
 8. Make installer.
 
