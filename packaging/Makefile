@@ -110,6 +110,3 @@ clean:
 	del /q files\noMeiryoUI.exe
 	del /q files\utils\SAVEreg.bat
 	del /q files\utils\RESTOREreg.bat
-	del Output\*.zip
-
-
