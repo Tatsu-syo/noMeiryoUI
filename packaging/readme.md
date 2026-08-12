@@ -16,14 +16,14 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 ## 1.Prerequisites
 
 - [7-Zip](https://www.7-zip.org/)
-- Visual Studio 2008
 - Visual Studio 2012
 - Visual Studio 2022 or later
-- [Inno setup 6](https://jrsoftware.org/isinfo.php) with language files below
+- [Inno setup 7](https://jrsoftware.org/isinfo.php) with language files below
   - Japanese
   - Korean
   - Portuguese (Brazil)
   - Chinese (Simplified)
+  - Chinese (Traditional)
 
 ## 2. Preparation
 
@@ -49,11 +49,12 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 1. Open developer Command prompt.
 2. Move packaging directory.
-3. Type `nmake clean`
-4. Type `nmake all`
-5. Copy virus safer version release file to files directory.
-6. Run Inno setup with setup.iss.
-7. Make installer.
+3. Type `nmake all -f get-inno-setup-language`
+4. Type `nmake clean`
+5. Type `nmake all`
+6. Copy virus safer version release file to files directory.
+7. Run Inno setup with setup.iss.
+8. Make installer.
 
 ## 6. Why older version Visual Studio?
 
