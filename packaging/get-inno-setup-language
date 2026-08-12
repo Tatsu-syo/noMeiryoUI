@@ -4,11 +4,21 @@ CONTRIB = https://raw.githubusercontent.com/jrsoftware/issrc/refs/heads/main/Fil
 all : composition
 
 composition : isls\japanese.isl isls\Korean.isl isls\BrazilianPortuguese.isl isls\ChineseSimplified.isl isls\ChineseTraditional.isl
+
+isls\japanese.isl:
 	curl $(MAIN)/Japanese.isl > isls\japanese.isl
+
+isls\Korean.isl:
 	curl $(MAIN)/Korean.isl > isls\Korean.isl
+
+isls\BrazilianPortuguese.isl:
 	curl $(MAIN)/BrazilianPortuguese.isl > isls\BrazilianPortuguese.isl
-	curl $(CONTRIB)/ChineseSimplified.isl > isls\ChineseSimplified.isl
-	curl $(CONTRIB)/ChineseTraditional.isl > isls\ChineseTraditional.isl
+
+isls\ChineseSimplified.isl:
+	curl $(MAIN)/ChineseSimplified.isl > isls\ChineseSimplified.isl
+
+isls\ChineseTraditional.isl:
+	curl $(MAIN)/ChineseTraditional.isl > isls\ChineseTraditional.isl
 
 clean:
 	del /q isls\*.isl
