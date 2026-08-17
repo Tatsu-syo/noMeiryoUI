@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+ï»¿<!DOCTYPE HTML>
 <!--
 noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Austin Chang,HSSkyBoy,abc0922001,jay900604
 The sources for noMeiryoUI are distributed under the MIT open source license
@@ -13,19 +13,19 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="§Ö³t¤Jªù">
+		<param name="Name" value="å¿«é€Ÿå…¥é–€">
 		<param name="Local" value="contents/01.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="¦p¦ó¨Ï¥Î¥»³nÅé">
+		<param name="Name" value="å¦‚ä½•ä½¿ç”¨æœ¬ç¨‹å¼">
 		<param name="Local" value="contents/02.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="ª©¥»¾úµ{°O¿ý">
+		<param name="Name" value="ç‰ˆæœ¬æ­·ç¨‹è¨˜éŒ„">
 		<param name="Local" value="contents/03.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="±ÂÅv»P§@ªÌ">
+		<param name="Name" value="æŽˆæ¬Šèˆ‡ä½œè€…">
 		<param name="Local" value="contents/04.html">
 		</OBJECT>
 </UL>
