@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2023 Tatsuhiko Shoji,Austin Chang
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Austin Chang
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html lang="zh-tw">
@@ -20,24 +20,28 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <h1>1.快速入門</h1>
 
 <div class="chapter">
-<h2>1.1 這是什麼？</h2>
+<h2>1.1 這是什麼軟體？</h2>
 <p>
-這個軟體可以設定 Windows 8.1/10 上的系統字型。<br>
+　本軟體是用於在 Windows 8/8.1/10/11 上自訂系統各部分字型的工具。<br>
+　由於 Windows 自 8/8.1/10 起取消了直接自訂系統介面字型的功能，因此開發了本軟體。<br>
 </p>
 </div>
 <hr>
 
 <div class="chapter">
-<h2>1.2 目標作業系統</h2>
+<h2>1.2 運作環境</h2>
 <p>
-這個軟體可以執行於 Windows 8、8.1 和 10。<br>
+　本程式可在 Windows 8/8.1/10/11 上運作。<br>
+　本軟體為桌面應用程式，用於設定桌面上顯示之視窗各部分的字型。<br>
 </p>
-
+<p>
+　雖然也能在 Windows Vista、7 上運作，但這些系統本身即可直接設定各部分字型，因此無此必要。<br>
+</p>
 </div>
 <hr>
 
 <div class="chapter">
-<h2>1.3 檔案</h2>
+<h2>1.3 構成檔案</h2>
 
 <table border="1">
 <tbody>
@@ -45,40 +49,55 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <th>檔案名稱</th><th>內容</th>
 </tr>
 <tr>
-<td>noMeiryoUI.exe</td><td>軟體檔案</td>
+<td>noMeiryoUI.exe</td><td>本軟體之執行檔。</td>
 </tr>
 <tr>
-<td>zh-TW.lng</td><td>繁體中文（台灣）訊息檔案。</td>
+<td>zh-TW.lng</td><td>繁體中文（台灣）介面語言檔案。</td>
 </tr>
 <tr>
-<td>zh-CN.lng</td><td>簡體中文訊息檔案。</td>
+<td>zh-CN.lng</td><td>簡體中文介面語言檔案。</td>
 </tr>
 <tr>
-<td>en.lng</td><td>英文訊息檔案。</td>
+<td>ja-JP.lng</td><td>日文介面語言檔案。</td>
 </tr>
 <tr>
-<td>ko-KR.lng</td><td>韓文訊息檔案。</td>
+<td>en.lng</td><td>英文介面語言檔案。</td>
 </tr>
 <tr>
-<td>default.lng</td><td>預設訊息檔案。</td>
+<td>ko-KR.lng</td><td>韓文介面語言檔案。</td>
 </tr>
 <tr>
-<td>ja-JP.chm</td><td>日文幫助檔案。</td>
+<td>pt-BR.lng</td><td>葡萄牙語（巴西）介面語言檔案。</td>
 </tr>
 <tr>
-<td>zh-TW.chm</td><td>繁體中文（台灣）說明檔案。</td>
+<td>default.lng</td><td>預設介面語言檔案（英文）。</td>
 </tr>
 <tr>
-<td>zh-CN.chm</td><td>簡體中文說明檔案。</td>
+<td>zh-TW.chm</td><td>繁體中文（台灣）說明文件。</td>
 </tr>
 <tr>
-<td>en.chm</td><td>英文版說明檔案。</td>
+<td>zh-CN.chm</td><td>簡體中文說明文件。</td>
 </tr>
 <tr>
-<td>ko-KR.chm</td><td>韓文版說明檔案。</td>
+<td>ja-JP.chm</td><td>日文說明文件。</td>
 </tr>
 <tr>
-<td>default.chm</td><td>預設說明檔案。</td>
+<td>en.chm</td><td>英文說明文件。</td>
+</tr>
+<tr>
+<td>ko-KR.chm</td><td>韓文說明文件。</td>
+</tr>
+<tr>
+<td>pt-BR.chm</td><td>葡萄牙語（巴西）說明文件。</td>
+</tr>
+<tr>
+<td>default.chm</td><td>預設說明文件。</td>
+</tr>
+<tr>
+<td>utils\SAVEreg.bat</td><td>備份字型相關系統登錄檔（Registry）的批次檔。</td>
+</tr>
+<tr>
+<td>utils\RESTOREreg.bat</td><td>還原字型相關系統登錄檔的批次檔。</td>
 </tr>
 </tbody>
 </table>
@@ -86,30 +105,30 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <hr>
 
 <div class="chapter">
-<h2>1.4 安裝</h2>
+<h2>1.4 安裝與解除安裝</h2>
 <h3>安裝</h3>
 <p>
-將所有檔案解壓縮到一個資料夾裡。<br>
+　使用可攜版時，請將本軟體的壓縮檔解壓縮至同一資料夾中即可。<br>
 </p>
 
-<h3>卸載</h3>
+<h3>解除安裝</h3>
 <p>
-刪除所有檔案。<br>
+　若要解除安裝可攜版，直接刪除本軟體所在的整個資料夾即可。<br>
 </p>
 </div>
+<hr>
 
 <div class="chapter">
-<h2>1.5 Trouble shooting</h2>
-<h3>Before change system fonts</h3>
+<h2>1.5 疑難排解</h2>
+<h3>變更字型前的登錄檔備份</h3>
 <p>
-If you want to change system fonts by this program, I recommended to backup registry by utils\SAVEreg.bat (required Administrator privilege).<br>
-Backup file is created on C:\Users\(user name)\AppData\Local.<br>
+　在執行本程式變更字型前，建議先執行 utils\SAVEreg.bat 備份字型相關的登錄檔（需要系統管理員權限）。<br>
+　備份檔案將儲存於 C:\Users\(使用者名稱)\AppData\Local 目錄下。<br>
 </p>
 
-<h3>If trouble occurred</h3>
+<h3>發生問題時的處理方式</h3>
 <p>
-If trouble occurred and you took backup by utils\SAVEreg.bat, run utils\RESTOREreg.bat (required Administrator privilege).<br>
-You can restore registry data before changing system fonts.<br>
+　若在套用設定後發生問題，且先前已透過 utils\SAVEreg.bat 建立備份，可執行 utils\RESTOREreg.bat 還原回原先的狀態（需要系統管理員權限）。<br>
 </p>
 </div>
 

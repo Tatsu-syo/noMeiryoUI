@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Austin Chang
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Austin Chang
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
 <html lang="zh-tw">
@@ -9,7 +9,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <meta http-equiv="content-script-type" content="text/javascript">
 <meta http-equiv="content-style-type" content="text/css">
 <link rel="stylesheet" href="noMeiryoUI.css">
-<title>2.如何使用</title>
+<title>2.如何使用本軟體</title>
 <link rev="made" href="mailto:tatsu_syo@nifty.com">
 <link rel="Index" href="Frame.noMeiryoUI.html">
 <link rel="First" href="01.html">
@@ -18,99 +18,216 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <link rel="Next" href="03.html">
 </head>
 <body>
-<h1>2.如何使用</h1>
+<h1>2.如何使用本軟體</h1>
 
 <div class="chapter">
+<h2>2.1 簡介</h2>
 <p>
-執行「noMeiryoUI.exe」。<br>
-程式圖示：<img src="icon.png" width="32" height="32">。<br>
+　在檔案總管中按兩下 noMeiryoUI.exe 的圖示 <img src="icon.png" width="32" height="32"> 即可啟動軟體。<br>
+　啟動後將會顯示如下介面。<br>
+　目前的 Windows 版本資訊將以系統名稱（組建號碼）顯示在主介面上方。若您需要向作者回報問題或錯誤，可一併附上此資訊。<br>
 </p>
 
 <p>
-然後將會顯示如下圖所示的視窗。<br>
-<img src="noMeiryoUI.PNG" width="617" height="451"><br>
-按下「選取」按鈕來設定使用者介面元素所使用的字型。<br>
+<img src="noMeiryoUI.PNG" width="843" height="519" alt="No!! Meiryo UI 主介面"><br>
 </p>
-
-<p>
-當你按下「選取」按鈕時，將會顯示這個對話方塊。<br>
-<img src="FontSel.PNG" width="615" height="342"><br>
-</p>
-<p>
-選擇字型、大小、字型樣式和字集，然後按下「確定」按鈕。
-</p>
-<p>
-按下「設定」按鈕，你就能設定使用者介面字型。
-</p>
-
-</div>
-
-<hr>
-
-<div class="chapter">
-    <h2><a id="Options">Options menu</a></h2>
-    <ul>
-        <li>Choice No!! Meiryo UI application font<br>
-            Users can choice application font by font dialog.<br>
-        </li>
-        <li>Set system fonts in separated thread<br>
-            Some programs cause system freeze when system fonts changed.<br>
-            To avoid system freeze check this item.<br>
-            Initially, this option is checked.<br>
-            If you don't select this item, you can reduce time when you changed system fonts.<br>
-        </li>
-        <li>Calculate font size same as Windows 7<br>
-            In Windows 8, font size caliculate algorithm is different from other version of Windows.<br>
-            When you check this option, font size caliculate algorithm in Windows 8 is same as other version of Windows.<br>
-        </li>
-        <li>Don't run multiply<br>
-            When you check this option, No!! Meiryo UI don't run multiply.<br>
-            This option is useful to avoid contamination.<br>
-        </li>
-        <li>Force title bar font change enabled (no warranty)<br>
-            On Windows 11 22H2 and later, enables title bar font change button when you check this option.<br>
-            On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
-            This is why, this option is no warranty.<br>
-        </li>
-    </ul>
-</div>
-
-<hr>
-
 </div>
 <hr>
 <div class="chapter">
-2<h2><a id="CommandLine">命令列選項。</a></h2>
+<h2>2.2 操作方法</h2>
 <p>
-命令列格式如下：<br>
-<kbd>noMeiryoUI [font_setting_file] [options...]</kbd><br>
-If you use multiple options you must separate option name by space.<br>
-</p>
-<p>
-如果你指定了「font setting file」，字型設定檔將會在程式啟動時載入。
+　主介面顯示後，目前的系統各部分所使用的字型名稱也會一併列出。<br>
 </p>
 
-<h3>Options</h3>
+<h3>一併設定所有系統字型</h3>
 <p>
-	In [options...], you can use these options.<br>
-    If you use multiple options you must separate option name by space.<br>
+	&emsp;上方「全部字型設定」群組可用於將選定的字型一次套用至下方所有系統介面項目。<br>
+</p>
+<p>
+	&emsp;「全部字型」右側的文字方塊中顯示目前選取的字型。<br>
+	&emsp;按下該欄右側的「選取」按鈕後，即可從彈出的<a href="#FontSel">字型選取對話方塊</a>中選擇字型。<br>
+	&emsp;點選「套用全部並結束」即可將所有系統介面字型、大小與樣式一併變更並關閉程式。<br>
+	&emsp;點選「套用」則會在套用變更後繼續保留程式視窗。<br>
+</p>
+
+<h3>個別設定各介面項目的字型</h3>
+<p>
+	&emsp;下方「個別字型設定」群組可用於對系統介面的各個項目單獨指定字型。<br>
+</p>
+<p>
+　若要變更特定項目之字型，請點選該項目右側的「選取」按鈕。<br>
+　在彈出的<a href="#FontSel">字型選取對話方塊</a>中選擇您偏好的字型、大小與樣式。<br>
+<br>
+　設定完成後，點選「套用並結束」可將字型套用至系統並關閉程式。<br>
+　點選「套用」可套用至系統而不關閉程式。<br>
+　點選「結束而不套用」可直接結束程式。<br>
+</p>
+</div>
+<hr>
+
+<div class="chapter">
+<h2><a id="FontSel">2.3 選取字型</a></h2>
+<p>
+　按下「選取」按鈕後，軟體將會彈出如下的字型選取對話方塊：<br>
+</p>
+<p>
+<img src="FontSel.PNG" width="615" height="339" alt="字型選取對話方塊"><br>
+</p>
+<p>
+　透過字型選取對話方塊可進行下列設定：<br>
+</p>
+<table border="1">
+<tr>
+<th>名稱</th><th>功能</th>
+</tr>
+<tr>
+<td>字型名稱(F)</td><td>選取字型。</td>
+</tr>
+<tr>
+<td>字型樣式(Y)</td><td>指定字型的字形樣式。</td>
+</tr>
+<tr>
+<td>大小(S)</td><td>指定字型大小（pt）。</td>
+</tr>
+<tr>
+<td>粗體(B)</td><td>勾選此項目以粗體顯示。</td>
+</tr>
+<tr>
+<td>斜體(I)</td><td>勾選此項目以斜體顯示。</td>
+</tr>
+<tr>
+<td>底線(U)</td><td>勾選此項目以加上底線。</td>
+</tr>
+<tr>
+<td>刪除線(T)</td><td>勾選此項目以加上刪除線。</td>
+</tr>
+<tr>
+<td>字元集(C)</td><td>選取字型的字元集編碼。</td>
+</tr>
+</table>
+<p>
+　選取完畢後按一下「確定」按鈕即可套用該字型設定。<br>
+　若有未選取的必要項目，軟體將會顯示警告，屆時請依提示操作。<br>
+</p>
+</div>
+<hr>
+
+<div class="chapter">
+<h2><a id="Menu">2.4 選單操作</a></h2>
+<ul>
+	<li>檔案(F)
+		<ul>
+			<li>載入字型設定檔(O)...<br>
+			載入先前儲存的 ini 字型設定檔。選擇此項目後將開啟檔案選取對話方塊。<br>
+			載入後，軟體內從「標題列」到「選單」各項目的字型將會更新為設定檔中的內容，接著可點選「套用」或「套用並結束」使其生效。<br>
+			</li>
+			<li>儲存字型設定檔(A)...<br>
+			將目前的字型設定儲存為 ini 設定檔。<br>
+			將會儲存從「標題列」到「選單」各項目的設定內容。<br>
+			點選後將彈出儲存檔案對話方塊，輸入檔名後即可儲存。<br>
+			</li>
+			<li>設定系統字型並退出(S)<br>
+			套用所有系統字型設定後關閉程式。
+			</li>
+			<li>結束(X)<br>
+			不套用任何變更直接結束程式。
+			</li>
+		</ul>
+	</li>
+	<li>重設為預設設定(P)
+		<ul>
+			<li>Windows 8/8.1<br>
+			將個別設定中的字型重設為 Windows 8/8.1 的預設字型。<br>
+			</li>
+			<li>Windows 10<br>
+			將個別設定中的字型重設為 Windows 10 的預設字型。<br>
+			</li>
+			<li>Windows 11<br>
+			將個別設定中的字型重設為 Windows 11 的預設字型。<br>
+			</li>
+		</ul>
+	</li>
+	<li>工具(T)
+		<ul>
+			<li>選擇 No!! Meiryo UI 應用程式字型(F)<br>
+			自訂本軟體介面自身所使用的顯示字型。<br>
+			</li>
+			<li>在另一執行緒中變更字型(A)<br>
+			特殊環境下用於排除無回應等問題的選項。<br>
+			若在背景執行特定鍵盤滑鼠驅動程式（如 SetPoint）時發生字型設定卡住或無回應的情況，可勾選此選項後再進行設定。<br>
+			</li>
+			<li>將字型大小視為與 Windows 7 相同(7)<br>
+			在 Windows 8/8.1 上將字型大小的計算方式切換為與 Windows 7 相同。<br>
+			</li>
+			<li>不要重複執行(D)<br>
+			啟用此選項可防止重複開啟多個本軟體視窗。<br>
+			</li>
+			<li>允許變更標題列字型(O)&nbsp;（實驗性功能）<br>
+			在 Windows 11 22H2 及更新版本中，微軟限制了標題列字型的變更。啟用此選項可強制開啟標題列字型的設定按鈕。<br>
+			注意：在 Windows 11 22H2 及更新版本中強制變更標題列字型可能會引發未知問題或介面異常，因此本功能不提供任何擔保。<br>
+			</li>
+		</ul>
+	</li>
+	<li>說明(H)
+		<ul>
+			<li>檢視說明(C)<br>
+			開啟本說明文件。
+			</li>
+			<li>關於 No!! Meiryo UI (A)<br>
+			顯示軟體版本與相關資訊。
+			</li>
+		</ul>
+	</li>
+</ul>
+</div>
+<hr>
+
+<div class="chapter">
+<h2><a id="CommandLine">2.5 命令列選項</a></h2>
+<p>
+　透過命令列參數，可在啟動時自動載入指定的設定檔，或直接在背景套用字型設定。<br>
+</p>
+<p>
+　命令列格式如下：<br>
+<kbd>noMeiryoUI [字型設定檔路徑] [選項...]</kbd><br>
+<br>
+　若檔案名稱或路徑中包含空格，請使用半形雙引號 <kbd>""</kbd> 包裹。<br>
+　使用多個選項時請以半形空格分隔。<br>
+</p>
+
+<h3>選項</h3>
+<p>
+	在 [選項...] 中可使用下列參數：<br>
 </p>
 <ul>
 	<li>-set<br>
-		　<kbd>-set</kbd> option can set systems fonts on start up and exit program.<br>
-		This option is useful for startup shortcut, launcher setting, batch file.<br>
+		　<kbd>-set</kbd> 選項可在啟動時直接套用指定的字型設定檔並立即結束程式。<br>
+		非常適合用於 Windows 啟動捷徑、開機啟動項目或批次檔中。<br>
 	</li>
 	<li>-delay<br>
-		　<kbd>-delay</kbd> option delays system fonts change by seconds.<br>
-        You must specify delay time be seconds. For example, <kbd>-delay 60</kbd>.<br>
-		You can use this option to prevent system changes system fonts in some reasons<br>
+		　<kbd>-delay</kbd> 選項可以指定延遲套用字型設定的秒數（例如：<kbd>-delay 60</kbd>）。<br>
+		若系統在開機登入後會自動覆蓋字型，可使用此選項在系統重設字型之後再重新套用設定。<br>
 	</li>
-	<li>-force (no warranty)<br>
-		　<kbd>-force</kbd> option enables to change title bar font on Windows 11 22H2 and later.<br>
-        On Windows 11 22H2 and later, when you try to change title bar font, unknown troubles may occurred.<br>
-        This is why, this option is no warranty.<br>
-</li>
+	<li>-force（實驗性）<br>
+		　<kbd>-force</kbd> 選項可在 Windows 11 22H2 及更新版本中強制變更標題列字型。<br>
+		在 Windows 11 22H2 及更新版本中變更標題列字型可能會引發未知問題，本選項不作任何保證。<br>
+	</li>
 </ul>
+
+<h3>範例 1：啟動軟體時自動載入 MySet.ini 設定檔</h3>
+<p>
+<kbd>noMeiryoUI MySet.ini</kbd>
+</p>
+
+<h3>範例 2：直接套用 Your Settings.ini 的設定並結束程式</h3>
+<p>
+<kbd>noMeiryoUI "Your Settings.ini" -set</kbd>
+</p>
+
+<h3>範例 3：延遲 60 秒後套用 restore Settings.ini 的設定並結束程式</h3>
+<p>
+<kbd>noMeiryoUI "restore Settings.ini" -set -delay 60</kbd>
+</p>
 
 </div>
 
