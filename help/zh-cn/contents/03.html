@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,icebeam030,LucidLoli
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,icebeam030,LucidLoli,HSSkyBoy
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
-<html>
+<html lang="zh-cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-script-type" content="text/javascript">
@@ -23,9 +23,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2026/08/30 版本 3.5.0</h2>
     <ul>
-        <li>修正了 Windows 11 26H1 版本的检测方法。</li>
-        <li>添加了大尺寸图标。</li>
-        <li>添加了安装程序版本。</li>
+        <li>修正 Windows 11 26H1 版本的检测方法。</li>
+        <li>添加大尺寸图标。</li>
+        <li>添加安装程序版本。</li>
     </ul>
 </div>
 
@@ -34,9 +34,9 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2026/02/22 版本 3.4.2</h2>
     <ul>
-        <li>修正了巴西葡萄牙语翻译。(pt-BR.lng)</li>
-        <li>修正了帮助文档。(en, ja-JP, pt-BR)</li>
-        <li>更新了版权年份。</li>
+        <li>修正巴西葡萄牙语翻译。(pt-BR.lng)</li>
+        <li>修正说明文档。(en, ja-JP, pt-BR)</li>
+        <li>更新版权年份。</li>
     </ul>
 </div>
 
@@ -45,7 +45,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2026/02/07 版本 3.4.1</h2>
     <ul>
-        <li>修复了启动参数 -force 不起作用的问题</li>
+        <li>修正启动参数 -force 无效的问题。</li>
     </ul>
 </div>
 
@@ -54,31 +54,32 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2025/04/19 版本 3.4.0</h2>
     <ul>
-        <li>添加 -delay 启动参数以应对某些情况下系统会主动对系统字体进行更改的情形，届时可用该参数以便在系统更改字体后再用软件设置将之覆盖。</li>
-        <li>现在Windows 11 22H2以后的系统也可以在确认警告后更改标题栏的字体了。同时为该功能添加 -force 启动参数。该功能尚处于测试阶段。</li>
+        <li>添加 -delay 命令行参数，以应对某些情况下系统开机时会主动更改系统字体的问题，延迟应用设置以覆盖系统更改。</li>
+        <li>现在 Windows 11 22H2 及更高版本在确认警告后亦可尝试更改标题栏字体，并添加 -force 启动参数（实验性功能）。</li>
     </ul>
 </div>
-    
+
 <hr>
-    
+
 <div class="chapter">
     <h2>2024/03/05 版本 3.3.1</h2>
     <ul>
-        <li>更新了简体中文（中国）的翻译。(zh-CN.lng,zh-CN.chm)<br>
+        <li>更新简体中文（中国）翻译。(zh-CN.lng, zh-CN.chm)<br>
             感谢 kingofotaku。</li>
-        <li>更新了繁体中文（台湾）的翻译。(zh-TW.lng)<br>
+        <li>更新繁体中文（台湾）翻译。(zh-TW.lng)<br>
             感谢 abc0922001。</li>
     </ul>
 </div>
 
 <hr>
+
 <div class="chapter">
     <h2>2024/02/25 版本 3.3.0</h2>
     <ul>
-        <li>现在您可以修改本软件的字体了。<br>
-            此外，还修改了显示语言为日语时的默认字体。</li>
-        <li>为防止意外错误，现在您可以选择是否允许多重启动本软件。</li>
-        <li>更新了繁体中文（台湾）的翻译。(zh-TW.lng)<br>
+        <li>现在可自定义本软件自身的界面字体。<br>
+            同时调整了日语环境下的默认字体。</li>
+        <li>添加禁止多开本软件的选项。</li>
+        <li>更新繁体中文（台湾）翻译。(zh-TW.lng)<br>
             感谢 jay900604。</li>
     </ul>
 </div>
@@ -86,12 +87,11 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <hr>
 
 <div class="chapter">
-<h2>2023/09/03 版本 3.2.1</h2>
-<ul>    
-<li>更新了繁体中文（台湾）的翻译。(zh-TW.lng)<br>
-感谢 abc0922001。</li>
-<ul>
-</ul>
+    <h2>2023/09/03 版本 3.2.1</h2>
+    <ul>
+        <li>更新繁体中文（台湾）翻译。(zh-TW.lng)<br>
+            感谢 abc0922001。</li>
+    </ul>
 </div>
 
 <hr>
@@ -99,202 +99,188 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2023/08/27 版本 3.2.0</h2>
     <ul>
-    <li>使软件语言跟随Windows显示语言</li>
-    <li>修正了在诸如Windows 11 记事本等程序中出现框架线条等的显示错误</li>
-    <li>由于以上修正而将最低支持版本提升至 Windows Vista。</li>
-    <li>现在，在导入字体配置时将会使各字体的大小设置为系统的初始值，以适应当前界面的DPI。</li>
-    <li>修正了当更改标题栏的字体大小时导致标题栏可能因适应字体而变得过高的问题。</li>
+        <li>使软件显示语言跟随 Windows 系统的显示语言设置。</li>
+        <li>修正了在 Windows 11 记事本等程序中出现边框线条的显示异常。</li>
+        <li>由于上述修正，将最低支持系统版本调整为 Windows Vista。</li>
+        <li>导入字体设置时自动根据当前的界面 DPI 调整字体大小。</li>
+        <li>修正更改标题栏字体大小时导致标题栏过高的问题。</li>
     </ul>
-    </div>
-    <hr>
-    
-    <div class="chapter">
-    <h2>2022/09/26 版本 3.1.0</h2>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2022/09/26 版本 3.1.0.1</h2>
     <ul>
-    <li>采用 Visual C++ 2008 进行构建以避免杀毒软件误报。</li>
+        <li>采用 Visual C++ 2008 进行构建以避免杀毒软件误报。</li>
     </ul>
-    </div>
-    <hr>
-    
-    <div class="chapter">
+</div>
+
+<hr>
+
+<div class="chapter">
     <h2>2022/09/21 版本 3.1.0</h2>
     <ul>
-    <li>在 Windows 11 2022 Update(22H2) 中，出于避免在将标题栏设置为透明时产生问题，故强制将标题栏的字体固定为系统默认字体。</li>
-    <li>出于上述原因，如今在 Windows 11 2022 Update(22H2) 中已无法选择并更改标题栏字体。。</li>
-    <li>在 Windows 11 2022 Update 中使系统版本得以正确显示。 </li>
+        <li>在 Windows 11 2022 Update(22H2) 中，出于避免在将标题栏设置为透明时产生问题，强制将标题栏字体固定为系统默认字体。</li>
+        <li>出于上述原因，如今在 Windows 11 22H2 中已无法选择并更改标题栏字体。</li>
+        <li>在 Windows 11 2022 Update 中使系统版本号得以正确显示。</li>
     </ul>
-    </div>
-    <hr>
+</div>
+
+<hr>
 
 <div class="chapter">
     <h2>2022/06/26 版本 3.0.0.1</h2>
     <ul>
-    <li>加入了由 Luke Luo 提供的简体中文翻译及新的字体显示设定</li>
+        <li>加入由 Luke Luo 提供的简体中文翻译及字体显示设定。</li>
     </ul>
-    </div>
-    <hr>
+</div>
+
+<hr>
 
 <div class="chapter">
     <h2>2022/02/13 版本 3.0.0</h2>
     <ul>
-    <li>现在，配置文件中的字体大小以 pt 为单位。<br>
-    因此，第二版和第三版程序的字体配置文件不可互相替代。</li>
-    <li>现在，语言资源文件用 UTF-8 编码。</li>
-    <li>现在，设置按钮的文字更易于理解。</li>
+        <li>现在配置文件中的字体大小以 pt 为单位。<br>
+        注意：第 2 版与第 3 版的字体配置文件不可互相替代。</li>
+        <li>语言资源文件改用 UTF-8 编码。</li>
+        <li>调整各设置按钮文字使其更易于理解。</li>
     </ul>
-    </div>
-    
-    <hr>
+</div>
+
+<hr>
 
 <div class="chapter">
-    <h2>2021/11/28 版本 2.42(目前只在 GitHub 上发布)</h2>
+    <h2>2021/11/28 版本 2.42（仅于 GitHub 发布）</h2>
     <ul>
-    <li>添加了 Windows 11 的系统默认字体。</li>
-    <li>现在，Windows 11 的版本号会正常显示了。</li>
+        <li>添加 Windows 11 默认系统字体支持。</li>
+        <li>支持 Windows 11 版本号显示。</li>
     </ul>
-    </div>
-    
-    <hr>
-    
+</div>
+
+<hr>
+
 <div class="chapter">
     <h2>2021/01/10 版本 2.41</h2>
     <ul>
-    <li>现在能够读取各字体下所有的字形了。</li>
-    <li>支持显示Windows 10 Version 20H2的版本号。</li>
+        <li>支持读取字体下的所有样式。</li>
+        <li>支持显示 Windows 10 Version 20H2 版本号。</li>
     </ul>
-    </div>
-    
-    <hr>
-    
-<div class="chapter">
-<h2>2020/07/26 版本 2.40.2</h2>
-<ul>
-<li>改进韩语翻译。</li>
-</ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2020/06/28 版本 2.40.1</h2>
-<ul>
-<li>改进韩语翻译。</li>
-</ul>
+    <h2>2020/07/26 版本 2.40.2</h2>
+    <h2>2020/06/28 版本 2.40.1</h2>
+    <h2>2020/05/31 版本 2.40</h2>
+    <ul>
+        <li>新增“应用”按钮，点击后可应用设置且不关闭程序。</li>
+        <li>将主界面分为“全局设定”与“单项设定”两组。</li>
+        <li>修复在特定情况下无法读取当前目录配置文件的错误。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2020/05/31 版本 2.40</h2>
-<ul>
-<li>新增了应用按钮。当点击该按钮后将应用设定且不关闭程序。</li>
-<li>将主界面分成全局设定与单项设定两组。</li>
-<li>修复了无法读取当前目录内配置文件的错误。</li>
-</ul>
+    <h2>2020/01/13 版本 2.36</h2>
+    <ul>
+        <li>点击统一设定后将自动关闭程序。</li>
+        <li>添加葡萄牙语（巴西）翻译。</li>
+        <li>添加繁体中文翻译。</li>
+        <li>包含 2.35 版本中忘记加入的简体中文翻译。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2020/01/13 版本 2.36</h2>
-<ul>
-<li>当点击统一设定后将自动关闭程序。</li>
-<li>添加葡萄牙语（巴西）翻译。</li>
-<li>添加繁体中文翻译。</li>
-<li>包括2.35版本中忘记加入的简体中文翻译。</li>
-</ul>
+    <h2>2018/04/28 版本 2.35</h2>
+    <ul>
+        <li>当 Windows 系统显示语言与区域设置不同时，优先以显示语言决定软件界面语言。</li>
+        <li>增大软件各处的字体大小。</li>
+        <li>添加韩语界面翻译（感谢 deVbug 的协助）。</li>
+        <li>支持韩文字体名替换。</li>
+        <li>改进简体中文翻译（感谢 kingofotaku 的协助）。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2018/04/28 版本 2.35</h2>
-<ul>
-<li>当Windows系统显示语言与区域设置不同时，以显示语言来决定软件语言。</li>
-<li>增大软件各处的字体大小。</li>
-<li>添加了韩语的界面翻译。感谢deVbug的协助。</li>
-<li>支持韩语字体名替换（仅限韩语。）</li>
-<li>改进了简体中文的翻译品质。感谢kingofotaku的协助</li>
-</ul>
+    <h2>2017/06/03 版本 2.34</h2>
+    <ul>
+        <li>主窗口启动时居中显示于屏幕。</li>
+        <li>字体选择对话框显示于主窗口上方。</li>
+        <li>修复简体中文帮助文档内字体显示异常。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2017/06/03 版本 2.34</h2>
-<ul>
-<li>启动后主界面将会在屏幕中心出现。</li>
-<li>字体选择对话框将出现在主界面的上部。</li>
-<li>帮助文档将会在主界面的左上方打开。</li>
-<li>修复简体中文帮助文档内字体显示异常。</li>
-</ul>
+    <h2>2017/05/14 版本 2.33</h2>
+    <ul>
+        <li>在 Windows 10 系统上运行时可显示详细版本信息。</li>
+        <li>恢复系统默认字体功能支持英文版。</li>
+        <li>在语言文件中添加默认字体及字符集。</li>
+        <li>支持根据系统语言自动选择相对应的语言及帮助文档。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2017/05/14 版本 2.33</h2>
-<ul>
-<li>在Windows 10系统上运行时可显示详细系统版本信息。</li>
-<li>恢复系统默认字体功能支持英文版。</li>
-<li>在语言文件中添加默认字体及字符集。</li>
-<li>新增根据系统区域设置选择相对应的语言及帮助文档。今后新增翻译时将无需修改程序，并可单独发布语言文件。</li>
-</ul>
+    <h2>2016/10/10 版本 2.32</h2>
+    <ul>
+        <li>添加简体中文说明文档（感谢 立花 月下 的协助）。</li>
+        <li>恢复系统默认字体功能支持简体中文。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/10/10 版本 2.32</h2>
-<ul>
-<li>添加了简体中文版帮助文档。感谢立花 月下的协助。</li>
-</li>
-<li>恢复系统默认字体功能支持简体中文版。</li>
-</li>
-<li>变更源文件中文件夹的结构，以便未来添加针对更多语言的翻译。</li>
-</li>
-</li>
-</ul>
+    <h2>2016/09/19 版本 2.31</h2>
+    <ul>
+        <li>添加简体中文界面翻译（感谢 立花 月下 的协助）。</li>
+        <li>帮助文档已变更为 HTML 格式。</li>
+        <li>在版本信息中添加了翻译者名单。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/09/19 版本 2.31</h2>
-<ul>
-<li>添加了简体中文的界面翻译。感谢立花 月下的协助。<br>
-</li>
-<li>帮助文档已变更为HTML格式。<br>
-</li>
-<li>在版本信息中添加了翻译者名单。<br>
-</li>
-</li>
-</ul>
+    <h2>2016/08/19 版本 2.30</h2>
+    <ul>
+        <li>在非日文系统上运行时可根据系统语言切换界面语言。本版本增加了对日语、简体中文（中国）及其他语言的界面切换支持。<br>
+        （因作者当时不熟悉中文，故本版本在简体中文 Windows 上暂以英文显示作为过渡。）
+        </li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/08/19 版本 2.30</h2>
-<ul>
-<li>在非日文系统上运行时可根据系统语言切换界面语言。本版本增加了对日语、简体中文及其他语言的界面切换支持。<br>
-（因作者当时不熟悉中文，故本版本在中文 Windows 上仍以英文显示作为过渡。）
-</li>
-</ul>
+    <h2>2016/06/09 版本 2.20</h2>
+    <ul>
+        <li>支持通过命令行读取指定的字体配置文件，并支持直接将系统字体设置为命令行指定配置文件中的内容。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/06/09 版本 2.20</h2>
-<ul>
-<li>支持通过命令行读取指定的字体配置文件，并支持直接将系统字体设置为命令行指定配置文件中的内容。
-</li>
-</ul>
+    <h2>2016/02/23 版本 2.17</h2>
+    <ul>
+        <li>所选字体的字体名称与大小将直接以该字体自身的字形样式进行预览显示。<br>
+        （不过单看字体名称的话，Meiryo UI 看起来还挺像个正常的字体，倒成了唯一的难点。）
+        </li>
+    </ul>
 </div>
-<hr>
 
-<div class="chapter">
-<h2>2016/02/23 版本 2.17</h2>
-<ul>
-<li>所选字体的字体名称与大小将直接以该字体自身的字形样式进行预览显示。<br>
-（不过单看字体名称的话，Meiryo UI 看起来还挺像个正常的字体，倒成了唯一的难点。）
-</li>
-</ul>
-</div>
 <hr>
 
 <div class="chapter">
