@@ -26,8 +26,8 @@ AppId={{BC5673AC-0096-469E-B6EE-734F448A9A42}
 AppName={cm:ThisAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
-VersionInfoDescription={#MyAppName}
-VersionInfoProductName={#MyAppName}
+VersionInfoDescription={cm:ThisAppName}
+VersionInfoProductName={cm:ThisAppName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=Tatsuhiko Shoji and contributors
 AppPublisher={#MyAppPublisher}
@@ -68,12 +68,27 @@ Source: "installable\zh-TW.lng"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commondesktop}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{code:GetLaunchDescription}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+function GetLaunchDescription(Param: String): String;
+var
+  AppName: String;
+begin
+  // 1. 実行時の言語に応じた CustomMessage('ThisAppName') を取得
+  AppName := CustomMessage('ThisAppName');
+  
+  // 2. StringChangeEx を使って '&' を '&&' に置換（UI上でのアンダーライン化を防ぐ）
+  StringChangeEx(AppName, '&', '&&', True);
+  
+  // 3. 組み込みの LaunchProgram メッセージ（" %1 を実行する" など）の %1 に、置換後のアプリ名を埋め込む
+  Result := FmtMessage(CustomMessage('LaunchProgram'), [AppName]);
+end;
 
 [CustomMessages]
 english.ThisAppName=No!! Meiryo UI
@@ -87,7 +102,10 @@ english.CopyrightFontName=Arial
 english.CopyrightFontSize=8
 english.RightToLeft=no
 
+japanese.AppName=Meiryo UIも大っきらい!!
 japanese.ThisAppName=Meiryo UIも大っきらい!!
+japanese.GroupName=Meiryo UIも大っきらい!!
+japanese.MyAppName=Meiryo UIも大っきらい!!
 japanese.DialogFontName=MS PGothic
 japanese.DialogFontSize=10
 japanese.WelcomeFontName=ＭＳ Ｐゴシック
