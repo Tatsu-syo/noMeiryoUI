@@ -80,13 +80,13 @@ function GetLaunchDescription(Param: String): String;
 var
   AppName: String;
 begin
-  // 1. 実行時の言語に応じた CustomMessage('ThisAppName') を取得
+  // Get Application name
   AppName := CustomMessage('ThisAppName');
   
-  // 2. StringChangeEx を使って '&' を '&&' に置換（UI上でのアンダーライン化を防ぐ）
+  // Suppress underline
   StringChangeEx(AppName, '&', '&&', True);
   
-  // 3. 組み込みの LaunchProgram メッセージ（" %1 を実行する" など）の %1 に、置換後のアプリ名を埋め込む
+  // Embed localized application name
   Result := FmtMessage(CustomMessage('LaunchProgram'), [AppName]);
 end;
 
