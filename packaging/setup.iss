@@ -26,8 +26,8 @@ AppId={{BC5673AC-0096-469E-B6EE-734F448A9A42}
 AppName={cm:ThisAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
-VersionInfoDescription={cm:ThisAppName}
-VersionInfoProductName={cm:ThisAppName}
+VersionInfoDescription={#MyAppName}
+VersionInfoProductName={#MyAppName}
 VersionInfoVersion={#MyAppVersion}
 VersionInfoCompany=Tatsuhiko Shoji and contributors
 AppPublisher={#MyAppPublisher}
@@ -44,6 +44,7 @@ LicenseFile="..\LICENSE"
 Compression=lzma
 SolidCompression=yes
 ShowLanguageDialog=no
+UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -69,7 +70,7 @@ Source: "installable\zh-TW.lng"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{commondesktop}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
@@ -93,19 +94,16 @@ end;
 [CustomMessages]
 english.ThisAppName=No!! Meiryo UI
 english.DialogFontName=Segoe UI
-english.DialogFontSize=8
-english.WelcomeFontName=Verdana
+english.DialogFontSize=9
+english.WelcomeFontName=Segoe UI
 english.WelcomeFontSize=12
-english.TitleFontName=Arial
+english.TitleFontName=Segoe UI
 english.TitleFontSize=29
-english.CopyrightFontName=Arial
+english.CopyrightFontName=Segoe UI
 english.CopyrightFontSize=8
 english.RightToLeft=no
 
-japanese.AppName=Meiryo UIも大っきらい!!
 japanese.ThisAppName=Meiryo UIも大っきらい!!
-japanese.GroupName=Meiryo UIも大っきらい!!
-japanese.MyAppName=Meiryo UIも大っきらい!!
 japanese.DialogFontName=MS PGothic
 japanese.DialogFontSize=10
 japanese.WelcomeFontName=ＭＳ Ｐゴシック
@@ -139,4 +137,23 @@ ChineseTraditional.CopyrightFontSize=9
 ChineseTraditional.RightToLeft=no
 
 brazilian.ThisAppName=No!! Meiryo UI
+brazilian.DialogFontName=Segoe UI
+brazilian.DialogFontSize=9
+brazilian.WelcomeFontName=Segoe UI
+brazilian.WelcomeFontSize=12
+brazilian.TitleFontName=Segoe UI
+brazilian.TitleFontSize=29
+brazilian.CopyrightFontName=Segoe UI
+brazilian.CopyrightFontSize=8
+brazilian.RightToLeft=no
+
 korean.ThisAppName=No!! Meiryo UI
+korean.DialogFontName=Microsoft JhengHei UI
+korean.DialogFontSize=9
+korean.WelcomeFontName=Microsoft JhengHei UI
+korean.WelcomeFontSize=12
+korean.TitleFontName=Microsoft JhengHei UI
+korean.TitleFontSize=28
+korean.CopyrightFontName=Microsoft JhengHei UI
+korean.CopyrightFontSize=9
+korean.RightToLeft=no
