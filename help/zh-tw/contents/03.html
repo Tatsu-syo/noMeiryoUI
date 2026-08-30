@@ -1,9 +1,9 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <!--
-noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Austin Chang
+noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Austin Chang,HSSkyBoy
 The sources for noMeiryoUI are distributed under the MIT open source license
 -->
-<html lang="UTF-8">
+<html lang="zh-tw">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="content-script-type" content="text/javascript">
@@ -21,7 +21,32 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <h1>3.版本歷程記錄</h1>
 
 <div class="chapter">
-<h2>2026/02/07 版本 3.3.1</h2>
+    <h2>2026/08/30 版本 3.5.0</h2>
+    <ul>
+        <li>修正 Windows 11 26H1 版本的偵測方法。</li>
+        <li>新增大尺寸圖示。</li>
+        <li>新增安裝程式版本。</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2026/02/22 版本 3.4.2</h2>
+    <ul>
+        <li>修正巴西葡萄牙語翻譯。(pt-BR.lng)</li>
+        <li>修正說明文件。(en, ja-JP, pt-BR)</li>
+        <li>更新版權年份。</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2026/02/07 版本 3.4.1</h2>
+    <ul>
+        <li>修正啟動參數 -force 無效的問題。</li>
+    </ul>
 </div>
 
 <hr>
@@ -29,159 +54,252 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 <div class="chapter">
     <h2>2025/04/19 版本 3.4.0</h2>
     <ul>
-        <li>Add -delay option to prevent system changes system fonts in some reasons.</li>
-        <li>On Windows 11 22H2 and later, add some settings to change title bar font. These options are experimental.</li>
+        <li>新增 -delay 命令列參數，以因應某些情況下系統開機時會主動變更系統字型的問題，延遲套用設定以覆蓋系統變更。</li>
+        <li>現在 Windows 11 22H2 及更新版本在確認警告後亦可嘗試變更標題列字型，並新增 -force 啟動參數（實驗性功能）。</li>
     </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2024/03/05 版本 3.3.1</h2>
+    <h2>2024/03/05 版本 3.3.1</h2>
+    <ul>
+        <li>更新簡體中文（中國）翻譯。(zh-CN.lng, zh-CN.chm)<br>
+            感謝 kingofotaku。</li>
+        <li>更新繁體中文（台灣）翻譯。(zh-TW.lng)<br>
+            感謝 abc0922001。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2024/02/25 版本 3.3.0</h2>
+    <h2>2024/02/25 版本 3.3.0</h2>
+    <ul>
+        <li>現在可自訂本軟體自身的介面字型。<br>
+            同時調整了日語環境下的預設字型。</li>
+        <li>新增禁止重複啟動本軟體的選項。</li>
+        <li>更新繁體中文（台灣）翻譯。(zh-TW.lng)<br>
+            感謝 jay900604。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2023/09/03 版本 3.2.1</h2>
+    <h2>2023/09/03 版本 3.2.1.1</h2>
+    <ul>
+        <li>更新繁體中文（台灣）翻譯。(zh-TW.lng)<br>
+            感謝 abc0922001。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2023/08/27 版本 3.2.0</h2>
+    <h2>2023/09/03 版本 3.2.1</h2>
+    <ul>
+        <li>更新了簡體中文（中國）與繁體中文（台灣）翻譯。<br>
+            感謝 HSSkyBoy 與 kingofotaku。</li>
+        <li>說明文件中簡體中文表述變更為「簡體中文（中國）」。(zh-CN.chm)<br>
+            感謝 HSSkyBoy。</li>
+        <li>說明文件中繁體中文表述變更為「繁體中文（台灣）」。(zh-TW.chm)<br>
+            感謝 HSSkyBoy。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2022/09/26 版本 3.1.0.1</h2>
+    <h2>2023/08/27 版本 3.2.0</h2>
+    <ul>
+        <li>使軟體顯示語言依隨 Windows 系統的顯示語言設定。</li>
+        <li>修正在 Windows 11 記事本等程式中出現邊框線條的顯示異常。</li>
+        <li>由於上述修正，將最低支援系統版本調整為 Windows Vista。</li>
+        <li>匯入字型設定時自動依據目前的介面 DPI 調整字型大小。</li>
+        <li>修正變更標題列字型大小時導致標題列過高的問題。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2022/09/26 版本 3.1.0</h2>
+    <h2>2022/09/26 版本 3.1.0.1</h2>
+    <ul>
+        <li>使用 Visual C++ 2008 進行建置以避免防毒軟體誤判。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2022/02/13 版本 3.0.0</h2>
+    <h2>2022/09/21 版本 3.1.0</h2>
+    <ul>
+        <li>在 Windows 11 2022 Update(22H2) 中，為避免標題列透明化時發生問題，強制將標題列字型固定為系統預設字型。</li>
+        <li>因上述原因，在 Windows 11 22H2 中暫時停用標題列字型變更功能。</li>
+        <li>修正 Windows 11 2022 Update 的系統版本號顯示。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2021/01/10 版本 2.41</h2>
+    <h2>2022/06/26 版本 3.0.0.1</h2>
+    <ul>
+        <li>加入由 Luke Luo 提供的簡體中文翻譯及字型顯示設定。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2020/07/26 版本 2.40.2</h2>
-<h2>2020/06/28 版本 2.40.1</h2>
-<h2>2020/05/31 版本 2.40</h2>
-<ul>
-<li>新增套用按鈕。</li>
-<li>已對控制項目分組。</li>
-<li>修正了指定設定檔時無法使用預設路徑的問題。</li>
-</ul>
+    <h2>2022/02/13 版本 3.0.0</h2>
+    <ul>
+        <li>設定檔中的字型大小改以 pt 為單位。<br>
+        注意：第 2 版與第 3 版的字型設定檔無法通用。</li>
+        <li>語言資源檔案改採 UTF-8 編碼。</li>
+        <li>調整各按鈕文字使其更容易理解。</li>
+    </ul>
 </div>
 
 <hr>
 
 <div class="chapter">
-<h2>2020/01/13 版本 2.36</h2>
-<ul>
-<li>設定全部字型後自動退出應用程式。</li>
-<li>添加巴西葡萄牙文翻譯。</li>
-<li>添加繁體中文翻譯。</li>
-<li>包含在版本 2.35 忘記加入的簡體中文翻譯。</li>
-</ul>
+    <h2>2021/11/28 版本 2.42（僅於 GitHub 發布）</h2>
+    <ul>
+        <li>加入 Windows 11 預設系統字型支援。</li>
+        <li>支援 Windows 11 版本號顯示。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2018/04/28 版本 2.35</h2>
-<ul>
-<li>現在程式顯示語言由系統顯示語言決定，而不是系統地區。</li>
-<li>字型大小比先前版本更大了。</li>
-<li>感謝deVbug的協作，添加了?文翻譯。</li>
-<li>添加了韓文字型名稱替代（僅限韓文。）</li>
-<li>感謝 kingofotaku 的協作幫助改進簡體中文翻譯。</li>
-</ul>
+    <h2>2021/01/10 版本 2.41</h2>
+    <ul>
+        <li>支援讀取字型下的所有樣式。</li>
+        <li>支援顯示 Windows 10 Version 20H2 版本號。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2017/06/03 版本 2.34</h2>
-<ul>
-<li>現在主視窗會在啟動時顯示在滑鼠游標所在的顯示器中央。</li>
-<li>字型選取對話方塊現在會顯示在主視窗的上方。</li>
-<li>說明檔案現在會顯示在滑鼠游標所在的顯示器中央。</li>
-<li>修正了簡體中文說明檔案的字型問題。</li>
-</ul>
+    <h2>2020/07/26 版本 2.40.2</h2>
+    <h2>2020/06/28 版本 2.40.1</h2>
+    <h2>2020/05/31 版本 2.40</h2>
+    <ul>
+        <li>新增「套用」按鈕，按下後可套用設定且不關閉程式。</li>
+        <li>主介面分為「全部字型設定」與「個別字型設定」兩組。</li>
+        <li>修正在特定情況下無法讀取目前目錄設定檔的問題。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2017/05/14 版本 2.33</h2>
-<ul>
-<li>在 Windows10 上添加了詳細版本資訊。</li>
-<li>預設選單現可用於英文版 Windows。</li>
-<li>預設字型字集項目已經添加到語言檔案。</li>
-<li>可以透過 Windows 地區設定來偵測語言和說明檔案。</li>
-</ul>
+    <h2>2020/01/13 版本 2.36</h2>
+    <ul>
+        <li>點選設定全部字型後自動結束程式。</li>
+        <li>新增葡萄牙語（巴西）翻譯。</li>
+        <li>新增繁體中文翻譯。</li>
+        <li>包含 2.35 中遺漏的簡體中文翻譯。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/10/10 版本 2.32</h2>
-<ul>
-<li>添加了簡體中文說明檔案。感謝立花 月下。</li>
-</li>
-<li>預設選單現在可以在簡體中文 Windows 下啟動了。</li>
-</li>
-<li>為了日後加入其他語言，原始程式檔的資料夾配置已經變更。</li>
-</li>
-</li>
-</ul>
+    <h2>2018/04/28 版本 2.35</h2>
+    <ul>
+        <li>當 Windows 顯示語言與地區設定不同時，優先以顯示語言決定軟體介面語言。</li>
+        <li>加大軟體各處的字型大小。</li>
+        <li>新增韓文翻譯（感謝 deVbug 協助）。</li>
+        <li>支援韓文字型名稱替代。</li>
+        <li>改進簡體中文翻譯（感謝 kingofotaku 協助）。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/09/19 版本 2.31</h2>
-<ul>
-<li>添加了簡體中文的訊息。感謝立花 月下。<br>
-</li>
-<li>說明檔案已變更為 HTML 格式。<br>
-</li>
-<li>添加了翻譯者參與名單。<br>
-</li>
-</li>
-</ul>
+    <h2>2017/06/03 版本 2.34</h2>
+    <ul>
+        <li>主視窗啟動時置中顯示於螢幕。</li>
+        <li>字型選取對話方塊顯示於主視窗上方。</li>
+        <li>修正說明文件中的字型問題。</li>
+    </ul>
 </div>
+
 <hr>
 
 <div class="chapter">
-<h2>2016/08/19 版本 2.30</h2>
-<ul>
-<li>預覽多語言版本。
-</li>
-</ul>
+    <h2>2017/05/14 版本 2.33</h2>
+    <ul>
+        <li>在 Windows 10 上可顯示詳細版本資訊。</li>
+        <li>重設系統預設字型功能支援英文版。</li>
+        <li>語言檔案中加入預設字型與字元集。</li>
+        <li>支援依據系統語言自動選擇對應語言與說明文件。</li>
+    </ul>
 </div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2016/10/10 版本 2.32</h2>
+    <ul>
+        <li>新增簡體中文說明文件（感謝 立花 月下 協助）。</li>
+        <li>重設系統預設字型功能支援簡體中文。</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2016/09/19 版本 2.31</h2>
+    <ul>
+        <li>新增簡體中文介面翻譯。</li>
+        <li>說明文件改為 HTML 格式。</li>
+        <li>版本資訊中加入翻譯者名單。</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2016/08/19 版本 2.30</h2>
+    <ul>
+        <li>在非日文系統上執行時可根據系統語言切換介面語言。本版本新增了對日文、簡體中文（中國）及其他語言的切換支援。<br>
+        （因作者當時不熟悉中文，故本版本在簡體中文 Windows 上暫以英文顯示作為過渡。）
+        </li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2016/06/09 版本 2.20</h2>
+    <ul>
+        <li>支援透過命令列讀取指定的字型設定檔，並支援直接將系統字型套用為命令列指定設定檔中的內容。</li>
+    </ul>
+</div>
+
+<hr>
+
+<div class="chapter">
+    <h2>2016/02/23 版本 2.17</h2>
+    <ul>
+        <li>所選字型的字型名稱與大小將直接以該字型本身的字形樣式進行預覽顯示。<br>
+        （不過單看字型名稱的話，Meiryo UI 看起來還挺像個正常的字型，倒成了唯一的難點。）
+        </li>
+    </ul>
+</div>
+
 <hr>
 
 <div class="chapter">
 <p>
-要了解更早版本的變更，請參閱日文版的說明檔案。
+更早期的版本歷程記錄請參閱日文版說明文件。
 </p>
 </div>
 

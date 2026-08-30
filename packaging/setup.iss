@@ -117,6 +117,26 @@ japanese.CopyrightFontSize=9
 japanese.RightToLeft=no
 
 ChineseSimplified.ThisAppName=No!! Meiryo UI
-brazilian.ThisAppName=No!! Meiryo UI
+ChineseSimplified.DialogFontName=Microsoft YaHei UI
+ChineseSimplified.DialogFontSize=9
+ChineseSimplified.WelcomeFontName=Microsoft YaHei UI
+ChineseSimplified.WelcomeFontSize=12
+ChineseSimplified.TitleFontName=Microsoft YaHei UI
+ChineseSimplified.TitleFontSize=28
+ChineseSimplified.CopyrightFontName=Microsoft YaHei UI
+ChineseSimplified.CopyrightFontSize=9
+ChineseSimplified.RightToLeft=no
+
 ChineseTraditional.ThisAppName=No!! Meiryo UI
+ChineseTraditional.DialogFontName=Microsoft JhengHei UI
+ChineseTraditional.DialogFontSize=9
+ChineseTraditional.WelcomeFontName=Microsoft JhengHei UI
+ChineseTraditional.WelcomeFontSize=12
+ChineseTraditional.TitleFontName=Microsoft JhengHei UI
+ChineseTraditional.TitleFontSize=28
+ChineseTraditional.CopyrightFontName=Microsoft JhengHei UI
+ChineseTraditional.CopyrightFontSize=9
+ChineseTraditional.RightToLeft=no
+
+brazilian.ThisAppName=No!! Meiryo UI
 korean.ThisAppName=No!! Meiryo UI

@@ -1,11 +1,11 @@
-﻿[English](README.md) | 简体中文 | [日本語](README_JA.md)
+[English](README.md) | 简体中文 | [日本語](README_JA.md)
 
 ---
 # No!! MeiryoUI 
 
-No!! MeiryoUI 重新启用了自定义 Windows 用户界面字体的功能，该功能自 Windows 8.1 以来已被删除。
+No!! MeiryoUI 重新启用了自定义 Windows 用户界面字体的功能，该功能自 Windows 8.1 起已被微软移除。
 
-No!! MeiryoUI 在 Windows 11 22H2 上有一些局限性，
+No!! MeiryoUI 在 Windows 11 22H2 及更高版本上存在部分功能局限性。
 
 如果有任何想法或问题，请在 [discussions](https://github.com/Tatsu-syo/noMeiryoUI/discussions) 寻求支持。
 
