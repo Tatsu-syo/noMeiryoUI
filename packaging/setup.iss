@@ -69,12 +69,27 @@ Source: "installable\zh-TW.lng"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{group}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{commondesktop}\{cm:ThisAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{code:GetLaunchDescription}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+function GetLaunchDescription(Param: String): String;
+var
+  AppName: String;
+begin
+  // Get Application name
+  AppName := CustomMessage('ThisAppName');
+  
+  // Suppress underline
+  StringChangeEx(AppName, '&', '&&', True);
+  
+  // Embed localized application name
+  Result := FmtMessage(CustomMessage('LaunchProgram'), [AppName]);
+end;
 
 [CustomMessages]
 english.ThisAppName=No!! Meiryo UI
