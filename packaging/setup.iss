@@ -44,6 +44,7 @@ LicenseFile="..\LICENSE"
 Compression=lzma
 SolidCompression=yes
 ShowLanguageDialog=no
+UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -78,12 +79,12 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [CustomMessages]
 english.ThisAppName=No!! Meiryo UI
 english.DialogFontName=Segoe UI
-english.DialogFontSize=8
-english.WelcomeFontName=Verdana
+english.DialogFontSize=9
+english.WelcomeFontName=Segoe UI
 english.WelcomeFontSize=12
-english.TitleFontName=Arial
+english.TitleFontName=Segoe UI
 english.TitleFontSize=29
-english.CopyrightFontName=Arial
+english.CopyrightFontName=Segoe UI
 english.CopyrightFontSize=8
 english.RightToLeft=no
 
@@ -121,4 +122,23 @@ ChineseTraditional.CopyrightFontSize=9
 ChineseTraditional.RightToLeft=no
 
 brazilian.ThisAppName=No!! Meiryo UI
+brazilian.DialogFontName=Segoe UI
+brazilian.DialogFontSize=9
+brazilian.WelcomeFontName=Segoe UI
+brazilian.WelcomeFontSize=12
+brazilian.TitleFontName=Segoe UI
+brazilian.TitleFontSize=29
+brazilian.CopyrightFontName=Segoe UI
+brazilian.CopyrightFontSize=8
+brazilian.RightToLeft=no
+
 korean.ThisAppName=No!! Meiryo UI
+korean.DialogFontName=Microsoft JhengHei UI
+korean.DialogFontSize=9
+korean.WelcomeFontName=Microsoft JhengHei UI
+korean.WelcomeFontSize=12
+korean.TitleFontName=Microsoft JhengHei UI
+korean.TitleFontSize=28
+korean.CopyrightFontName=Microsoft JhengHei UI
+korean.CopyrightFontSize=9
+korean.RightToLeft=no
