@@ -4,7 +4,6 @@ REM Usage:
 REM Copy installable version of noMeiryoUI.exe into files directory.
 REM run batchfile
 
-nmake clean
 del /S /Q installable
 mkdir installable
 del /Q .\Output\noMeiryoUIsetup.exe

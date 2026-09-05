@@ -4,7 +4,6 @@ REM Usage:
 REM Copy portable version of noMeiryoUI.exe into files directory.
 REM run batchfile
 
-nmake clean
 del /S /Q portable
 mkdir portable
 del /Q .\Output\noMeiryoUI.zip
