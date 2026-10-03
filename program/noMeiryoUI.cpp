@@ -1277,17 +1277,17 @@ void NoMeiryoUI::selectFont(enum fontType type)
 
 		result = selector->showModal();
 		if (result != IDOK){
-			delete []selector;
+			delete selector;
 			return;
 		}
 		logfont = selector->getSelectedFont();
 		if (logfont.lfFaceName[0] == _T('\0')) {
-			delete []selector;
+			delete selector;
 			return;
 		}
 		points = selector->getPoint();
 
-		delete []selector;
+		delete selector;
 	} catch (...) {
 		MessageBox(this->hWnd,
 			_T("Internal error in font selection dialog."),
@@ -1851,7 +1851,7 @@ BOOL NoMeiryoUI::saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font, double
 		return FALSE;
 	}
 
-	_stprintf(buf, _T("%f"), 0);
+	_stprintf(buf, _T("%f"), 0.0);
 	result = WritePrivateProfileString(section,
 		_T("Width"),
 		buf,
@@ -2228,16 +2228,16 @@ void NoMeiryoUI::OnChoiceAppFont()
 
 		result = selector->showModal();
 		if (result != IDOK) {
-			delete[]selector;
+			delete selector;
 			return;
 		}
 		logfont = selector->getSelectedFont();
 		if (logfont.lfFaceName[0] == _T('\0')) {
-			delete[]selector;
+			delete selector;
 			return;
 		}
 
-		delete[]selector;
+		delete selector;
 	}
 	catch (...) {
 		MessageBox(this->hWnd,
@@ -2986,4 +2986,4 @@ void NoMeiryoUI::handleMultipleRun(void)
 		// Already running
 		ExitProcess(0);
 	}
-}
+}
