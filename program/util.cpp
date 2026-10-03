@@ -965,21 +965,15 @@ void deleteArguments(std::vector<tstring *> *arguments)
  */
 void getApplicationSettingFolder(tstring& folder)
 {
-	TCHAR* folderStore;
-
-	folderStore = new TCHAR[MAX_PATH];
+	TCHAR folderStore[MAX_PATH];
 
 	HRESULT result = SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, folderStore);
 
 	if (FAILED(result)) {
-		folderStore = _T("");
-
-		delete[]folderStore;
+		folderStore[0] = _T('\0');
 	}
 
 	folder = folderStore;
-
-	delete[]folderStore;
 
 }
 
