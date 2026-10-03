@@ -997,132 +997,67 @@ tstring NoMeiryoUI::getLanguageFallbackForCountry(tstring &settingString)
 }
 
 /**
+ * フォント名とポイント数の表示文字列を作成する。
+ *
+ * @param font 表示するフォント
+ * @param name 作成した表示文字列の格納先
+ */
+void NoMeiryoUI::makeFontDisplayName(LOGFONT *font, tstring &name)
+{
+	TCHAR buf[16];
+	TCHAR dispName[32];
+
+	_tcscpy(dispName, font->lfFaceName);
+	if (runningCountry == Korea) {
+		korea::getKoreanFontName(dispName);
+	}
+	int point = getFontPointInt(font, this->getHwnd());
+	_stprintf(buf, _T(" %3dpt"), point);
+	name = dispName;
+	name += buf;
+}
+
+/**
+ * フォントハンドルを作り直してテキストボックスに設定する。
+ *
+ * @param handle 作り直すフォントハンドル
+ * @param textBox 設定先のテキストボックス
+ * @param font 元になるフォント情報
+ */
+void NoMeiryoUI::refreshFontBox(HFONT &handle, TwrWnd *textBox, LOGFONT *font)
+{
+	if (handle != NULL) {
+		DeleteObject(handle);
+	}
+	handle = createFont(font);
+	textBox->setFont(handle);
+}
+
+/**
  * フォント表示を更新する。
  */
 void NoMeiryoUI::updateDisplay(void)
 {
 	// フォント名、ポイント数表示文字列を作成する。
-	int point;
-	TCHAR buf[16];
-	TCHAR dispName[32];
-
-	allFontName = metricsAll.lfMenuFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, allFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		allFontName = dispName;
-	}
-	point = getFontPointInt(&(metricsAll.lfMenuFont), this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	allFontName = allFontName + buf;
-
-	titleFontName = metrics.lfCaptionFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, titleFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		titleFontName = dispName;
-	}
-	point = getFontPointInt(&(metrics.lfCaptionFont), this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	titleFontName = titleFontName + buf;
-
-	iconFontName = iconFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, iconFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		iconFontName = dispName;
-	}
-	point = getFontPointInt(&iconFont, this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	iconFontName = iconFontName + buf;
-
-	paletteFontName = metrics.lfSmCaptionFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, paletteFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		paletteFontName = dispName;
-	}
-	point = getFontPointInt(&metrics.lfSmCaptionFont, this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	paletteFontName = paletteFontName + buf;
-
-	hintFontName = metrics.lfStatusFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, hintFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		hintFontName = dispName;
-	}
-	point = getFontPointInt(&metrics.lfStatusFont, this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	hintFontName = hintFontName + buf;
-
-	messageFontName = metrics.lfMessageFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, messageFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		messageFontName = dispName;
-	}
-	point = getFontPointInt(&metrics.lfMessageFont, this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	messageFontName = messageFontName + buf;
-
+	makeFontDisplayName(&metricsAll.lfMenuFont, allFontName);
+	makeFontDisplayName(&metrics.lfCaptionFont, titleFontName);
+	makeFontDisplayName(&iconFont, iconFontName);
+	makeFontDisplayName(&metrics.lfSmCaptionFont, paletteFontName);
+	makeFontDisplayName(&metrics.lfStatusFont, hintFontName);
+	makeFontDisplayName(&metrics.lfMessageFont, messageFontName);
 	// メニューと選択項目
-	menuFontName = metrics.lfMenuFont.lfFaceName;
-	if (runningCountry == Korea) {
-		_tcscpy(dispName, menuFontName.c_str());
-		korea::getKoreanFontName(dispName);
-		menuFontName = dispName;
-	}
-	point = getFontPointInt(&metrics.lfMenuFont, this->getHwnd());
-	_stprintf(buf, _T(" %3dpt"), point);
-	menuFontName = menuFontName + buf;
+	makeFontDisplayName(&metrics.lfMenuFont, menuFontName);
 
 	UpdateData(false);
 
-
 	// 選択したフォントをテキストボックスに設定する。
-	if (allFont != NULL) {
-		DeleteObject(allFont);
-	}
-	allFont = createFont(&metricsAll.lfMenuFont);
-	allFontTextBox->setFont(allFont);
-
-	if (titleFont != NULL) {
-		DeleteObject(titleFont);
-	}
-	titleFont = createFont(&metrics.lfCaptionFont);
-	titleFontTextBox->setFont(titleFont);
-
-	if (iconFontHandle != NULL) {
-		DeleteObject(iconFontHandle);
-	}
-	iconFontHandle = createFont(&iconFont);
-	iconFontTextBox->setFont(iconFontHandle);
-
-	if (paletteFont != NULL) {
-		DeleteObject(paletteFont);
-	}
-	paletteFont = createFont(&metrics.lfSmCaptionFont);
-	paletteFontTextBox->setFont(paletteFont);
-
-	if (hintFont != NULL) {
-		DeleteObject(hintFont);
-	}
-	hintFont = createFont(&metrics.lfStatusFont);
-	hintFontTextBox->setFont(hintFont);
-
-	if (messageFont != NULL) {
-		DeleteObject(messageFont);
-	}
-	messageFont = createFont(&metrics.lfMessageFont);
-	messageFontTextBox->setFont(messageFont);
-
-	if (menuFont != NULL) {
-		DeleteObject(menuFont);
-	}
-	menuFont = createFont(&metrics.lfMenuFont);
-	menuFontTextBox->setFont(menuFont);
-
+	refreshFontBox(allFont, allFontTextBox, &metricsAll.lfMenuFont);
+	refreshFontBox(titleFont, titleFontTextBox, &metrics.lfCaptionFont);
+	refreshFontBox(iconFontHandle, iconFontTextBox, &iconFont);
+	refreshFontBox(paletteFont, paletteFontTextBox, &metrics.lfSmCaptionFont);
+	refreshFontBox(hintFont, hintFontTextBox, &metrics.lfStatusFont);
+	refreshFontBox(messageFont, messageFontTextBox, &metrics.lfMessageFont);
+	refreshFontBox(menuFont, menuFontTextBox, &metrics.lfMenuFont);
 }
 
 /**

@@ -126,6 +126,8 @@ private:
 	BOOL saveFont(TCHAR *filename, TCHAR *section, LOGFONT *font, double point);
 	void selectFont(enum fontType type);
 	void updateDisplay(void);
+	void makeFontDisplayName(LOGFONT *font, tstring &name);
+	void refreshFontBox(HFONT &handle, TwrWnd *textBox, LOGFONT *font);
 
 	INT_PTR OnBnClickedOk();
 	void OnBnClickedAll();
