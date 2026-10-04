@@ -2986,4 +2986,4 @@ void NoMeiryoUI::handleMultipleRun(void)
 		// Already running
 		ExitProcess(0);
 	}
-}
+}
