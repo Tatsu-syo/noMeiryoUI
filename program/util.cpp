@@ -510,7 +510,7 @@ int readFontResource11(TCHAR* file)
  * @param parentHWnd 親ウインドウハンドル
  * @param myHWnd 中央寄せする要素のウインドウハンドル
  */
-void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
+void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd, UINT flags)
 {
 	int parentWidth, parentHeight;
 	int myWidth, myHeight;
@@ -540,7 +540,7 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd)
 		newTop = parentRect.top + MulDiv((parentHeight - myHeight), 45, 100);
 	}
 
-	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, SWP_SHOWWINDOW);
+	SetWindowPos(myHWnd, parentHWnd, newLeft, newTop, myWidth, myHeight, flags);
 
 }
 

@@ -89,7 +89,8 @@ int readFontResource8(TCHAR *file);
 int readFontResource10(TCHAR *file);
 int readFontResource11(TCHAR* file);
 void setLocationInternalCode(TCHAR langWork[85]);
-void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd);
+// Omit SWP_SHOWWINDOW when positioning a dialog before its first display.
+void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd, UINT flags = SWP_SHOWWINDOW);
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen);
 BOOL isWin11OrLater(DWORD& buildNumber);
 DWORD GetVersionForApp(DWORD &majorVersion, DWORD &minorVersion, DWORD& buildNumber);

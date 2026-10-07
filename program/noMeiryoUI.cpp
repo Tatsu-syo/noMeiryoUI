@@ -420,6 +420,65 @@ INT_PTR NoMeiryoUI::OnInitDialog()
 			getActualFont();
 		}
 	}
+
+	// Initialize the UI before DialogBox makes the dialog visible.
+	// アプリケーションアイコンの設定
+	HICON hIcon;
+
+	hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
+	SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+
+	appMenu = new TwrMenu(this->hWnd);
+
+	if (!use7Compat) {
+		// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
+		appMenu->setEnabled(IDM_COMPAT7, false);
+	}
+	appMenu->CheckMenuItem(IDM_ANOTHER, true);
+
+	// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
+	// ある場合のみプリセットを有効にする。
+	appMenu->setEnabled(IDM_SET_8, has8Preset);
+	appMenu->setEnabled(IDM_SET_10, has10Preset);
+	appMenu->setEnabled(IDM_SET_11, has11Preset);
+
+	// 複数起動設定
+	if (!multiRun) {
+		appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
+	}
+
+	// 先発のOSではフォントがない場合があるので
+	// 後発OS用のプリセットを使用不可とする。
+	if (majorVersion < 10) {
+		appMenu->setEnabled(IDM_SET_10, false);
+	}
+	if (majorVersion < 11) {
+		appMenu->setEnabled(IDM_SET_11, false);
+	}
+
+	// UI文字列をリソースに合わせて変更する。
+	applyResource();
+
+	if (!setOnStart) {
+		// メインダイアログのバージョン表記設定
+		TCHAR buf[64];
+		TCHAR verString[32];
+		const TCHAR *appName;
+		LoadString(hInst, IDS_VERSION, verString, 32);
+		appName = langResource[1].c_str();
+		_stprintf(buf, verString, appName);
+		setChildText(IDC_STATIC_APP_TITLE, buf);
+
+		// フォント名表示を更新する。
+		updateDisplay();
+
+		// Finish sizing and positioning while the dialog is still hidden.
+		adjustWindowSize();
+		EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
+		adjustCenter(myMonitorLect, HWND_TOP, this->hWnd,
+			SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+	}
+
 	return (INT_PTR)FALSE;
 }
 
@@ -435,43 +494,6 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 	DialogAppliBase::OnWindowShown(wParam, lParam);
 
 	if (firstShow) {
-
-		// アプリケーションアイコンの設定
-		HICON hIcon;
-
-		hIcon = (HICON)LoadImage(hInst, MAKEINTRESOURCE(IDC_MYICON), IMAGE_ICON, 16, 16, 0);
-		SendMessage(this->hWnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
-
-		appMenu = new TwrMenu(this->hWnd);
-
-		if (!use7Compat) {
-			// Windows 7以前の場合はフォントサイズの取り扱いモードを変更できなくする。
-			appMenu->setEnabled(IDM_COMPAT7, false);
-		}
-		appMenu->CheckMenuItem(IDM_ANOTHER, true);
-
-		// 海外版は初期設定のフォントが異なるのでプリセットメニュー情報が
-		// ある場合のみプリセットを有効にする。
-		appMenu->setEnabled(IDM_SET_8, has8Preset);
-		appMenu->setEnabled(IDM_SET_10, has10Preset);
-		appMenu->setEnabled(IDM_SET_11, has11Preset);
-
-		// 複数起動設定
-		if (!multiRun) {
-			appMenu->CheckMenuItem(IDM_NO_MULTI_RUN, true);
-		}
-
-		// 先発のOSではフォントがない場合があるので
-		// 後発OS用のプリセットを使用不可とする。
-		if (majorVersion < 10) {
-			appMenu->setEnabled(IDM_SET_10, false);
-		}
-		if (majorVersion < 11) {
-			appMenu->setEnabled(IDM_SET_11, false);
-		}
-
-		// UI文字列をリソースに合わせて変更する。
-		applyResource();
 
 		if (setOnStart) {
 
@@ -494,24 +516,6 @@ INT_PTR NoMeiryoUI::OnWindowShown(WPARAM wParam, LPARAM lParam)
 
 			return (INT_PTR)TRUE;
 		}
-
-		// メインダイアログのバージョン表記設定
-		TCHAR buf[64];
-		TCHAR verString[32];
-		const TCHAR *appName;
-		LoadString(hInst, IDS_VERSION, verString, 32);
-		appName = langResource[1].c_str();
-		_stprintf(buf, verString, appName);
-		setChildText(IDC_STATIC_APP_TITLE, buf);
-
-		// フォント名表示を更新する。
-		updateDisplay();
-
-		EnumDisplayMonitors(NULL, NULL, MonitorNearMouseCallback, 0);
-
-		adjustCenter(myMonitorLect, HWND_TOP, this->hWnd);
-
-		adjustWindowSize();
 
 		firstShow = false;
 	}
@@ -629,10 +633,6 @@ int NoMeiryoUI::OnWindowShow()
  */
 void NoMeiryoUI::adjustWindowSize(void)
 {
-	RECT r;
-
-	GetClientRect(getHwnd(), &r);
-
 	NONCLIENTMETRICS nowMetrics;
 
 	nowMetrics.cbSize = sizeof(NONCLIENTMETRICS);
@@ -644,6 +644,7 @@ void NoMeiryoUI::adjustWindowSize(void)
 	HDC dc = GetDC(getHwnd());
 
 	int logPixelY = GetDeviceCaps(dc, LOGPIXELSY);
+	ReleaseDC(getHwnd(), dc);
 	double scale = (double)logPixelY / 96;
 
 	int width;
@@ -655,18 +656,14 @@ void NoMeiryoUI::adjustWindowSize(void)
 		nowMetrics.iMenuHeight +
 		nowMetrics.iBorderWidth * 2;
 
-	RECT nowRect;
-	GetWindowRect(getHwnd(), &nowRect);
-
-	RECT newRect;
 	SetWindowPos(
 		getHwnd(),
-		HWND_TOP,
-		nowRect.left,
-		nowRect.top,
+		NULL,
+		0,
+		0,
 		width,
 		height,
-		SWP_SHOWWINDOW);
+		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 /**
