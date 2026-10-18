@@ -45,9 +45,6 @@
     <ClCompile Include="TWR\DialogAppliBase.cpp">
       <Filter>ソース ファイル\TWR</Filter>
     </ClCompile>
-    <ClCompile Include="TWR\ModelessDialog.cpp">
-      <Filter>ソース ファイル\TWR</Filter>
-    </ClCompile>
     <ClCompile Include="TWR\NCFileDialog.cpp">
       <Filter>ソース ファイル\TWR</Filter>
     </ClCompile>
@@ -108,9 +105,6 @@
       <Filter>ヘッダー ファイル\TWR</Filter>
     </ClInclude>
     <ClInclude Include="TWR\DialogAppliBase.h">
-      <Filter>ヘッダー ファイル\TWR</Filter>
-    </ClInclude>
-    <ClInclude Include="TWR\ModelessDialog.h">
       <Filter>ヘッダー ファイル\TWR</Filter>
     </ClInclude>
     <ClInclude Include="TWR\NCFileDialog.h">
