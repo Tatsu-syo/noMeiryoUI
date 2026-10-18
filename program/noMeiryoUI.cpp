@@ -2155,6 +2155,12 @@ void NoMeiryoUI::OnSet10(void)
  */
 void NoMeiryoUI::set11TitlePreset(NONCLIENTMETRICS *metrics)
 {
+	// If language specific font setting not exists, skip restore title bar settings
+	// on Windows 11 22H2 and later.
+	if (fontFaces11[0] == _T("")) {
+		return;
+	}
+
 	// DPIを取得する。
 	int dpiY = getDPI();
 
