@@ -144,7 +144,15 @@ tstring TwrCombobox::getSelectedText(void)
 		return ret;
 	}
 
+	int count = getCount();
+	if (item >= count) {
+		return ret;
+	}
+
 	len = SendMessage(hWnd, CB_GETLBTEXTLEN, item, 0);
+	if (len == CB_ERR) {
+		return ret;
+	}
 	try {
 		buf = new TCHAR[len + 1];
 		SendMessage(hWnd, CB_GETLBTEXT, item, (LPARAM)buf);
@@ -170,6 +178,9 @@ tstring TwrCombobox::getItem(int index)
 	LRESULT len;
 
 	len = SendMessage(hWnd, CB_GETLBTEXTLEN, index, 0);
+	if (len == CB_ERR) {
+		return ret;
+	}
 	try {
 		buf = new TCHAR[len + 1];
 		SendMessage(hWnd, CB_GETLBTEXT, index, (LPARAM)buf);

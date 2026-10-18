@@ -6,11 +6,10 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 
 #include "TwrCore.h"
 #include "BaseDialog.h"
+#if 0
+// My internal framework function uncompleted, not use
 #include "ModelessDialog.h"
-
-BaseDialog *BaseDialog::modalCallback;
-static BaseDialog *modelessCallback[10];
-static int modelessCallbacks = 0;
+#endif
 
 // カスタムメッセージ定義
 #define WM_DIALOG_SHOWN (WM_USER + 1)
@@ -22,9 +21,9 @@ static int modelessCallbacks = 0;
  */
 void initModelessCallback(void)
 {
-	for (int i = 0; i < 10; i++) {
-		modelessCallback[i] = NULL;
-	}
+	//for (int i = 0; i < 10; i++) {
+	//	modelessCallback[i] = NULL;
+	//}
 }
 
 /**
@@ -32,23 +31,37 @@ void initModelessCallback(void)
  */
 BaseDialog::BaseDialog() : TwrWnd()
 {
+	modelessCallback = new BaseDialog*[10];
+	for (int i = 0; i < 10; i++) {
+		modelessCallback[i] = NULL;
+	}
+	modelessCallbacks = 0;
+
 	parentWindow = NULL;
-	// dialogResource = resource;
 	isModeless = false;
+	dialogResource = 0;
+	ddx_buf[0] = _T('\0');
 }
 
 
 /**
- * コンストラクタ
+ * コンストラクタ(with dialog resource)
  *
  * @param parent 親ウインドウハンドル
  * @param resource ダイアログリソース番号
  */
 BaseDialog::BaseDialog(HWND parent, int resource) : TwrWnd()
 {
+	modelessCallback = new BaseDialog * [10];
+	for (int i = 0; i < 10; i++) {
+		modelessCallback[i] = NULL;
+	}
+	modelessCallbacks = 0;
+
 	parentWindow = parent;
 	dialogResource = resource;
 	isModeless = false;
+	ddx_buf[0] = _T('\0');
 }
 
 /**
@@ -57,7 +70,10 @@ BaseDialog::BaseDialog(HWND parent, int resource) : TwrWnd()
 BaseDialog::~BaseDialog()
 {
 	if (isModeless) {
+#if 0
+		// My internal framework function uncompleted, not use
 		delModelessDialog(hWnd);
+#endif
 
 		for (int i = 0; i < 10; i++) {
 			if (modelessCallback[i] == this) {
@@ -66,6 +82,7 @@ BaseDialog::~BaseDialog()
 				break;
 			}
 		}
+		delete[] modelessCallback;
 		if (hWnd != NULL) {
 			if (IsWindow(hWnd)) {
 				DestroyWindow(hWnd);
@@ -81,14 +98,16 @@ BaseDialog::~BaseDialog()
  */
 INT_PTR BaseDialog::showModal()
 {
-	modalCallback = this;
-	return ::DialogBox(
+	return ::DialogBoxParam(
 		hInst,
 		MAKEINTRESOURCE(dialogResource),
 		parentWindow,
-		&BaseDialog::modalDialogProc);
+		&BaseDialog::modalDialogProc,
+		reinterpret_cast<LPARAM>(this));
 }
 
+#if 0
+// My internal framework function uncompleted, not use
 /**
  * モードレスダイアログを表示する。
  *
@@ -129,6 +148,7 @@ HWND BaseDialog::showModeless()
 
 	return hWnd;
 }
+#endif
 
 /**
  * モーダルダイアログのダイアログプローシジャ
@@ -141,9 +161,26 @@ HWND BaseDialog::showModeless()
  */
 INT_PTR CALLBACK BaseDialog::modalDialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	return modalCallback->dialogProc(hDlg, message, wParam, lParam);
+	BaseDialog* self;
+
+	if (message == WM_INITDIALOG) {
+		self = reinterpret_cast<BaseDialog*>(lParam);
+		::SetWindowLongPtr(hDlg, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(self));
+	}
+	else {
+		self = reinterpret_cast<BaseDialog*>(::GetWindowLongPtr(hDlg, GWLP_USERDATA));
+	}
+
+	if (self == NULL) {
+		// if application instance didn't set return unprocessed
+		return (INT_PTR)FALSE;
+	}
+
+	return self->dialogProc(hDlg, message, wParam, lParam);
 }
 
+#if 0
+// My internal framework function uncompleted, not use
 /**
  * モードレスダイアログのダイアログプローシジャ
  *
@@ -165,6 +202,7 @@ INT_PTR CALLBACK BaseDialog::modelessDialogProc(HWND hDlg, UINT message, WPARAM 
 	}
 	return 0;
 }
+#endif
 
 /**
  * ダイアログのダイアログプローシジャ

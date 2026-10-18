@@ -171,9 +171,15 @@ double getFontPoint(LOGFONT *font, HWND hWnd)
 {
 	// フォントを作成する。
 	HFONT hFont = CreateFontIndirect(font);
+	if (hFont == NULL) {
+		return 0;
+	}
 	// 自身のウインドウハンドルから作成したデバイスコンテキストに
 	// フォントを設定する。
 	HDC dc = GetDC(hWnd);
+	if (dc == NULL) {
+		return 0;
+	}
 	SelectFont(dc, hFont);
 
 	// デバイスコンテキストからTEXTMETRICを取得する。
@@ -556,7 +562,9 @@ void adjustCenter(RECT parentRect, HWND parentHWnd, HWND myHWnd, UINT flags)
  */
 void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCHAR* newWord, int bufLen)
 {
+	// Source side pointer
 	int p = 0;
+	// Destination side pointer
 	int newP = 0;
 	int oldLen;
 	int newLen;
@@ -567,13 +575,13 @@ void strreplace(TCHAR* buf, const TCHAR* source, const TCHAR* oldWord, const TCH
 
 	while (*(source + p) != _T('\0')) {
 		if (_tcsncmp(source + p, oldWord, oldLen) == 0) {
-			if ((newP + newLen) < bufLen) {
+			if ((newP + newLen) < (bufLen - 1)) {
 				_tcscpy(buf + newP, newWord);
 				newP += newLen;
 			} else {
-				copyLen = bufLen - newP;
+				copyLen = bufLen - newP - 1;
 				_tcsncpy(buf + newP, newWord, copyLen - 1);
-				newP += (copyLen - 1);
+				buf[bufLen - 1] = _T('\0');
 			}
 			p += oldLen;
 		} else {

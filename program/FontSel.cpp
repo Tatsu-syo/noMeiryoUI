@@ -166,6 +166,8 @@ int getCharsetFont(LOGFONT *lf)
 		0
 	);
 
+	ReleaseDC(GetDesktopWindow(), hDC);
+
 	return 0;
 }
 
@@ -252,6 +254,8 @@ int getFont()
 	(FONTENUMPROC)EnumFontFamExProc,
 	(LPARAM)0,
 	0);
+
+	ReleaseDC(GetDesktopWindow(), hDC);
 
 	std::sort(fontList.begin(), fontList.end(), std::greater<FontInfo>());
 
@@ -622,7 +626,13 @@ void FontSel::setStyle()
 {
 	int selected = m_fontNameList->getSelectedIndex();
 	int charset = m_ChersetList->getSelectedIndex();
-	int styleCount = charsetList[charset].fonts.size();
+	int styleCount = 0;
+
+	if (charset < 0) {
+		return;
+	}
+
+	styleCount = charsetList[charset].fonts.size();
 
 	m_styleList->clear();
 	for (int i = 0; i < styleCount; i++) {
@@ -657,8 +667,8 @@ INT_PTR FontSel::onOK(void)
 		return (INT_PTR)0;
 	}
 
-	if (selectedStyle < 0) {
-		message = langResource[66].c_str();
+	if (selectedCharset < 0 || selectedCharset >= charsetList.size()) {
+		message = langResource[68].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),
@@ -666,8 +676,8 @@ INT_PTR FontSel::onOK(void)
 		return (INT_PTR)0;
 	}
 
-	if (selectedCharset < 0) {
-		message = langResource[68].c_str();
+	if (selectedStyle < 0 || selectedStyle >= charsetList[selectedCharset].fonts.size()) {
+		message = langResource[66].c_str();
 		MessageBox(this->hWnd,
 			message.c_str(),
 			error.c_str(),

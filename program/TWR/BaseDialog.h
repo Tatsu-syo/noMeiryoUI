@@ -12,8 +12,9 @@ private:
 	HWND parentWindow;
 	int dialogResource;
 	bool isModeless;
+	BaseDialog** modelessCallback;
+	int modelessCallbacks;
 protected:
-	static BaseDialog *modalCallback;
 	virtual INT_PTR OnInitDialog();
 	virtual INT_PTR OnWindowShown(WPARAM wParam, LPARAM lParam);
 	virtual INT_PTR OnWindowCreated(WPARAM wParam, LPARAM lParam);
@@ -38,6 +39,18 @@ public:
 	{
 		return parentWindow;
 	}
+	
+	int setDialogResource(int resource)
+	{
+		dialogResource = resource;
+		return dialogResource;
+	}
+
+	int getDialogResource(void)
+	{
+		return dialogResource;
+	}
+
 	TwrWnd *GetDlgItem(int item);
 	HWND GetDlgItemRaw(int item);
 	void setChildText(int id, const TCHAR *message);

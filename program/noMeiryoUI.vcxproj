@@ -70,21 +70,25 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_portable|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_portable|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -113,6 +117,9 @@
       <MinimumRequiredVersion>
       </MinimumRequiredVersion>
     </Link>
+    <PostBuildEvent>
+      <Command>mt.exe -manifest "$(ProjectDir)noMeiryoUI.exe.manifest" -outputresource:"$(TargetPath)";#1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_portable|Win32'">
     <ClCompile>
@@ -141,6 +148,9 @@
       <MinimumRequiredVersion>
       </MinimumRequiredVersion>
     </Link>
+    <PostBuildEvent>
+      <Command>mt.exe -manifest "$(ProjectDir)noMeiryoUI.exe.manifest" -outputresource:"$(TargetPath)";#1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -170,6 +180,9 @@
       <MinimumRequiredVersion>
       </MinimumRequiredVersion>
     </Link>
+    <PostBuildEvent>
+      <Command>mt.exe -manifest "$(ProjectDir)noMeiryoUI.exe.manifest" -outputresource:"$(TargetPath)";#1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_portable|Win32'">
     <ClCompile>
@@ -199,6 +212,9 @@
       <MinimumRequiredVersion>
       </MinimumRequiredVersion>
     </Link>
+    <PostBuildEvent>
+      <Command>mt.exe -manifest "$(ProjectDir)noMeiryoUI.exe.manifest" -outputresource:"$(TargetPath)";#1</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="country\default.cpp" />
@@ -216,7 +232,6 @@
     </ClCompile>
     <ClCompile Include="TWR\BaseDialog.cpp" />
     <ClCompile Include="TWR\DialogAppliBase.cpp" />
-    <ClCompile Include="TWR\ModelessDialog.cpp" />
     <ClCompile Include="TWR\NCFileDialog.cpp" />
     <ClCompile Include="TWR\TwrCheckbox.cpp" />
     <ClCompile Include="TWR\TwrCombobox.cpp" />
@@ -239,7 +254,6 @@
     <ClInclude Include="TWR\AppliBase.h" />
     <ClInclude Include="TWR\BaseDialog.h" />
     <ClInclude Include="TWR\DialogAppliBase.h" />
-    <ClInclude Include="TWR\ModelessDialog.h" />
     <ClInclude Include="TWR\NCFileDialog.h" />
     <ClInclude Include="TWR\stdafx.h" />
     <ClInclude Include="TWR\tstring.h" />
