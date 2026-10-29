@@ -1,8 +1,8 @@
 ﻿Meiryo UIも大っきらい!! source file package
 By Tatsuhiko Syoji(Tatsu) 2005,2012-2025
 
-ビルド方法・翻訳方法の詳細は README.md と CONTRIBUTING.md を参照してください。
-(README.md: ビルド、CONTRIBUTING.md: 言語ファイル・ヘルプファイルの翻訳と提出)
+ビルド方法・翻訳方法の詳細は README.md、Wiki、CONTRIBUTING.md を参照してください。
+(README.md: ビルド、Wiki: 翻訳・ビルド詳細、CONTRIBUTING.md: 翻訳・コードの提交流程)
 
 [必要となるプログラム]
 ・Visual Studio 2008/2012/2022以降(VC++)
@@ -44,7 +44,7 @@ localetest.c, localetest.exe : 現在のWindowsのロケール名を表示する
 　(2012版はprogram\bin_2012\Release)に生成されます。
 
 ・翻訳
-言語ファイル(lang)・ヘルプファイル(help)の翻訳方法はCONTRIBUTING.mdを参照してください。
+言語ファイル(lang)・ヘルプファイル(help)の翻訳方法はWiki( https://github.com/Tatsu-syo/noMeiryoUI/wiki/How-to-develop-and-translate )、提出方法はCONTRIBUTING.mdを参照してください。
 
 [ライセンス]
 MITライセンス( http://opensource.org/licenses/mit-license.php )に従います。

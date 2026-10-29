@@ -3,7 +3,7 @@ English | [简体中文](README_CN.md) | [繁體中文](README_TW.md) | [日本�
 ---
 # No!! MeiryoUI
 
-No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) brings back the capability to customize the user interface font on Windows, a feature that was removed since Windows 8.1.
+No!! MeiryoUI ("Meiryo UI mo daikkirai!!" in Japanese) brings back the capability to customize the user interface font on Windows, a feature that was removed since Windows 8.
 
 No!! MeiryoUI has some limitations on Windows 11 22H2 and later.
 
@@ -78,7 +78,7 @@ The portable and installer versions use the Visual Studio 2012 build, because Mi
 ## Translations
 
 Translations of the interface (`lang`) and the help (`help`) are welcome.
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to make and submit them.
+See the [Wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki/How-to-develop-and-translate) for how to translate, and [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit them.
 
 ## License
 

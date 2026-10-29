@@ -5,7 +5,7 @@
 
 Meiryo UIも大っきらい!!(海外名:No!! MeiryoUI)はWindowsの過去バージョンでできたシステムフォントを変更する機能を提供するソフトウェアです。
 
-システムフォントを変更する機能がWindows 8.1で削除されたことから作成しました。
+システムフォントを変更する機能がWindows 8で削除されたことから作成しました。
 
 Windows 11 22H2以降ではMeiryo UIも大っきらい!!の動作に一部制限があります。
 
@@ -80,7 +80,7 @@ Windows 11 22H2以降ではMeiryo UIも大っきらい!!の動作に一部制限
 ## 翻訳
 
 画面(`lang`)とヘルプ(`help`)の翻訳を歓迎します。
-作成方法と提出方法は[CONTRIBUTING.md](CONTRIBUTING.md)(英語)を参照してください。
+作成方法は[Wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki/How-to-develop-and-translate)、提出方法は[CONTRIBUTING.md](CONTRIBUTING.md)(英語)を参照してください。
 
 ## ライセンス
 

@@ -3,7 +3,7 @@
 ---
 # No!! MeiryoUI
 
-No!! MeiryoUI（日文为“Meiryo UI も大っきらい!!”）重新启用了自定义 Windows 用户界面字体的功能，该功能自 Windows 8.1 起已被微软移除。
+No!! MeiryoUI（日文为“Meiryo UI も大っきらい!!”）重新启用了自定义 Windows 用户界面字体的功能，该功能自 Windows 8 起已被微软移除。
 
 No!! MeiryoUI 在 Windows 11 22H2 及更高版本上存在部分功能局限性。
 
@@ -78,7 +78,7 @@ No!! MeiryoUI 在 Windows 11 22H2 及更高版本上存在部分功能局限性�
 ## 翻译
 
 欢迎提供界面（`lang`）和帮助（`help`）的翻译。
-制作与提交方式请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)（英文）。
+制作方法请参阅 [Wiki](https://github.com/Tatsu-syo/noMeiryoUI/wiki/How-to-develop-and-translate)，提交方式请参阅 [CONTRIBUTING.md](CONTRIBUTING.md)（英文）。
 
 ## 许可证
 
