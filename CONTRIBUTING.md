@@ -10,6 +10,10 @@ To avoid contamination and gather translations
 4. On all review process ends and software runs well I release it.
 5. If no translation come, I release software without translation.
 
+## How to translate
+
+For detailed instructions on how to translate language files (`lang`), write and compile help files (`help`), and build or package the application, please refer to the [Wiki: How to develop and translate](https://github.com/Tatsu-syo/noMeiryoUI/wiki/How-to-develop-and-translate).
+
 ## How to include translations
 
 If you modify translations, you must follow this process.
