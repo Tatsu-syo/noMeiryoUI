@@ -2790,13 +2790,13 @@ void NoMeiryoUI::showVersion(void)
 
 	_stprintf(version, verString, appName);
 	_stprintf(aboutContent,
-		_T("%s\n\nBy Tatsuhiko Shoji(Tatsu)2005,2012-2026\n"
-			"\n"
-			"Contributors:\n"
-			"HSSkyBoy, czefan\n"
-			"\n"
-			"Translated by %s"
-		),
+		_T("%s\n\nBy Tatsuhiko Shoji(Tatsu)2005,2012-2026\n")
+			_T("\n")
+			_T("Contributors:\n")
+			_T("HSSkyBoy, czefan\n")
+			_T("\n")
+			_T("Translated by %s")
+		,
 		version, transAuthor);
 
 	MessageBox(hWnd,
