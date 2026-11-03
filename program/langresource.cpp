@@ -14,7 +14,7 @@ The sources for noMeiryoUI are distributed under the MIT open source license
 void readResourceFile(TCHAR *file)
 {
 	readResourceItem(file, _T("FONT_FACE"),
-		_T("System")
+		_T("Segoe UI")
 	);
 	readResourceItem(file, _T("TITLE"),
 		_T("No!! Meiryo UI")
