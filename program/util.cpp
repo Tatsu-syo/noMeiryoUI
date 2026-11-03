@@ -244,10 +244,13 @@ int readFontFace(std::vector<tstring> &buffer, TCHAR *file, TCHAR *key)
 	tstring buf;
 	int len;
 
-	// INIファイルを読み込む。
+	// Read INI file. If I use Unicode version API and file is not UTF-16,
+	// Read as the code page of each language.
 	len = GetPrivateProfileStringExT(PRESET_SECTION, key, _T(""), buf, file);
 
-	buffer.push_back(buf);
+	if (len != 0) {
+		buffer.push_back(buf);
+	}
 
 	return len;
 }
@@ -263,31 +266,34 @@ int readFontSize(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 {
 	int size;
 
-	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
-	// 各言語の文字コードのファイルとして読んでくれる。
+	// Read INI file. If I use Unicode version API and file is not UTF-16,
+	// Read as the code page of each language.
 	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 0, file);
-	buffer.push_back(size);
+	if (size != 0) {
+		buffer.push_back(size);
+	}
 
 	return size;
 }
 
 /**
- * リソースの読み込みを行う(フォント文字セット用)。
+ * read resource for the font charset
  *
- * @param buffer 格納先
- * @param file リソースファイル名
- * @param key キー名
+ * @param buffer destination
+ * @param file resource file name
+ * @param key key name
+ * @return charset value(if not found, return 1 and push to buffer)
  */
 int readFontCharset(std::vector<int> &buffer, TCHAR *file, TCHAR *key)
 {
-	int size;
+	int charset;
 
-	// INIファイルを読み込む。Unicode版のAPIでもファイルが非Unicodeの場合は
-	// 各言語の文字コードのファイルとして読んでくれる。
-	size = GetPrivateProfileInt(_T(PRESET_SECTION), key, 1, file);
-	buffer.push_back(size);
+	// Read INI file. If I use Unicode version API and file is not UTF-16,
+	// Read as the code page of each language.
+	charset = GetPrivateProfileInt(_T(PRESET_SECTION), key, 1, file);
+	buffer.push_back(charset);
 
-	return size;
+	return charset;
 }
 
 /**
@@ -303,53 +309,53 @@ int readFontResource8(TCHAR *file)
 	// フォント名
 	result = readFontFace(fontFaces8, file, _T("CAPTION_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces8, file, _T("ICON_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces8, file, _T("SMALLCAPTION_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces8, file, _T("STATUS_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces8, file, _T("MESSAGE_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces8, file, _T("MENU_FACE_8"));
 	if (result == 0) {
-		return 0;
+		fontFaces8.push_back(_T("Segoe UI"));
 	}
 
 	// 文字サイズ
 	result = readFontSize(fontSizes8, file, _T("CAPTION_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(11);
 	}
 	result = readFontSize(fontSizes8, file, _T("ICON_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(9);
 	}
 	result = readFontSize(fontSizes8, file, _T("SMALLCAPTION_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(11);
 	}
 	result = readFontSize(fontSizes8, file, _T("STATUS_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(9);
 	}
 	result = readFontSize(fontSizes8, file, _T("MESSAGE_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(9);
 	}
 	result = readFontSize(fontSizes8, file, _T("MENU_SIZE_8"));
 	if (result == 0) {
-		return 0;
+		fontSizes8.push_back(9);
 	}
 
 	// 文字セット
@@ -376,53 +382,53 @@ int readFontResource10(TCHAR *file)
 	// フォント名
 	result = readFontFace(fontFaces10, file, _T("CAPTION_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces10, file, _T("ICON_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces10, file, _T("SMALLCAPTION_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces10, file, _T("STATUS_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces10, file, _T("MESSAGE_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces10, file, _T("MENU_FACE_10"));
 	if (result == 0) {
-		return 0;
+		fontFaces10.push_back(_T("Segoe UI"));
 	}
 
 	// 文字サイズ
 	result = readFontSize(fontSizes10, file, _T("CAPTION_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 	result = readFontSize(fontSizes10, file, _T("ICON_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 	result = readFontSize(fontSizes10, file, _T("SMALLCAPTION_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 	result = readFontSize(fontSizes10, file, _T("STATUS_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 	result = readFontSize(fontSizes10, file, _T("MESSAGE_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 	result = readFontSize(fontSizes10, file, _T("MENU_SIZE_10"));
 	if (result == 0) {
-		return 0;
+		fontSizes10.push_back(9);
 	}
 
 	// 文字セット
@@ -449,53 +455,53 @@ int readFontResource11(TCHAR* file)
 	// フォント名
 	result = readFontFace(fontFaces11, file, _T("CAPTION_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces11, file, _T("ICON_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces11, file, _T("SMALLCAPTION_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces11, file, _T("STATUS_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"))		;
 	}
 	result = readFontFace(fontFaces11, file, _T("MESSAGE_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"));
 	}
 	result = readFontFace(fontFaces11, file, _T("MENU_FACE_11"));
 	if (result == 0) {
-		return 0;
+		fontFaces11.push_back(_T("Segoe UI"));
 	}
 
 	// 文字サイズ
 	result = readFontSize(fontSizes11, file, _T("CAPTION_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 	result = readFontSize(fontSizes11, file, _T("ICON_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 	result = readFontSize(fontSizes11, file, _T("SMALLCAPTION_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 	result = readFontSize(fontSizes11, file, _T("STATUS_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 	result = readFontSize(fontSizes11, file, _T("MESSAGE_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 	result = readFontSize(fontSizes11, file, _T("MENU_SIZE_11"));
 	if (result == 0) {
-		return 0;
+		fontSizes11.push_back(9);
 	}
 
 	// 文字セット
