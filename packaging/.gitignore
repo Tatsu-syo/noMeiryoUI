@@ -1,5 +1,11 @@
-*.chm
-*.lng
-*.exe
-*.lsl
-*.zip
+**/*.chm
+**/*.lng
+**/*.exe
+**/*.lsl
+**/*.zip
+isls/*.isl
+files/utils/*.bat
+installable/utils/*.bat
+installable/filelist.txt
+portable/utils/*.bat
+portable/filelist.txt
