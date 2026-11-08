@@ -5,7 +5,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "No!! Meiryo UI"
-#define MyAppVersion "3.5.0"
+#define MyAppVersion "3.5.2"
 #define MyAppPublisher "Tatsuhiko Shoji"
 #define MyAppURL "https://github.com/Tatsu-syo/noMeiryoUI/"
 #define MyAppExeName "noMeiryoUI.exe"
