@@ -1,4 +1,4 @@
-; noMeiryoUI (C) 2005,2012-2025 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSkyboy
+; noMeiryoUI (C) 2005,2012-2026 Tatsuhiko Shoji,Gekka Tachibana,kingofotaku,LucidLoli,Luke Luo,HSSkyBoy,hyalurion
 ; The sources for noMeiryoUI are distributed under the MIT open source license
 
 [RESOURCE]
@@ -15,11 +15,11 @@ MENU_PRESET_8=Windows 8/8.1
 MENU_PRESET_10=Windows 10
 MENU_PRESET_11=Windows 11
 MENU_TOOLS=工具(&T)
-MENU_TOOLS_CHOICE_APP_FONT=修改 No!! Meiryo UI 的字体
-MENU_TOOLS_THREAD=在独立线程中更改系统字体
-MENU_TOOLS_SEVEN=采用与 Windows 7 中相同的方法计算文字大小
+MENU_TOOLS_CHOICE_APP_FONT=修改 No!! Meiryo UI 的字体(&F)
+MENU_TOOLS_THREAD=在独立线程中更改系统字体(&A)
+MENU_TOOLS_SEVEN=采用与 Windows 7 中相同的方法计算文字大小(&7)
 MENU_TOOLS_NO_MULTI_RUN=只允许运行一个实例(&D)
-MENU_FORCE_TITLE_SET=强制修改标题栏字体
+MENU_FORCE_TITLE_SET=强制修改标题栏字体(&O)
 MENU_HELP=帮助(&H)
 MENU_HELP_HELP=显示帮助(&H)
 MENU_HELP_ABOUT=关于 No!! Meiryo UI(&A)
@@ -153,7 +153,7 @@ MENU_CHARSET_10=1
 ; Font face
 CAPTION_FACE_11=Microsoft YaHei UI
 ICON_FACE_11=Microsoft YaHei UI
-SMALLCAPTION_FACE_11=Microsoft Yahei UI
+SMALLCAPTION_FACE_11=Microsoft YaHei UI
 STATUS_FACE_11=Microsoft YaHei UI
 MESSAGE_FACE_11=Microsoft YaHei UI
 MENU_FACE_11=Microsoft YaHei UI
